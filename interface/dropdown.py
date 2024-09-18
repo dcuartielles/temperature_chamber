@@ -6,7 +6,7 @@ from kivy.uix.boxlayout import BoxLayout
 import serial
 import time
 
-class MyApp(App):
+class DropMenu(App):
     def build(self):
         # Set up serial communication
         try:
@@ -77,4 +77,4 @@ class MyApp(App):
             print("Serial port closed.")
 
 if __name__ == '__main__':
-    MyApp().run()
+    DropMenu().run()
