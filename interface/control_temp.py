@@ -20,17 +20,17 @@ class TemperatureControlApp(App):
         layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
 
         # Create a label to display status
-        self.response_label = Label(text="arduino will tell you things over here", size_hint=(1, 1))
+        self.response_label = Label(text="arduino will tell you things over here", size_hint=(1, 1), font_size='22sp')
 
         # Create text input for setting temperature
-        self.temperature_input = TextInput(hint_text="enter desired temperature", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .6))
+        self.temperature_input = TextInput(hint_text="enter desired temperature", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .5))
 
         # Create a button to send the temperature command
         set_temp_button = Button(text="set temperature", size_hint=(1, 0.2))
         set_temp_button.bind(on_release=self.set_temperature)
 
         # Add widgets to the layout
-        layout.add_widget(Label(text="temperature control"))
+        layout.add_widget(Label(text="temperature control", size_hint=(1, 0.3)))
         layout.add_widget(self.temperature_input)
         layout.add_widget(set_temp_button)
         layout.add_widget(self.response_label)
