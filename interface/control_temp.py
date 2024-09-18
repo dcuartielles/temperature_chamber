@@ -20,10 +20,10 @@ class TemperatureControlApp(App):
         layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
 
         # Create a label to display status
-        self.response_label = Label(text="arduino responses will be displayed here", font_size='20sp')
+        self.response_label = Label(text="arduino will tell you things over here", size_hint=(1, 1))
 
         # Create text input for setting temperature
-        self.temperature_input = TextInput(hint_text="enter desired temperature", multiline=False, size_hint=(1, 0.2))
+        self.temperature_input = TextInput(hint_text="enter desired temperature", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .6))
 
         # Create a button to send the temperature command
         set_temp_button = Button(text="set temperature", size_hint=(1, 0.2))
@@ -55,7 +55,7 @@ class TemperatureControlApp(App):
                 self.ser.reset_input_buffer()
                 self.ser.write((command + '\n').encode('utf-8'))
                 print(f"sent command: {command}")
-                self.response_label.text = f"sent command: {command}"
+                #self.response_label.text = f"sent command: {command}"
 
                 time.sleep(2)
 
@@ -63,12 +63,15 @@ class TemperatureControlApp(App):
                 arduino_responses = []
                 while self.ser.in_waiting > 0:
                     response = self.ser.readline().decode('utf-8').strip()
-                    if response:
+                    if response == "status: 1":
+                        self.response_label.text = "heating patiently"
+                    
+                    elif response:
                         arduino_responses.append(response)
 
                 # Update the label with Arduino's response
                 if arduino_responses:
-                    self.response_label.text = f"arduino responded: {arduino_responses[-1]}"
+                    self.response_label.text = f"{arduino_responses[-1]}"
                 else:
                     self.response_label.text = "no response from arduino"
 
