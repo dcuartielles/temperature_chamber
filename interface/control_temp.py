@@ -23,16 +23,17 @@ class TemperatureControlApp(App):
         self.response_label = Label(text="arduino will tell you things over here", size_hint=(1, 1), font_size='22sp')
 
         # Create text input for setting temperature
-        self.temperature_input = TextInput(hint_text="enter desired temperature", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .5))
+        self.temperature_input = TextInput(hint_text="enter desired temperature and press ENTER", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .5), font_size='22sp', halign = 'center')
+        self.temperature_input.bind(on_text_validate=self.set_temperature)  # Bind 'Enter' key to set_temperature
 
         # Create a button to send the temperature command
-        set_temp_button = Button(text="set temperature", size_hint=(1, 0.2))
-        set_temp_button.bind(on_release=self.set_temperature)
+        #set_temp_button = Button(text="set temperature", size_hint=(1, 0.2))
+        #set_temp_button.bind(on_release=self.set_temperature)
 
         # Add widgets to the layout
-        layout.add_widget(Label(text="temperature control", size_hint=(1, 0.3)))
+        layout.add_widget(Label(text="temperature control", size_hint=(1, 0.3), color = (.6, 0, .8), font_size='22sp'))
         layout.add_widget(self.temperature_input)
-        layout.add_widget(set_temp_button)
+        #layout.add_widget(set_temp_button)
         layout.add_widget(self.response_label)
 
         return layout
