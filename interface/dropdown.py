@@ -7,7 +7,7 @@ import serial
 import time
 
 # set up serial communication with arduino
-arduino_port = "/dev/cu.usbmodem144301"  # arduino port
+arduino_port = "COM13"  # arduino port
 baud = 9600
 timeout_duration = 5
 
@@ -41,7 +41,7 @@ def send_command(command):
             print(f"sent command: {command}")
 
             # update the label to show that the command was sent
-            response_label.text = f"sent command: {command}"
+            #response_label.text = f"sent command: {command}"
 
             time.sleep(2)
 
@@ -62,7 +62,7 @@ def send_command(command):
 
         except serial.SerialException as e:
             print(f"error sending command: {e}")
-            response_label.text = f"error sending command: {e}"
+            response_label.text = "error sending command"
     else:
         print("serial connection is not available.")
         response_label.text = "serial connection is not available."
@@ -94,7 +94,7 @@ main_button.bind(on_release=dropdown.open)
 response_label = Label(text="arduino responses will be displayed here.", size_hint=(1, 1))
 
 # Create a callback when a command is selected from the dropdown
-dropdown.bind(on_select=lambda instance, x: setattr(main_button, 'text', x) or send_command(response_label))
+dropdown.bind(on_select=lambda instance, x: setattr(main_button, 'text', x) or send_command(x))
 
 # Add the main button and response label to the layout
 layout.add_widget(main_button)
