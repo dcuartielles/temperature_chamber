@@ -1,109 +1,80 @@
+from kivy.app import App
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
-from kivy.base import runTouchApp
 import serial
 import time
 
-# set up serial communication with arduino
-arduino_port = "COM13"  # arduino port
-baud = 9600
-timeout_duration = 5
-
-# list of commands to be on the menu
-commands = [
-    "SET TEMP 25",
-    "EMERGENCY STOP",
-    "RESET",
-    "REPORT"
-]
-
-#make sure there's connection
-try:
-    ser = serial.Serial(arduino_port, baud, timeout=timeout_duration)
-    print("Connected to Arduino port: " + arduino_port)
-    time.sleep(2)  # wait for Arduino to initialize
-
-except serial.SerialException as e:
-    print(f"Error: {e}")
-    ser = None
-
-#method for sending commands to arduino
-def send_command(command):
-    if ser and ser.is_open:
+class MyApp(App):
+    def build(self):
+        # Set up serial communication
         try:
-            # flush the input buffer before writing new data
-            ser.reset_input_buffer()
-
-            # send the selected command to the Arduino
-            ser.write((command + '\n').encode('utf-8'))
-            print(f"sent command: {command}")
-
-            # update the label to show that the command was sent
-            #response_label.text = f"sent command: {command}"
-
-            time.sleep(2)
-
-           # check for responses from the Arduino
-            arduino_responses = []
-            while ser.in_waiting > 0:
-                response = ser.readline().decode('utf-8').strip()
-                if response:
-                    arduino_responses.append(response)
-
-            # update the response label with the Arduino's responses
-            if arduino_responses:
-                response_label.text = f"arduino responded: {arduino_responses[-1]}"
-            else:
-                response_label.text = "no response from arduino."
-                
-            time.sleep(1)
-
+            self.ser = serial.Serial("COM13", baudrate=9600, timeout=5)
+            print("Connected to Arduino port: COM13")
         except serial.SerialException as e:
-            print(f"error sending command: {e}")
-            response_label.text = "error sending command"
-    else:
-        print("serial connection is not available.")
-        response_label.text = "serial connection is not available."
+            print(f"Error: {e}")
+            self.ser = None
 
-# create a dropdown menu
-dropdown = DropDown()
+        # Create a label to display the Arduino's responses
+        self.response_label = Label(text="arduino responses will be displayed here.", size_hint=(1, 1))
 
-# Create a layout to hold the main button and the response label
-layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
+        # Create a dropdown menu
+        dropdown = DropDown()
+        commands = [
+            "SET TEMP 25",
+            "EMERGENCY STOP",
+            "RESET",
+            "REPORT"
+        ]
+        for command in commands:
+            btn = Button(text=command, size_hint_y=None, size_hint_x=None, height=44, width=500, background_color=(.8, 0, .9))
+            btn.bind(on_release=lambda btn: dropdown.select(btn.text))
+            dropdown.add_widget(btn)
 
-# Loop through each command and create a button for it
-for command in commands:
-    # Create a button for each command
-    btn = Button(text=command, size_hint_y=None, size_hint_x=None, height=44, width=500, background_color=(.8, 0, .9))
+        main_button = Button(text='choose what you want to do', size_hint=(None, None), height=44, width=500, background_color=(.8, 0, .9))
+        main_button.bind(on_release=dropdown.open)
 
-    # Bind the button press event to send the command when selected
-    btn.bind(on_release=lambda btn: dropdown.select(btn.text))
+        dropdown.bind(on_select=self.send_command)
 
-    # Add the button to the dropdown
-    dropdown.add_widget(btn)
+        layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
+        layout.add_widget(main_button)
+        layout.add_widget(self.response_label)
 
-# Create a main button to show the dropdown
-main_button = Button(text='choose what you want to do', size_hint=(None, None), height=44, width=500, background_color=(.8, 0, .9))
+        return layout
 
-# When the main button is pressed, open the dropdown
-main_button.bind(on_release=dropdown.open)
+    def send_command(self, instance, command):
+        if self.ser and self.ser.is_open:
+            try:
+                self.ser.reset_input_buffer()
+                self.ser.write((command + '\n').encode('utf-8'))
+                print(f"sent command: {command}")
 
-# Create a label to display the Arduino's responses
-response_label = Label(text="arduino responses will be displayed here.", size_hint=(1, 1))
+                time.sleep(2)
 
-# Create a callback when a command is selected from the dropdown
-dropdown.bind(on_select=lambda instance, x: setattr(main_button, 'text', x) or send_command(x))
+                arduino_responses = []
+                while self.ser.in_waiting > 0:
+                    response = self.ser.readline().decode('utf-8').strip()
+                    if response:
+                        arduino_responses.append(response)
 
-# Add the main button and response label to the layout
-layout.add_widget(main_button)
-layout.add_widget(response_label)
+                if arduino_responses:
+                    self.response_label.text = f"arduino responded: {arduino_responses[-1]}"
+                else:
+                    self.response_label.text = "no response from arduino."
+                
+                time.sleep(1)
+            except serial.SerialException as e:
+                print(f"error sending command: {e}")
+                self.response_label.text = "error sending command"
+        else:
+            print("serial connection is not available.")
+            self.response_label.text = "serial connection is not available."
 
-# Run the app with the layout
-runTouchApp(layout)
+    def on_stop(self):
+        if self.ser and self.ser.is_open:
+            self.ser.close()
+            print("Serial port closed.")
 
-# Close the serial connection when done
-if ser and ser.is_open:
-    ser.close()
-    print("Serial port closed.")
+if __name__ == '__main__':
+    MyApp().run()
