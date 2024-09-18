@@ -42,13 +42,13 @@ class TemperatureControlApp(App):
         # Get the user input temperature
         temperature = self.temperature_input.text
 
-        # Check if input is a valid number
-        if temperature.replace('.', '', 1).isdigit():
+        # Check if input is a valid number & not larger than max temperature
+        if temperature.replace('.', '', 1).isdigit() and temperature.replace('.', '', 1).isdigit() < 100:
             # Send the "SET TEMP <value>" command to Arduino
             command = f"SET TEMP {temperature}"
             self.send_command(command)
         else:
-            self.response_label.text = "invalid input: elease enter a numeric value"
+            self.response_label.text = "invalid input"
 
     def send_command(self, command):
         if self.ser and self.ser.is_open:
