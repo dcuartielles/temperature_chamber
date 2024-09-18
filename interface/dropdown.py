@@ -23,7 +23,7 @@ commands = [
 try:
     ser = serial.Serial(arduino_port, baud, timeout=timeout_duration)
     print("Connected to Arduino port: " + arduino_port)
-    time.sleep(2)  # Wait for Arduino to initialize
+    time.sleep(2)  # wait for Arduino to initialize
 
 except serial.SerialException as e:
     print(f"Error: {e}")
@@ -33,28 +33,28 @@ except serial.SerialException as e:
 def send_command(command):
     if ser and ser.is_open:
         try:
-            # Flush the input buffer before writing new data
+            # flush the input buffer before writing new data
             ser.reset_input_buffer()
 
-            # Send the selected command to the Arduino
+            # send the selected command to the Arduino
             ser.write((command + '\n').encode('utf-8'))
             print(f"sent command: {command}")
 
-            # Update the label to show that the command was sent
+            # update the label to show that the command was sent
             response_label.text = f"sent command: {command}"
 
             time.sleep(2)
 
-           # Check for responses from the Arduino
+           # check for responses from the Arduino
             arduino_responses = []
             while ser.in_waiting > 0:
                 response = ser.readline().decode('utf-8').strip()
                 if response:
                     arduino_responses.append(response)
 
-            # Update the response label with the Arduino's responses
+            # update the response label with the Arduino's responses
             if arduino_responses:
-                response_label.text = f"arduino responded: {' | '.join(arduino_responses)}"
+                response_label.text = f"arduino responded: {arduino_responses[-1]}"
             else:
                 response_label.text = "no response from arduino."
                 
