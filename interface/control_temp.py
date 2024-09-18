@@ -31,7 +31,7 @@ class TemperatureControlApp(App):
         #set_temp_button.bind(on_release=self.set_temperature)
 
         # Add widgets to the layout
-        layout.add_widget(Label(text="temperature control", size_hint=(1, 0.3), color = (.6, 0, .8), font_size='22sp'))
+        layout.add_widget(Label(text="temperature control: max 100", size_hint=(1, 0.3), color = (.6, 0, .8), font_size='22sp'))
         layout.add_widget(self.temperature_input)
         #layout.add_widget(set_temp_button)
         layout.add_widget(self.response_label)
@@ -42,8 +42,8 @@ class TemperatureControlApp(App):
         # Get the user input temperature
         temperature = self.temperature_input.text
 
-        # Check if input is a valid number & not larger than max temperature
-        if temperature.replace('.', '', 1).isdigit() and temperature.replace('.', '', 1).isdigit() < 100:
+        # Check if input is a valid number
+        if temperature.replace('.', '', 1).isdigit():
             # Send the "SET TEMP <value>" command to Arduino
             command = f"SET TEMP {temperature}"
             self.send_command(command)
