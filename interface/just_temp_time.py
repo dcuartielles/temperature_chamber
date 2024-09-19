@@ -13,6 +13,29 @@ CHECK TEMP CONTINUOUSLY
 EXTRACT TEMP AND SEE WHEN DESIRED TEMP IS REACHED
 THEN SET OFF THE TIMER TO KEEP THE DESIRED TEMP FOR DESIRED TIME
 UPDATE INFO ON DISPLAY
+
+***
+
+REUSE AND ADAPT THIS:
+
+response = self.ser.readline().decode('utf-8').strip()
+print(f"received: {response}")  # Debug print
+self.label.text = f"{response}"
+if response and not response.startswith("enter a value:"):
+    data = response.split("|")
+    if len(data) == 6:
+        RealTemp, ThermocoupleTemp1, ThermocoupleTemp2, ThermocoupleAverage, CurrentError, CurrentErrorPercentage = data
+        self.label.text = (f"RealTemp: {RealTemp}°C\n"
+                            f"ThermocoupleTemp1: {ThermocoupleTemp1}°C\n"
+                            f"ThermocoupleTemp2: {ThermocoupleTemp2}°C\n"
+                            f"Avg Temp: {ThermocoupleAverage}°C\n"
+                            f"Error: {CurrentError}°C\n"
+                            f"Error %: {CurrentErrorPercentage}%")
+
+*****
+
+MOST DEF USE THREADING
+
 """
 class TemperatureControlApp(App):
     def build(self):
