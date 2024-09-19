@@ -85,12 +85,12 @@ class DropMenu(App):
         temperature = self.temperature_input.text
 
         # Check if input is a valid number and not larger than max temperature (e.g., 100)
-        if temperature.replace('.', '', 1).isdigit() and float(temperature) <= 100:
+        if temperature.replace('.', '', 1).isdigit() and int(temperature) <= 100:
             # Send the "SET TEMP <value>" command to Arduino
             command = f"SET TEMP {temperature}"
             self.send_command(None, command)
         else:
-            self.response_label.text = "so that you know, it cna only go up to 100°C"
+            self.update_label("so that you know, it can only go up to 100°C")
             self.temperature_input.text = ""  # Clear invalid input
 
     def set_time(self, instance):
@@ -106,18 +106,20 @@ class DropMenu(App):
                 try:
                     response = self.ser.readline().decode('utf-8').strip()
                     print(f"received: {response}")  # Debug print
-                    self.response_label.text = f"temperature now: {response}°C"
-                    if response and response.isdigit() and float(response) < float(self.temperature_input.text):
-                        self.response_label.text = f"temperature now: {response}°C, still working on it"
+                    self.update_label(f"temperature now: {response[0]}°C")
+                    if response[0] and response[0].isdigit() and float(response[0]) < int(self.temperature_input.text):
+                        self.update_label(f"temperature now: {response[0]}°C, still working on it")
                     else:
                         # Schedule the "SYSTEM OFF" command after the set time
                         Clock.schedule_once(partial(self.send_command, None, "SYSTEM OFF"), time_in_seconds)
+                        self.update_label(f"heating will be turned off in {time_duration} minutes")
+                        print(f"heating will be turned off in {time_duration} minutes")
 
                 except Exception as e:
                     self.response_label.text = f"error reading data: {e}"
                     print(f"error reading data: {e}")
         else:
-            self.response_label.text = "that won't work"
+            self.update_label("that won't work")
             self.time_input.text = ""  # Clear invalid input
 
     def send_command(self, instance, command):
@@ -130,12 +132,12 @@ class DropMenu(App):
             self.ser.reset_input_buffer()
             self.ser.write((command + '\n').encode('utf-8'))
             print(f"sent command: {command}")
-            self.update_label(f"Sent command: {command}")
+            self.update_label(f"sent command: {command}")
             time.sleep(2)
 
         except serial.SerialException as e:
             print(f"Error sending command: {e}")
-            self.update_label("Error sending command")
+            self.update_label("error sending command")
 
     def read_arduino_data(self):
         while self.ser and self.ser.is_open:
@@ -147,15 +149,13 @@ class DropMenu(App):
                         arduino_responses.append(response)
 
                 if arduino_responses:
-                    self.update_label(f"Arduino responded: {arduino_responses[-1]}")
-                else:
-                    self.update_label("No response from Arduino")
-
+                    self.update_label(f"arduino responded: {arduino_responses[-1]}")
+                
                 time.sleep(1)  # Control the read frequency
 
             except serial.SerialException as e:
                 print(f"Error reading data: {e}")
-                self.update_label("Error reading data")
+                self.update_label("error reading data")
                 break
 
     def update_label(self, text):
