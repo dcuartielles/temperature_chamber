@@ -52,6 +52,11 @@ class DropMenu(App):
         self.temperature_input = TextInput(hint_text="enter desired temperature and press ENTER", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .5), font_size='22sp', halign='center')
         self.temperature_input.bind(on_text_validate=self.set_temperature)
 
+        # Create text input for setting time
+        self.time_input = TextInput(hint_text="how many minutes do you want the temperature to stay on for?", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .5), font_size='22sp', halign='center')
+        self.time_input.bind(on_text_validate=self.set_time)
+
+
         # Add widgets to the main layout
         self.layout.add_widget(main_button)
         self.layout.add_widget(self.response_label)
@@ -68,11 +73,13 @@ class DropMenu(App):
         # Show the temperature input box only when "SET TEMP " is chosen
         if command == "SET TEMP ":
             if self.temperature_input not in self.layout.children:
-                self.layout.add_widget(self.temperature_input, index=1)  # Insert below the label
+                self.layout.add_widget(self.temperature_input)  # Insert below the label
+                self.layout.add_widget(self.time_input)  
         else:
             # If any other command is selected, remove the temperature input box
-            if self.temperature_input in self.layout.children:
+            if self.temperature_input in self.layout.children and self.time_input in self.layout.children:
                 self.layout.remove_widget(self.temperature_input)
+                self.layout.remove_widget(self.time_input)
 
 
     def set_temperature(self, instance):
@@ -86,6 +93,21 @@ class DropMenu(App):
             self.send_command(None, command)
         else:
             self.response_label.text = "invalid input: please enter a numeric value less than 100"
+
+    def set_time(self, instance):
+        # Get the user input time
+        time = self.time_input.text
+
+        # Check if input is a valid number
+        if time.replace('.', '', 1).isdigit():
+            time_in_seconds = int(time) * 60 #convert minutes to seconds
+            # Send the "SYSTEM OFF" command to Arduino
+            Clock.schedule_once(partial(self.send_command, "SYSTEM OFF"), time_in_seconds)
+        else:
+            self.response_label.text = "enter a number"
+            self.time_input.text = ""  # Clear the TextInput box
+
+
 
     def send_command(self, instance, command):
         # Submit the command to be sent in the background
@@ -127,7 +149,9 @@ class DropMenu(App):
 
     def update_label(self, text):
         # Schedule a GUI update from a background thread
-        Clock.schedule_once(lambda dt: self.response_label.setter('text')(self.response_label, text))
+        #Clock.schedule_once(lambda dt: self.response_label.setter('text')(self.response_label, text))
+        # Schedule a GUI update from a background thread
+        Clock.schedule_once(lambda dt: setattr(self.response_label, 'text', text))
 
     def on_stop(self):
         # Clean up when the app stops
