@@ -7,9 +7,14 @@ from kivy.uix.textinput import TextInput
 from functools import partial
 import serial
 import time
+from concurrent.futures import ThreadPoolExecutor
+from kivy.clock import Clock
 
 class DropMenu(App):
     def build(self):
+        # Set up thread pool executor with 2 workers (one for sending commands, one for reading data)
+        self.executor = ThreadPoolExecutor(max_workers=2)
+
         # Set up serial communication
         try:
             self.ser = serial.Serial("COM13", baudrate=9600, timeout=5)
@@ -35,7 +40,6 @@ class DropMenu(App):
         ]
         for command in commands:
             btn = Button(text=command, size_hint_y=None, size_hint_x=None, height=44, width=500, background_color=(.8, 0, .9))
-            # Use partial to correctly bind the command
             btn.bind(on_release=partial(self.on_dropdown_button_release, command))
             dropdown.add_widget(btn)
 
@@ -46,17 +50,30 @@ class DropMenu(App):
 
         # Create text input for setting temperature
         self.temperature_input = TextInput(hint_text="enter desired temperature and press ENTER", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .5), font_size='22sp', halign='center')
-        self.temperature_input.bind(on_text_validate=self.set_temperature)  # Bind 'Enter' key to set_temperature
+        self.temperature_input.bind(on_text_validate=self.set_temperature)
 
         # Add widgets to the main layout
         self.layout.add_widget(main_button)
         self.layout.add_widget(self.response_label)
+
+        # Start a background thread to continuously read from Arduino
+        self.executor.submit(self.read_arduino_data)
 
         return self.layout
 
     def on_dropdown_button_release(self, command, *args):
         # Handle dropdown button release
         self.send_command(None, command)
+
+        # Show the temperature input box only when "SET TEMP " is chosen
+        if command == "SET TEMP ":
+            if self.temperature_input not in self.layout.children:
+                self.layout.add_widget(self.temperature_input, index=1)  # Insert below the label
+        else:
+            # If any other command is selected, remove the temperature input box
+            if self.temperature_input in self.layout.children:
+                self.layout.remove_widget(self.temperature_input)
+
 
     def set_temperature(self, instance):
         # Get the user input temperature
@@ -71,20 +88,25 @@ class DropMenu(App):
             self.response_label.text = "invalid input: please enter a numeric value less than 100"
 
     def send_command(self, instance, command):
+        # Submit the command to be sent in the background
         if self.ser and self.ser.is_open:
+            self.executor.submit(self._send_command_task, command)
+
+    def _send_command_task(self, command):
+        try:
+            self.ser.reset_input_buffer()
+            self.ser.write((command + '\n').encode('utf-8'))
+            print(f"sent command: {command}")
+            self.update_label(f"sent command: {command}")
+            time.sleep(2)
+
+        except serial.SerialException as e:
+            print(f"error sending command: {e}")
+            self.update_label("error sending command")
+
+    def read_arduino_data(self):
+        while self.ser and self.ser.is_open:
             try:
-                self.ser.reset_input_buffer()
-                self.ser.write((command + '\n').encode('utf-8'))
-                print(f"sent command: {command}")
-                self.response_label.text = f"sent command: {command}"
-
-                time.sleep(2)
-
-                # Only show the temperature input if the "SET TEMP " command is selected
-                if command == "SET TEMP ":
-                    if self.temperature_input not in self.layout.children:
-                        self.layout.add_widget(self.temperature_input, index=1)  # Insert below the label
-
                 arduino_responses = []
                 while self.ser.in_waiting > 0:
                     response = self.ser.readline().decode('utf-8').strip()
@@ -92,24 +114,28 @@ class DropMenu(App):
                         arduino_responses.append(response)
 
                 if arduino_responses:
-                    self.response_label.text = f"arduino responded: {arduino_responses[-1]}"
+                    self.update_label(f"arduino responded: {arduino_responses[-1]}")
                 else:
-                    self.response_label.text = "no response from arduino"
+                    self.update_label("no response from arduino")
 
-                time.sleep(1)
-                
+                time.sleep(1)  # Control the read frequency
+
             except serial.SerialException as e:
-                print(f"error sending command: {e}")
-                self.response_label.text = "error sending command"
-        else:
-            print("serial connection is not available.")
-            self.response_label.text = "serial connection is not available"
+                print(f"error reading data: {e}")
+                self.update_label("error reading data")
+                break
+
+    def update_label(self, text):
+        # Schedule a GUI update from a background thread
+        Clock.schedule_once(lambda dt: self.response_label.setter('text')(self.response_label, text))
 
     def on_stop(self):
+        # Clean up when the app stops
         if self.ser and self.ser.is_open:
             self.ser.close()
             print("serial port closed.")
-            self.response_label.text = "serial port closed"
+            #self.response_label.text = "serial port closed"
+        self.executor.shutdown()
 
 if __name__ == '__main__':
     DropMenu().run()
