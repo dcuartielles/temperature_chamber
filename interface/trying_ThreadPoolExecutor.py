@@ -47,11 +47,11 @@ class DropMenu(App):
         dropdown.bind(on_select=self.send_command)
 
         # Create text input for setting temperature
-        self.temperature_input = TextInput(hint_text="enter desired temperature and press ENTER", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .5), font_size='22sp', halign='center')
+        self.temperature_input = TextInput(hint_text="degrees?", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .5), font_size='22sp', halign='center')
         
 
         # Create text input for setting time
-        self.time_input = TextInput(hint_text="how many minutes do you want the temperature to stay on for?", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .5), font_size='22sp', halign='center')
+        self.time_input = TextInput(hint_text="minutes on?", multiline=False, size_hint=(1, 0.2), background_color=(0, .5, .5), font_size='22sp', halign='center')
 
            # Create the "RUN TEST" button
         self.run_test_button = Button(text="RUN TEST", size_hint=(1, 0.2), background_color=(.8, 0, .9))
