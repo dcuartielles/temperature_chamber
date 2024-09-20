@@ -365,7 +365,10 @@ void parseCommand(String command) {
         Serial.println("System Report:");
         displaySerial();
     }
-    displayStatus();
+    else if (command == "GET TEMP") {
+        Serial.println("Room Temperature: " + String(temperatureRoom));
+    }
+    //displayStatus();
 }
 
 
