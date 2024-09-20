@@ -10,7 +10,7 @@ from kivy.clock import Clock
 import serial
 
 
-class ArduinoApp(app):
+class ArduinoApp(App):
 
     def build(self):
         
