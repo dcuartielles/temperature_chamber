@@ -34,6 +34,15 @@ if response and not response.startswith("enter a value:"):
 
 *****
 
+use this?
+TemperatureThreshold= temperatureRoom-temperatureDesired;
+as in:
+if TemperatureThreshold==0:
+Clock.schedule_once(partial(self.send_command, None, "SYSTEM OFF"), time_in_seconds)
+
+need to get at the actual temperature in the chamber, have it returned as an int or a float
+******
+
 MOST DEF USE THREADING
 
 """

@@ -93,6 +93,25 @@ class DropMenu(App):
             self.update_label("so that you know, it can only go up to 100°C")
             self.temperature_input.text = ""  # Clear invalid input
 
+    def get_temperature(self):
+
+        if self.ser and self.ser.in_waiting > 0:
+
+            command = f"GET TEMP"
+            self.send_command(None, command)
+
+            try:
+                response = self.ser.readline().decode('utf-8').strip()
+                current_temperature = float(response.strip())
+                print(f"received: {response}")  # Debug print
+                self.update_label(f"temperature now: {current_temperature}°C")
+                return current_temperature
+                
+            except Exception as e:
+                    self.response_label.text = f"error reading data: {e}"
+                    print(f"error reading data: {e}")
+        
+
     def set_time(self, instance):
         # Get the user input time
         time_duration = self.time_input.text
@@ -100,24 +119,15 @@ class DropMenu(App):
         # Check if input is a valid number
         if time_duration.replace('.', '', 1).isdigit():
             time_in_seconds = int(time_duration) * 60  # Convert minutes to seconds
+            current_temperature = self.get_temperature()  # Get current temperature
 
-            # Read the temperature from the Arduino response
-            if self.ser and self.ser.in_waiting > 0:
-                try:
-                    response = self.ser.readline().decode('utf-8').strip()
-                    print(f"received: {response}")  # Debug print
-                    self.update_label(f"temperature now: {response[0]}°C")
-                    if response[0] and response[0].isdigit() and float(response[0]) < int(self.temperature_input.text):
-                        self.update_label(f"temperature now: {response[0]}°C, still working on it")
-                    else:
-                        # Schedule the "SYSTEM OFF" command after the set time
-                        Clock.schedule_once(partial(self.send_command, None, "SYSTEM OFF"), time_in_seconds)
-                        self.update_label(f"heating will be turned off in {time_duration} minutes")
-                        print(f"heating will be turned off in {time_duration} minutes")
-
-                except Exception as e:
-                    self.response_label.text = f"error reading data: {e}"
-                    print(f"error reading data: {e}")
+            if current_temperature is not None and current_temperature == float(self.temperature_input.text):
+                # Schedule the "SYSTEM OFF" command after the set time
+                Clock.schedule_once(partial(self.send_command, None, "SYSTEM OFF"), time_in_seconds)
+                self.update_label(f"heating will be turned off in {time_duration} minutes")
+                print(f"heating will be turned off in {time_duration} minutes")
+            else:
+                self.update_label(f"temperature now: {current_temperature}°C, still working on it")
         else:
             self.update_label("that won't work")
             self.time_input.text = ""  # Clear invalid input
