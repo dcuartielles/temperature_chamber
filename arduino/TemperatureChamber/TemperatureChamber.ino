@@ -290,6 +290,10 @@ float GetTemperature() {
     return roomTemperature;
 }
 
+bool isTemperatureReached(float targetTemp, float currentTemp) {
+    return abs(targetTemp - currentTemp) <= 0.1;
+}
+
 void displaySerial() {
     Serial.print(F("Room_temp: "));
     Serial.print(temperatureRoom);
@@ -367,6 +371,12 @@ void parseCommand(String command) {
     }
     else if (command == "GET TEMP") {
         Serial.println("Room Temperature: " + String(temperatureRoom));
+    }
+    else if (command == "IS TEMP REACHED") {
+        //Serial.println(isTemperatureReached(float targetTemp, float currentTemp))
+    }
+    else if (command == "SHOW DATA") {
+        showData();
     }
     //displayStatus();
 }
