@@ -1,4 +1,4 @@
-from utilities import send_command
+from utilities import *
 
 class GuiTrix:
     def __init__(self):     #initialize class
