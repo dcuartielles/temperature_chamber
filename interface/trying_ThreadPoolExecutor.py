@@ -124,7 +124,7 @@ class DropMenu(App):
             time_in_seconds = int(time_duration) * 60  # Convert minutes to seconds
             current_temperature = self.get_temperature()  # Get current temperature
 
-            if current_temperature and (current_temperature + 0.4 == float(self.temperature_input.text)) and (current_temperature - 0.4 == float(self.temperature_input.text)):
+            if current_temperature and ((current_temperature + 0.4 == float(self.temperature_input.text)) or (current_temperature - 0.4 == float(self.temperature_input.text))):
                 # Schedule the "SYSTEM OFF" command after the set time
                 Clock.schedule_once(partial(self.send_command, None, "SYSTEM OFF"), time_in_seconds)
                 self.response_label.text = f"the desired temperature will be held for {time_duration} minutes"

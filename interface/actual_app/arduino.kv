@@ -1,0 +1,12 @@
+#:kivy 2.3.0
+<MyWidget>:
+    orientation: 'vertical'
+
+
+    Label:
+        text: root.label_text  # Bind the label text to the Python property
+
+
+    Button:
+        text: "Click me"
+        on_press: root.change_label()  # Call the Python function when clicked

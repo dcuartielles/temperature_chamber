@@ -20,3 +20,4 @@ class GuiTrix:
                 app_instance.layout.remove_widget(app_instance.temperature_input)
                 app_instance.layout.remove_widget(app_instance.time_input)
                 app_instance.layout.remove_widget(app_instance.run_test_button)
+                
