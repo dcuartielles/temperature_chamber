@@ -1,21 +1,28 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 
+
+#change the message label text METHODS RIGHT UNDER IMPORTS
+def sadly():
+    message["text"] = "but she doesn't miss you"
+
+
+#def handle_click(event):
+#    print("but she doesn't miss you")
+
+
 window = tk.Tk()
 window.title("lila lee la")
+
+window.rowconfigure(0, minsize=800, weight=1)
+window.columnconfigure(1, minsize=800, weight=1)
 
 frame_a = tk.Frame()
 frame_b = tk.Frame()
 
-butt = tk.Button(
-  master=frame_a,
-  text='august 2023',
-  fg="white",  # Set the text color to white
-  bg="#0DB498",  # Set the background color to arduino teal
-  width=13 #width and height are measured in text units!!!
-  #height=3
-  )
-butt.pack(padx=5, pady=5)
+
+#activates the function (print in terminal) when you click on the button
+#butt.bind("<Button-1>", handle_click) 
 
 text_box = tk.Text(master=frame_b)
 text_box.pack(padx=5, pady=5)
@@ -23,6 +30,21 @@ text_box.insert("1.0", "\n\n\nit’s all \nelectrifying, and turns me into a bun
 
 text_box.insert(tk.END, "\n\nin today’s postcard i use the word.")
 
+
+entry = tk.Entry(master=frame_a) #Entry widgets get only a SINGLE LINE
+entry.pack(padx=5, pady=5)
+entry.insert(0, 'you miss her')
+
+butt = tk.Button(
+  master=frame_a,
+  text='august 2023',
+  fg="white",  # Set the text color to white
+  bg="#0DB498",  # Set the background color to arduino teal
+  width=13, #width and height are measured in text units!!!
+  #height=3
+  command=sadly #trigger the sadly() method & change message text on click
+  )
+butt.pack(padx=5, pady=5)
 
 
 message = tk.Label(
@@ -33,11 +55,6 @@ message = tk.Label(
 message.pack(padx=5, pady=5)
 
 
-
-entry = tk.Entry(master=frame_b) #Entry widgets get only a SINGLE LINE
-entry.pack(padx=5, pady=5)
-
-entry.insert(0, 'i miss her')
 
 '''entry.delete(0,4) 
 #delete characters from input by index number (here: from 0 to 4): works like string slicing, i.e. NOT including the 2nd argument index. 
