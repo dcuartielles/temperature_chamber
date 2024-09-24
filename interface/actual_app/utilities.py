@@ -58,10 +58,10 @@ def read_arduino_data(ser, update_callback, executor):    #reads data from ardui
 
 
 
-def serial_setup(port, baudrate, timeout):          # set up serial communication
+def serial_setup(port="COM13", baudrate=9600, timeout=5):          # set up serial communication
             
         try:
-            ser = serial.Serial(port="COM13", baudrate=9600, timeout=5)
+            ser = serial.Serial(port, baudrate, timeout)
             print(f"connected to arduino port: {port}")
             time.sleep(1)   #make sure arduino is ready
             return ser

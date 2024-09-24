@@ -2,7 +2,7 @@ import serial
 import time
 
 #arduino_port = "/dev/cu.usbmodem34B7DA61DC282"
-arduino_port = "/dev/cu.usbmodem144301"
+arduino_port = "COM13"
 baud = 9600
 timeout_duration = 5
 

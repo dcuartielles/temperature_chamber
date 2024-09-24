@@ -100,7 +100,7 @@ class DropMenu(App):
 
         if self.ser and self.ser.in_waiting > 0:
 
-            command = f"GET TEMP"
+            command = "GET TEMP"
             self.send_command(None, command)
 
             try:
