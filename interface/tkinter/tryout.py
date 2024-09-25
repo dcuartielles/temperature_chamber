@@ -1,4 +1,5 @@
 import tkinter as tk
+from PIL import Image, ImageTk #for images
 import serial
 import time
 
@@ -17,7 +18,7 @@ def set_temp():
     if temperature.replace('.', '', 1).isdigit():
            command = f"SET TEMP {float(temperature):.2f}"
            send_command(ser, command)
-           lbl_monitor["text"] = f"desired temperature is set to {float(temperature):.2f} \N{DEGREE CELSIUS}"
+           lbl_monitor["text"] = f"{float(temperature):.2f} \N{DEGREE CELSIUS}"
            window.after(3000, read_data)
     
 
@@ -67,7 +68,7 @@ def send_command(ser, command):
 
         try:
             ser.reset_input_buffer() #clear the gates
-            ser.write((command + '\n').encode('utf-8')) #encode command in serial
+            ser.write((command + '/n').encode('utf-8')) #encode command in serial
             print(f"sent command: {command}") #debug line
             time.sleep(1)   #small delay for command processing
 
@@ -103,12 +104,24 @@ window.title("temperature monitor")
 window.rowconfigure(0, minsize=250, weight=1)
 window.columnconfigure(1, minsize=800, weight=1)
 
-
 lbl_monitor = tk.Label(window, text="arduino says things here")
 frm_buttons = tk.Frame(window, relief=tk.RAISED, bd=2)
 btn_stop = tk.Button(master=frm_buttons, text="STOP THE OVEN", command=emergency_stop)
 btn_enter = tk.Button(master=frm_buttons, text="SET TEMPERATURE", command=set_temp)
 ent_temp = tk.Entry(master=frm_buttons, width=30)
+
+#arduino logo
+image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/logo.jpg"  # logo file 
+
+# using PIL to open the image
+logo_image = Image.open(image_path)
+logo_image = logo_image.resize((100, 80))  # adjust size
+logo_photo = ImageTk.PhotoImage(logo_image)
+
+# create a label for the image
+lbl_image = tk.Label(master=frm_buttons, image=logo_photo)
+lbl_image.image = logo_photo  # keep a reference to avoid garbage collection
+lbl_image.grid(row=3, column=0, sticky="sw")  # Position the image in the lower-left corner
 
 
 btn_stop.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
