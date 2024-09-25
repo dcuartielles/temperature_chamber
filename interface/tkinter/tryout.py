@@ -21,7 +21,7 @@ def set_temp():
            time.sleep(0.05)  # wait for arduino to process the command
            print(f"desired temperature: {float(temperature):.2f}")
            lbl_monitor["text"] = f"desired temperature: {float(temperature):.2f} \N{DEGREE CELSIUS}"
-   
+           window.after(2000, read_data)
 
     else:
            lbl_monitor["text"] = "digits only"
@@ -34,7 +34,35 @@ def emergency_stop():
     command = "EMERGENCY STOP"
     send_command(ser, command)
     lbl_monitor["text"] = "EMERGENCY STOP"
-  
+
+
+def parse_serial_response(response):
+    # split the response string into key-value pairs
+    data = response.split(" | ")
+
+    # create a dictionary to store parsed values
+    parsed_data = {}
+
+    # loop through each key-value pair and split by ":"
+    for item in data:
+        key, value = item.split(": ")
+        
+        # clean the key and value, and store them in the dictionary
+        key = key.strip()
+        value = value.strip()
+        
+        # assign specific values based on key
+        if key == "Room_temp":
+            parsed_data["Room_temp"] = float(value)
+        elif key == "Desired_temp":
+            parsed_data["Desired_temp"] = float(value)
+        elif key == "Heater":
+            parsed_data["Heater"] = bool(int(value))  # convert '1' or '0' to True/False
+        elif key == "Cooler":
+            parsed_data["Cooler"] = bool(int(value))  # convert '1' or '0' to True/False
+
+    return parsed_data
+
 
 #read data from serial
 def read_data():
@@ -49,9 +77,16 @@ def read_data():
 
                 response = ser.readline().decode('utf-8').strip()
 
+                # parse the response
+                parsed_data = parse_serial_response(response)
+                room_temp = parsed_data.get("Room_temp", None)
+                desired_temp = parsed_data.get("Desired_temp", None)
+                heater_status = parsed_data.get("Heater", None)
+                cooler_status = parsed_data.get("Cooler", None)
+
                 if response:
                     print(f"arduino responded: {response}")
-                    lbl_monitor["text"] = f"{response}"
+                    lbl_monitor["text"] = f"current temperature: {room_temp}°C | desired temperature: {desired_temp}°C | heater {'ON' if heater_status else 'OFF'} | cooler {'ON' if cooler_status else 'OFF'}"
                 else:
                     print("received unexpected message or no valid data.")
                     lbl_monitor["text"] = "received unexpected message or no valid data."
@@ -79,6 +114,7 @@ def send_command(ser, command):
 
         except Exception as e:
             print(f"unexpected error in sending command: {e}")
+
 
 # set up serial communication
 def serial_setup(port="COM15", baudrate=9600, timeout=5):          
@@ -110,7 +146,7 @@ lbl_monitor = tk.Label(window, text="arduino says things here")
 frm_buttons = tk.Frame(window, relief=tk.RAISED, bd=2)
 btn_stop = tk.Button(master=frm_buttons, text="STOP THE OVEN", command=emergency_stop)
 btn_enter = tk.Button(master=frm_buttons, text="SET TEMPERATURE", command=set_temp)
-ent_temp = tk.Entry(master=frm_buttons, width=30)
+ent_temp = tk.Entry(master=frm_buttons, width=30, justify='center')
 
 #arduino logo
 image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/logo.jpg"  # logo file 
