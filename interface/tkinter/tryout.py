@@ -18,9 +18,10 @@ def set_temp():
     if temperature.replace('.', '', 1).isdigit():
            command = f"SET TEMP {float(temperature):.2f}"
            send_command(ser, command)
-           lbl_monitor["text"] = f"{float(temperature):.2f} \N{DEGREE CELSIUS}"
-           window.after(3000, read_data)
-    
+           time.sleep(0.05)  # wait for arduino to process the command
+           print(f"desired temperature: {float(temperature):.2f}")
+           lbl_monitor["text"] = f"desired temperature: {float(temperature):.2f} \N{DEGREE CELSIUS}"
+   
 
     else:
            lbl_monitor["text"] = "digits only"
@@ -37,13 +38,14 @@ def emergency_stop():
 
 #read data from serial
 def read_data():
+    
     global is_stopped
 
     if not is_stopped:  # only read data if the system is not stopped
         if ser and ser.is_open:
             try:
-                send_command(ser, "SHOW DATA")  # Send command to request data
-                time.sleep(0.1)  # Wait for Arduino to process the command
+                send_command(ser, "SHOW DATA")  # send command to request data
+                time.sleep(0.2)  # wait for arduino to process the command
 
                 response = ser.readline().decode('utf-8').strip()
 
@@ -58,8 +60,8 @@ def read_data():
                 print(f"Error reading data: {e}")
                 lbl_monitor["text"] = f"Error reading data: {e}"
 
-        # Schedule the next read_data call only if the system is not stopped
-        window.after(500, read_data) 
+        # schedule the next read_data call only if the system is not stopped
+        window.after(1000, read_data) 
             
             
 
@@ -68,9 +70,9 @@ def send_command(ser, command):
 
         try:
             ser.reset_input_buffer() #clear the gates
-            ser.write((command + '/n').encode('utf-8')) #encode command in serial
+            ser.write((command + '\n').encode('utf-8')) #encode command in serial
             print(f"sent command: {command}") #debug line
-            time.sleep(1)   #small delay for command processing
+            time.sleep(0.05)   #small delay for command processing
 
         except serial.SerialException as e:
             print(f"error sending command: {e}")
@@ -121,17 +123,16 @@ logo_photo = ImageTk.PhotoImage(logo_image)
 # create a label for the image
 lbl_image = tk.Label(master=frm_buttons, image=logo_photo)
 lbl_image.image = logo_photo  # keep a reference to avoid garbage collection
-lbl_image.grid(row=3, column=0, sticky="ew", padx=5, pady=35)  # Position the image in the lower-left corner
-
+lbl_image.grid(row=3, column=0, sticky="ew", padx=5, pady=35)  
 
 btn_stop.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
-btn_enter.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
-ent_temp.grid(row=2, column=0, padx=5, pady=5)
+btn_enter.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
+ent_temp.grid(row=1, column=0, padx=5, pady=5)
 
 frm_buttons.grid(row=0, column=0, sticky="ns")
 lbl_monitor.grid(row=0, column=1, sticky="nsew")
 
 #set data reading from serial every 0.5 second
-window.after(100, read_data)
+window.after(500, read_data)
 
 window.mainloop()
