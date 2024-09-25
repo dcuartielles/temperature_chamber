@@ -40,31 +40,33 @@ Authors:
 #include <OneWire.h>
 #include <LiquidCrystal_I2C.h>
 #include <EduIntro.h>
+#include<ArduinoJson.h>
 
 // Defines
-#define ONE_WIRE_BUS_1 A0  // temp sensor 1
-#define ONE_WIRE_BUS_2 A1  // temp sensor 2
-#define RELAY_COOLER 2
-#define RELAY_HEATER 3
-#define BUTTON_INCREMENT 5
-#define BUTTON_DECREMENT 4
-#define SWITCH_START 6
+#define ONE_WIRE_BUS_1      A0  // temp sensor 1
+#define ONE_WIRE_BUS_2      A1  // temp sensor 2
+#define RELAY_COOLER        2
+#define RELAY_HEATER        3
+#define BUTTON_INCREMENT    5
+#define BUTTON_DECREMENT    4
+#define SWITCH_START        6
 #define SWITCH_SYSTEM_STATE 7
 
 // States for the state machine
-#define RESET 0
-#define HEATING 1
-#define COOLING 2
-#define REPORT 3
-#define EMERGENCY_STOP 4
+#define RESET               0
+#define HEATING             1
+#define COOLING             2
+#define REPORT              3
+#define EMERGENCY_STOP      4
+//#define STANDBY             5
 
 // Modes for the state machine
-#define AUTOMATIC 0
-#define MANUAL 1
+#define AUTOMATIC           0
+#define MANUAL              1
 
 // Define temperature limits
-#define TEMPERATURE_MAX 100
-#define TEMPERATURE_MIN 0
+#define TEMPERATURE_MAX     100
+#define TEMPERATURE_MIN     0
 
 
 // Verbosity levels (for serial) - LOW and HIGH already exist, therefore commented
@@ -95,16 +97,6 @@ Button switchSystem(SWITCH_SYSTEM_STATE);
 Led cooler(RELAY_COOLER);
 Led heater(RELAY_HEATER);
 
-// Define Variables
-double temperatureRoom;
-double temperatureRoomOld;
-double temperatureDesiredOld;
-double temperatureDesired = 70;  // by default, we want to reach max temperature
-float TemperatureThreshold = 0;
-int longheatingflag = 0;
-String inputString;
-
-
 
 
 // Timing variables
@@ -116,15 +108,51 @@ unsigned long PeriodCooler = 0;
 // Heater and cooler states
 int stateHeater = 0;
 int stateCooler = 0;
+
+//int status = STANDBY;
+bool isTestRunning = false;
+
+//////////////////// OLD //////////////////
 int stateHeaterOld = 0;
 int stateCoolerOld = 0;
 int dutyCycleHeater = 0;
 int dutyCycleCooler = 0;
-
 // State machine variables
 int status = EMERGENCY_STOP;
 bool dataEvent = false;
+//////////////////// OLD //////////////////
 
+struct Sequence {
+    float targetTemp;
+    unsigned long duration;
+};
+
+struct Test {
+    Sequence sequences[5];
+    int numSequences;
+};
+
+Test currentTest;
+int currentSequenceIndex = 0;
+unsigned long sequenceStartTime = 0;
+
+// JSON Buffer for parsing
+StaticJsonDocument<1024> jsonBuffer;
+
+// Serial input variables
+String inputString = "";
+bool receivingJson = false;
+
+// Define Variables
+double temperatureRoom;
+double temperatureDesired = 70;  // by default, we want to reach max temperature
+float TemperatureThreshold = 0;
+
+///////// OLD ///////
+double temperatureRoomOld;
+double temperatureDesiredOld;
+int longheatingflag = 0;
+///////// OLD ///////
 
 void setup() {
     // Initialise Serial
@@ -135,51 +163,37 @@ void setup() {
     sensors2.begin();
 
     // Initialise LCD
-    lcd.init();       // Initialize the LCD screen
-                      //lcd.backlight();  // Turn on the backlight of lcd
-    temperatureRoom = GetTemperature();
+    lcd.init();         // Initialize the LCD screen
+    //lcd.backlight();  // Turn on the backlight of lcd
+    temperatureRoom = getTemperature();
     showData();
 }
 
-
-void showData() {
-    temperatureRoom = GetTemperature();
-    displayLCD(temperatureRoom,temperatureDesired);
-    // decide whether there is a dataEvent
-    if(abs(temperatureRoomOld - temperatureRoom) > 0.1 || (temperatureDesiredOld - temperatureDesired)!=0 || stateHeaterOld != stateHeater || stateCoolerOld != stateCooler) dataEvent =1; // if the temp gradient is more than 0.1 deg
-    else dataEvent = 0;
-    if (dataEvent) {
-        displaySerial();
-    }
-}
-
-
-float GetTemperature() {
+float getTemperature() {
     float roomTemperature = 0;
-
-    // Request temperatures from both sensors
-
     sensors1.setWaitForConversion(false);
     sensors2.setWaitForConversion(false);
     sensors1.requestTemperatures();
     sensors2.requestTemperatures();
-
     // get average room_temperature
     roomTemperature = (sensors1.getTempCByIndex(0) + sensors2.getTempCByIndex(0)) / 2;
+    //float roomTemperature = (sensors1.getTempCByIndex(0) + sensors2.getTempCByIndex(0)) / 2;
     return roomTemperature;
 }
 
-void displaySerial() {
-    Serial.print(F("Room_temp: "));
-    Serial.print(temperatureRoom);
-    Serial.print(F(" | Desired_temp: "));
-    Serial.print(temperatureDesired);
-    Serial.print(F(" | Heater: "));
-    Serial.print(stateHeater);
-    Serial.print(F(" | Cooler: "));
-    Serial.print(stateCooler);
-    Serial.print(F(" | LH Indicator: "));
-    Serial.println(longheatingflag);  // End with a newline for the next set of data
+void showData() {
+    displayLCD(temperatureRoom, temperatureDesired);
+    displaySerial();
+    if(abs(temperatureRoomOld - temperatureRoom) > 0.1 || 
+            (temperatureDesiredOld - temperatureDesired)!=0 || 
+            stateHeaterOld != stateHeater || stateCoolerOld != stateCooler) {
+        dataEvent = true;; // if the temp gradient is more than 0.1 deg
+    } else {
+        dataEvent = false;
+    }
+    if (dataEvent) {
+        displaySerial();
+    }
 }
 
 void displayLCD(float tempRoom, int tempDesired) {
@@ -196,12 +210,35 @@ void displayLCD(float tempRoom, int tempDesired) {
     lcd.print(" C");
 }
 
+void displaySerial() {
+    Serial.print(F("Room_temp: "));
+    Serial.print(temperatureRoom);
+    Serial.print(F(" | Desired_temp: "));
+    Serial.print(temperatureDesired);
+    Serial.print(F(" | Heater: "));
+    Serial.print(stateHeater);
+    Serial.print(F(" | Cooler: "));
+    Serial.print(stateCooler);
+    Serial.print(F(" | LH Indicator: "));
+    Serial.println(longheatingflag);  // End with a newline for the next set of data
+}
+
+//////////////// OLD ////////////////
 void displayLCDOff() {
     lcd.noBacklight();  // turn off backlight
     lcd.noDisplay();
 }
+//////////////// OLD ////////////////
 
-// dutyCycle has to be 0..100
+
+bool isTemperatureReached(float targetTemp, float currentTemp) {
+    return abs(targetTemp - currentTemp) <= 0.1;
+}
+
+bool holdForPeriod(unsigned long duration) {
+    return millis() - sequenceStartTime >= duration;
+}
+
 void PWMHeater(int dutyCycle, unsigned long PeriodHeater) {
     if (millis() - timerHeater > dutyCycle * PeriodHeater / 100) heater.off();
     else heater.on();
@@ -216,17 +253,111 @@ void PWMCooler(int dutyCycle, unsigned long PeriodCooler) {
     if (millis() - timerCooler > PeriodCooler) timerCooler = millis();
 }
 
+void parseTextFromJson(String json) {
+    jsonBuffer.clear();
+    DeserializationError error = deserializeJson(jsonBuffer, json);
+    if (error) {
+        Serial.print("Failed to parse JSON: ");
+        Serial.println(error.c_str());
+        return;
+    }
+
+    JsonArray sequences = jsonBuffer["sequences"];
+    int numSequences = sequences.size();
+    if (numSequences > 5) numSequences = 5;
+
+    currentTest.numSequences = numSequences;
+
+    // debug
+    Serial.println("Parsed Test Data:");
+    for (int i = 0; i < numSequences; i++) {
+        currentTest.sequences[i].targetTemp = sequences[i]["temp"];
+        currentTest.sequences[i].duration = sequences[i]["duration"];
+        Serial.print("Step ");
+        Serial.print(i);
+        Serial.print(": Target Temp = ");
+        Serial.print(currentTest.sequences[i].targetTemp);
+        Serial.print(", Duration = ");
+        Serial.println(currentTest.sequences[i].duration);
+    }
+
+    currentSequenceIndex = 0;
+    isTestRunning = true;
+    status = REPORT;
+    setTemperature(currentTest.sequences[0].targetTemp);  // <-- This ensures temperatureDesired is set at the start of the test
+
+    Serial.print("Starting test with target temp: ");
+    Serial.println(currentTest.sequences[0].targetTemp);
+}
+
+void runCurrentSequence() {
+    if (currentSequenceIndex >= currentTest.numSequences) {
+        // Test finished
+        Serial.println("Test complete");
+        isTestRunning = false;
+        status = REPORT;
+        return;
+    }
+
+    Sequence currentSequence = currentTest.sequences[currentSequenceIndex];
+    float targetTemp = currentSequence.targetTemp;
+    unsigned long duration = currentSequence.duration;
+
+    // debug
+    Serial.print(" Running sequence: Target temp = ");
+    Serial.print(targetTemp);
+    Serial.print(" Duration = ");
+    Serial.println(duration);
+
+    Serial.print("Status: ");
+    Serial.println(status);
+
+    // check if target temp is reached
+    if (!isTemperatureReached(targetTemp, temperatureRoom)) {
+            if (sequenceStartTime == 0) {
+                sequenceStartTime = millis();
+            }
+
+            if (holdForPeriod(duration)) {
+                Serial.println("Sequence complete");
+                currentSequenceIndex++;
+                sequenceStartTime = 0;
+            }
+        //}
+    }
+    showData();
+}
+
+///////////////////////// OLD /////////////////////////
+void changeTemperature() {
+    if (buttonIncrease.read()== HIGH && buttonDecrease.read()== LOW) temperatureDesired+=5;
+    if (buttonDecrease.read()== HIGH && buttonIncrease.read()== LOW) temperatureDesired-=5;
+
+    // Change Desired temperature by inserting a value in serial input
+    if (Serial.available() > 0) 
+    {
+        inputString = Serial.readStringUntil('\n'); // Read the input as a string until a newline character
+        inputString.trim(); // Remove any leading/trailing whitespace
+
+        parseCommand(inputString);
+    }  
+
+    if (temperatureDesired >= TEMPERATURE_MAX) temperatureDesired = TEMPERATURE_MAX;
+    if (temperatureDesired <= TEMPERATURE_MIN) temperatureDesired = TEMPERATURE_MIN;
+}
+// dutyCycle has to be 0..100
 void displayStatus() {
     Serial.print("status: ");
     Serial.println(status);
 }
+///////////////////////// OLD /////////////////////////
 
 
-enum TestState { IDLE, RUNNING_TEST1, RUNNING_TEST2, RUNNING_TEST3 };
+
+enum TestState { IDLE, RUNNING_TEST};
 TestState currentTestState = IDLE;
-
 unsigned long startTime = 0;    // Timing variable for test steps
-bool isTestRunning = false;   
+
 
 // Update status over Serial
 void sendStatus(String status) {
@@ -234,66 +365,30 @@ void sendStatus(String status) {
 }
 
 void setTemperature(float temp) {
-    temperatureDesired = temp;
-    sendStatus("Setting temperature to " + String(temp) + "¬∞C");
+    if (temperatureDesired >= TEMPERATURE_MAX) {
+        temperatureDesired = TEMPERATURE_MAX;
+        sendStatus("Specified temperature exceeds maximum allowed temperature\n");
+        sendStatus("Setting temperature to " + String(TEMPERATURE_MAX) + "¬∞C");
+    } else if (temperatureDesired <= TEMPERATURE_MIN) {
+        temperatureDesired = TEMPERATURE_MIN;
+        sendStatus("Specified temperature is lower than the minimum allowed temperature\n");
+        sendStatus("Setting temperature to " + String(TEMPERATURE_MIN) + "¬∞C");
+    } else {
+        temperatureDesired = temp;
+        sendStatus("Setting temperature to " + String(temp) + "¬∞C");
+        Serial.print("Temperature desired set to: ");
+        Serial.println(temp);  // Debug to confirm the desired temp is set
+    }
+
+    Serial.println(temp);  // Debug to confirm the desired temp is set
+
 }
 
-bool holdForPeriod(unsigned long duration) {
-    unsigned long elapsed = millis() - startTime;
-    if (elapsed >= duration) {
-        return true;
-    }
-    return false;
-}
+// unclear if working
 
-// Test 1: Set temp to 100C for 1 hour, then set to 50C for 30 min
-void runTest1() {
-    if (!isTestRunning) {
-        sendStatus("Starting Test 1: Set temp to 100C for 1 hour");
-        setTemperature(30);
-        startTime = millis();
-        isTestRunning = true;
-    }
-
-    // Step 1: Hold at 100C for 1 hour
-    if (holdForPeriod(120000)) {   // 2 minutes
-        sendStatus("Step 1 complete: Holding 100C for 1 hour done");
-        setTemperature(25);
-        sendStatus("Lowered temperature to 50C, holding for 30m");
-        startTime = millis();
-        currentTestState = RUNNING_TEST2;
-    }
-}
-
-// Test 2: Hold temp at 50C for 30 min
-void runTest2() {
-    if (holdForPeriod(120000)) {   // 30 min
-        sendStatus("Test 1 complete: Held 50C for 30 minutes");
-        currentTestState = IDLE;
-        isTestRunning = false;
-    }
-}
-
-// Test 3: Hold temp at 100C, print every 4 min for 3 hours
-void runTest3() {
-    if (!isTestRunning) {
-        sendStatus("Starting Test 3: Holding temp at 100, printing every 4 min for 3 hours");
-        setTemperature(40);
-        startTime = millis();
-        isTestRunning = true;
-    }
-
-    if (millis() - startTime >= 240000) {   // Every 4 minutes
-        sendStatus("Test 3: Printing after 4 minutes at 100C");
-        startTime = millis();
-    }
-
-    if (millis() - startTime >= 10800000) { // After 3 hours
-        sendStatus("Test 3 complete: Held 100C for 3 hours");
-        currentTestState = IDLE;
-        isTestRunning = false;
-    }
-}
+# define TWOMIN     120000
+# define FIVEMIN    300000
+# define TENMIN     600000
 
 void parseCommand(String command) {
 
@@ -318,76 +413,66 @@ void parseCommand(String command) {
         Serial.println("System Report:");
         displaySerial();
     }
-    else if (command == "RUN TEST1") {
-        currentTestState = RUNNING_TEST1;
+    else if (command == "RUN TEST") {
+        currentTestState = RUNNING_TEST;
         isTestRunning = true;
-        sendStatus("Starting Test 1");
-    }
-    else if (command == "RUN TEST2") {
-        currentTestState = RUNNING_TEST2;
-        isTestRunning = true;
-        sendStatus("Starting Test 2");
-    }
-    else if (command == "RUN TEST3") {
-        currentTestState = RUNNING_TEST3;
-        isTestRunning = true;
-        sendStatus("Starting Test 3");
+        sendStatus("Starting Test1");
     }
     displayStatus();
 }
 
-void changeTemperature() {
-    if (buttonIncrease.read()== HIGH && buttonDecrease.read()== LOW) temperatureDesired+=5;
-    if (buttonDecrease.read()== HIGH && buttonIncrease.read()== LOW) temperatureDesired-=5;
+void runTestSequence(float temperature, unsigned long duration, String stepDescription) {
+    if (!isTestRunning) {
+        sendStatus("Starting: " + stepDescription);
+        setTemperature(temperature);
+        startTime = millis();
+        isTestRunning = true;
+    }
 
-    // Change Desired temperature by inserting a value in serial input
-    if (Serial.available() > 0) 
-    {
-        inputString = Serial.readStringUntil('\n'); // Read the input as a string until a newline character
-        inputString.trim(); // Remove any leading/trailing whitespace
-
-        parseCommand(inputString);
-    }  
-
-    if (temperatureDesired >= TEMPERATURE_MAX) temperatureDesired = TEMPERATURE_MAX;
-    if (temperatureDesired <= TEMPERATURE_MIN) temperatureDesired = TEMPERATURE_MIN;
+    if (holdForPeriod(duration)) {
+        sendStatus(stepDescription + " complete");
+        isTestRunning = false;  // Test step is done, can proceed to the next one
+    }
 }
-
 void loop() {  
+    ////// OLD //////
     temperatureRoomOld = temperatureRoom;
     stateHeaterOld = stateHeater;
     stateCoolerOld = stateCooler;
     temperatureDesiredOld = temperatureDesired;
-    TemperatureThreshold= temperatureRoom-temperatureDesired;
+    ////// OLD //////
 
-    // Print status periodically
-    //Serial.print("status: ");
-    //Serial.println(status);
+    temperatureRoom = getTemperature();
+    TemperatureThreshold = temperatureRoom - temperatureDesired;
 
-    // Read Serial input for commands and parse them
-    if (Serial.available() > 0) {
-        inputString = Serial.readStringUntil('\n'); // Read the input as a string until a newline character
-        inputString.trim(); // Remove any leading/trailing whitespace
-
-        Serial.println("Input available, parsing command...");
-        parseCommand(inputString); // Process the command
-    }  
-
-    // Run appropriate test based on current TestState
-    switch (currentTestState) {
-        case RUNNING_TEST1:
-            runTest1();
-            break;
-        case RUNNING_TEST2:
-            runTest2();
-            break;
-        case RUNNING_TEST3:
-            runTest3();
-            break;
-        case IDLE:
-        default:
-            break;
+    if (isTestRunning) {
+        runCurrentSequence();
     }
+
+    // Check if data is available on the serial port
+    if (Serial.available() > 0) {
+        // Read the incoming data in chunks instead of one character at a time
+        String incomingString = Serial.readStringUntil('\n');  // Read until newline or buffer is full
+
+        // If we received a valid JSON object
+        if (incomingString.length() > 0) {
+            Serial.println("Received string:");
+            Serial.println(incomingString);
+
+            // Handle the input string (either a command or JSON)
+            if (incomingString.startsWith("{") && incomingString.endsWith("}")) {
+                Serial.println("JSON detected, parsing...");
+                parseTextFromJson(incomingString);  // Parse the JSON
+            } else {
+                Serial.println("Command detected, parsing...");
+                parseCommand(incomingString);  // Parse regular commands
+            }
+
+            // Clear the input buffer
+            incomingString = "";  // Reset for the next command
+        }
+    }
+    showData();
 
     switch (status) {
         case RESET:
@@ -396,6 +481,7 @@ void loop() {
             changeTemperature();
             break;
         case HEATING:
+            //cooler.off();
             if (switchSystem.released()) status = EMERGENCY_STOP;
             if (switchSystem.read() == LOW && switchStart.released()) status = RESET; // go to reset if startswitch is off and system is on
             if(TemperatureThreshold>-0.1) {status = REPORT;longheatingflag =0;}
@@ -406,13 +492,14 @@ void loop() {
             if(TemperatureThreshold>-4 && longheatingflag == 1) dutyCycleHeater = 0;  
             break;
         case COOLING:
+            //heater.off();
             if (switchSystem.released()) status = EMERGENCY_STOP;
             if (switchSystem.read() == LOW && switchStart.released()) status = RESET;
             if(TemperatureThreshold<0.4) status = REPORT;
 
-            if(TemperatureThreshold>1) {dutyCycleCooler = 100;PeriodCooler=2000;}
-            if(TemperatureThreshold<1 && TemperatureThreshold>0.4) {dutyCycleCooler = 29; PeriodCooler=7000;} // on for 2 seconds and off for 5
-            longheatingflag =0;
+            if(TemperatureThreshold > 1) {dutyCycleCooler = 100;PeriodCooler=2000;}
+            if(TemperatureThreshold < 1 && TemperatureThreshold > 0.4) {dutyCycleCooler = 29; PeriodCooler=7000;} // on for 2 seconds and off for 5
+            longheatingflag = 0;
             break;
         case REPORT:
             if (switchSystem.released()) status = EMERGENCY_STOP;
