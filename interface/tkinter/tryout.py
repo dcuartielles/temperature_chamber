@@ -24,7 +24,7 @@ def read_data():
       if ser and ser.is_open:
             try:
                 send_command(ser, "SHOW DATA")  # Send command to request data
-                time.sleep(1)  # Wait for Arduino to process the command
+                time.sleep(0.1)  # Wait for Arduino to process the command
 
                 response = ser.readline().decode('utf-8').strip()
 
@@ -38,6 +38,7 @@ def read_data():
             except serial.SerialException as e:
                 print(f"Error reading data: {e}")
                 lbl_monitor["text"] = f"Error reading data: {e}"
+      window.after(500, read_data)  
             
             
 
@@ -74,6 +75,8 @@ def serial_setup(port="COM15", baudrate=9600, timeout=5):
 
 #ser = serial.Serial("COM13", baudrate=9600, timeout=5)
 ser = serial_setup()
+
+#initialize a new window
 window = tk.Tk()
 window.title("temperature monitor")
 
