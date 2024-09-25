@@ -115,18 +115,18 @@ image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temper
 
 # using PIL to open the image
 logo_image = Image.open(image_path)
-logo_image = logo_image.resize((100, 80))  # adjust size
+logo_image = logo_image.resize((80, 55))  # adjust size
 logo_photo = ImageTk.PhotoImage(logo_image)
 
 # create a label for the image
 lbl_image = tk.Label(master=frm_buttons, image=logo_photo)
 lbl_image.image = logo_photo  # keep a reference to avoid garbage collection
-lbl_image.grid(row=3, column=0, sticky="sw")  # Position the image in the lower-left corner
+lbl_image.grid(row=3, column=0, sticky="ew", padx=5, pady=35)  # Position the image in the lower-left corner
 
 
 btn_stop.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
 btn_enter.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
-ent_temp.grid(row=2, column=0, padx=5)
+ent_temp.grid(row=2, column=0, padx=5, pady=5)
 
 frm_buttons.grid(row=0, column=0, sticky="ns")
 lbl_monitor.grid(row=0, column=1, sticky="nsew")
