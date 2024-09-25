@@ -3,25 +3,43 @@ import serial
 import time
 
 
+# Global flag for stopping the reading process
+is_stopped = False
+
 #set temperature (user input)
 def set_temp():
+    
+    global is_stopped
+    is_stopped = False #set flag to restart the read_data loop
     
     temperature = ent_temp.get()
 
     if temperature.replace('.', '', 1).isdigit():
            command = f"SET TEMP {float(temperature):.2f}"
            send_command(ser, command)
-           lbl_monitor["text"] = f"{float(temperature):.2f} \N{DEGREE CELSIUS}"
+           lbl_monitor["text"] = f"desired temperature is set to {float(temperature):.2f} \N{DEGREE CELSIUS}"
+           window.after(3000, read_data)
     
 
     else:
            lbl_monitor["text"] = "digits only"
 
+# emergecy stop
+def emergency_stop():
+    global is_stopped
+    is_stopped = True #set flag to stop the read_data loop
+
+    command = "EMERGENCY STOP"
+    send_command(ser, command)
+    lbl_monitor["text"] = "EMERGENCY STOP"
+  
 
 #read data from serial
 def read_data():
-      
-      if ser and ser.is_open:
+    global is_stopped
+
+    if not is_stopped:  # only read data if the system is not stopped
+        if ser and ser.is_open:
             try:
                 send_command(ser, "SHOW DATA")  # Send command to request data
                 time.sleep(0.1)  # Wait for Arduino to process the command
@@ -30,7 +48,7 @@ def read_data():
 
                 if response:
                     print(f"arduino responded: {response}")
-                    lbl_monitor["text"] = f"arduino responded: {response}"
+                    lbl_monitor["text"] = f"{response}"
                 else:
                     print("received unexpected message or no valid data.")
                     lbl_monitor["text"] = "received unexpected message or no valid data."
@@ -38,7 +56,9 @@ def read_data():
             except serial.SerialException as e:
                 print(f"Error reading data: {e}")
                 lbl_monitor["text"] = f"Error reading data: {e}"
-      window.after(500, read_data)  
+
+        # Schedule the next read_data call only if the system is not stopped
+        window.after(500, read_data) 
             
             
 
@@ -86,7 +106,7 @@ window.columnconfigure(1, minsize=800, weight=1)
 
 lbl_monitor = tk.Label(window, text="arduino says things here")
 frm_buttons = tk.Frame(window, relief=tk.RAISED, bd=2)
-btn_stop = tk.Button(master=frm_buttons, text="STOP THE OVEN")
+btn_stop = tk.Button(master=frm_buttons, text="STOP THE OVEN", command=emergency_stop)
 btn_enter = tk.Button(master=frm_buttons, text="SET TEMPERATURE", command=set_temp)
 ent_temp = tk.Entry(master=frm_buttons, width=30)
 
