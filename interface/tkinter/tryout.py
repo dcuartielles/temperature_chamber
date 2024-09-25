@@ -9,6 +9,8 @@ def set_temp():
     temperature = ent_temp.get()
 
     if temperature.replace('.', '', 1).isdigit():
+           command = f"SET TEMP {float(temperature):.2f}"
+           send_command(ser, command)
            lbl_monitor["text"] = f"{float(temperature):.2f} \N{DEGREE CELSIUS}"
     
 
@@ -26,9 +28,9 @@ def read_data():
 
                 response = ser.readline().decode('utf-8').strip()
 
-                if response and "input available" not in response:
+                if response:
                     print(f"arduino responded: {response}")
-                    lbl_monitor["text"] = "arduino responded: {response}"
+                    lbl_monitor["text"] = f"arduino responded: {response}"
                 else:
                     print("received unexpected message or no valid data.")
                     lbl_monitor["text"] = "received unexpected message or no valid data."
@@ -55,7 +57,7 @@ def send_command(ser, command):
             print(f"unexpected error in sending command: {e}")
 
 # set up serial communication
-def serial_setup(port="COM13", baudrate=9600, timeout=5):          
+def serial_setup(port="COM15", baudrate=9600, timeout=5):          
             
         try:
             ser = serial.Serial(port, baudrate, timeout=timeout)
@@ -94,7 +96,7 @@ frm_buttons.grid(row=0, column=0, sticky="ns")
 lbl_monitor.grid(row=0, column=1, sticky="nsew")
 
 #set data reading from serial every 0.5 second
-window.after(500, read_data)
+window.after(100, read_data)
 
 window.mainloop()
 
