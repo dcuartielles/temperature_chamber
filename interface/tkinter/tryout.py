@@ -19,9 +19,9 @@ def set_temp():
 #read data from serial
 def read_data():
       
-      while ser and ser.is_open:
+      if ser and ser.is_open:
             try:
-                send_command("SHOW DATA")  # Send command to request data
+                send_command(ser, "SHOW DATA")  # Send command to request data
                 time.sleep(1)  # Wait for Arduino to process the command
 
                 response = ser.readline().decode('utf-8').strip()
@@ -36,15 +36,15 @@ def read_data():
             except serial.SerialException as e:
                 print(f"Error reading data: {e}")
                 lbl_monitor["text"] = f"Error reading data: {e}"
-                break
+            
             
 
 #sends a command to arduino via serial      
 def send_command(ser, command):     
 
         try:
-            ser.reset_input_buffer()
-            ser.write((command + '\n').encode('utf-8'))
+            ser.reset_input_buffer() #clear the gates
+            ser.write((command + '\n').encode('utf-8')) #encode command in serial
             print(f"sent command: {command}") #debug line
             time.sleep(1)   #small delay for command processing
 
@@ -58,20 +58,20 @@ def send_command(ser, command):
 def serial_setup(port="COM13", baudrate=9600, timeout=5):          
             
         try:
-            ser = serial.Serial(port, baudrate, timeout)
+            ser = serial.Serial(port, baudrate, timeout=timeout)
             print(f"connected to arduino port: {port}")
-            lbl_monitor["text"] = f"connected to arduino port: {port}"
+            #lbl_monitor["text"] = f"connected to arduino port: {port}"
             time.sleep(1)   #make sure arduino is ready
             return ser
         except serial.SerialException as e:
             print(f"error: {e}")
-            lbl_monitor["text"] = f"error: {e}"
+            #lbl_monitor["text"] = f"error: {e}"
             return None
 
 
 
-
-ser = serial.Serial("COM13", baudrate=9600, timeout=5)
+#ser = serial.Serial("COM13", baudrate=9600, timeout=5)
+ser = serial_setup()
 window = tk.Tk()
 window.title("temperature monitor")
 
@@ -92,6 +92,9 @@ ent_temp.grid(row=2, column=0, padx=5)
 
 frm_buttons.grid(row=0, column=0, sticky="ns")
 lbl_monitor.grid(row=0, column=1, sticky="nsew")
+
+#set data reading from serial every 0.5 second
+window.after(500, read_data)
 
 window.mainloop()
 
