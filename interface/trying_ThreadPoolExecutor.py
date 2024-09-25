@@ -17,8 +17,8 @@ class DropMenu(App):
 
         # Set up serial communication
         try:
-            self.ser = serial.Serial("COM13", baudrate=9600, timeout=5)
-            print("connected to arduino port: COM13")
+            self.ser = serial.Serial("COM15", baudrate=9600, timeout=5)
+            print("connected to arduino port: COM15")
         except serial.SerialException as e:
             print(f"error: {e}")
             self.ser = None
