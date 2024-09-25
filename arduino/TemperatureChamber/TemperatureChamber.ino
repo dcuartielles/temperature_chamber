@@ -157,7 +157,7 @@ void loop() {
         inputString = Serial.readStringUntil('\n'); // Read the input as a string until a newline character
         inputString.trim(); // Remove any leading/trailing whitespace
 
-        Serial.println("Input available, parsing command...");
+        //Serial.println("Input available, parsing command...");
         parseCommand(inputString); // Process the command
     }  
 
@@ -349,7 +349,7 @@ void displayStatus() {
 void parseCommand(String command) {
 
     // Debug
-    Serial.println("Received command: [" + command + "]");
+    //Serial.println("Received command: [" + command + "]");
 
     if (command.startsWith("SET TEMP ")) {
         temperatureDesired = command.substring(9).toFloat();
@@ -376,7 +376,7 @@ void parseCommand(String command) {
         //Serial.println(isTemperatureReached(float targetTemp, float currentTemp))
     }
     else if (command == "SHOW DATA") {
-        showData();
+        displaySerial();
     }
     //displayStatus();
 }
