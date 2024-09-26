@@ -78,7 +78,7 @@ def add_custom(temp, duration):
     else:
         print("unable to add custom test due to file loading error")
 
-
+'''
 #pick your test method0p
 def pick_your_test():
      
@@ -100,7 +100,7 @@ def pick_your_test():
               send_json_to_arduino(custom_test)
      
            
-'''
+
 def open_custom_tests():
     filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/test_data.json"
     
@@ -241,39 +241,39 @@ ser = serial_setup()
 #initialize a new window
 window = tk.Tk()
 window.title("temperature chamber")
+window.configure(bg="white")
 
 #prepare the general grid
-window.rowconfigure(0, minsize=600, weight=1)
-window.rowconfigure(1, minsize=130, weight=1)
-window.columnconfigure(0, minsize=600, weight=1)
-window.columnconfigure(1, minsize=400, weight=1)
+#window.rowconfigure(0, minsize=600, weight=1)
+#window.rowconfigure(1, minsize=130, weight=1)
+#window.columnconfigure(0, minsize=400, weight=1)
+#window.columnconfigure(1, minsize=800, weight=1)
 
 
 #monitor & logo frame and content
 frm_monitor = tk.Frame(window, borderwidth=1, highlightthickness=0, bg="white")
-lbl_monitor = tk.Label(frm_monitor, text="arduino says things here")
-lbl_room = tk.Label(frm_monitor, text="current temperature")
-lbl_r_temp = tk.Label(frm_monitor)
-lbl_desired = tk.Label(frm_monitor, text="desired temperature")
-lbl_d_temp = tk.Label(frm_monitor)
-lbl_heater = tk.Label(frm_monitor, text="heater")
-lbl_cooler = tk.Label(frm_monitor, text="cooler")
-lbl_heater_status = tk.Label(frm_monitor)
-lbl_cooler_status = tk.Label(frm_monitor)
+lbl_monitor = tk.Label(frm_monitor, text="arduino says things here", bg="white")
+lbl_room = tk.Label(frm_monitor, text="current temperature", bg="white")
+lbl_r_temp = tk.Label(frm_monitor, bg="white")
+lbl_desired = tk.Label(frm_monitor, text="desired temperature", bg="white")
+lbl_d_temp = tk.Label(frm_monitor, bg="white")
+lbl_heater = tk.Label(frm_monitor, text="heater", bg="white")
+lbl_cooler = tk.Label(frm_monitor, text="cooler", bg="white")
+lbl_heater_status = tk.Label(frm_monitor, bg="white")
+lbl_cooler_status = tk.Label(frm_monitor, bg="white")
 
 # path to logo file 
-image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/arduino_logo.jpg"  
+image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/arduino_logo.png"  
 # use PIL to open the image
 logo_image = Image.open(image_path)
 logo_image = logo_image.resize((200, 200))  # adjust size
 logo_photo = ImageTk.PhotoImage(logo_image)
 #create  label for the image
-lbl_image = tk.Label(frm_monitor, image=logo_photo)
+lbl_image = tk.Label(frm_monitor, image=logo_photo, bg="white")
 lbl_image.image = logo_photo  # keep a reference to avoid garbage collection
 lbl_image.grid(row=0, column=0, columnspan=2, sticky="nsew", padx=35, pady=35)  #position image
 
-#position monitor label
-lbl_monitor.grid(row=4, column=0, columnspan=2, sticky="nsew", padx=35, pady=35)
+
 
 #position update labels
 lbl_room.grid(row=1, column=0, sticky="w", padx=35, pady=35)
@@ -288,46 +288,51 @@ lbl_heater_status.grid(row=3, column=1, sticky="ew", padx=35, pady=35)
 lbl_cooler.grid(row=4, column=0, sticky="e", padx=35, pady=35)
 lbl_cooler_status.grid(row=4, column=1, sticky="ew", padx=35, pady=35)
 
+#position monitor label
+lbl_monitor.grid(row=5, column=0, columnspan=2, sticky="nsew", padx=35, pady=35)
+
 
 #test frame & content
 frm_tests = tk.Frame(window, borderwidth=1, highlightthickness=0, bg="white")
 
-lbl_benchmark = tk.Label(frm_tests, text="BENCHMARK TESTS")
-btn_test1 = tk.Button(frm_tests, text="test 1")
-btn_test2 = tk.Button(frm_tests, text="test 2")
-btn_test3 = tk.Button(frm_tests, text="test 3")
-btn_run_all_benchmark = tk.Button(frm_tests, text="RUN ALL BENCHMARK TESTS")
-lbl_custom = tk.Label(frm_tests, text="CUSTOM TEST")
-ent_temp = tk.Entry(frm_tests, width=30, justify='center')
-ent_duration = tk.Entry(frm_tests, width=30, justify='center')
-btn_add_custom = tk.Button(frm_tests, text="ADD CUSTOM TEST")
-btn_run_custom = tk.Button(frm_tests, text="RUN CUSTOM TEST")
-btn_run_all_tests = tk.Button(frm_tests, text="RUN ALL TESTS")
-lbl_running = tk.Label(frm_tests, text="test running: ")
-lbl_running_info = tk.Label(frm_tests)
+lbl_benchmark = tk.Label(frm_tests, text="BENCHMARK TESTS", bg="white")
+btn_test1 = tk.Button(frm_tests, text="test 1", bg="white")
+btn_test2 = tk.Button(frm_tests, text="test 2", bg="white")
+btn_test3 = tk.Button(frm_tests, text="test 3", bg="white")
+btn_run_all_benchmark = tk.Button(frm_tests, text="RUN ALL BENCHMARK TESTS", bg="white")
+lbl_custom = tk.Label(frm_tests, text="CUSTOM TEST", bg="white")
+ent_temp = tk.Entry(frm_tests, width=30, justify='center', bg="white", fg="black")
+ent_temp.insert(0, "temperature")
+ent_duration = tk.Entry(frm_tests, width=30, justify='center', bg="white", fg="black")
+ent_duration.insert(0, "duration")
+btn_add_custom = tk.Button(frm_tests, text="ADD CUSTOM TEST", bg="white")
+btn_run_custom = tk.Button(frm_tests, text="RUN CUSTOM TEST", bg="white")
+btn_run_all_tests = tk.Button(frm_tests, text="RUN ALL TESTS", bg="white")
+lbl_running = tk.Label(frm_tests, text="TEST RUNNING: ", bg="white")
+lbl_running_info = tk.Label(frm_tests, bg="white")
 
 #position labels, buttons and user input widgets in test frame
-lbl_benchmark.grid(row=0, column=0, columnspan=3, sticky="ew", padx=5, pady=5)
-btn_test1.grid(row=1, column=1, columnspan=3, sticky="ew", padx=5, pady=5)
-btn_test2.grid(row=2, column=1, columnspan=3, sticky="ew", padx=5, pady=5)
-btn_test3.grid(row=3, column=1, columnspan=3, sticky="ew", padx=5, pady=5)
-btn_run_all_benchmark.grid(row=4, columnspan=3, column=1, sticky="ew", padx=5, pady=5)
+lbl_benchmark.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
+btn_test1.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
+btn_test2.grid(row=2, column=1, sticky="ew", padx=5, pady=5)
+btn_test3.grid(row=3, column=1, sticky="ew", padx=5, pady=5)
+btn_run_all_benchmark.grid(row=4, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
 lbl_custom.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
-ent_temp.grid(row=5, column=1, sticky="ew", padx=5, pady=5)
-ent_duration.grid(row=5, column=2, sticky="ew", padx=5, pady=5)
-btn_add_custom.grid(row=5, column=3, sticky="ew", padx=5, pady=5)
-btn_run_custom.grid(row=6, column=1, columnspan=3, sticky="ew", padx=5, pady=5)
-btn_run_all_tests.grid(row=7, column=0, columnspan=3, sticky="ew", padx=5, pady=5)
-lbl_running.grid(row=8, column=0, sticky="ew", padx=5, pady=5)
-lbl_running_info.grid(row=8, rowspan=3, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
+ent_temp.grid(row=6, column=1, sticky="ew", padx=5, pady=5)
+ent_duration.grid(row=6, column=2, sticky="ew", padx=5, pady=5)
+btn_add_custom.grid(row=7, column=1, sticky="ew", padx=5, pady=5)
+btn_run_custom.grid(row=7, column=2, sticky="ew", padx=5, pady=5)
+btn_run_all_tests.grid(row=9, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
+lbl_running.grid(row=10, column=0, sticky="ew", padx=5, pady=5)
+lbl_running_info.grid(row=10, rowspan=3, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
 
 # create & position the STOP button to span across both columns
-btn_stop = tk.Button(window, text="STOP", command=emergency_stop, bg="red", fg="white")
-btn_stop.grid(row=0, column=0, columnspan=2, sticky="ew", padx=5, pady=5)  # Button spans across two columns
+btn_stop = tk.Button(frm_tests, text="STOP", command=emergency_stop, bg="red", fg="white")
+btn_stop.grid(row=14, column=0, rowspan=4, columnspan=3, sticky="ew", padx=5, pady=5)  # Button spans across two columns
 
 #position both frames
-frm_tests.grid(row=0, column=0, sticky="ns")
-frm_monitor.grid(row=0, column=1, sticky="nsew")
+frm_tests.grid(row=0, column=0)
+frm_monitor.grid(row=0, column=1)
 
 #set data reading from serial every 0.5 second
 window.after(500, read_data)
