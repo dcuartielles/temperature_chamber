@@ -3,6 +3,8 @@ import tkinter as tk
 from PIL import Image, ImageTk #for images
 import serial
 import time
+import json
+from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 
 # global flag for stopping the reading process
@@ -10,6 +12,61 @@ is_stopped = False
 
 
 ###############        FUNCTIONALITY AND LOGIC       ###############
+
+#### JSON HANDLING ####
+
+
+def send_json_to_arduino(json_data):
+        
+        ser.write((json_data + '\n').encode('utf-8'))
+        print(f"Sent to Arduino: {json_data}")
+
+        # Continuously read Arduino output
+        while True:
+            if ser.in_waiting > 0:
+                response = ser.readline().decode('utf-8').strip()
+                print(f"Arduino: {response}")
+            time.sleep(1)
+
+
+
+#open json file and convert it to string
+def open_file():
+    
+   #open a file 
+    filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/test_data.json"
+
+    try:
+          with open(filepath, mode="r") as input_file:
+                json_test_string = input_file.read()  # read raw json as string
+                return json_test_string  # return raw json string 
+            
+    except FileNotFoundError:
+          print(f"file {filepath} not found")
+          return None
+    
+    
+    
+#save input dictionary to json file
+def save_file(test_data):
+    
+    filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/test_data.json"
+
+    try:
+    
+          # Write to a file
+          with open(filepath, 'w') as f:
+              #convert dictionary to json
+              json.dump(test_data, f, indent=4)
+              print(f"data seved to {filepath}")
+
+    except Exception as e:
+         print(f"failed to save file: {e}")
+
+
+
+
+#### SERIAL INTERACTION ####
 
 #set temperature (user input)
 def set_temp():
@@ -30,7 +87,7 @@ def set_temp():
     else:
            lbl_monitor["text"] = "digits only"
 
-# emergecy stop
+# emergency stop
 def emergency_stop():
     global is_stopped
     is_stopped = True #set flag to stop the read_data loop
@@ -136,6 +193,13 @@ def serial_setup(port="COM15", baudrate=9600, timeout=5):
             print(f"error: {e}")
             #lbl_monitor["text"] = f"error: {e}"
             return None
+        finally:
+            # Close serial connection
+            if 'ser' in locals() and ser.is_open:
+                ser.close()
+                print("Serial port closed.")
+
+
 
 
 ###############        GUI PART       ###############

@@ -1,0 +1,16 @@
+{
+  "sequences": [
+    {
+      "temp": 50,
+      "duration": 3000
+    },
+    {
+      "temp": 40,
+      "duration": 10000
+    },
+    {
+      "temp": 50,
+      "duration": 12000
+    }
+  ]
+}
