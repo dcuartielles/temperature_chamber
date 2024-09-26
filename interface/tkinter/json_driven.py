@@ -258,37 +258,22 @@ lbl_desired = tk.Label(frm_monitor, text="desired temperature")
 lbl_d_temp = tk.Label(frm_monitor)
 lbl_heater = tk.Label(frm_monitor, text="heater")
 lbl_cooler = tk.Label(frm_monitor, text="cooler")
+lbl_heater_status = tk.Label(frm_monitor)
+lbl_cooler_status = tk.Label(frm_monitor)
 
 # path to logo file 
 image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/arduino_logo.jpg"  
 # use PIL to open the image
 logo_image = Image.open(image_path)
-logo_image = logo_image.resize((90, 90))  # adjust size
+logo_image = logo_image.resize((200, 200))  # adjust size
 logo_photo = ImageTk.PhotoImage(logo_image)
 #create  label for the image
 lbl_image = tk.Label(frm_monitor, image=logo_photo)
 lbl_image.image = logo_photo  # keep a reference to avoid garbage collection
-lbl_image.grid(row=0, column=0, sticky="nsew", padx=5, pady=35)  #position image
-
-#button frame & content
-frm_buttons = tk.Frame(window, borderwidth=1, highlightthickness=0, bg="white")
-btn_stop = tk.Button(master=frm_buttons, text="STOP", command=emergency_stop, bg="red", fg="white", width=30, height=13)
-btn_enter = tk.Button(master=frm_buttons, text="SET TEMPERATURE", command=set_temp)
-ent_temp = tk.Entry(master=frm_buttons, width=30, justify='center')
-
-
-#position buttons and user input widget
-btn_stop.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
-btn_enter.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
-ent_temp.grid(row=1, column=0, padx=5, pady=5)
-
-# Position the STOP button to span across both columns
-btn_stop.grid(row=0, column=0, columnspan=2, sticky="ew", padx=5, pady=5)  # Button spans across two columns
-btn_enter.grid(row=1, column=0, sticky="ew", padx=5, pady=5)  # Button in first column
-ent_temp.grid(row=2, column=0, padx=5)  # Entry in first column
+lbl_image.grid(row=0, column=0, columnspan=2, sticky="nsew", padx=35, pady=35)  #position image
 
 #position monitor label
-lbl_monitor.grid(row=0, column=0, sticky="w", padx=35, pady=35)
+lbl_monitor.grid(row=4, column=0, columnspan=2, sticky="nsew", padx=35, pady=35)
 
 #position update labels
 lbl_room.grid(row=1, column=0, sticky="w", padx=35, pady=35)
@@ -298,10 +283,41 @@ lbl_desired.grid(row=2, column=0, sticky="w", padx=35, pady=35)
 lbl_d_temp.grid(row=2, column=1, sticky="w", padx=35, pady=35)
 
 lbl_heater.grid(row=3, column=0, sticky="w", padx=35, pady=35)
-lbl_cooler.grid(row=3, column=1, sticky="e", padx=35, pady=35)
+lbl_heater_status.grid(row=3, column=1, sticky="ew", padx=35, pady=35)
+
+lbl_cooler.grid(row=4, column=0, sticky="e", padx=35, pady=35)
+lbl_cooler_status.grid(row=4, column=1, sticky="ew", padx=35, pady=35)
+
+
+#test frame & content
+frm_tests = tk.Frame(window, borderwidth=1, highlightthickness=0, bg="white")
+
+lbl_benchmark = tk.Label(frm_tests, text="BENCHMARK TESTS")
+btn_test1 = tk.Button(frm_tests, text="test 1")
+btn_test2 = tk.Button(frm_tests, text="test 2")
+btn_test3 = tk.Button(frm_tests, text="test 3")
+btn_run_all_benchmark = tk.Button(frm_tests, text="RUN ALL BENCHMARK TESTS")
+lbl_custom = tk.Label(frm_tests, text="CUSTOM TEST")
+ent_temp = tk.Entry(frm_tests, width=30, justify='center')
+ent_duration = tk.Entry(frm_tests, width=30, justify='center')
+btn_add_custom = tk.Button(frm_tests, text="ADD CUSTOM TEST")
+btn_run_custom = tk.Button(frm_tests, text="RUN CUSTOM TEST")
+btn_run_all_tests = tk.Button(frm_tests, text="RUN ALL TESTS")
+lbl_running = tk.Label(frm_tests, text="test running: ")
+lbl_running_info = tk.Label(frm_tests)
+
+#position labels, buttons and user input widgets in test frame
+
+
+btn_enter.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
+ent_temp.grid(row=1, column=0, padx=5, pady=5)
+
+# Position the STOP button to span across both columns
+btn_stop = tk.Button(window, text="STOP", command=emergency_stop, bg="red", fg="white")
+btn_stop.grid(row=0, column=0, columnspan=2, sticky="ew", padx=5, pady=5)  # Button spans across two columns
 
 #position both frames
-frm_buttons.grid(row=0, column=0, sticky="ns")
+frm_tests.grid(row=0, column=0, sticky="ns")
 frm_monitor.grid(row=0, column=1, sticky="nsew")
 
 #set data reading from serial every 0.5 second
