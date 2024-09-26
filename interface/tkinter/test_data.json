@@ -1,50 +1,66 @@
 {
-  "test_1": [
-    {
-      "temp": 50,
-      "duration": 3000
-    },
-    {
-      "temp": 40,
-      "duration": 10000
-    },
-    {
-      "temp": 50,
-      "duration": 12000
-    }
-  ],
-  "test_2": [
-    {
-      "temp": 50,
-      "duration": 3000
-    },
-    {
-      "temp": 40,
-      "duration": 10000
-    }
-  ],
-  "test_3": [
-    {
-      "temp": 50,
-      "duration": 3000
-    },
-    {
-      "temp": 40,
-      "duration": 10000
-    },
-    {
-      "temp": 50,
-      "duration": 12000
-    },
-    {
-      "temp": 50,
-      "duration": 12000
-    }
-  ],
-  "custom": [
-    {
-      "temp": 0,
-      "duration": 0
-    }
-  ]
+    "test_1": [
+        {
+            "temp": 50,
+            "duration": 3000
+        },
+        {
+            "temp": 40,
+            "duration": 10000
+        },
+        {
+            "temp": 50,
+            "duration": 12000
+        }
+    ],
+    "test_2": [
+        {
+            "temp": 50,
+            "duration": 3000
+        },
+        {
+            "temp": 40,
+            "duration": 10000
+        }
+    ],
+    "test_3": [
+        {
+            "temp": 50,
+            "duration": 3000
+        },
+        {
+            "temp": 40,
+            "duration": 10000
+        },
+        {
+            "temp": 50,
+            "duration": 12000
+        },
+        {
+            "temp": 50,
+            "duration": 12000
+        }
+    ],
+    "custom": [
+        {
+            "temp": 0,
+            "duration": 0
+        },
+        {
+            "temp": 4233.0,
+            "duration": 2312
+        },
+        {
+            "temp": 2312.0,
+            "duration": 423
+        },
+        {
+            "temp": 2312.0,
+            "duration": 423
+        },
+        {
+            "temp": 32221.0,
+            "duration": 23
+        }
+    ]
 }

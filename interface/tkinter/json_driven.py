@@ -65,26 +65,65 @@ def save_file(test_data):
 
 
 #add custom test
-def add_custom(temp, duration):
+def add_custom():
     
     test_data = open_file()
 
     if test_data is not None:
-        # add new sequence to the list
+        
+        temp_string = ent_temp.get()
+        duration_string = ent_duration.get()
+
+         # Initialize temp and duration
+        temp = None
+        duration = None
+
+        if temp_string:
+            try:
+                temp = float(temp_string)
+            except ValueError:
+                print('numbers only')
+                ent_temp.delete(0, tk.END)  # clear the entry
+                ent_temp.insert(0, "numbers only")  # show error message in entry
+                return
+        else:
+                print("no temperature input")
+                ent_temp.delete(0, tk.END)  # clear the entry
+                ent_temp.insert(0, "enter a number")  # show error message in entry
+                return # exit early if no temperature input
+        
+        dur_string = ent_duration.get()
+
+        if dur_string:    
+            try:
+                duration = int(dur_string)
+            except ValueError:
+                print('numbers only')
+                ent_duration.delete(0, tk.END)  # Clear the entry
+                ent_duration.insert(0, "numbers only")  # Show error message in entry
+                return         
+        else:
+            print('no valid duration')
+            ent_duration.delete(0, tk.END)  # Clear the entry
+            ent_duration.insert(0, "enter a number")  # Show error message in entry
+            return
+        
+    # add new sequence to the list
         new_sequence = {"temp": temp, "duration": duration}
         test_data["custom"].append(new_sequence)  # append new custom test
         save_file(test_data)  # save back to JSON file
-
+        print('custom test added successfully')
+        
     else:
-        print("unable to add custom test due to file loading error")
+            print("unable to add custom test due to file loading error")
 
 '''
-#pick your test method0p
+
+#pick your test method
 def pick_your_test():
      
     test_data = open_file()
     test_choice = user_input.get("text")
-
     if test_data is not None:
           if test_choice = "test 1":
               test_1 = test_data.get("test_1", [])
@@ -99,7 +138,21 @@ def pick_your_test():
               custom_test = test_data.get("custom", [])8z
               send_json_to_arduino(custom_test)
      
-           
+lbl_benchmark = tk.Label(frm_tests, text="BENCHMARK TESTS", bg="white")
+btn_test1 = tk.Button(frm_tests, text="test 1", bg="white")
+btn_test2 = tk.Button(frm_tests, text="test 2", bg="white")
+btn_test3 = tk.Button(frm_tests, text="test 3", bg="white")
+btn_run_all_benchmark = tk.Button(frm_tests, text="RUN ALL BENCHMARK TESTS", bg="white")
+lbl_custom = tk.Label(frm_tests, text="CUSTOM TEST", bg="white")
+ent_temp = tk.Entry(frm_tests, width=30, justify='left', bg="white", fg="black")
+ent_temp.insert(0, "temperature in °C: ")
+ent_duration = tk.Entry(frm_tests, width=30, justify='left', bg="white", fg="black")
+ent_duration.insert(0, "duration in minutes: ")
+btn_add_custom = tk.Button(frm_tests, text="ADD CUSTOM TEST", bg="white")
+btn_run_custom = tk.Button(frm_tests, text="RUN CUSTOM TEST", bg="white")
+btn_run_all_tests = tk.Button(frm_tests, text="RUN ALL TESTS", bg="white")
+lbl_running = tk.Label(frm_tests, text="TEST RUNNING: ", bg="white")
+lbl_running_info = tk.Label(frm_tests, bg="white")           
 
 def open_custom_tests():
     filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/test_data.json"
@@ -245,10 +298,8 @@ window.configure(bg="white")
 window.wm_minsize(600, 750) # Minimum width of 650px and height of 800px
 
 #prepare the general grid
-#window.rowconfigure(0, minsize=600, weight=1)
-#window.rowconfigure(1, minsize=600, weight=1)
-window.columnconfigure(0, minsize=600, weight=1)
-#window.columnconfigure(1, minsize=800, weight=1)
+window.columnconfigure(0, minsize=600, weight=1) #make sure gui is vertically centered 
+
 
 
 #monitor frame and content
@@ -301,11 +352,11 @@ btn_test2 = tk.Button(frm_tests, text="test 2", bg="white")
 btn_test3 = tk.Button(frm_tests, text="test 3", bg="white")
 btn_run_all_benchmark = tk.Button(frm_tests, text="RUN ALL BENCHMARK TESTS", bg="white")
 lbl_custom = tk.Label(frm_tests, text="CUSTOM TEST", bg="white")
-ent_temp = tk.Entry(frm_tests, width=30, justify='left', bg="white", fg="black")
-ent_temp.insert(0, "temperature in °C: ")
-ent_duration = tk.Entry(frm_tests, width=30, justify='left', bg="white", fg="black")
-ent_duration.insert(0, "duration in minutes: ")
-btn_add_custom = tk.Button(frm_tests, text="ADD CUSTOM TEST", bg="white")
+lbl_d_temp = tk.Label(frm_tests, width=30, text="temperature in °C: ", justify='left', bg="white")
+ent_temp = tk.Entry(frm_tests, width=30, justify='center', bg="white", fg="black")
+lbl_d_duration = tk.Label(frm_tests,width=30, text="duration in minutes: ", justify='left', bg="white")
+ent_duration = tk.Entry(frm_tests, width=30, justify='center', bg="white", fg="black")
+btn_add_custom = tk.Button(frm_tests, text="ADD CUSTOM TEST", bg="white", command=add_custom)
 btn_run_custom = tk.Button(frm_tests, text="RUN CUSTOM TEST", bg="white")
 btn_run_all_tests = tk.Button(frm_tests, text="RUN ALL TESTS", bg="white")
 lbl_running = tk.Label(frm_tests, text="TEST RUNNING: ", bg="white")
@@ -318,13 +369,15 @@ btn_test2.grid(row=3, column=1, sticky="ew", padx=5, pady=5)
 btn_test3.grid(row=4, column=1, sticky="ew", padx=5, pady=5)
 btn_run_all_benchmark.grid(row=5, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
 lbl_custom.grid(row=6, column=0, sticky="w", padx=5, pady=5)
-ent_temp.grid(row=7, column=1, sticky="ew", padx=5, pady=5)
-ent_duration.grid(row=7, column=2, sticky="ew", padx=5, pady=5)
-btn_add_custom.grid(row=8, column=1, sticky="ew", padx=5, pady=5)
-btn_run_custom.grid(row=8, column=2, sticky="ew", padx=5, pady=5)
-btn_run_all_tests.grid(row=10, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
-lbl_running.grid(row=11, column=0, sticky="w", padx=5, pady=5)
-lbl_running_info.grid(row=11, rowspan=3, column=1, columnspan=2, sticky="ew", padx=5, pady=10)
+lbl_d_temp.grid(row=7, column=1, sticky="w", padx=5, pady=5)
+ent_temp.grid(row=7, column=2, sticky="ew", padx=5, pady=5)
+lbl_d_duration.grid(row=8, column=1, sticky="w", padx=5, pady=5)
+ent_duration.grid(row=8, column=2, sticky="ew", padx=5, pady=5)
+btn_add_custom.grid(row=9, column=1, sticky="ew", padx=5, pady=5)
+btn_run_custom.grid(row=9, column=2, sticky="ew", padx=5, pady=5)
+btn_run_all_tests.grid(row=11, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
+lbl_running.grid(row=12, column=0, sticky="w", padx=5, pady=5)
+lbl_running_info.grid(row=12, rowspan=3, column=1, columnspan=2, sticky="ew", padx=5, pady=10)
 
 # create & position the STOP button to span across both columns
 btn_stop = tk.Button(frm_tests, text="STOP", command=emergency_stop, bg="red", fg="white")
