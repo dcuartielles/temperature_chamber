@@ -3,7 +3,9 @@ import tkinter as tk
 from PIL import Image, ImageTk #for images
 import serial
 import time
-
+import json
+#in case you want to use file finder
+from tkinter.filedialog import askopenfilename, asksaveasfilename 
 
 
 # global flag for stopping the reading process
@@ -12,27 +14,109 @@ is_stopped = False
 
 ###############        FUNCTIONALITY AND LOGIC       ###############
 
+#### JSON HANDLING ####
 
-#### SERIAL INTERACTION ####
+#send json through serial / run all tests
+def send_json_to_arduino(test_data):
+        
+        json_data = json.dumps(test_data) #convert py dictionary to json
+        
+        ser.write((json_data + '\n').encode('utf-8'))
+        print(f"Sent to Arduino: {json_data}")
 
-#set temperature (user input)
-def set_temp():
+        # Continuously read Arduino output
+        while True:
+            if ser.in_waiting > 0:
+                response = ser.readline().decode('utf-8').strip()
+                print(f"Arduino: {response}")
+            time.sleep(1)
+
+
+#open json file and convert it to py dictionary
+def open_file():
     
-    global is_stopped
-    is_stopped = False #set flag to restart the read_data loop
-    
-    temperature = ent_temp.get() #get user input
+   #open a file 
+    filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/test_data.json"
 
-    if temperature.replace('.', '', 1).isdigit():
-           command = f"SET TEMP {float(temperature):.2f}" 
-           send_command(ser, command)
-           time.sleep(0.05)  # wait for arduino to process the command
-           print(f"desired temperature: {float(temperature):.2f}")
-           lbl_monitor["text"] = f"desired temperature: {float(temperature):.2f} \N{DEGREE CELSIUS}"
-           window.after(2000, read_data)
+    try:
+          with open(filepath, mode="r") as input_file:
+                test_data = json.load(input_file)  # convert raw json to py dictionary
+                return test_data  # return py dictionary
+            
+    except FileNotFoundError:
+          print(f"file {filepath} not found")
+          return None
+    
+#save input dictionary to json file
+def save_file(test_data):
+    
+    filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/test_data.json"
+
+    try:
+    
+          # Write to a file
+          with open(filepath, 'w') as f:
+              #convert dictionary to json and write
+              json.dump(test_data, f, indent=4)
+              print(f"data seved to {filepath}")
+
+    except Exception as e:
+         print(f"failed to save file: {e}")
+
+
+#add custom test
+def add_custom(temp, duration):
+    
+    test_data = open_file()
+
+    if test_data is not None:
+        # add new sequence to the list
+        new_sequence = {"temp": temp, "duration": duration}
+        test_data["custom"].append(new_sequence)  # append new custom test
+        save_file(test_data)  # save back to JSON file
 
     else:
-           lbl_monitor["text"] = "digits only"
+        print("unable to add custom test due to file loading error")
+
+
+#pick your test method
+def pick_your_test():
+     
+    test_data = open_file()
+    test_choice = user_input.get("text")
+
+    if test_data is not None:
+          if test_choice = "test 1":
+              test_1 = test_data.get("test_1", [])
+              send_json_to_arduino(test_1)
+          elif test_choice =  "test 2":
+              test_2 = test_data.get("test_2", [])
+              send_json_to_arduino(test_2)
+          elif test_choice = "test 3":
+              test_3 = test_data.get("test_3", [])
+              send_json_to_arduino(test_3)
+          else:
+              custom_test = test_data.get("custom", [])
+              send_json_to_arduino(custom_test)
+     
+           
+'''
+def open_custom_tests():
+    filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/test_data.json"
+    
+    try:
+        with open(filepath, mode="r") as input_file:
+            test_data = json.load(input_file)  # Load the JSON content as a dictionary
+            
+            # Extract only the custom tests if they exist
+            custom_tests = test_data.get("custom", [])
+            return custom_tests
+    except FileNotFoundError:
+        print(f"File {filepath} not found.")
+        return None'''
+
+
+#### SERIAL INTERACTION ####
 
 # emergency stop
 def emergency_stop():
@@ -156,9 +240,9 @@ ser = serial_setup()
 
 #initialize a new window
 window = tk.Tk()
-window.title("temperature monitor")
+window.title("temperature chamber")
 
-window.rowconfigure(0, minsize=250, weight=1)
+window.rowconfigure(0, minsize=600, weight=1)
 window.columnconfigure(1, minsize=800, weight=1)
 
 #monitor frame and content
