@@ -177,10 +177,10 @@ btn_stop = tk.Button(master=frm_buttons, text="STOP", command=emergency_stop, bg
 btn_enter = tk.Button(master=frm_buttons, text="SET TEMPERATURE", command=set_temp)
 ent_temp = tk.Entry(master=frm_buttons, width=30, justify='center')
 # path to logo file 
-image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/logo.jpg"  
+image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/arduino_logo.png"  
 # use PIL to open the image
 logo_image = Image.open(image_path)
-logo_image = logo_image.resize((80, 55))  # adjust size
+logo_image = logo_image.resize((80, 80))  # adjust size
 logo_photo = ImageTk.PhotoImage(logo_image)
 #create  label for the image
 lbl_image = tk.Label(master=frm_buttons, image=logo_photo)
