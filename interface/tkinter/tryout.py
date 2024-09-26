@@ -1,11 +1,15 @@
+#imports
 import tkinter as tk
 from PIL import Image, ImageTk #for images
 import serial
 import time
 
 
-# Global flag for stopping the reading process
+# global flag for stopping the reading process
 is_stopped = False
+
+
+###############        FUNCTIONALITY AND LOGIC       ###############
 
 #set temperature (user input)
 def set_temp():
@@ -13,10 +17,10 @@ def set_temp():
     global is_stopped
     is_stopped = False #set flag to restart the read_data loop
     
-    temperature = ent_temp.get()
+    temperature = ent_temp.get() #get user input
 
     if temperature.replace('.', '', 1).isdigit():
-           command = f"SET TEMP {float(temperature):.2f}"
+           command = f"SET TEMP {float(temperature):.2f}" 
            send_command(ser, command)
            time.sleep(0.05)  # wait for arduino to process the command
            print(f"desired temperature: {float(temperature):.2f}")
@@ -36,6 +40,7 @@ def emergency_stop():
     lbl_monitor["text"] = "EMERGENCY STOP"
 
 
+#parse decoded serial response for smooth data extraction
 def parse_serial_response(response):
     # split the response string into key-value pairs
     data = response.split(" | ")
@@ -75,7 +80,7 @@ def read_data():
                 send_command(ser, "SHOW DATA")  # send command to request data
                 time.sleep(0.2)  # wait for arduino to process the command
 
-                response = ser.readline().decode('utf-8').strip()
+                response = ser.readline().decode('utf-8').strip() #decode serial response
 
                 # parse the response
                 parsed_data = parse_serial_response(response)
@@ -87,6 +92,10 @@ def read_data():
                 if response:
                     print(f"arduino responded: {response}")
                     lbl_monitor["text"] = f"current temperature: {room_temp}°C | desired temperature: {desired_temp}°C | heater {'ON' if heater_status else 'OFF'} | cooler {'ON' if cooler_status else 'OFF'}"
+                    lbl_r_temp["text"] = f"{room_temp}°C"
+                    lbl_d_temp["text"] = f"{desired_temp}°C"
+                    lbl_heater["bg"] = f"{'green' if heater_status else 'red'}"
+                    lbl_cooler["bg"] = f"{'blue' if cooler_status else 'orange'}"
                 else:
                     print("received unexpected message or no valid data.")
                     lbl_monitor["text"] = "received unexpected message or no valid data."
@@ -96,9 +105,7 @@ def read_data():
                 lbl_monitor["text"] = f"Error reading data: {e}"
 
         # schedule the next read_data call only if the system is not stopped
-        window.after(1000, read_data) 
-            
-            
+        window.after(1000, read_data)    
 
 #sends a command to arduino via serial      
 def send_command(ser, command):     
@@ -131,6 +138,7 @@ def serial_setup(port="COM15", baudrate=9600, timeout=5):
             return None
 
 
+###############        GUI PART       ###############
 
 #ser = serial.Serial("COM13", baudrate=9600, timeout=5)
 ser = serial_setup()
@@ -142,31 +150,53 @@ window.title("temperature monitor")
 window.rowconfigure(0, minsize=250, weight=1)
 window.columnconfigure(1, minsize=800, weight=1)
 
-lbl_monitor = tk.Label(window, text="arduino says things here")
+#monitor frame and content
+frm_monitor = tk.Frame(window, relief=tk.RAISED, bd=2)
+lbl_monitor = tk.Label(master=frm_monitor, text="arduino says things here")
+lbl_room = tk.Label(frm_monitor, text="current temperature")
+lbl_r_temp = tk.Label(frm_monitor)
+lbl_desired = tk.Label(frm_monitor, text="desired temperature")
+lbl_d_temp = tk.Label(frm_monitor)
+lbl_heater = tk.Label(frm_monitor, text="heater")
+lbl_cooler = tk.Label(frm_monitor, text="cooler")
+
+#button frame & content
 frm_buttons = tk.Frame(window, relief=tk.RAISED, bd=2)
-btn_stop = tk.Button(master=frm_buttons, text="STOP THE OVEN", command=emergency_stop)
+btn_stop = tk.Button(master=frm_buttons, text="STOP", command=emergency_stop, bg="red", fg="white", width=30, height=13)
 btn_enter = tk.Button(master=frm_buttons, text="SET TEMPERATURE", command=set_temp)
 ent_temp = tk.Entry(master=frm_buttons, width=30, justify='center')
-
-#arduino logo
-image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/logo.jpg"  # logo file 
-
-# using PIL to open the image
+# path to logo file 
+image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/logo.jpg"  
+# use PIL to open the image
 logo_image = Image.open(image_path)
 logo_image = logo_image.resize((80, 55))  # adjust size
 logo_photo = ImageTk.PhotoImage(logo_image)
-
-# create a label for the image
+#create  label for the image
 lbl_image = tk.Label(master=frm_buttons, image=logo_photo)
 lbl_image.image = logo_photo  # keep a reference to avoid garbage collection
-lbl_image.grid(row=3, column=0, sticky="ew", padx=5, pady=35)  
+lbl_image.grid(row=3, column=0, sticky="ew", padx=5, pady=35)  #position image
 
+#position buttons and user input widget
 btn_stop.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
 btn_enter.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
 ent_temp.grid(row=1, column=0, padx=5, pady=5)
 
+#position monitor label
+lbl_monitor.grid(row=0, column=0, sticky="w", padx=35, pady=35)
+
+#position update labels
+lbl_room.grid(row=1, column=0, sticky="w", padx=35, pady=35)
+lbl_r_temp.grid(row=1, column=1, sticky="w", padx=35, pady=35)
+
+lbl_desired.grid(row=2, column=0, sticky="w", padx=35, pady=35)
+lbl_d_temp.grid(row=2, column=1, sticky="w", padx=35, pady=35)
+
+lbl_heater.grid(row=3, column=0, sticky="w", padx=35, pady=35)
+lbl_cooler.grid(row=3, column=1, sticky="e", padx=35, pady=35)
+
+#position both frames
 frm_buttons.grid(row=0, column=0, sticky="ns")
-lbl_monitor.grid(row=0, column=1, sticky="nsew")
+frm_monitor.grid(row=0, column=1, sticky="nsew")
 
 #set data reading from serial every 0.5 second
 window.after(500, read_data)
