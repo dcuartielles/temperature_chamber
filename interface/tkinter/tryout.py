@@ -15,8 +15,10 @@ is_stopped = False
 
 #### JSON HANDLING ####
 
-
-def send_json_to_arduino(json_data):
+#send json through serial / run all tests
+def send_json_to_arduino(test_data):
+        
+        json_data = json.dumps(test_data) #convert py dictionary to json
         
         ser.write((json_data + '\n').encode('utf-8'))
         print(f"Sent to Arduino: {json_data}")
@@ -29,8 +31,7 @@ def send_json_to_arduino(json_data):
             time.sleep(1)
 
 
-
-#open json file and convert it to string
+#open json file and convert it to py dictionary
 def open_file():
     
    #open a file 
@@ -38,14 +39,12 @@ def open_file():
 
     try:
           with open(filepath, mode="r") as input_file:
-                json_test_string = input_file.read()  # read raw json as string
-                return json_test_string  # return raw json string 
+                test_data = json.load(input_file)  # convert raw json to py dictionary
+                return test_data  # return py dictionary
             
     except FileNotFoundError:
           print(f"file {filepath} not found")
           return None
-    
-    
     
 #save input dictionary to json file
 def save_file(test_data):
@@ -56,7 +55,7 @@ def save_file(test_data):
     
           # Write to a file
           with open(filepath, 'w') as f:
-              #convert dictionary to json
+              #convert dictionary to json and write
               json.dump(test_data, f, indent=4)
               print(f"data seved to {filepath}")
 
@@ -64,6 +63,56 @@ def save_file(test_data):
          print(f"failed to save file: {e}")
 
 
+#add custom test
+def add_custom(temp, duration):
+    
+    test_data = open_file()
+
+    if test_data is not None:
+        # add new sequence to the list
+        new_sequence = {"temp": temp, "duration": duration}
+        test_data["custom"].append(new_sequence)  # append new custom test
+        save_file(test_data)  # save back to JSON file
+
+    else:
+        print("unable to add custom test due to file loading error")
+
+
+#pick your test method
+def pick_your_test():
+     
+    test_data = open_file()
+    test_choice = user_input.get("text")
+
+    if test_data is not None:
+          if test_choice = "test 1":
+              test_1 = test_data.get("test_1", [])
+              send_json_to_arduino(test_1)
+          elif test_choice =  "test 2":
+              test_2 = test_data.get("test_2", [])
+              send_json_to_arduino(test_2)
+          elif test_choice = "test 3":
+              test_3 = test_data.get("test_3", [])
+              send_json_to_arduino(test_3)
+          else:
+              custom_test = test_data.get("custom", [])
+              send_json_to_arduino(custom_test)
+     
+           
+'''
+def open_custom_tests():
+    filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/test_data.json"
+    
+    try:
+        with open(filepath, mode="r") as input_file:
+            test_data = json.load(input_file)  # Load the JSON content as a dictionary
+            
+            # Extract only the custom tests if they exist
+            custom_tests = test_data.get("custom", [])
+            return custom_tests
+    except FileNotFoundError:
+        print(f"File {filepath} not found.")
+        return None'''
 
 
 #### SERIAL INTERACTION ####
