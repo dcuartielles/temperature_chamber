@@ -179,11 +179,11 @@ def read_data():
 
                 if response:
                     print(f"arduino responded: {response}")
-                    lbl_monitor["text"] = f"current temperature: {room_temp}°C | desired temperature: {desired_temp}°C | heater {'ON' if heater_status else 'OFF'} | cooler {'ON' if cooler_status else 'OFF'}"
+                    lbl_monitor["text"] = f"{response}"
                     lbl_r_temp["text"] = f"{room_temp}°C"
                     lbl_d_temp["text"] = f"{desired_temp}°C"
-                    lbl_heater["bg"] = f"{'green' if heater_status else 'red'}"
-                    lbl_cooler["bg"] = f"{'blue' if cooler_status else 'orange'}"
+                    lbl_heater_status["text"] = f"{'ON' if heater_status else 'OFF'}"
+                    lbl_cooler_status["text"] = f"{'ON' if cooler_status else 'OFF'}"
                 else:
                     print("received unexpected message or no valid data.")
                     lbl_monitor["text"] = "received unexpected message or no valid data."
@@ -307,12 +307,21 @@ lbl_running = tk.Label(frm_tests, text="test running: ")
 lbl_running_info = tk.Label(frm_tests)
 
 #position labels, buttons and user input widgets in test frame
+lbl_benchmark.grid(row=0, column=0, columnspan=3, sticky="ew", padx=5, pady=5)
+btn_test1.grid(row=1, column=1, columnspan=3, sticky="ew", padx=5, pady=5)
+btn_test2.grid(row=2, column=1, columnspan=3, sticky="ew", padx=5, pady=5)
+btn_test3.grid(row=3, column=1, columnspan=3, sticky="ew", padx=5, pady=5)
+btn_run_all_benchmark.grid(row=4, columnspan=3, column=1, sticky="ew", padx=5, pady=5)
+lbl_custom.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
+ent_temp.grid(row=5, column=1, sticky="ew", padx=5, pady=5)
+ent_duration.grid(row=5, column=2, sticky="ew", padx=5, pady=5)
+btn_add_custom.grid(row=5, column=3, sticky="ew", padx=5, pady=5)
+btn_run_custom.grid(row=6, column=1, columnspan=3, sticky="ew", padx=5, pady=5)
+btn_run_all_tests.grid(row=7, column=0, columnspan=3, sticky="ew", padx=5, pady=5)
+lbl_running.grid(row=8, column=0, sticky="ew", padx=5, pady=5)
+lbl_running_info.grid(row=8, rowspan=3, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
 
-
-btn_enter.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
-ent_temp.grid(row=1, column=0, padx=5, pady=5)
-
-# Position the STOP button to span across both columns
+# create & position the STOP button to span across both columns
 btn_stop = tk.Button(window, text="STOP", command=emergency_stop, bg="red", fg="white")
 btn_stop.grid(row=0, column=0, columnspan=2, sticky="ew", padx=5, pady=5)  # Button spans across two columns
 
