@@ -36,7 +36,7 @@ def send_json_to_arduino(test_data):
 def open_file():
     
    #open a file 
-    filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/json-driven/test_data.json"
+    filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/test_data.json"
 
     try:
           with open(filepath, mode="r") as input_file:
@@ -50,7 +50,7 @@ def open_file():
 #save input dictionary to json file
 def save_file(test_data):
     
-    filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/json-driven/test_data.json"
+    filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/test_data.json"
 
     try:
     
