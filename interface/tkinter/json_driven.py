@@ -70,55 +70,68 @@ def add_custom():
     test_data = open_file()
 
     if test_data is not None:
-        
-        temp_string = ent_temp.get()
-        duration_string = ent_duration.get()
+        #get input and clear it of potential empty spaces
+        temp_string = ent_temp.get().strip()
+        duration_string = ent_duration.get().strip()
 
          # Initialize temp and duration
         temp = None
         duration = None
+        is_valid = True  # track overall validity
 
         if temp_string:
             try:
                 temp = float(temp_string)
+                if temp >= 100:
+                    print('max 100')
+                    ent_temp.delete(0, tk.END)  # clear the entry
+                    ent_temp.insert(0, "max temperature = 100°C")  # show error message in entry
+                    is_valid = False
+     
             except ValueError:
                 print('numbers only')
                 ent_temp.delete(0, tk.END)  # clear the entry
                 ent_temp.insert(0, "numbers only")  # show error message in entry
-                return
+                is_valid = False
         else:
                 print("no temperature input")
                 ent_temp.delete(0, tk.END)  # clear the entry
                 ent_temp.insert(0, "enter a number")  # show error message in entry
-                return # exit early if no temperature input
-        
-        dur_string = ent_duration.get()
+                is_valid = False 
 
-        if dur_string:    
+        if duration_string:    
             try:
-                duration = int(dur_string)
+                duration = int(duration_string)
+                if duration < 1:  # check for a minimum duration 
+                    print('minimum duration is 1')
+                    ent_duration.delete(0, tk.END)
+                    ent_duration.insert(0, "minimum duration = 1 minute")
+                    is_valid = False 
             except ValueError:
                 print('numbers only')
-                ent_duration.delete(0, tk.END)  # Clear the entry
-                ent_duration.insert(0, "numbers only")  # Show error message in entry
-                return         
+                ent_duration.delete(0, tk.END)  # clear the entry
+                ent_duration.insert(0, "numbers only")  # show error message in entry
+                is_valid = False         
         else:
             print('no valid duration')
-            ent_duration.delete(0, tk.END)  # Clear the entry
-            ent_duration.insert(0, "enter a number")  # Show error message in entry
-            return
-        
-    # add new sequence to the list
-        new_sequence = {"temp": temp, "duration": duration}
-        test_data["custom"].append(new_sequence)  # append new custom test
-        save_file(test_data)  # save back to JSON file
-        print('custom test added successfully')
-        
+            ent_duration.delete(0, tk.END)  # clear the entry
+            ent_duration.insert(0, "enter a number")  # show error message in entry
+            is_valid = False
+
+        # check if both entries are valid before proceeding
+        if is_valid and temp is not None and duration is not None:
+            new_sequence = {"temp": temp, "duration": duration}
+            test_data["custom"].append(new_sequence)  # append new custom test
+            save_file(test_data)  # save back to json file
+            print('custom test added successfully')
+        else:
+            print("Cannot add custom test due to invalid inputs.")
+
     else:
             print("unable to add custom test due to file loading error")
 
-'''
 
+'''
 #pick your test method
 def pick_your_test():
      
@@ -135,50 +148,70 @@ def pick_your_test():
               test_3 = test_data.get("test_3", [])
               send_json_to_arduino(test_3)
           else:
-              custom_test = test_data.get("custom", [])8z
-              send_json_to_arduino(custom_test)
-     
-lbl_benchmark = tk.Label(frm_tests, text="BENCHMARK TESTS", bg="white")
-btn_test1 = tk.Button(frm_tests, text="test 1", bg="white")
-btn_test2 = tk.Button(frm_tests, text="test 2", bg="white")
-btn_test3 = tk.Button(frm_tests, text="test 3", bg="white")
-btn_run_all_benchmark = tk.Button(frm_tests, text="RUN ALL BENCHMARK TESTS", bg="white")
-lbl_custom = tk.Label(frm_tests, text="CUSTOM TEST", bg="white")
-ent_temp = tk.Entry(frm_tests, width=30, justify='left', bg="white", fg="black")
-ent_temp.insert(0, "temperature in °C: ")
-ent_duration = tk.Entry(frm_tests, width=30, justify='left', bg="white", fg="black")
-ent_duration.insert(0, "duration in minutes: ")
-btn_add_custom = tk.Button(frm_tests, text="ADD CUSTOM TEST", bg="white")
-btn_run_custom = tk.Button(frm_tests, text="RUN CUSTOM TEST", bg="white")
-btn_run_all_tests = tk.Button(frm_tests, text="RUN ALL TESTS", bg="white")
-lbl_running = tk.Label(frm_tests, text="TEST RUNNING: ", bg="white")
-lbl_running_info = tk.Label(frm_tests, bg="white")           
+              custom_test = test_data.get("custom", [])
+              send_json_to_arduino(custom_test)'''
 
-def open_custom_tests():
-    filepath = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/test_data.json"
-    
-    try:
-        with open(filepath, mode="r") as input_file:
-            test_data = json.load(input_file)  # Load the JSON content as a dictionary
-            
-            # Extract only the custom tests if they exist
-            custom_tests = test_data.get("custom", [])
-            return custom_tests
-    except FileNotFoundError:
-        print(f"File {filepath} not found.")
-        return None'''
+def run_custom():  
+    test_data = open_file()     
+    # extract only the custom tests 
+    custom_test = test_data.get("custom", [])
+    if custom_test:
+        send_json_to_arduino(custom_test)
+    else:
+        print('no custom tests on file')
+
+
+#### INTERFACE FUNCTIONALITY ####
+
+# function to clear the entry widget
+def clear_entry_on_click(event):
+    if event.widget.get() in ["temperature in °C: ", "numbers only", "duration in minutes: ", "max temperature = 100°C","minimum duration = 1 minute"]:  # check for placeholder or warning text
+        event.widget.delete(0, tk.END)  # clear the entry widget
+        event.widget['fg'] = 'black'  #change text color to normal if needed
+
+def clear_entry_on_stop():
+    ent_duration.delete(0, tk.END)
+    ent_temp.delete(0, tk.END)
+
+def add_placeholder(entry, placeholder_text):
+    entry.insert(0, placeholder_text)
+    entry['fg'] = 'grey'  # set the color to a lighter grey for the placeholder text
+
+    def on_focus_in(event):
+        if entry.get() == placeholder_text:
+            entry.delete(0, tk.END)  # Clear the placeholder text when focused
+            entry['fg'] = 'black'  # Set the text color to normal
+
+    def on_focus_out(event):
+        if entry.get() == '':  # If the user didn't type anything, put the placeholder back
+            entry.insert(0, placeholder_text)
+            entry['fg'] = 'grey'
+
+    # bind the events
+    entry.bind("<FocusIn>", on_focus_in)
+    entry.bind("<FocusOut>", on_focus_out)
 
 
 #### SERIAL INTERACTION ####
 
-# emergency stop
-def emergency_stop():
-    global is_stopped
-    is_stopped = True #set flag to stop the read_data loop
-
-    command = "EMERGENCY STOP"
-    send_command(ser, command)
-    lbl_monitor["text"] = "EMERGENCY STOP"
+# set up serial communication
+def serial_setup(port="COM15", baudrate=9600, timeout=5):          
+            
+        try:
+            ser = serial.Serial(port, baudrate, timeout=timeout)
+            print(f"connected to arduino port: {port}")
+            #lbl_monitor["text"] = f"connected to arduino port: {port}"
+            time.sleep(1)   #make sure arduino is ready
+            return ser
+        except serial.SerialException as e:
+            print(f"error: {e}")
+            #lbl_monitor["text"] = f"error: {e}"
+            return None
+        finally:
+            # Close serial connection
+            if 'ser' in locals() and ser.is_open:
+                ser.close()
+                print("Serial port closed.")
 
 
 #parse decoded serial response for smooth data extraction
@@ -264,31 +297,20 @@ def send_command(ser, command):
             print(f"unexpected error in sending command: {e}")
 
 
-# set up serial communication
-def serial_setup(port="COM15", baudrate=9600, timeout=5):          
-            
-        try:
-            ser = serial.Serial(port, baudrate, timeout=timeout)
-            print(f"connected to arduino port: {port}")
-            #lbl_monitor["text"] = f"connected to arduino port: {port}"
-            time.sleep(1)   #make sure arduino is ready
-            return ser
-        except serial.SerialException as e:
-            print(f"error: {e}")
-            #lbl_monitor["text"] = f"error: {e}"
-            return None
-        finally:
-            # Close serial connection
-            if 'ser' in locals() and ser.is_open:
-                ser.close()
-                print("Serial port closed.")
+# emergency stop
+def emergency_stop():
+    global is_stopped
+    is_stopped = True #set flag to stop the read_data loop
 
+    command = "EMERGENCY STOP"
+    send_command(ser, command)
+    lbl_monitor["text"] = "EMERGENCY STOP"
+    clear_entry_on_stop()
 
 
 
 ###############        GUI PART       ###############
 
-#ser = serial.Serial("COM13", baudrate=9600, timeout=5)
 ser = serial_setup()
 
 #initialize a new window
@@ -300,6 +322,12 @@ window.wm_minsize(600, 750) # Minimum width of 650px and height of 800px
 #prepare the general grid
 window.columnconfigure(0, minsize=600, weight=1) #make sure gui is vertically centered 
 
+'''
+# Define global fonts for specific widgets
+window.option_add("*Label.Font", ("Arial", 14, "bold"))  # Apply to all Label widgets
+window.option_add("*Button.Font", ("Arial", 12, "bold"))  # Apply to all Button widgets
+window.option_add("*Entry.Font", ("Arial", 12))          # Apply to all Entry widgets
+'''
 
 
 #monitor frame and content
@@ -333,8 +361,8 @@ lbl_monitor.grid(row=5, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
 
 #test frame & content & logo
 frm_tests = tk.Frame(window, borderwidth=1, highlightthickness=0, bg="white")
-# path to logo file 
 
+# path to logo file 
 image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/arduino_logo.png"  
 # use PIL to open the image
 logo_image = Image.open(image_path)
@@ -345,22 +373,25 @@ lbl_image = tk.Label(frm_tests, image=logo_photo, bg="white")
 lbl_image.image = logo_photo  # keep a reference to avoid garbage collection
 lbl_image.grid(row=0, column=0, columnspan=3, sticky="nsew")  #position image
 
-
+#benchmark test part
 lbl_benchmark = tk.Label(frm_tests, text="BENCHMARK TESTS", bg="white")
 btn_test1 = tk.Button(frm_tests, text="test 1", bg="white")
 btn_test2 = tk.Button(frm_tests, text="test 2", bg="white")
 btn_test3 = tk.Button(frm_tests, text="test 3", bg="white")
 btn_run_all_benchmark = tk.Button(frm_tests, text="RUN ALL BENCHMARK TESTS", bg="white")
+#custom test part
 lbl_custom = tk.Label(frm_tests, text="CUSTOM TEST", bg="white")
-lbl_d_temp = tk.Label(frm_tests, width=30, text="temperature in °C: ", justify='left', bg="white")
+lbl_d_temp = tk.Label(frm_tests, width=30, text="temperature in °C: ", bd=0.5, relief="solid", bg="white")
 ent_temp = tk.Entry(frm_tests, width=30, justify='center', bg="white", fg="black")
-lbl_d_duration = tk.Label(frm_tests,width=30, text="duration in minutes: ", justify='left', bg="white")
+lbl_d_duration = tk.Label(frm_tests, text="duration in minutes: ", bd=0.5, relief="solid", width=30, bg="white")
 ent_duration = tk.Entry(frm_tests, width=30, justify='center', bg="white", fg="black")
 btn_add_custom = tk.Button(frm_tests, text="ADD CUSTOM TEST", bg="white", command=add_custom)
-btn_run_custom = tk.Button(frm_tests, text="RUN CUSTOM TEST", bg="white")
+btn_run_custom = tk.Button(frm_tests, text="RUN CUSTOM TEST", bg="white", command=run_custom)
+#run all tests
 btn_run_all_tests = tk.Button(frm_tests, text="RUN ALL TESTS", bg="white")
+#running test display
 lbl_running = tk.Label(frm_tests, text="TEST RUNNING: ", bg="white")
-lbl_running_info = tk.Label(frm_tests, bg="white")
+lbl_running_info = tk.Label(frm_tests, bd=0.5, relief="solid", bg="white")
 
 #position labels, buttons and user input widgets in test frame
 lbl_benchmark.grid(row=1, column=0, sticky="w", padx=5, pady=5)
@@ -378,6 +409,12 @@ btn_run_custom.grid(row=9, column=2, sticky="ew", padx=5, pady=5)
 btn_run_all_tests.grid(row=11, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
 lbl_running.grid(row=12, column=0, sticky="w", padx=5, pady=5)
 lbl_running_info.grid(row=12, rowspan=3, column=1, columnspan=2, sticky="ew", padx=5, pady=10)
+
+# bind the focus event to the function for both entries
+ent_temp.bind("<Button-1>", clear_entry_on_click)
+ent_duration.bind("<Button-1>", clear_entry_on_click)
+add_placeholder(ent_temp, "temperature in °C: ")  # ddd placeholder text
+add_placeholder(ent_duration, "duration in minutes: ")
 
 # create & position the STOP button to span across both columns
 btn_stop = tk.Button(frm_tests, text="STOP", command=emergency_stop, bg="red", fg="white")
