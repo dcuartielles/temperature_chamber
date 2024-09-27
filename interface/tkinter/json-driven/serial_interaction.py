@@ -1,4 +1,5 @@
-#### SERIAL INTERACTION ####
+import serial
+import time
 
 # set up serial communication
 def serial_setup(port="COM15", baudrate=9600, timeout=5):          

@@ -1,4 +1,3 @@
-#### INTERFACE FUNCTIONALITY ####
 
 # function to clear the entry widget
 def clear_entry_on_click(event):

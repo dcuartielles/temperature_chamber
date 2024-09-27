@@ -4,8 +4,7 @@ from PIL import Image, ImageTk #for images
 import serial
 import time
 import json
-#in case you want to use file finder
-from tkinter.filedialog import askopenfilename, asksaveasfilename 
+from tkinter.filedialog import askopenfilename, asksaveasfilename  #in case you want to use file finder
 from interface_functionality import *
 from json_handling import *
 from serial_interaction import *
@@ -67,7 +66,7 @@ lbl_monitor.grid(row=5, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
 frm_tests = tk.Frame(window, borderwidth=1, highlightthickness=0, bg="white")
 
 # path to logo file 
-image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/arduino_logo.png"  
+image_path = "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/json-driven/arduino_logo.png"  
 # use PIL to open the image
 logo_image = Image.open(image_path)
 logo_image = logo_image.resize((100, 100))  # adjust size
