@@ -42,25 +42,6 @@
         }
     ],
     "custom": [
-        {
-            "temp": 80.0,
-            "duration": 33
-        },
-        {
-            "temp": 30.0,
-            "duration": 12
-        },
-        {
-            "temp": 98.0,
-            "duration": 65
-        },
-        {
-            "temp": 23.0,
-            "duration": 2
-        },
-        {
-            "temp": 11.0,
-            "duration": 11
-        }
+
     ]
 }

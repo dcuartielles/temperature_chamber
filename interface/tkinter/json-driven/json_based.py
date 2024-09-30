@@ -190,10 +190,11 @@ def add_custom():
 
     if test_data is not None:
 
-        custom = test_data.get('custom', []) #get the 'custom' list
+        '''custom = test_data.get('custom', []) #get the 'custom' list
 
         for i, step in enumerate(custom):
             step['duration'] = step['duration'] * 60000 #convert minutes to miliseconds for arduino
+            has to happen but the logis when uploading it to the listbox does not work'''
 
         save_file(test_data)  # save back to json file
         print('custom test added successfully')
