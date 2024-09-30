@@ -176,66 +176,13 @@ def add_custom():
     test_data = open_file()
 
     if test_data is not None:
-        #get input and clear it of potential empty spaces
-        temp_string = ent_temp.get().strip()
-        duration_string = ent_duration.get().strip()
-
-        # initialize temp and duration
-        temp = None
-        duration = None
-        is_valid = True  # track overall validity
-
-        if temp_string:
-            try:
-                temp = float(temp_string)
-                if temp >= 100:
-                    print('max 100')
-                    ent_temp.delete(0, tk.END)  # clear the entry
-                    ent_temp.insert(0, "max temperature = 100°C")  # show error message in entry
-                    is_valid = False
-     
-            except ValueError:
-                print('numbers only')
-                ent_temp.delete(0, tk.END)  # clear the entry
-                ent_temp.insert(0, "numbers only")  # show error message in entry
-                is_valid = False
-        else:
-                print("no temperature input")
-                ent_temp.delete(0, tk.END)  # clear the entry
-                ent_temp.insert(0, "enter a number")  # show error message in entry
-                is_valid = False 
-
-        if duration_string:    
-            try:
-                duration = int(duration_string)
-                if duration < 1:  # check for a minimum duration 
-                    print('minimum duration is 1')
-                    ent_duration.delete(0, tk.END)
-                    ent_duration.insert(0, "minimum duration = 1 minute")
-                    is_valid = False 
-            except ValueError:
-                print('numbers only')
-                ent_duration.delete(0, tk.END)  # clear the entry
-                ent_duration.insert(0, "numbers only")  # show error message in entry
-                is_valid = False         
-        else:
-            print('no valid duration')
-            ent_duration.delete(0, tk.END)  # clear the entry
-            ent_duration.insert(0, "enter a number")  # show error message in entry
-            is_valid = False
-
-        # check if both entries are valid before proceeding
-        if is_valid and temp is not None and duration is not None:
-            new_sequence = {"temp": temp, "duration": duration}
-            test_data["custom"].append(new_sequence)  # append new custom test
-            save_file(test_data)  # save back to json file
-            print('custom test added successfully')
-        else:
-            print("cannot add custom test due to invalid inputs.")
-
-    else:
-            print("unable to add custom test due to file loading error")
-
+        
+        save_file(test_data)  # save back to json file
+        print('custom test added successfully')
+        listbox.delete(0, tk.END)  # clear the listbox
+        ent_temp.delete(0, tk.END) #clear the temp entry
+        ent_duration.delete(0, tk.END) # clear the duration entry
+        listbox.insert(0, "custom test uploaded")
 
 '''
 #pick your test method
@@ -532,7 +479,7 @@ listbox.grid(row=8, rowspan=5, columnspan=2, sticky="nsew", padx=5, pady=5)
 
 lbl_step.grid(row=14,column=0, sticky="ew", padx=5, pady=5)
 lbl_step_params.grid(row=14,column=1, sticky="ew", padx=5, pady=5)
-#btn_delete.grid(row=8,column=2, sticky="ew", padx=5, pady=5)
+
 
 btn_add_custom.grid(row=15, column=1, sticky="ew", padx=5, pady=5)
 btn_run_custom.grid(row=15, column=2, sticky="ew", padx=5, pady=5)

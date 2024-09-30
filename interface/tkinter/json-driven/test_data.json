@@ -43,8 +43,20 @@
     ],
     "custom": [
         {
-            "temp": 55.0,
-            "duration": 4
+            "temp": 80.0,
+            "duration": 33
+        },
+        {
+            "temp": 90.0,
+            "duration": 33
+        },
+        {
+            "temp": 23.0,
+            "duration": 33
+        },
+        {
+            "temp": 99.0,
+            "duration": 323
         }
     ]
 }
