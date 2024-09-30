@@ -33,7 +33,7 @@ def send_json_to_arduino(test_data):
             if ser.in_waiting > 0:
                 response = ser.readline().decode('utf-8').strip()
                 print(f'Arduino: {response}')
-            time.sleep(1)
+            #time.sleep(1)
 
 
 #open json file and convert it to py dictionary
@@ -186,43 +186,40 @@ def add_custom():
         listbox.insert(0, 'custom test uploaded')
 
 
-#run only benchmark tests (all)             
+# run all benchmark tests (test_1, test_2, test_3) automatically
 def run_all_benchmark():
-
     test_data = open_file()
 
     if test_data is not None:
-        test_1 = test_data.get('test_1', [])
-        test_2 = test_data.get('test_2', [])
-        test_3 = test_data.get('test_3', [])
-        
-        send_json_to_arduino(test_1)
-        print('runnint test 1')
-        listbox.delete(0, tk.END)  # clear the listbox
-        ent_temp.delete(0, tk.END) #clear the temp entry
-        ent_duration.delete(0, tk.END) # clear the duration entry
-        listbox.insert(0, 'running test 1')
 
-        send_json_to_arduino(test_2)
-        print('running test 2')
-        listbox.delete(0, tk.END)  # clear the listbox
-        ent_temp.delete(0, tk.END) #clear the temp entry
-        ent_duration.delete(0, tk.END) # clear the duration entry
-        listbox.insert(0, 'running test 2')
+        # filter out the benchmark test keys (those that start with 'test_')
+        benchmark_tests = [key for key in test_data.keys() if key.startswith('test_')]
 
-        send_json_to_arduino(test_3)
-        print('running test 3')
-        listbox.delete(0, tk.END)  # clear the listbox
-        ent_temp.delete(0, tk.END) #clear the temp entry
-        ent_duration.delete(0, tk.END) # clear the duration entry
-        listbox.insert(0, 'running test 3')
+        # Iterate through each benchmark test and run it
+        for test_key in benchmark_tests:
+            test = test_data.get(test_key, [])
+            
+            if test:  # if the test data is available
+                send_json_to_arduino(test)  # send the data to Arduino
+                
+                # print status and update the listbox
+                print(f'Running {test_key}')
+                listbox.delete(0, tk.END)  
+                ent_temp.delete(0, tk.END)  
+                ent_duration.delete(0, tk.END)  
+                listbox.insert(tk.END, f'Running {test_key}')
+            else:
+                print(f'{test_key} not found')
+                listbox.delete(0, tk.END)
+                listbox.insert(0, f'{test_key} not found')
 
     else:
-        print('no such test on file')
-        listbox.delete(0, tk.END)  # clear the listbox
-        ent_temp.delete(0, tk.END) #clear the temp entry
-        ent_duration.delete(0, tk.END) # clear the duration entry
-        listbox.insert(0, 'no such test on file')
+        # handle case when no test data is found
+        print('no test data found on file')
+        listbox.delete(0, tk.END)  
+        ent_temp.delete(0, tk.END) 
+        ent_duration.delete(0, tk.END)  
+        listbox.insert(0, 'no test data found on file')
 
 
 
@@ -431,6 +428,8 @@ def emergency_stop():
     send_command(ser, command)
     lbl_monitor['text'] = 'EMERGENCY STOP'
     clear_entry_on_stop()
+    listbox.delete(0, tk.END)  # clear the listbox
+    listbox.insert(0, 'EMERGENCY STOP')
 
 
 
@@ -509,17 +508,17 @@ btn_run_all_benchmark = tk.Button(frm_tests, text='RUN ALL BENCHMARK TESTS', bg=
 #CUSTOM TEST PART
 lbl_custom = tk.Label(frm_tests, text='CUSTOM TEST', bg='white')
 # buttons to add, remove, and modify steps
-btn_add = tk.Button(frm_tests, text='add step', command=add_step)
-btn_remove = tk.Button(frm_tests, text='remove step', command=remove_step)
-btn_modify = tk.Button(frm_tests, text='modify step', command=modify_step)
+btn_add = tk.Button(frm_tests, text='add step', command=add_step, width=30, justify='center', bg='white', fg='black')
+btn_remove = tk.Button(frm_tests, text='remove step', command=remove_step, width=30, justify='center', bg='white', fg='black')
+btn_modify = tk.Button(frm_tests, text='modify step', command=modify_step, width=30, justify='center', bg='white', fg='black')
 
 # listbox to display the current steps
 listbox = Listbox(frm_tests, height=10, width=50)
 #temp & duration entries & custom test step handling buttons
 ent_temp = tk.Entry(frm_tests, width=30, justify='center', bg='white', fg='black')
 ent_duration = tk.Entry(frm_tests, width=30, justify='center', bg='white', fg='black')
-btn_add_custom = tk.Button(frm_tests, text='ADD CUSTOM TEST', bg='white', command=add_custom)
-btn_run_custom = tk.Button(frm_tests, text='RUN CUSTOM TEST', bg='white', command=lambda: pick_your_test('custom'))
+btn_add_custom = tk.Button(frm_tests, text='ADD CUSTOM TEST', width=30, justify='center', bg='white', fg='black', command=add_custom)
+btn_run_custom = tk.Button(frm_tests, text='RUN CUSTOM TEST', width=30, justify='center', bg='white', fg='black', command=lambda: pick_your_test('custom'))
 
 #run all tests
 btn_run_all_tests = tk.Button(frm_tests, text='RUN ALL TESTS', bg='white', command=run_all_tests)
@@ -534,17 +533,15 @@ btn_run_all_benchmark.grid(row=5, column=1, columnspan=2, sticky='ew', padx=5, p
 lbl_custom.grid(row=6, column=0, sticky='w', padx=5, pady=5)
 ent_duration.grid(row=7, column=1, sticky='ew', padx=5, pady=5)
 ent_temp.grid(row=7, column=0, sticky='ew', padx=5, pady=5)
-
 btn_add.grid(row=7, column=2, sticky='ew', padx=5, pady=5)
-btn_remove.grid(row=9, column=2, sticky='ew', padx=5, pady=5)
 btn_modify.grid(row=8, column=2, sticky='ew', padx=5, pady=5)
+btn_remove.grid(row=9, column=2, sticky='ew', padx=5, pady=5)
 
 listbox.grid(row=8, rowspan=5, columnspan=2, sticky='nsew', padx=5, pady=5)
 
-
-btn_add_custom.grid(row=15, column=1, sticky='ew', padx=5, pady=5)
-btn_run_custom.grid(row=15, column=2, sticky='ew', padx=5, pady=5)
-btn_run_all_tests.grid(row=16, column=1, columnspan=2, sticky='ew', padx=5, pady=5)
+btn_add_custom.grid(row=10, column=2, sticky='ew', padx=5, pady=5)
+btn_run_custom.grid(row=11, column=2, sticky='ew', padx=5, pady=5)
+btn_run_all_tests.grid(row=16, column=0, columnspan=3, sticky='ew', padx=5, pady=5)
 
 
 # bind the focus event to the function for both entries
