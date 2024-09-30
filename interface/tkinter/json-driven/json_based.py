@@ -186,23 +186,7 @@ def add_custom():
 
 '''
 #pick your benchmark test method
-def pick_your_benchmark():
-     
-    test_data = open_file()
-    test_choice = user_input.get('text')
-    if test_data is not None:
-          if test_choice = 'test 1':
-              test_1 = test_data.get('test_1', [])
-              send_json_to_arduino(test_1)
-          elif test_choice =  'test 2':
-              test_2 = test_data.get('test_2', [])
-              send_json_to_arduino(test_2)
-          elif test_choice = 'test 3':
-              test_3 = test_data.get('test_3', [])
-              send_json_to_arduino(test_3)
-          else:
-              custom_test = test_data.get('custom', [])
-              send_json_to_arduino(custom_test)
+
               
 def run_all_benchmark():
 
@@ -213,18 +197,46 @@ def run_all_benchmark():
 
 '''
 
-def run_custom():  
-    test_data = open_file()     
-    # extract only the custom tests 
-    custom_test = test_data.get('custom', [])
-    if custom_test:
-        send_json_to_arduino(custom_test)
+#choose one benchmark test
+def pick_your_test(test_choice):
+    test_data = open_file()
+
+    if test_data is not None:
+        # handle the test choice
+        if test_choice == 'test 1':
+            test_1 = test_data.get('test_1', [])
+            send_json_to_arduino(test_1)
+            listbox.delete(0, tk.END)  # clear the listbox
+            ent_temp.delete(0, tk.END) #clear the temp entry
+            ent_duration.delete(0, tk.END) # clear the duration entry
+            listbox.insert(0, 'running test 1')
+        elif test_choice == 'test 2':
+            test_2 = test_data.get('test_2', [])
+            send_json_to_arduino(test_2)
+            listbox.delete(0, tk.END)  # clear the listbox
+            ent_temp.delete(0, tk.END) #clear the temp entry
+            ent_duration.delete(0, tk.END) # clear the duration entry
+            listbox.insert(0, 'running test 2')
+        elif test_choice == 'test 3':
+            test_3 = test_data.get('test_3', [])
+            send_json_to_arduino(test_3)
+            listbox.delete(0, tk.END)  # clear the listbox
+            ent_temp.delete(0, tk.END) #clear the temp entry
+            ent_duration.delete(0, tk.END) # clear the duration entry
+            listbox.insert(0, 'running test 3')
+        else:
+            custom_test = test_data.get('custom', [])
+            send_json_to_arduino(custom_test)
+            listbox.delete(0, tk.END)  # clear the listbox
+            ent_temp.delete(0, tk.END) #clear the temp entry
+            ent_duration.delete(0, tk.END) # clear the duration entry
+            listbox.insert(0, 'running custom test')
     else:
-        print('no custom tests on file')
+        print('no such test on file')
         listbox.delete(0, tk.END)  # clear the listbox
         ent_temp.delete(0, tk.END) #clear the temp entry
         ent_duration.delete(0, tk.END) # clear the duration entry
-        listbox.insert(0, 'no custom tests on file')
+        listbox.insert(0, 'no such test on file')
 
 
 def run_all_tests():
@@ -454,9 +466,9 @@ lbl_image.grid(row=0, column=0, columnspan=3, sticky='nsew')  #position image
 
 #BENCHMARK TEST PART
 lbl_benchmark = tk.Label(frm_tests, text='BENCHMARK TESTS', bg='white')
-btn_test1 = tk.Button(frm_tests, text='test 1', bg='white')
-btn_test2 = tk.Button(frm_tests, text='test 2', bg='white')
-btn_test3 = tk.Button(frm_tests, text='test 3', bg='white')
+btn_test1 = tk.Button(frm_tests, text='test 1', bg='white', command=lambda: pick_your_test('test 1'))
+btn_test2 = tk.Button(frm_tests, text='test 2', bg='white', command=lambda: pick_your_test('test 2'))
+btn_test3 = tk.Button(frm_tests, text='test 3', bg='white', command=lambda: pick_your_test('test 3'))
 btn_run_all_benchmark = tk.Button(frm_tests, text='RUN ALL BENCHMARK TESTS', bg='white')
 
 #CUSTOM TEST PART
@@ -472,7 +484,7 @@ listbox = Listbox(frm_tests, height=10, width=50)
 ent_temp = tk.Entry(frm_tests, width=30, justify='center', bg='white', fg='black')
 ent_duration = tk.Entry(frm_tests, width=30, justify='center', bg='white', fg='black')
 btn_add_custom = tk.Button(frm_tests, text='ADD CUSTOM TEST', bg='white', command=add_custom)
-btn_run_custom = tk.Button(frm_tests, text='RUN CUSTOM TEST', bg='white', command=run_custom)
+btn_run_custom = tk.Button(frm_tests, text='RUN CUSTOM TEST', bg='white', , command=lambda: pick_your_test('custom'))
 
 #current test/step running display
 lbl_step = tk.Label(frm_tests, text='step ', bd=0.5, relief='solid', width=30, bg='white')
