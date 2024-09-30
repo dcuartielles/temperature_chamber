@@ -189,7 +189,12 @@ def add_custom():
     test_data = open_file()
 
     if test_data is not None:
-        
+
+        custom = test_data.get('custom', []) #get the 'custom' list
+
+        for i, step in enumerate(custom):
+            step['duration'] = step['duration'] * 60000 #convert minutes to miliseconds for arduino
+
         save_file(test_data)  # save back to json file
         print('custom test added successfully')
         listbox.delete(0, tk.END)  # clear the listbox
