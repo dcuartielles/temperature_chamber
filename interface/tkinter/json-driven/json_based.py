@@ -68,16 +68,79 @@ def save_file(test_data):
          print(f"failed to save file: {e}")
 
 # add a step to the custom test
-def add_step(temp, duration):
-    new_sequence = {"temp": temp, "duration": duration}
-    test_data["custom"].append(new_sequence)
-    save_file(test_data)
-    update_listbox()
+def add_step():
+
+    test_data = open_file()
+
+
+    if test_data is not None:
+        #get input and clear it of potential empty spaces
+        temp_string = ent_temp.get().strip()
+        duration_string = ent_duration.get().strip()
+
+        # initialize temp and duration
+        temp = None
+        duration = None
+        is_valid = True  # track overall validity
+
+        if temp_string:
+            try:
+                temp = float(temp_string)
+                if temp >= 100:
+                    print('max 100')
+                    ent_temp.delete(0, tk.END)  # clear the entry
+                    ent_temp.insert(0, "max temperature = 100°C")  # show error message in entry
+                    is_valid = False
+     
+            except ValueError:
+                print('numbers only')
+                ent_temp.delete(0, tk.END)  # clear the entry
+                ent_temp.insert(0, "numbers only")  # show error message in entry
+                is_valid = False
+        else:
+                print("no temperature input")
+                ent_temp.delete(0, tk.END)  # clear the entry
+                ent_temp.insert(0, "enter a number")  # show error message in entry
+                is_valid = False 
+
+        if duration_string:    
+            try:
+                duration = int(duration_string)
+                if duration < 1:  # check for a minimum duration 
+                    print('minimum duration is 1 minute')
+                    ent_duration.delete(0, tk.END)
+                    ent_duration.insert(0, "minimum duration is 1 minute")
+                    is_valid = False 
+            except ValueError:
+                print('numbers only')
+                ent_duration.delete(0, tk.END)  # clear the entry
+                ent_duration.insert(0, "numbers only")  # show error message in entry
+                is_valid = False         
+        else:
+            print('no valid duration')
+            ent_duration.delete(0, tk.END)  # clear the entry
+            ent_duration.insert(0, "enter a number")  # show error message in entry
+            is_valid = False
+
+            # check if both entries are valid before proceeding
+        if is_valid and temp is not None and duration is not None:
+            new_sequence = {"temp": temp, "duration": duration}
+            test_data = open_file()
+            test_data["custom"].append(new_sequence)
+            save_file(test_data)
+            update_listbox()
+        else:
+                print("cannot add custom test due to invalid inputs.")
+
+    else:
+            print("unable to add custom test due to file loading error")
+
 
 # remove the selected step from the custom test
 def remove_step():
     try:
         selected_index = listbox.curselection()[0]  # get the selected step index
+        test_data = open_file()
         del test_data["custom"][selected_index]  # remove the selected step
         save_file(test_data)
         update_listbox()  # update the listbox display
@@ -90,6 +153,7 @@ def modify_step():
         selected_index = listbox.curselection()[0]
         temp = float(ent_temp.get().strip())
         duration = int(ent_duration.get().strip())
+        test_data = open_file()
         test_data["custom"][selected_index] = {"temp": temp, "duration": duration}
         save_file(test_data)
         update_listbox()
@@ -101,6 +165,7 @@ def modify_step():
 # update the listbox to show the current steps
 def update_listbox():
     listbox.delete(0, tk.END)  # clear current listbox
+    test_data = open_file()
     for i, step in enumerate(test_data["custom"]):
         listbox.insert(tk.END, f"step {i + 1}: temp = {step['temp']}°C, duration = {step['duration']} mins")
 
@@ -115,7 +180,7 @@ def add_custom():
         temp_string = ent_temp.get().strip()
         duration_string = ent_duration.get().strip()
 
-         # Initialize temp and duration
+        # initialize temp and duration
         temp = None
         duration = None
         is_valid = True  # track overall validity
@@ -166,7 +231,7 @@ def add_custom():
             save_file(test_data)  # save back to json file
             print('custom test added successfully')
         else:
-            print("Cannot add custom test due to invalid inputs.")
+            print("cannot add custom test due to invalid inputs.")
 
     else:
             print("unable to add custom test due to file loading error")
@@ -206,7 +271,7 @@ def run_custom():
 
 # function to clear the entry widget
 def clear_entry_on_click(event):
-    if event.widget.get() in ["temperature in °C: ", "numbers only", "duration in minutes: ", "max temperature = 100°C","minimum duration = 1 minute"]:  # check for placeholder or warning text
+    if event.widget.get() in ["temperature in °C: ", "numbers only", "duration in minutes: ", "max temperature = 100°C","minimum duration is 1 minute"]:  # check for placeholder or warning text
         event.widget.delete(0, tk.END)  # clear the entry widget
         event.widget['fg'] = 'black'  #change text color to normal if needed
 
@@ -427,7 +492,7 @@ btn_run_all_benchmark = tk.Button(frm_tests, text="RUN ALL BENCHMARK TESTS", bg=
 lbl_custom = tk.Label(frm_tests, text="CUSTOM TEST", bg="white")
 #btn_add_step = tk.Button(frm_tests, text="add step", bg="white")
 # buttons to add, remove, and modify steps
-btn_add = tk.Button(frm_tests, text="add step", command=lambda: add_step(float(ent_temp.get()), int(ent_duration.get())))
+btn_add = tk.Button(frm_tests, text="add step", command=add_step)
 #btn_add.pack()
 btn_remove = tk.Button(frm_tests, text="remove step", command=remove_step)
 #btn_remove.pack()
@@ -488,6 +553,8 @@ btn_stop.grid(row=19, column=0, columnspan=3, sticky="ew", padx=5, pady=5)  # Bu
 #position both frames
 frm_tests.grid(row=0, column=0)
 frm_monitor.grid(row=1, column=0, padx=5, pady=20)
+
+
 
 #set data reading from serial every 0.5 second
 window.after(500, read_data)
