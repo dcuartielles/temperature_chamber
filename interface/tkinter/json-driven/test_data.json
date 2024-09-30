@@ -53,6 +53,10 @@
         {
             "temp": 98.0,
             "duration": 65
+        },
+        {
+            "temp": 23.0,
+            "duration": 2
         }
     ]
 }

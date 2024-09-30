@@ -51,6 +51,18 @@ def open_file():
           print(f'file {filepath} not found')
           return None
     
+#clear out any old custom test from file at the beginning of the session:
+def clear_out_custom():
+
+    test_data = open_file()
+    # check if the 'custom' key exists and reset it to an empty list
+    if 'custom' in test_data:
+        test_data['custom'] = []  # keep the key but clear its contents
+
+    save_file(test_data)  # save the updated dictionary back to the JSON file
+    return test_data  # return the Python dictionary
+    
+
 #save input dictionary to json file
 def save_file(test_data):
     
