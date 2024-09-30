@@ -162,12 +162,13 @@ def modify_step():
     except ValueError:
         messagebox.showwarning('warning', 'invalid input!')
 
+
 # update the listbox to show the current steps
 def update_listbox():
     listbox.delete(0, tk.END)  # clear current listbox
     test_data = open_file()
     for i, step in enumerate(test_data['custom']):
-        listbox.insert(tk.END, f'step {i + 1}: temp = {step['temp']}°C, duration = {step['duration']} mins')
+        listbox.insert(tk.END, f'step {i + 1}: temp = {step["temp"]}°C, duration = {step["duration"]} mins')
 
 
 #add custom test
@@ -184,20 +185,49 @@ def add_custom():
         ent_duration.delete(0, tk.END) # clear the duration entry
         listbox.insert(0, 'custom test uploaded')
 
-'''
-#pick your benchmark test method
 
-              
+#run only benchmark tests (all)             
 def run_all_benchmark():
 
+    test_data = open_file()
+
+    if test_data is not None:
+        test_1 = test_data.get('test_1', [])
+        test_2 = test_data.get('test_2', [])
+        test_3 = test_data.get('test_3', [])
+        
+        send_json_to_arduino(test_1)
+        print('runnint test 1')
+        listbox.delete(0, tk.END)  # clear the listbox
+        ent_temp.delete(0, tk.END) #clear the temp entry
+        ent_duration.delete(0, tk.END) # clear the duration entry
+        listbox.insert(0, 'running test 1')
+
+        send_json_to_arduino(test_2)
+        print('running test 2')
+        listbox.delete(0, tk.END)  # clear the listbox
+        ent_temp.delete(0, tk.END) #clear the temp entry
+        ent_duration.delete(0, tk.END) # clear the duration entry
+        listbox.insert(0, 'running test 2')
+
+        send_json_to_arduino(test_3)
+        print('running test 3')
+        listbox.delete(0, tk.END)  # clear the listbox
+        ent_temp.delete(0, tk.END) #clear the temp entry
+        ent_duration.delete(0, tk.END) # clear the duration entry
+        listbox.insert(0, 'running test 3')
+
+    else:
+        print('no such test on file')
+        listbox.delete(0, tk.END)  # clear the listbox
+        ent_temp.delete(0, tk.END) #clear the temp entry
+        ent_duration.delete(0, tk.END) # clear the duration entry
+        listbox.insert(0, 'no such test on file')
 
 
 
 
-
-'''
-
-#choose one benchmark test
+#choose and run one test
 def pick_your_test(test_choice):
     test_data = open_file()
 
@@ -239,11 +269,16 @@ def pick_your_test(test_choice):
         listbox.insert(0, 'no such test on file')
 
 
+#run all tests on file
 def run_all_tests():
 
     test_data = open_file()
     if test_data:
         send_json_to_arduino(test_data)
+        listbox.delete(0, tk.END)  # clear the listbox
+        ent_temp.delete(0, tk.END) #clear the temp entry
+        ent_duration.delete(0, tk.END) # clear the duration entry
+        listbox.insert(0, 'running all tests')
     else:
         print('no test file found')
         listbox.delete(0, tk.END)  # clear the listbox
@@ -358,8 +393,8 @@ def read_data():
                     lbl_monitor['text'] = f'{response}'
                     lbl_r_temp['text'] = f'{room_temp}°C'
                     lbl_d_temp['text'] = f'{desired_temp}°C'
-                    lbl_heater_status['text'] = f'{'ON' if heater_status else 'OFF'}'
-                    lbl_cooler_status['text'] = f'{'ON' if cooler_status else 'OFF'}'
+                    lbl_heater_status['text'] = f'{"ON" if heater_status else "OFF"}'
+                    lbl_cooler_status['text'] = f'{"ON" if cooler_status else "OFF"}'
                 else:
                     print('received unexpected message or no valid data.')
                     lbl_monitor['text'] = 'received unexpected message or no valid data.'
@@ -469,7 +504,7 @@ lbl_benchmark = tk.Label(frm_tests, text='BENCHMARK TESTS', bg='white')
 btn_test1 = tk.Button(frm_tests, text='test 1', bg='white', command=lambda: pick_your_test('test 1'))
 btn_test2 = tk.Button(frm_tests, text='test 2', bg='white', command=lambda: pick_your_test('test 2'))
 btn_test3 = tk.Button(frm_tests, text='test 3', bg='white', command=lambda: pick_your_test('test 3'))
-btn_run_all_benchmark = tk.Button(frm_tests, text='RUN ALL BENCHMARK TESTS', bg='white')
+btn_run_all_benchmark = tk.Button(frm_tests, text='RUN ALL BENCHMARK TESTS', bg='white', command=run_all_benchmark)
 
 #CUSTOM TEST PART
 lbl_custom = tk.Label(frm_tests, text='CUSTOM TEST', bg='white')
@@ -480,21 +515,14 @@ btn_modify = tk.Button(frm_tests, text='modify step', command=modify_step)
 
 # listbox to display the current steps
 listbox = Listbox(frm_tests, height=10, width=50)
-#temp & duration entries & custom test step handling labels
+#temp & duration entries & custom test step handling buttons
 ent_temp = tk.Entry(frm_tests, width=30, justify='center', bg='white', fg='black')
 ent_duration = tk.Entry(frm_tests, width=30, justify='center', bg='white', fg='black')
 btn_add_custom = tk.Button(frm_tests, text='ADD CUSTOM TEST', bg='white', command=add_custom)
-btn_run_custom = tk.Button(frm_tests, text='RUN CUSTOM TEST', bg='white', , command=lambda: pick_your_test('custom'))
-
-#current test/step running display
-lbl_step = tk.Label(frm_tests, text='step ', bd=0.5, relief='solid', width=30, bg='white')
-lbl_step_params = tk.Label(frm_tests, bd=0.5, relief='solid', width=30, bg='white')
+btn_run_custom = tk.Button(frm_tests, text='RUN CUSTOM TEST', bg='white', command=lambda: pick_your_test('custom'))
 
 #run all tests
 btn_run_all_tests = tk.Button(frm_tests, text='RUN ALL TESTS', bg='white', command=run_all_tests)
-#running test display
-lbl_running = tk.Label(frm_tests, text='TEST RUNNING: ', bg='white')
-lbl_running_info = tk.Label(frm_tests, bd=0.5, relief='solid', bg='white') #CHANGE TO A LISTBOX?!
 
 #position labels, buttons and user input widgets in test frame
 lbl_benchmark.grid(row=1, column=0, sticky='w', padx=5, pady=5)
@@ -513,15 +541,11 @@ btn_modify.grid(row=8, column=2, sticky='ew', padx=5, pady=5)
 
 listbox.grid(row=8, rowspan=5, columnspan=2, sticky='nsew', padx=5, pady=5)
 
-lbl_step.grid(row=14,column=0, sticky='ew', padx=5, pady=5)
-lbl_step_params.grid(row=14,column=1, sticky='ew', padx=5, pady=5)
-
 
 btn_add_custom.grid(row=15, column=1, sticky='ew', padx=5, pady=5)
 btn_run_custom.grid(row=15, column=2, sticky='ew', padx=5, pady=5)
 btn_run_all_tests.grid(row=16, column=1, columnspan=2, sticky='ew', padx=5, pady=5)
-lbl_running.grid(row=17, column=0, sticky='w', padx=5, pady=5)
-lbl_running_info.grid(row=17, column=1, columnspan=2, sticky='ew', padx=5, pady=10)
+
 
 # bind the focus event to the function for both entries
 ent_temp.bind('<Button-1>', clear_entry_on_click)

@@ -47,16 +47,12 @@
             "duration": 33
         },
         {
-            "temp": 90.0,
-            "duration": 33
+            "temp": 30.0,
+            "duration": 12
         },
         {
-            "temp": 23.0,
-            "duration": 33
-        },
-        {
-            "temp": 99.0,
-            "duration": 323
+            "temp": 98.0,
+            "duration": 65
         }
     ]
 }
