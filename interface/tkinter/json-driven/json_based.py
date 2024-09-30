@@ -188,14 +188,19 @@ def add_custom():
 
 # run all benchmark tests (test_1, test_2, test_3) automatically
 def run_all_benchmark():
+
     test_data = open_file()
 
     if test_data is not None:
 
+        listbox.delete(0, tk.END)  
+        ent_temp.delete(0, tk.END)  
+        ent_duration.delete(0, tk.END)
+
         # filter out the benchmark test keys (those that start with 'test_')
         benchmark_tests = [key for key in test_data.keys() if key.startswith('test_')]
 
-        # Iterate through each benchmark test and run it
+        # iterate through each benchmark test and run it
         for test_key in benchmark_tests:
             test = test_data.get(test_key, [])
             
@@ -204,21 +209,14 @@ def run_all_benchmark():
                 
                 # print status and update the listbox
                 print(f'Running {test_key}')
-                listbox.delete(0, tk.END)  
-                ent_temp.delete(0, tk.END)  
-                ent_duration.delete(0, tk.END)  
                 listbox.insert(tk.END, f'Running {test_key}')
             else:
                 print(f'{test_key} not found')
-                listbox.delete(0, tk.END)
                 listbox.insert(0, f'{test_key} not found')
 
     else:
         # handle case when no test data is found
         print('no test data found on file')
-        listbox.delete(0, tk.END)  
-        ent_temp.delete(0, tk.END) 
-        ent_duration.delete(0, tk.END)  
         listbox.insert(0, 'no test data found on file')
 
 
@@ -228,60 +226,70 @@ def run_all_benchmark():
 def pick_your_test(test_choice):
     test_data = open_file()
 
+
+
     if test_data is not None:
+
+        #clear out listbox & entries
+        listbox.delete(0, tk.END)
+        ent_temp.delete(0, tk.END)
+        ent_duration.delete(0, tk.END)
+        
         # handle the test choice
         if test_choice == 'test 1':
             test_1 = test_data.get('test_1', [])
             send_json_to_arduino(test_1)
-            listbox.delete(0, tk.END)  # clear the listbox
-            ent_temp.delete(0, tk.END) #clear the temp entry
-            ent_duration.delete(0, tk.END) # clear the duration entry
             listbox.insert(0, 'running test 1')
         elif test_choice == 'test 2':
             test_2 = test_data.get('test_2', [])
             send_json_to_arduino(test_2)
-            listbox.delete(0, tk.END)  # clear the listbox
-            ent_temp.delete(0, tk.END) #clear the temp entry
-            ent_duration.delete(0, tk.END) # clear the duration entry
             listbox.insert(0, 'running test 2')
         elif test_choice == 'test 3':
             test_3 = test_data.get('test_3', [])
             send_json_to_arduino(test_3)
-            listbox.delete(0, tk.END)  # clear the listbox
-            ent_temp.delete(0, tk.END) #clear the temp entry
-            ent_duration.delete(0, tk.END) # clear the duration entry
             listbox.insert(0, 'running test 3')
         else:
             custom_test = test_data.get('custom', [])
             send_json_to_arduino(custom_test)
-            listbox.delete(0, tk.END)  # clear the listbox
-            ent_temp.delete(0, tk.END) #clear the temp entry
-            ent_duration.delete(0, tk.END) # clear the duration entry
             listbox.insert(0, 'running custom test')
     else:
         print('no such test on file')
-        listbox.delete(0, tk.END)  # clear the listbox
-        ent_temp.delete(0, tk.END) #clear the temp entry
-        ent_duration.delete(0, tk.END) # clear the duration entry
         listbox.insert(0, 'no such test on file')
 
 
-#run all tests on file
 def run_all_tests():
 
     test_data = open_file()
-    if test_data:
-        send_json_to_arduino(test_data)
-        listbox.delete(0, tk.END)  # clear the listbox
-        ent_temp.delete(0, tk.END) #clear the temp entry
-        ent_duration.delete(0, tk.END) # clear the duration entry
-        listbox.insert(0, 'running all tests')
+
+    if test_data is not None:
+
+        
+        all_tests = [key for key in test_data.keys()]
+
+        #clear out listbox & entries
+        listbox.delete(0, tk.END)
+        ent_temp.delete(0, tk.END)
+        ent_duration.delete(0, tk.END)
+
+        # iterate through each test test and run it
+        for test_key in all_tests:
+            test = test_data.get(test_key, [])
+            
+            if test:  # if the test data is available
+                send_json_to_arduino(test)  # send the data to Arduino
+                
+                # print status and update the listbox
+                print(f'running {test_key}') 
+                listbox.insert(tk.END, f'running {test_key}')
+            else:
+                print(f'{test_key} not found')
+                listbox.insert(0, f'{test_key} not found or empty')
+
     else:
-        print('no test file found')
-        listbox.delete(0, tk.END)  # clear the listbox
-        ent_temp.delete(0, tk.END) #clear the temp entry
-        ent_duration.delete(0, tk.END) # clear the duration entry
-        listbox.insert(0, 'no test file found')
+        # handle case when no test data is found
+        print('no test data found on file')
+        listbox.delete(0, tk.END)  
+        listbox.insert(0, 'no test data found on file')
 
 #### INTERFACE FUNCTIONALITY ####
 
