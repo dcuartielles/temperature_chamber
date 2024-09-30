@@ -1,0 +1,1029 @@
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -2.00 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.00 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.97 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.97 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.03 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.91 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.91 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.09 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.84 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.84 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.16 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.78 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.78 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.22 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.75 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.75 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.25 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.72 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.72 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.28 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.69 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.69 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.31 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.62 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.62 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.38 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.59 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.59 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.41 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.56 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.56 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.44 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.50 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.50 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.50 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.50 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.50 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.50 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.47 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.47 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.41 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.41 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.38 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.38 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.63 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.34 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.34 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.66 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.28 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.28 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.72 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.28 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.28 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.72 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.25 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.25 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 38.75 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -1.19 lh = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.34 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.66 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.66 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.34 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.59 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.59 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.41 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.59 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.59 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.41 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.56 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.56 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.44 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.50 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.50 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.50 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.53 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.53 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.47 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.47 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.47 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.47 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.47 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.47 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.47 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.41 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.41 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.41 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.41 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.38 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.38 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.63 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.31 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.31 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.69 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.31 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.31 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.69 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.25 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.25 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.75 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.25 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.25 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.75 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.25 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.25 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.75 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.22 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.22 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.78 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.19 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.19 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.81 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.16 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.16 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.84 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.12 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.12 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.88 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.12 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: thresh >-4 lh = 1. actual: thresh = -0.12 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 39.88 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: report. status : 3
+Arduino: s1 heating: duty = 80 period = 25000 lh = 0. actual: duty = 80 period = 25000 lh = 0
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 39.94 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 39.94 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 39.97 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 39.97 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 39.97 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.00 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.03 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.03 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.06 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.09 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.09 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.09 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.09 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.13 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.13 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.13 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.13 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.19 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.19 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.19 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.22 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.22 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.22 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.22 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.25 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.28 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.28 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.28 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.28 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.31 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.34 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.34 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.34 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.34 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 40.38 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: s1 reset: thresh > 0.4 status = COOLING. actual: thresh = 0.41 status = 2
+Arduino: Entered s2 COOLING. actual status = 2
+Arduino: s2 COOLING: stateHeater = 0 stateCooler = 1. actual: stateHeater 0 stateCooler = 1
+Arduino: Room_temp: 40.41 | Desired_temp: 40.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Room_temp: 40.41 | Desired_temp: 40.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 2
+Arduino: Entered s1 COOLING. actual status = 2
+Arduino: s1 cooling: 0.4 < thresh < 1. actual: thresh = 0.41
+Arduino: Entered s2 COOLING. actual status = 2
+Arduino: s2 COOLING: stateHeater = 0 stateCooler = 1. actual: stateHeater 0 stateCooler = 1
+Arduino: Room_temp: 40.41 | Desired_temp: 40.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 2
+Arduino: Entered s1 COOLING. actual status = 2
+Arduino: s1 cooling: 0.4 < thresh < 1. actual: thresh = 0.41
+Arduino: Entered s2 COOLING. actual status = 2
+Arduino: s2 COOLING: stateHeater = 0 stateCooler = 1. actual: stateHeater 0 stateCooler = 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 2
+Arduino: Entered s1 COOLING. actual status = 2
+Arduino: s1 cooling: 0.4 < thresh < 1. actual: thresh = 0.44
+Arduino: Entered s2 COOLING. actual status = 2
+Arduino: s2 COOLING: stateHeater = 0 stateCooler = 1. actual: stateHeater 0 stateCooler = 1
+Arduino: Room_temp: 40.44 | Desired_temp: 40.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 2
+Arduino: Entered s1 COOLING. actual status = 2
+Arduino: s1 cooling: reset. status : 0
+Arduino: s1 cooling: 0.4 < thresh < 1. actual: thresh = 0.44
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.44 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Room_temp: 40.44 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.44 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.50 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.53 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.56 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.63 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.66 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.66 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.66 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.63 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.66 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.63 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0
+Arduino: Entered s2 RESET. actual status = 0
+Arduino: s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater 0 stateCooler = 0 lh = 0
+Arduino: Room_temp: 40.66 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 0
+Arduino: Entered s1 RESET. actual status = 0

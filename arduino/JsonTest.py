@@ -10,8 +10,8 @@ timeout_duration = 5  # Timeout for serial
 # Sample JSON test (3 sequences in this case)
 test_data = {
     "sequences": [
-        {"temp": 50, "duration": 300000},  # 70°C for 5 minutes
         {"temp": 40, "duration": 300000},  # 70°C for 5 minutes
+        {"temp": 35, "duration": 300000},  # 70°C for 5 minutes
         {"temp": 50, "duration": 300000}  # 70°C for 5 minutes
     ]
 }
@@ -34,7 +34,7 @@ def send_json_to_arduino(json_data):
             if ser.in_waiting > 0:
                 response = ser.readline().decode('utf-8').strip()
                 print(f"Arduino: {response}")
-            time.sleep(1)
+            #time.sleep(1)
 
     except serial.SerialException as e:
         print(f"Serial connection error: {e}")

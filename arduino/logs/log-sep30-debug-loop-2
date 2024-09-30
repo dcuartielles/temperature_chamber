@@ -1,0 +1,1264 @@
+Serial connection error: [Errno 2] could not open port /dev/cu.usbmodem34B7DA61DC282: [Errno 2] No such file or directory: '/dev/cu.usbmodem34B7DA61DC282'
+Serial connection error: [Errno 2] could not open port /dev/cu.usbmodem34B7DA61DC282: [Errno 2] No such file or directory: '/dev/cu.usbmodem34B7DA61DC282'
+Sent to Arduino: {"sequences": [{"temp": 40, "duration": 300000}, {"temp": 35, "duration": 300000}, {"temp": 50, "duration": 300000}]}
+Arduino: Room_temp: 33.59 | Desired_temp: 26.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Room_temp: 33.59 | Desired_temp: 26.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Entered s1 COOLING. actual status = 2
+Arduino: s1 cooling: thresh > 1. actual: thresh = 7.59
+Arduino: Entered s2 COOLING. actual status = 2
+Arduino: s2 COOLING: stateHeater = 0 stateCooler = 1. actual: stateHeater 0 stateCooler = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 26.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Room_temp: 33.56 | Desired_temp: 26.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Entered s1 COOLING. actual status = 2
+Arduino: s1 cooling: thresh > 1. actual: thresh = 7.56
+Arduino: Entered s2 COOLING. actual status = 2
+Arduino: s2 COOLING: stateHeater = 0 stateCooler = 1. actual: stateHeater 0 stateCooler = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 26.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Room_temp: 33.56 | Desired_temp: 26.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Entered s1 COOLING. actual status = 2
+Arduino: s1 cooling: thresh > 1. actual: thresh = 7.56
+Arduino: Entered s2 COOLING. actual status = 2
+Arduino: s2 COOLING: stateHeater = 0 stateCooler = 1. actual: stateHeater 0 stateCooler = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 26.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Room_temp: 33.59 | Desired_temp: 26.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Entered s1 COOLING. actual status = 2
+Arduino: s1 cooling: thresh > 1. actual: thresh = 7.59
+Arduino: Entered s2 COOLING. actual status = 2
+Arduino: s2 COOLING: stateHeater = 0 stateCooler = 1. actual: stateHeater 0 stateCooler = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 26.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Received string:
+Arduino: {"sequences": [{"temp": 40, "duration": 300000}, {"temp": 35, "duration": 300000}, {"temp": 50, "duration": 300000}]}
+Arduino: JSON detected, parsing...
+Arduino: Parsed Test Data:
+Arduino: Step 0: Target Temp = 40.00, Duration = 300000
+Arduino: Step 1: Target Temp = 35.00, Duration = 300000
+Arduino: Step 2: Target Temp = 50.00, Duration = 300000
+Arduino: Setting temperature to 40.00¬∞C
+Arduino: Temperature desired set to: 40.00
+Arduino: 40.00
+Arduino: Starting test with target temp: 40.00
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: s1 reset: thresh > 0.4 status = COOLING. actual: thresh = 7.59 status = 2
+Arduino: Entered s2 COOLING. actual status = 2
+Arduino: s2 COOLING: stateHeater = 0 stateCooler = 1. actual: stateHeater 0 stateCooler = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 2
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Entered s1 COOLING. actual status = 2
+Arduino: s1 cooling: thresh < 0.4. actual: thresh = -6.44
+Arduino: Entered s2 REPORT. actual status = 3
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 3
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: s1 reset: thresh < -0.1 status = HEATING. actual: thresh = -6.44 status = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 0
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 0
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 0
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.63 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.63 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.63 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.63 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.66 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.66 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.63 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.63 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Room_temp: 33.63 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = 100 period = 60000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1. actual: stateHeater = 1
+Arduino: Room_temp: 33.63 | Desired_temp: 40.00 | Heater: 1 | Cooler: 1 | LH Indicator: 1Sent to Arduino: {"sequences": [{"temp": 40, "duration": 300000}, {"temp": 35, "duration": 300000}, {"temp": 50, "duration": 300000}]}
+Serial port closed.
+Sent to Arduino: {"sequences": [{"temp": 40, "duration": 300000}, {"temp": 35, "duration": 300000}, {"temp": 50, "duration": 300000}]}
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.53 | Desired_temp: 50.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.53 | Desired_temp: 50.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.53 | Desired_temp: 50.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Received string:
+Arduino: {"sequences": [{"temp": 40, "duration": 300000}, {"temp": 35, "duration": 300000}, {"temp": 50, "duration": 300000}]}
+Arduino: JSON detected, parsing...
+Arduino: Parsed Test Data:
+Arduino: Step 0: Target Temp = 40.00, Duration = 300000
+Arduino: Step 1: Target Temp = 35.00, Duration = 300000
+Arduino: Step 2: Target Temp = 50.00, Duration = 300000
+Arduino: Setting temperature to 40.00¬∞C
+Arduino: Temperature desired set to: 40.00
+Arduino: 40.00
+Arduino: Starting test with target temp: 40.00
+Arduino: Entered s1 REPORT. actual status = 3
+Arduino: s1 reset: thresh < -0.1 status = HEATING. actual: thresh = -21.44 status = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Room_temp: 28.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.62 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.62 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.62 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.62 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.66 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.66 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.66 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.66 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.69 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.69 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.69 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.69 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.72 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.72 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.75 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.75 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.75 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.75 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.78 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.78 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.81 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.81 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.81 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.81 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.84 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.84 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.87 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.87 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.91 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.91 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.91 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.91 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.94 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.94 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.97 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 28.97 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.00 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.00 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.03 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.03 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.06 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.06 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.09 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.09 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.09 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.09 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.12 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.12 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.16 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.16 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.16 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.16 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.22 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.22 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.22 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.22 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.25 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.25 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.28 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.28 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.31 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.31 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.34 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.34 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.37 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.37 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.41 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.41 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.44 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.44 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.47 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.47 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.50 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.50 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.53 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.56 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.59 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.62 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.62 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+Arduino: Running sequence: Target temp = 40.00 Duration = 300000
+Arduino: Status: 1
+Arduino: Entered s1 HEATING. actual status = 1
+Arduino: s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = 100 period = 120000 lh = 1
+Arduino: Entered s2 HEATING. actual status = 1
+Arduino: s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = 1 stateCooler = 0
+Arduino: Room_temp: 29.66 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1

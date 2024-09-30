@@ -144,7 +144,7 @@ bool receivingJson = false;
 
 // Define Variables
 double temperatureRoom;
-double temperatureDesired = 26;  // by default, we want to reach max temperature
+double temperatureDesired = 50;  // by default, we want to reach max temperature
 float TemperatureThreshold = 0;
 double temperatureRoomOld;
 double temperatureDesiredOld;
@@ -439,7 +439,18 @@ void runTestSequence(float temperature, unsigned long duration, String stepDescr
         isTestRunning = false;  // Test step is done, can proceed to the next one
     }
 }
+
+unsigned long lastUpdate = 0;
+unsigned long updateInterval = 500;
+
 void loop() {  
+
+    unsigned long currentMillis = millis();
+    if (currentMillis - lastUpdate >= updateInterval) {
+        showData();
+        lastUpdate = currentMillis;
+    }
+
     ////// OLD //////
     temperatureRoomOld = temperatureRoom;
     stateHeaterOld = stateHeater;
@@ -474,7 +485,6 @@ void loop() {
             incomingString = "";  // Reset for the next command
         }
     }
-    showData();
 
     switch (status) {
         case RESET:
@@ -589,14 +599,15 @@ void loop() {
             stateCooler = 0;
             longheatingflag =0;
             Serial.println("s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater " + String(stateHeater) + " stateCooler = " + String(stateCooler) + " lh = " + String(longheatingflag));
-            showData();
+            //showData();
             break;
         case HEATING:
             Serial.println("Entered s2 HEATING. actual status = " + String(status));
             PWMHeater(dutyCycleHeater, PeriodHeater);
+            stateCooler = 0;    // TODO: Test
             stateHeater = 1;
-            Serial.println("s2 heating: stateHeater = 1. actual: stateHeater = " + String(stateHeater));
-            showData();
+            Serial.println("s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = " + String(stateHeater) + " stateCooler = " + String(stateCooler));
+            //showData();
             break;
         case COOLING:
             Serial.println("Entered s2 COOLING. actual status = " + String(status));
@@ -604,11 +615,11 @@ void loop() {
             stateHeater = 0;    // TODO: Test
             stateCooler = 1;
             Serial.println("s2 COOLING: stateHeater = 0 stateCooler = 1. actual: stateHeater " + String(stateHeater) + " stateCooler = " + String(stateCooler));
-            showData();
+            //showData();
             break;
         case REPORT:
             Serial.println("Entered s2 REPORT. actual status = " + String(status));
-            showData();
+            //showData();
             break;
         case EMERGENCY_STOP:
             Serial.println("Entered s2 EMERGENCY_STOP. actual status = " + String(status));
