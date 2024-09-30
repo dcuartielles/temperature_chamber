@@ -5,11 +5,15 @@ import serial
 import time
 import json
 #in case you want to use file finder
-from tkinter.filedialog import askopenfilename, asksaveasfilename 
+#from tkinter.filedialog import askopenfilename, asksaveasfilename 
+from tkinter import messagebox, Listbox
 
 
 # global flag for stopping the reading process
 is_stopped = False
+
+#declare listbox as it's used in funcitons below
+listbox = None
 
 
 ###############        FUNCTIONALITY AND LOGIC       ###############
@@ -54,7 +58,7 @@ def save_file(test_data):
 
     try:
     
-          # Write to a file
+          # write to a file
           with open(filepath, 'w') as f:
               #convert dictionary to json and write
               json.dump(test_data, f, indent=4)
@@ -62,6 +66,43 @@ def save_file(test_data):
 
     except Exception as e:
          print(f"failed to save file: {e}")
+
+# add a step to the custom test
+def add_step(temp, duration):
+    new_sequence = {"temp": temp, "duration": duration}
+    test_data["custom"].append(new_sequence)
+    save_file(test_data)
+    update_listbox()
+
+# remove the selected step from the custom test
+def remove_step():
+    try:
+        selected_index = listbox.curselection()[0]  # get the selected step index
+        del test_data["custom"][selected_index]  # remove the selected step
+        save_file(test_data)
+        update_listbox()  # update the listbox display
+    except IndexError:
+        messagebox.showwarning("warning", "no step selected to remove!")
+
+# modify the selected step
+def modify_step():
+    try:
+        selected_index = listbox.curselection()[0]
+        temp = float(ent_temp.get().strip())
+        duration = int(ent_duration.get().strip())
+        test_data["custom"][selected_index] = {"temp": temp, "duration": duration}
+        save_file(test_data)
+        update_listbox()
+    except IndexError:
+        messagebox.showwarning("warning", "no step selected to modify!")
+    except ValueError:
+        messagebox.showwarning("warning", "invalid input!")
+
+# update the listbox to show the current steps
+def update_listbox():
+    listbox.delete(0, tk.END)  # clear current listbox
+    for i, step in enumerate(test_data["custom"]):
+        listbox.insert(tk.END, f"step {i + 1}: temp = {step['temp']}°C, duration = {step['duration']} mins")
 
 
 #add custom test
@@ -323,12 +364,15 @@ window.wm_minsize(600, 750) # Minimum width of 650px and height of 800px
 window.columnconfigure(0, minsize=600, weight=1) #make sure gui is vertically centered 
 
 '''
-# Define global fonts for specific widgets
+# define global fonts for specific widgets
 window.option_add("*Label.Font", ("Arial", 14, "bold"))  # Apply to all Label widgets
 window.option_add("*Button.Font", ("Arial", 12, "bold"))  # Apply to all Button widgets
 window.option_add("*Entry.Font", ("Arial", 12))          # Apply to all Entry widgets
 '''
 
+
+# populate the listbox with initial data
+#update_listbox()
 
 #monitor frame and content
 frm_monitor = tk.Frame(window, borderwidth=1, highlightthickness=0, bg="white")
@@ -381,12 +425,20 @@ btn_test3 = tk.Button(frm_tests, text="test 3", bg="white")
 btn_run_all_benchmark = tk.Button(frm_tests, text="RUN ALL BENCHMARK TESTS", bg="white")
 #custom test part
 lbl_custom = tk.Label(frm_tests, text="CUSTOM TEST", bg="white")
-btn_add_step = tk.Button(frm_tests, text="add step", bg="white")
-btn_delete_step = tk.Button(frm_tests, text="delete", bg="white")
+#btn_add_step = tk.Button(frm_tests, text="add step", bg="white")
+# buttons to add, remove, and modify steps
+btn_add = tk.Button(frm_tests, text="add step", command=lambda: add_step(float(ent_temp.get()), int(ent_duration.get())))
+#btn_add.pack()
+btn_remove = tk.Button(frm_tests, text="remove step", command=remove_step)
+#btn_remove.pack()
+btn_modify = tk.Button(frm_tests, text="modify step", command=modify_step)
+#btn_modify.pack()
+# listbox to display the current steps
+listbox = Listbox(frm_tests, height=10, width=50)
 ent_temp = tk.Entry(frm_tests, width=30, justify='center', bg="white", fg="black")
 lbl_step = tk.Label(frm_tests, text="step ", bd=0.5, relief="solid", width=30, bg="white")
 lbl_step_params = tk.Label(frm_tests, bd=0.5, relief="solid", width=30, bg="white")
-btn_delete = tk.Button(frm_tests, text="delete", bg="white")
+#btn_delete = tk.Button(frm_tests, text="delete", bg="white")
 ent_duration = tk.Entry(frm_tests, width=30, justify='center', bg="white", fg="black")
 btn_add_custom = tk.Button(frm_tests, text="ADD CUSTOM TEST", bg="white", command=add_custom)
 btn_run_custom = tk.Button(frm_tests, text="RUN CUSTOM TEST", bg="white", command=run_custom)
@@ -402,19 +454,26 @@ btn_test1.grid(row=2, column=1, sticky="ew", padx=5, pady=5)
 btn_test2.grid(row=3, column=1, sticky="ew", padx=5, pady=5)
 btn_test3.grid(row=4, column=1, sticky="ew", padx=5, pady=5)
 btn_run_all_benchmark.grid(row=5, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
+#custom
 lbl_custom.grid(row=6, column=0, sticky="w", padx=5, pady=5)
-btn_add_step.grid(row=7, column=2, sticky="w", padx=5, pady=5)
-ent_temp.grid(row=7, column=0, sticky="ew", padx=5, pady=5)
-btn_delete_step.grid(row=7, column=2, sticky="e", padx=5, pady=5)
 ent_duration.grid(row=7, column=1, sticky="ew", padx=5, pady=5)
-lbl_step.grid(row=8,column=0, sticky="ew", padx=5, pady=5)
-lbl_step_params.grid(row=8,column=1, sticky="ew", padx=5, pady=5)
-btn_delete.grid(row=8,column=2, sticky="ew", padx=5, pady=5)
-btn_add_custom.grid(row=9, column=1, sticky="ew", padx=5, pady=5)
-btn_run_custom.grid(row=9, column=2, sticky="ew", padx=5, pady=5)
-btn_run_all_tests.grid(row=11, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
-lbl_running.grid(row=12, column=0, sticky="w", padx=5, pady=5)
-lbl_running_info.grid(row=12, rowspan=3, column=1, columnspan=2, sticky="ew", padx=5, pady=10)
+ent_temp.grid(row=7, column=0, sticky="ew", padx=5, pady=5)
+
+btn_add.grid(row=7, column=2, sticky="ew", padx=5, pady=5)
+btn_remove.grid(row=9, column=2, sticky="ew", padx=5, pady=5)
+btn_modify.grid(row=8, column=2, sticky="ew", padx=5, pady=5)
+
+listbox.grid(row=8, rowspan=5, columnspan=2, sticky="nsew", padx=5, pady=5)
+
+lbl_step.grid(row=14,column=0, sticky="ew", padx=5, pady=5)
+lbl_step_params.grid(row=14,column=1, sticky="ew", padx=5, pady=5)
+#btn_delete.grid(row=8,column=2, sticky="ew", padx=5, pady=5)
+
+btn_add_custom.grid(row=15, column=1, sticky="ew", padx=5, pady=5)
+btn_run_custom.grid(row=15, column=2, sticky="ew", padx=5, pady=5)
+btn_run_all_tests.grid(row=16, column=1, columnspan=2, sticky="ew", padx=5, pady=5)
+lbl_running.grid(row=17, column=0, sticky="w", padx=5, pady=5)
+lbl_running_info.grid(row=17, column=1, columnspan=2, sticky="ew", padx=5, pady=10)
 
 # bind the focus event to the function for both entries
 ent_temp.bind("<Button-1>", clear_entry_on_click)
@@ -424,7 +483,7 @@ add_placeholder(ent_duration, "duration in minutes: ")
 
 # create & position the STOP button to span across both columns
 btn_stop = tk.Button(frm_tests, text="STOP", command=emergency_stop, bg="red", fg="white")
-btn_stop.grid(row=15, column=0, columnspan=3, sticky="ew", padx=5, pady=5)  # Button spans across two columns
+btn_stop.grid(row=19, column=0, columnspan=3, sticky="ew", padx=5, pady=5)  # Button spans across two columns
 
 #position both frames
 frm_tests.grid(row=0, column=0)
