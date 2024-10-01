@@ -41,18 +41,5 @@
             "duration": 12000
         }
     ],
-    "custom": [
-        {
-            "temp": 23.0,
-            "duration": 2700000.0
-        },
-        {
-            "temp": 56.0,
-            "duration": 2040000.0
-        },
-        {
-            "temp": 34.0,
-            "duration": 19380000.0
-        }
-    ]
+    "custom": []
 }

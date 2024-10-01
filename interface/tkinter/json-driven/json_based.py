@@ -200,7 +200,6 @@ def add_custom():
 
         save_file(test_data)  # save back to json file
         print('custom test added successfully')
-        #listbox.delete(0, tk.END)  # clear the listbox
         ent_temp.delete(0, tk.END) #clear the temp entry
         ent_duration.delete(0, tk.END) # clear the duration entry
         listbox.insert(0, 'custom test uploaded')
