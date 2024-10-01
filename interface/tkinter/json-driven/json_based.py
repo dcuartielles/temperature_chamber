@@ -342,7 +342,7 @@ def serial_setup(port='COM15', baudrate=9600, timeout=5): # adjust port if neces
         lbl_monitor['text'] = f'connected to arduino port: {port}'
         time.sleep(1)  # make sure arduino is ready
         return ser
-    except serial.SerialException as e:
+    except serial.SerialException as e:c
         print(f'error: {e}')
         # lbl_monitor['text'] = f'error: {e}'
         return None
