@@ -1,4 +1,4 @@
-#imports
+# imports
 import tkinter as tk
 from PIL import Image, ImageTk #for images
 import serial
@@ -12,49 +12,48 @@ from tkinter import messagebox, Listbox
 # global flag for stopping the reading process
 is_stopped = False
 
-#declare listbox as it's used in funcitons below
+# declare listbox as it's used in functions below
 listbox = None
-
 
 ###############        FUNCTIONALITY AND LOGIC       ###############
 
 #### JSON HANDLING ####
 
-#send json through serial / run all tests
+# send json through serial / run all tests
 def send_json_to_arduino(test_data):
         
-        json_data = json.dumps(test_data) #convert py dictionary to json
+        json_data = json.dumps(test_data) # convert py dictionary to json
         
         ser.write((json_data + '\n').encode('utf-8'))
-        print(f'Sent to Arduino: {json_data}')
+        print(f'sent to Arduino: {json_data}')
 
         # Continuously read Arduino output
         while True:
             if ser.in_waiting > 0:
                 response = ser.readline().decode('utf-8').strip()
                 print(f'Arduino: {response}')
-            #time.sleep(1)
+            # time.sleep(1)
 
 
-#open json file and convert it to py dictionary
+# open json file and convert it to py dictionary
 def open_file():
     
-   #open a file 
+   # open a file
     filepath = 'C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/json-driven/test_data.json'
 
     try:
           with open(filepath, mode='r') as input_file:
                 test_data = json.load(input_file)  # convert raw json to py dictionary
-                custom = test_data.get('custom', []) #get the 'custom' list
+                custom = test_data.get('custom', []) # get the 'custom' list
                 for i, step in enumerate(custom):
-                    step['duration'] = step['duration'] / 60000 #convert minutes to miliseconds for arduino
+                    step['duration'] = step['duration'] / 60000 # convert minutes to miliseconds for arduino
                 return test_data  # return py dictionary
             
     except FileNotFoundError:
           print(f'file {filepath} not found')
           return None
     
-#clear out any old custom test from file at the beginning of the session:
+# clear out any old custom test from file at the beginning of the session:
 def clear_out_custom():
 
     test_data = open_file()
@@ -66,21 +65,21 @@ def clear_out_custom():
     return test_data  # return the Python dictionary
     
 
-#save input dictionary to json file
+# save input dictionary to json file
 def save_file(test_data):
     
     filepath = 'C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/json-driven/test_data.json'
 
-    custom = test_data.get('custom', []) #get the 'custom' list
+    custom = test_data.get('custom', []) # get the 'custom' list
 
     for i, step in enumerate(custom):
-        step['duration'] = step['duration'] * 60000 #convert minutes to miliseconds for arduino
+        step['duration'] = step['duration'] * 60000 # convert minutes to miliseconds for arduino
 
     try:
             
             # write to a file
             with open(filepath, 'w') as f:
-                    #convert dictionary to json and write
+                    # convert dictionary to json and write
                     json.dump(test_data, f, indent=4)
                     print(f'data seved to {filepath}')
 
@@ -94,7 +93,7 @@ def add_step():
 
 
     if test_data is not None:
-        #get input and clear it of potential empty spaces
+        # get input and clear it of potential empty spaces
         temp_string = ent_temp.get().strip()
         duration_string = ent_duration.get().strip()
 
@@ -191,7 +190,7 @@ def update_listbox():
         listbox.insert(tk.END, f'step {i + 1}: temp = {step["temp"]}°C, duration = {step["duration"]} mins')
 
 
-#add custom test
+# add custom test
 def add_custom():
     
     test_data = open_file()
@@ -200,7 +199,7 @@ def add_custom():
 
         save_file(test_data)  # save back to json file
         print('custom test added successfully')
-        ent_temp.delete(0, tk.END) #clear the temp entry
+        ent_temp.delete(0, tk.END) # clear the temp entry
         ent_duration.delete(0, tk.END) # clear the duration entry
         listbox.insert(0, 'custom test uploaded')
 
@@ -241,7 +240,7 @@ def run_all_benchmark():
 
 
 
-#choose and run one test
+# choose and run one test
 def pick_your_test(test_choice):
     test_data = open_file()
 
@@ -249,7 +248,7 @@ def pick_your_test(test_choice):
 
     if test_data is not None:
 
-        #clear out listbox & entries
+        # clear out listbox & entries
         listbox.delete(0, tk.END)
         ent_temp.delete(0, tk.END)
         ent_duration.delete(0, tk.END)
@@ -285,7 +284,7 @@ def run_all_tests():
         
         all_tests = [key for key in test_data.keys()]
 
-        #clear out listbox & entries
+        # clear out listbox & entries
         listbox.delete(0, tk.END)
         ent_temp.delete(0, tk.END)
         ent_duration.delete(0, tk.END)
@@ -316,7 +315,7 @@ def run_all_tests():
 def clear_entry_on_click(event):
     if event.widget.get() in ['temperature in °C: ', 'numbers only', 'duration in minutes: ', 'max temperature = 100°C', 'enter a number', 'minimum duration is 1 minute']:  # check for placeholder or warning text
         event.widget.delete(0, tk.END)  # clear the entry widget
-        event.widget['fg'] = 'black'  #change text color to normal if needed
+        event.widget['fg'] = 'black'  # change text color to normal if needed
 
 def clear_entry_on_stop():
     ent_duration.delete(0, tk.END)
@@ -349,21 +348,21 @@ def serial_setup(port='COM15', baudrate=9600, timeout=5):
         try:
             ser = serial.Serial(port, baudrate, timeout=timeout)
             print(f'connected to arduino port: {port}')
-            #lbl_monitor['text'] = f'connected to arduino port: {port}'
-            time.sleep(1)   #make sure arduino is ready
+            lbl_monitor['text'] = f'connected to arduino port: {port}'
+            time.sleep(1)   # make sure arduino is ready
             return ser
         except serial.SerialException as e:
             print(f'error: {e}')
-            #lbl_monitor['text'] = f'error: {e}'
+            # lbl_monitor['text'] = f'error: {e}'
             return None
-        finally:
+        '''finally:
             # Close serial connection
             if 'ser' in locals() and ser.is_open:
                 ser.close()
-                print('Serial port closed.')
+                print('Serial port closed.')'''
 
 
-#parse decoded serial response for smooth data extraction
+# parse decoded serial response for smooth data extraction
 def parse_serial_response(response):
     # split the response string into key-value pairs
     data = response.split(' | ')
@@ -392,7 +391,7 @@ def parse_serial_response(response):
     return parsed_data
 
 
-#read data from serial
+# read data from serial
 def read_data():
     
     global is_stopped
@@ -403,7 +402,7 @@ def read_data():
                 send_command(ser, 'SHOW DATA')  # send command to request data
                 time.sleep(0.2)  # wait for arduino to process the command
 
-                response = ser.readline().decode('utf-8').strip() #decode serial response
+                response = ser.readline().decode('utf-8').strip() # decode serial response
 
                 # parse the response
                 parsed_data = parse_serial_response(response)
@@ -428,16 +427,16 @@ def read_data():
                 lbl_monitor['text'] = f'Error reading data: {e}'
 
         # schedule the next read_data call only if the system is not stopped
-        window.after(1000, read_data)    
+        window.after(1000, read_data)
 
-#sends a command to arduino via serial      
-def send_command(ser, command):     
+# sends a command to arduino via serial
+def send_command(ser, command):
 
         try:
-            ser.reset_input_buffer() #clear the gates
-            ser.write((command + '\n').encode('utf-8')) #encode command in serial
-            print(f'sent command: {command}') #debug line
-            time.sleep(0.05)   #small delay for command processing
+            ser.reset_input_buffer() # clear the gates
+            ser.write((command + '\n').encode('utf-8')) # encode command in serial
+            print(f'sent command: {command}') # debug line
+            time.sleep(0.05)   # small delay for command processing
 
         except serial.SerialException as e:
             print(f'error sending command: {e}')
@@ -449,7 +448,7 @@ def send_command(ser, command):
 # emergency stop
 def emergency_stop():
     global is_stopped
-    is_stopped = True #set flag to stop the read_data loop
+    is_stopped = True # set flag to stop the read_data loop
 
     command = 'EMERGENCY STOP'
     send_command(ser, command)
@@ -462,16 +461,44 @@ def emergency_stop():
 
 ###############        GUI PART       ###############
 
-ser = serial_setup()
+ser = serial_setup() # necessary start for interactions with arduino
 
-#initialize a new window
+# initialize a new window
 window = tk.Tk()
 window.title('temperature chamber')
 window.configure(bg='white')
-window.wm_minsize(600, 750) # Minimum width of 650px and height of 800px
+# set an initial size for the window (width, height)
+window.geometry("820x820")
 
-#prepare the general grid
-window.columnconfigure(0, minsize=600, weight=1) #make sure gui is vertically centered 
+# prepare the general grid
+window.columnconfigure(0, weight=1) # make sure gui is vertically centered & expandable
+window.rowconfigure(0, weight=1) # and horizontally
+
+# create a canvas to allow scrolling
+canvas = tk.Canvas(window, bg='white')
+canvas.grid(row=0, column=0, sticky='nsew') # extend it across the whole window
+
+# add vertical scrollbar
+vertical_scrollbar = tk.Scrollbar(window, orient="vertical", command=canvas.yview)
+vertical_scrollbar.grid(row=0, column=1, sticky='ns')
+
+# add horizontal scrollbar
+horizontal_scrollbar = tk.Scrollbar(window, orient="horizontal", command=canvas.xview)
+horizontal_scrollbar.grid(row=1, column=0, sticky='ew')
+
+# configure the canvas to use the scrollbars
+canvas.configure(yscrollcommand=vertical_scrollbar.set, xscrollcommand=horizontal_scrollbar.set)
+
+# bind the resizing event of the canvas to update the scrollable region dynamically
+def update_scrollregion(event):
+    canvas.configure(scrollregion=canvas.bbox("all"))
+
+canvas.bind('<Configure>', update_scrollregion)
+
+# create a frame inside the canvas to hold the rest of the gui
+main_frame = tk.Frame(canvas, bg='white')
+canvas.create_window((0, 0), window=main_frame, anchor='nw')
+
 
 '''
 # define global fonts for specific widgets
@@ -480,10 +507,8 @@ window.option_add('*Button.Font', ('Arial', 12, 'bold'))  # Apply to all Button 
 window.option_add('*Entry.Font', ('Arial', 12))          # Apply to all Entry widgets
 '''
 
-
-
 #MONITOR FRAME & CONTENT
-frm_monitor = tk.Frame(window, borderwidth=1, highlightthickness=0, bg='white')
+frm_monitor = tk.Frame(main_frame, borderwidth=1, highlightthickness=0, bg='white')
 lbl_monitor = tk.Label(frm_monitor, text='arduino says things here', width=70, bg='#009FAF', fg='white', font='bold')
 lbl_room = tk.Label(frm_monitor, text='current temperature', bg='white')
 lbl_r_temp = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
@@ -512,7 +537,7 @@ lbl_monitor.grid(row=5, column=0, columnspan=2, sticky='ew', padx=5, pady=5)
 
 
 #TEST FRAME & CONTENT + LOGO
-frm_tests = tk.Frame(window, borderwidth=1, highlightthickness=0, bg='white')
+frm_tests = tk.Frame(main_frame, borderwidth=1, highlightthickness=0, bg='white')
 
 #LOGO 
 image_path = 'C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/json-driven/arduino_logo.png'  # path to logo file
