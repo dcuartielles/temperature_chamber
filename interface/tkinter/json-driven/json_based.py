@@ -45,6 +45,9 @@ def open_file():
     try:
           with open(filepath, mode='r') as input_file:
                 test_data = json.load(input_file)  # convert raw json to py dictionary
+                custom = test_data.get('custom', []) #get the 'custom' list
+                for i, step in enumerate(custom):
+                    step['duration'] = step['duration'] / 60000 #convert minutes to miliseconds for arduino
                 return test_data  # return py dictionary
             
     except FileNotFoundError:
@@ -68,16 +71,21 @@ def save_file(test_data):
     
     filepath = 'C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/tkinter/json-driven/test_data.json'
 
+    custom = test_data.get('custom', []) #get the 'custom' list
+
+    for i, step in enumerate(custom):
+        step['duration'] = step['duration'] * 60000 #convert minutes to miliseconds for arduino
+
     try:
-    
-          # write to a file
-          with open(filepath, 'w') as f:
-              #convert dictionary to json and write
-              json.dump(test_data, f, indent=4)
-              print(f'data seved to {filepath}')
+            
+            # write to a file
+            with open(filepath, 'w') as f:
+                    #convert dictionary to json and write
+                    json.dump(test_data, f, indent=4)
+                    print(f'data seved to {filepath}')
 
     except Exception as e:
-         print(f'failed to save file: {e}')
+            print(f'failed to save file: {e}')
 
 # add a step to the custom test
 def add_step():
@@ -189,12 +197,6 @@ def add_custom():
     test_data = open_file()
 
     if test_data is not None:
-
-        '''custom = test_data.get('custom', []) #get the 'custom' list
-
-        for i, step in enumerate(custom):
-            step['duration'] = step['duration'] * 60000 #convert minutes to miliseconds for arduino
-            has to happen but the logis when uploading it to the listbox does not work'''
 
         save_file(test_data)  # save back to json file
         print('custom test added successfully')
@@ -588,5 +590,6 @@ frm_monitor.grid(row=1, column=0, padx=5, pady=20)
 
 #set data reading from serial every 0.5 second
 window.after(500, read_data)
+window.after(1000, clear_out_custom)
 
 window.mainloop()
