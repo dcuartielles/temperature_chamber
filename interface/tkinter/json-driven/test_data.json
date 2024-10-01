@@ -2,43 +2,43 @@
     "test_1": [
         {
             "temp": 50,
-            "duration": 3000
+            "duration": 30000
         },
         {
             "temp": 40,
-            "duration": 10000
+            "duration": 100000
         },
         {
             "temp": 50,
-            "duration": 12000
+            "duration": 120000
         }
     ],
     "test_2": [
         {
             "temp": 50,
-            "duration": 3000
+            "duration": 30000
         },
         {
             "temp": 40,
-            "duration": 10000
+            "duration": 100000
         }
     ],
     "test_3": [
         {
             "temp": 50,
-            "duration": 3000
+            "duration": 30000
         },
         {
             "temp": 40,
-            "duration": 10000
+            "duration": 100000
         },
         {
             "temp": 50,
-            "duration": 12000
+            "duration": 120000
         },
         {
             "temp": 50,
-            "duration": 12000
+            "duration": 120000
         }
     ],
     "custom": []
