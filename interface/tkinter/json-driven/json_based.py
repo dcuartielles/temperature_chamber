@@ -5,6 +5,7 @@ import serial
 import time
 import json
 from tkinter import messagebox, Listbox
+from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 # global flag for stopping the reading process
 is_stopped = False
@@ -76,7 +77,7 @@ def save_file(test_data):
         with open(filepath, 'w') as f:
             # convert dictionary to json and write
             json.dump(test_data, f, indent=4)
-            print(f'data seved to {filepath}')
+            print(f'data saved to {filepath}')
 
     except Exception as e:
         print(f'failed to save file: {e}')
@@ -334,7 +335,7 @@ def add_placeholder(entry, placeholder_text):
 #### SERIAL INTERACTION ####
 
 # set up serial communication
-def serial_setup(port='COM15', baudrate=9600, timeout=5):
+def serial_setup(port='COM15', baudrate=9600, timeout=5): # adjust port if necessary
     try:
         ser = serial.Serial(port, baudrate, timeout=timeout)
         print(f'connected to arduino port: {port}')
@@ -345,11 +346,11 @@ def serial_setup(port='COM15', baudrate=9600, timeout=5):
         print(f'error: {e}')
         # lbl_monitor['text'] = f'error: {e}'
         return None
-    '''finally:
+    finally:
             # Close serial connection
             if 'ser' in locals() and ser.is_open:
                 ser.close()
-                print('Serial port closed.')'''
+                print('Serial port closed.')
 
 
 # parse decoded serial response for smooth data extraction
@@ -445,6 +446,22 @@ def emergency_stop():
     clear_entry_on_stop()
     listbox.delete(0, tk.END)  # clear the listbox
     listbox.insert(0, 'EMERGENCY STOP')
+
+
+#### WRITE TO TXT FILE PART? ####
+
+# save listbox putput to a text file (for now)
+def save_text_file():
+    filepath = asksaveasfilename(
+        defaultextension=".txt",
+        filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],
+    )
+    if not filepath:
+        return
+    with open(filepath, mode="w", encoding="utf-8") as output_file:
+        text = listbox.get(0, tk.END)
+        text_str = "\n".join(text)
+        output_file.write(text_str)
 
 
 ###############        GUI PART       ###############
@@ -544,6 +561,7 @@ btn_test1 = tk.Button(frm_tests, text='test 1', bg='white', command=lambda: pick
 btn_test2 = tk.Button(frm_tests, text='test 2', bg='white', command=lambda: pick_your_test('test 2'))
 btn_test3 = tk.Button(frm_tests, text='test 3', bg='white', command=lambda: pick_your_test('test 3'))
 btn_run_all_benchmark = tk.Button(frm_tests, text='RUN ALL BENCHMARK TESTS', bg='white', command=run_all_benchmark)
+btn_save_file = tk.Button(frm_tests, text='save custom test to file', bg="red", command=save_text_file)
 
 # CUSTOM TEST PART
 lbl_custom = tk.Label(frm_tests, text='CUSTOM TEST', bg='white')
@@ -569,6 +587,7 @@ btn_run_all_tests = tk.Button(frm_tests, text='RUN ALL TESTS', bg='white', comma
 
 # position labels, buttons and user input widgets in test frame
 lbl_benchmark.grid(row=1, column=0, sticky='w', padx=5, pady=5)
+btn_save_file.grid(row=2, column=2, rowspan=3, sticky='nsew', padx=5, pady=5)
 btn_test1.grid(row=2, column=1, sticky='ew', padx=5, pady=5)
 btn_test2.grid(row=3, column=1, sticky='ew', padx=5, pady=5)
 btn_test3.grid(row=4, column=1, sticky='ew', padx=5, pady=5)
