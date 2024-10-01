@@ -136,6 +136,7 @@ int currentSequenceIndex = 0;
 unsigned long sequenceStartTime = 0;
 
 // JSON Buffer for parsing
+char incomingString[512];
 StaticJsonDocument<1024> jsonBuffer;
 
 // Serial input variables
@@ -263,26 +264,23 @@ void PWMCooler(int dutyCycle, unsigned long PeriodCooler) {
     }
 }
 
-void parseTextFromJson(String json) {
+void parseTextFromJson(JsonDocument& doc) {
     jsonBuffer.clear();
-    DeserializationError error = deserializeJson(jsonBuffer, json);
-    if (error) {
-        Serial.print("Failed to parse JSON: ");
-        Serial.println(error.c_str());
-        return;
-    }
 
-    JsonArray sequences = jsonBuffer["sequences"];
+    JsonArray sequences = doc.as<JsonArray>();
+
     int numSequences = sequences.size();
     if (numSequences > 5) numSequences = 5;
 
     currentTest.numSequences = numSequences;
 
-    // debug
-    Serial.println("Parsed Test Data:");
     for (int i = 0; i < numSequences; i++) {
-        currentTest.sequences[i].targetTemp = sequences[i]["temp"];
-        currentTest.sequences[i].duration = sequences[i]["duration"];
+        JsonObject sequence = sequences[i];
+
+        currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
+        currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
+
+        // debug
         Serial.print("Step ");
         Serial.print(i);
         Serial.print(": Target Temp = ");
@@ -291,6 +289,7 @@ void parseTextFromJson(String json) {
         Serial.println(currentTest.sequences[i].duration);
     }
 
+    // start the test with the first sequence
     currentSequenceIndex = 0;
     isTestRunning = true;
     status = REPORT;
@@ -609,9 +608,12 @@ void loop() {
     stateHeaterOld = stateHeater;
     stateCoolerOld = stateCooler;
     temperatureDesiredOld = temperatureDesired;
+
+    // get latest room temp
     temperatureRoom = getTemperature();
     TemperatureThreshold = temperatureRoom - temperatureDesired;
 
+    // run test sequence if active
     if (isTestRunning) {
         runCurrentSequence();
     }
@@ -619,22 +621,19 @@ void loop() {
     // Check if data is available on the serial port
     if (Serial.available() > 0) {
         // Read the incoming data in chunks instead of one character at a time
-        String incomingString = Serial.readStringUntil('\n');  // Read until newline or buffer is full
+        int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
+        incomingString[len] = '\0'; // null-terminate the string
 
-        if (incomingString.length() > 0) {
-            Serial.println("Received string:");
-            Serial.println(incomingString);
-
-            // Handle the input string (either a command or JSON)
-            if (incomingString.startsWith("{") && incomingString.endsWith("}")) {
-                Serial.println("JSON detected, parsing...");
-                parseTextFromJson(incomingString);  // Parse the JSON
-            } else {
-                Serial.println("Command detected, parsing...");
-                parseCommand(incomingString);  // Parse regular commands
-            }
-            incomingString = "";  // Reset for the next command
+        DeserializationError error = deserializeJson(jsonBuffer, incomingString);
+        // Handle the input string (either a command or JSON)
+        if (!error) {
+            Serial.println("JSON detected, parsing...");
+            parseTextFromJson(jsonBuffer);  // Parse the JSON
+        } else {
+            Serial.println("Command detected, parsing...");
+            parseCommand(incomingString);  // Parse regular commands
         }
+        //incomingString = "";  // Reset for the next command
     }
 
     switch (status) {
