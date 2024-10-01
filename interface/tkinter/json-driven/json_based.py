@@ -315,7 +315,7 @@ def run_all_tests():
 
 # function to clear the entry widget
 def clear_entry_on_click(event):
-    if event.widget.get() in ['temperature in °C: ', 'numbers only', 'duration in minutes: ', 'max temperature = 100°C','minimum duration is 1 minute']:  # check for placeholder or warning text
+    if event.widget.get() in ['temperature in °C: ', 'numbers only', 'duration in minutes: ', 'max temperature = 100°C', 'enter a number', 'minimum duration is 1 minute']:  # check for placeholder or warning text
         event.widget.delete(0, tk.END)  # clear the entry widget
         event.widget['fg'] = 'black'  #change text color to normal if needed
 
