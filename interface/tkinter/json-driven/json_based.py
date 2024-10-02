@@ -500,10 +500,10 @@ window = tk.Tk()
 window.title('temperature chamber')
 window.configure(bg='white')
 # set an initial size for the window (width, height)
-window.geometry("820x820")
+window.geometry("680x700")
 
 # prepare the general grid
-window.columnconfigure(0, weight=1)  # make sure gui is vertically centered & expandable
+window.columnconfigure(0, weight=1)  # make sure gui is vertically expandable
 window.rowconfigure(0, weight=1)  # and horizontally
 
 # create a canvas to allow scrolling
@@ -521,7 +521,6 @@ horizontal_scrollbar.grid(row=1, column=0, sticky='ew')
 # configure the canvas to use the scrollbars
 canvas.configure(yscrollcommand=vertical_scrollbar.set, xscrollcommand=horizontal_scrollbar.set)
 
-
 # bind the resizing event of the canvas to update the scrollable region dynamically
 def update_scrollregion(event):
     canvas.configure(scrollregion=canvas.bbox("all"))
@@ -531,7 +530,7 @@ canvas.bind('<Configure>', update_scrollregion)
 
 # create a frame inside the canvas to hold the rest of the gui
 main_frame = tk.Frame(canvas, bg='white')
-canvas.create_window((0, 0), window=main_frame, anchor='nw')
+canvas.create_window((340, 350), window=main_frame, anchor='center')
 
 '''
 # define global fonts for specific widgets
@@ -540,35 +539,7 @@ window.option_add('*Button.Font', ('Arial', 12, 'bold'))  # Apply to all Button 
 window.option_add('*Entry.Font', ('Arial', 12))          # Apply to all Entry widgets
 '''
 
-# MONITOR FRAME & CONTENT
-frm_monitor = tk.Frame(main_frame, borderwidth=1, highlightthickness=0, bg='white')
-lbl_monitor = tk.Label(frm_monitor, text='arduino says things here', width=70, bg='#00979D', fg='white', font='bold')
-'''lbl_room = tk.Label(frm_monitor, text='current temperature', bg='white')
-lbl_r_temp = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
-lbl_desired = tk.Label(frm_monitor, text='desired temperature', bg='white')
-lbl_d_temp = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
-lbl_heater = tk.Label(frm_monitor, text='heater', bg='white')
-lbl_cooler = tk.Label(frm_monitor, text='cooler', bg='white')
-lbl_heater_status = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
-lbl_cooler_status = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
-
-# position update labels
-lbl_room.grid(row=1, column=0, sticky='w', padx=5, pady=5)
-lbl_r_temp.grid(row=1, column=1, columnspan=2, sticky='w', padx=5, pady=5)
-
-lbl_desired.grid(row=2, column=0, sticky='w', padx=5, pady=5)
-lbl_d_temp.grid(row=2, column=1, columnspan=2, sticky='w', padx=5, pady=5)
-
-lbl_heater.grid(row=3, column=0, sticky='w', padx=5, pady=5)
-lbl_heater_status.grid(row=3, column=1, columnspan=2, sticky='w', padx=5, pady=5)
-
-lbl_cooler.grid(row=4, column=0, sticky='w', padx=5, pady=5)
-lbl_cooler_status.grid(row=4, column=1, columnspan=2, sticky='w', padx=5, pady=5)'''
-
-# position monitor label
-lbl_monitor.grid(row=1, column=0, rowspan= 2, sticky='nsew', padx=5, pady=5)
-
-# TEST FRAME & CONTENT + LOGO
+# TEST FRAME & CONTENT + LOGO + SERIAL MONITOR READOUT BELOW EVERYTHING ELSE
 frm_tests = tk.Frame(main_frame, borderwidth=1, highlightthickness=0, bg='white')
 
 # LOGO
@@ -643,9 +614,13 @@ add_placeholder(ent_duration, 'duration in minutes: ')
 btn_stop = tk.Button(frm_tests, text='STOP', command=emergency_stop, bg='red', fg='white')
 btn_stop.grid(row=19, column=0, columnspan=3, sticky='ew', padx=5, pady=5)
 
+# create and position serial monitor readout lbl
+lbl_monitor = tk.Label(frm_tests, text='arduino says things here', bg='#009FAF', fg='white', font='bold')
+lbl_monitor.grid(row=20, column=0, columnspan=3, sticky='ew', padx=5, pady=5)
+
+
 # position both frames
 frm_tests.grid(row=0, column=0)
-frm_monitor.grid(row=1, column=0, padx=5, pady=20)
 
 # set data reading from serial every 0.5 second
 window.after(500, read_data)
