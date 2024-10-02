@@ -10,12 +10,12 @@ def clear_entry_on_click(event):
         event.widget.delete(0, tk.END)  # clear the entry widget
         event.widget['fg'] = 'black'  # change text color to normal if needed
 
-# clear entries in case of EMERGENCY STOP
-def clear_entry_on_stop(ent_duration, ent_temp):
+
+def clear_entry_on_stop():
     ent_duration.delete(0, tk.END)
     ent_temp.delete(0, tk.END)
 
-# add and handle placeholder in entries
+
 def add_placeholder(entry, placeholder_text):
     entry.insert(0, placeholder_text)
     entry['fg'] = 'grey'  # set the color to a lighter grey for the placeholder text
@@ -33,3 +33,4 @@ def add_placeholder(entry, placeholder_text):
     # bind the events
     entry.bind('<FocusIn>', on_focus_in)
     entry.bind('<FocusOut>', on_focus_out)
+

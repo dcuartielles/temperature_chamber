@@ -3,9 +3,8 @@ import tkinter as tk
 
 from tkinter.filedialog import asksaveasfilename
 
-
 # save listbox putput to a text file (for now)
-def save_text_file(listbox):
+def save_text_file():
     filepath = asksaveasfilename(
         defaultextension=".txt",
         filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],

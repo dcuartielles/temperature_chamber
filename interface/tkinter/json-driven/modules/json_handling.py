@@ -5,17 +5,17 @@ from tkinter import messagebox
 
 
 # send json through serial / run all tests
-def send_json_to_arduino(test_data, ser):
+def send_json_to_arduino(test_data):
     json_data = json.dumps(test_data)  # convert py dictionary to json
 
     ser.write((json_data + '\n').encode('utf-8'))
-    print(f'sent to arduino: {json_data}')
+    print(f'sent to Arduino: {json_data}')
 
-    # continuously read Arduino output
+    # Continuously read Arduino output
     while True:
         if ser.in_waiting > 0:
             response = ser.readline().decode('utf-8').strip()
-            print(f'aduino: {response}')
+            print(f'Arduino: {response}')
         # time.sleep(1)
 
 
@@ -70,7 +70,7 @@ def save_file(test_data):
 
 
 # add a step to the custom test
-def add_step(ent_temp, ent_duration, update_listbox):
+def add_step():
     test_data = open_file()
 
     if test_data is not None:
@@ -137,7 +137,7 @@ def add_step(ent_temp, ent_duration, update_listbox):
 
 
 # remove the selected step from the custom test
-def remove_step(listbox, update_listbox):
+def remove_step():
     try:
         selected_index = listbox.curselection()[0]  # get the selected step index
         test_data = open_file()
@@ -149,7 +149,7 @@ def remove_step(listbox, update_listbox):
 
 
 # modify the selected step
-def modify_step(ent_temp, ent_duration, listbox, update_listbox):
+def modify_step():
     try:
         selected_index = listbox.curselection()[0]
         temp = float(ent_temp.get().strip())
@@ -165,7 +165,7 @@ def modify_step(ent_temp, ent_duration, listbox, update_listbox):
 
 
 # update the listbox to show the current steps
-def update_listbox(listbox):
+def update_listbox():
     listbox.delete(0, tk.END)  # clear current listbox
     test_data = open_file()
     for i, step in enumerate(test_data['custom']):
@@ -173,7 +173,7 @@ def update_listbox(listbox):
 
 
 # add custom test
-def add_custom(ent_temp, ent_duration, listbox):
+def add_custom():
     test_data = open_file()
 
     if test_data is not None:
@@ -185,7 +185,7 @@ def add_custom(ent_temp, ent_duration, listbox):
 
 
 # run all benchmark tests (test_1, test_2, test_3) automatically
-def run_all_benchmark(listbox, ent_temp, ent_duration, running_sequence):
+def run_all_benchmark():
     test_data = open_file()
 
     if test_data is not None:
@@ -218,7 +218,7 @@ def run_all_benchmark(listbox, ent_temp, ent_duration, running_sequence):
 
 
 # choose and run one test
-def pick_your_test(test_choice, ent_temp, ent_duration, listbox, running_sequence):
+def pick_your_test(test_choice):
     test_data = open_file()
 
     if test_data is not None:
@@ -250,7 +250,7 @@ def pick_your_test(test_choice, ent_temp, ent_duration, listbox, running_sequenc
         listbox.insert(0, 'no such test on file')
 
 
-def run_all_tests(listbox, ent_temp, ent_duration, running_sequence):
+def run_all_tests():
     test_data = open_file()
 
     if test_data is not None:

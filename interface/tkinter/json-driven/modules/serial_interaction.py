@@ -13,8 +13,9 @@ is_stopped = False
 starting = False
 lbl_monitor = None
 
+
 # set up serial communication
-def serial_setup(port='COM15', baudrate=9600, timeout=5): # adjust port if necessary
+def serial_setup(port='COM15', baudrate=9600, timeout=5, lbl_monitor=None): # adjust port if necessary
     try:
         ser = serial.Serial(port, baudrate, timeout=timeout)
         print(f'connected to arduino port: {port}')
@@ -29,7 +30,7 @@ def serial_setup(port='COM15', baudrate=9600, timeout=5): # adjust port if neces
         return None
 
 
-ser = serial_setup()
+
 # read data from serial
 def read_data():
     global is_stopped
@@ -64,7 +65,7 @@ def read_data():
         window.after(1500, read_data) # run this method every 1.5 sec
 
 # show serial updates re: running test sequence
-def running_sequence(listbox):
+def running_sequence():
     global is_stopped
     global starting
 
@@ -101,7 +102,7 @@ def send_command(ser, command):
 
 
 # emergency stop
-def emergency_stop(lbl_monitor, listbox):
+def emergency_stop():
     global is_stopped
     is_stopped = True  # set flag to stop the read_data loop
 
