@@ -10,6 +10,9 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 # global flag for stopping the reading process
 is_stopped = False
 
+# global flag for starting a new test sequence
+starting = False
+
 # declare listbox as it's used in functions below
 listbox = None
 
@@ -357,7 +360,7 @@ def serial_setup(port='COM15', baudrate=9600, timeout=5, lbl_monitor=None): # ad
 
 
 # parse decoded serial response for smooth data extraction
-def parse_serial_response(response):
+'''def parse_serial_response(response):
     # split the response string into key-value pairs
     data = response.split(' | ')
 
@@ -387,12 +390,13 @@ def parse_serial_response(response):
                 # handle the case where splitting fails
                 print(f"Could not parse item: '{item}'")
                 continue  # Skip to the next item
-    return parsed_data
+    return parsed_data'''
 
 
 # read data from serial
 def read_data():
     global is_stopped
+    global starting
 
     if not is_stopped:  # only read data if the system is not stopped
         if ser and ser.is_open:
@@ -401,21 +405,14 @@ def read_data():
 
                 response = ser.readline().decode('utf-8').strip()  # decode serial response
 
-                # parse the response
-                parsed_data = parse_serial_response(response)
-                room_temp = parsed_data.get('room_temp', None)
-                desired_temp = parsed_data.get('desired_temp', None)
-                heater_status = parsed_data.get('heater', None)
-                cooler_status = parsed_data.get('cooler', None)
-
                 if response:
                     print(f'arduino responded: {response}')
                     if lbl_monitor:
-                            lbl_monitor['text'] = f'{response}'
-                            lbl_r_temp['text'] = f'{room_temp}°C'
-                            lbl_d_temp['text'] = f'{desired_temp}°C'
-                            lbl_heater_status['text'] = f'{"ON" if heater_status else "OFF"}'
-                            lbl_cooler_status['text'] = f'{"ON" if cooler_status else "OFF"}'
+                        lbl_monitor['text'] = f'{response}'
+
+                    if response.startswith('Setting '):
+                        starting = True
+
                 else:
                     print('received unexpected message or no valid data')
                     if lbl_monitor:
@@ -427,32 +424,29 @@ def read_data():
                     lbl_monitor['text'] = f'error reading data: {e}'
 
         # schedule the next read_data call only if the system is not stopped
-        window.after(500, read_data)
+        window.after(1500, read_data) # run this method every 1.5 sec
 
 # show serial updates re: running test sequence
 def running_sequence():
     global is_stopped
+    global starting
 
-    if not is_stopped: # run this only if system is not stopped
+    if not is_stopped and starting: # run this only if system is not stopped and a new test sequence begins
         try:
             send_command(ser, 'SHOW RUNNING SEQUENCE') # send command to request running test updates
 
             response = ser.readline().decode('utf-8').strip() # decode serial response
 
-            # parse the response
-            parsed_data = parse_serial_response(response)
-            sequence = parsed_data.get('running_sequence', None)
-
             if response:
                 print(f'about running sequence, arduino says: {response}')
-                listbox.insert(tk.END, f'running {sequence}')
+                listbox.insert(tk.END, response)
+                starting = False
             else:
                 print('received unexpected message or no valid data')
         except serial.SerialException as e:
             print(f'error reading data: {e}')
             listbox.insert(tk.END, f'error reading data: {e}')
-    # schedule the next running_sequence call only if the system is not stopped
-    window.after(500, running_sequence)
+
 
 
 # sends a command to arduino via serial
@@ -551,17 +545,17 @@ window.option_add('*Entry.Font', ('Arial', 12))          # Apply to all Entry wi
 # MONITOR FRAME & CONTENT
 frm_monitor = tk.Frame(main_frame, borderwidth=1, highlightthickness=0, bg='white')
 lbl_monitor = tk.Label(frm_monitor, text='arduino says things here', width=70, bg='#009FAF', fg='white', font='bold')
-lbl_room = tk.Label(frm_monitor, text='current temperature', bg='white')
+'''lbl_room = tk.Label(frm_monitor, text='current temperature', bg='white')
 lbl_r_temp = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
 lbl_desired = tk.Label(frm_monitor, text='desired temperature', bg='white')
 lbl_d_temp = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
 lbl_heater = tk.Label(frm_monitor, text='heater', bg='white')
 lbl_cooler = tk.Label(frm_monitor, text='cooler', bg='white')
 lbl_heater_status = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
-lbl_cooler_status = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
+lbl_cooler_status = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')'''
 
 # position update labels
-lbl_room.grid(row=1, column=0, sticky='w', padx=5, pady=5)
+'''lbl_room.grid(row=1, column=0, sticky='w', padx=5, pady=5)
 lbl_r_temp.grid(row=1, column=1, columnspan=2, sticky='w', padx=5, pady=5)
 
 lbl_desired.grid(row=2, column=0, sticky='w', padx=5, pady=5)
@@ -571,10 +565,10 @@ lbl_heater.grid(row=3, column=0, sticky='w', padx=5, pady=5)
 lbl_heater_status.grid(row=3, column=1, columnspan=2, sticky='w', padx=5, pady=5)
 
 lbl_cooler.grid(row=4, column=0, sticky='w', padx=5, pady=5)
-lbl_cooler_status.grid(row=4, column=1, columnspan=2, sticky='w', padx=5, pady=5)
+lbl_cooler_status.grid(row=4, column=1, columnspan=2, sticky='w', padx=5, pady=5)'''
 
 # position monitor label
-lbl_monitor.grid(row=5, column=0, columnspan=2, sticky='ew', padx=5, pady=5)
+lbl_monitor.grid(row=1, column=0, rowspan= 2, sticky='nsew', padx=5, pady=5)
 
 # TEST FRAME & CONTENT + LOGO
 frm_tests = tk.Frame(main_frame, borderwidth=1, highlightthickness=0, bg='white')
