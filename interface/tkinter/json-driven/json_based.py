@@ -223,7 +223,7 @@ def run_all_benchmark():
 
                 # print status and update the listbox
                 print(f'Running {test_key}')
-                listbox.insert(tk.END, f'Running {test_key}')
+                running_sequence()
             else:
                 print(f'{test_key} not found')
                 listbox.insert(0, f'{test_key} not found')
@@ -249,19 +249,19 @@ def pick_your_test(test_choice):
         if test_choice == 'test 1':
             test_1 = test_data.get('test_1', [])
             send_json_to_arduino(test_1)
-            listbox.insert(0, 'running test 1')
+            running_sequence()
         elif test_choice == 'test 2':
             test_2 = test_data.get('test_2', [])
             send_json_to_arduino(test_2)
-            listbox.insert(0, 'running test 2')
+            running_sequence()
         elif test_choice == 'test 3':
             test_3 = test_data.get('test_3', [])
             send_json_to_arduino(test_3)
-            listbox.insert(0, 'running test 3')
+            running_sequence()
         else:
             custom_test = test_data.get('custom', [])
             send_json_to_arduino(custom_test)
-            listbox.insert(0, 'running custom test')
+            running_sequence()
     else:
         print('no such test on file')
         listbox.insert(0, 'no such test on file')
@@ -285,7 +285,6 @@ def run_all_tests():
 
             if test:  # if the test data is available
                 send_json_to_arduino(test)  # send the data to Arduino
-
                 # print status and update the listbox
                 print(f'running {test_key}')
                 running_sequence()
@@ -351,7 +350,7 @@ def serial_setup(port='COM15', baudrate=9600, timeout=5, lbl_monitor=None): # ad
         if lbl_monitor:
                 lbl_monitor['text'] = f'error: {e}'
         return None
-    ''' need to erase this part as it closes serial right after opening it
+''' need to erase this part as it closes serial right after opening it
     finally:
             # Close serial connection
             if 'ser' in locals() and ser.is_open:
@@ -446,7 +445,6 @@ def running_sequence():
         except serial.SerialException as e:
             print(f'error reading data: {e}')
             listbox.insert(tk.END, f'error reading data: {e}')
-
 
 
 # sends a command to arduino via serial
@@ -544,7 +542,7 @@ window.option_add('*Entry.Font', ('Arial', 12))          # Apply to all Entry wi
 
 # MONITOR FRAME & CONTENT
 frm_monitor = tk.Frame(main_frame, borderwidth=1, highlightthickness=0, bg='white')
-lbl_monitor = tk.Label(frm_monitor, text='arduino says things here', width=70, bg='#009FAF', fg='white', font='bold')
+lbl_monitor = tk.Label(frm_monitor, text='arduino says things here', width=70, bg='#00979D', fg='white', font='bold')
 '''lbl_room = tk.Label(frm_monitor, text='current temperature', bg='white')
 lbl_r_temp = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
 lbl_desired = tk.Label(frm_monitor, text='desired temperature', bg='white')
@@ -552,10 +550,10 @@ lbl_d_temp = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
 lbl_heater = tk.Label(frm_monitor, text='heater', bg='white')
 lbl_cooler = tk.Label(frm_monitor, text='cooler', bg='white')
 lbl_heater_status = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
-lbl_cooler_status = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')'''
+lbl_cooler_status = tk.Label(frm_monitor, bd=1, width=45, relief='solid', bg='white')
 
 # position update labels
-'''lbl_room.grid(row=1, column=0, sticky='w', padx=5, pady=5)
+lbl_room.grid(row=1, column=0, sticky='w', padx=5, pady=5)
 lbl_r_temp.grid(row=1, column=1, columnspan=2, sticky='w', padx=5, pady=5)
 
 lbl_desired.grid(row=2, column=0, sticky='w', padx=5, pady=5)
