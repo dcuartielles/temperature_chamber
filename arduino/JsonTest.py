@@ -11,13 +11,59 @@ timeout_duration = 5  # Timeout for serial
 test_data = {
     "sequences": [
         {"temp": 40, "duration": 300000},  # 70°C for 5 minutes
-        {"temp": 35, "duration": 300000},  # 70°C for 5 minutes
-        {"temp": 50, "duration": 300000}  # 70°C for 5 minutes
+        {"temp": 50, "duration": 300000},  # 70°C for 5 minutes
+        {"temp": 30, "duration": 300000}  # 70°C for 5 minutes
     ]
 }
 
+test_data_2 = {
+    "test_1": [
+        {
+            "temp": 65,
+            "duration": 3000
+        },
+        {
+            "temp": 40,
+            "duration": 10000
+        },
+        {
+            "temp": 50,
+            "duration": 12000
+        }
+    ],
+    "test_2": [
+        {
+            "temp": 50,
+            "duration": 3000
+        },
+        {
+            "temp": 40,
+            "duration": 10000
+        }
+    ],
+    "test_3": [
+        {
+            "temp": 50,
+            "duration": 3000
+        },
+        {
+            "temp": 40,
+            "duration": 10000
+        },
+        {
+            "temp": 50,
+            "duration": 12000
+        },
+        {
+            "temp": 50,
+            "duration": 12000
+        }
+    ],
+    "custom": []
+}
+
 # Convert the test data to a JSON string
-json_test_string = json.dumps(test_data)
+json_test_string = json.dumps(test_data_2["test_1"])
 
 def send_json_to_arduino(json_data):
     try:

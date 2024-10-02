@@ -136,8 +136,8 @@ int currentSequenceIndex = 0;
 unsigned long sequenceStartTime = 0;
 
 // JSON Buffer for parsing
-char incomingString[512];
-StaticJsonDocument<1024> jsonBuffer;
+char incomingString[1024];
+StaticJsonDocument<2048> jsonBuffer;
 
 // Serial input variables
 String inputString = "";
@@ -265,7 +265,6 @@ void PWMCooler(int dutyCycle, unsigned long PeriodCooler) {
 }
 
 void parseTextFromJson(JsonDocument& doc) {
-    jsonBuffer.clear();
 
     if (!doc.is<JsonArray>()) {
         Serial.println("Error: Expected JSON array");
@@ -297,6 +296,8 @@ void parseTextFromJson(JsonDocument& doc) {
         Serial.print(", Duration = ");
         Serial.println(currentTest.sequences[i].duration);
     }
+
+    jsonBuffer.clear();
 
     // start the test with the first sequence
     currentSequenceIndex = 0;
@@ -632,6 +633,9 @@ void loop() {
         // Read the incoming data in chunks instead of one character at a time
         int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
         incomingString[len] = '\0'; // null-terminate the string
+
+        Serial.print("Received string: ");
+        Serial.println(incomingString);
 
         DeserializationError error = deserializeJson(jsonBuffer, incomingString);
         // Handle the input string (either a command or JSON)
