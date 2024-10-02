@@ -423,7 +423,7 @@ void setTemperature(float temp) {
 void parseCommand(String command) {
 
     // Debug
-    Serial.println("Received command: [" + command + "]");
+    //Serial.println("Received command: [" + command + "]");
 
     if (command.startsWith("SET TEMP ")) {
         temperatureDesired = command.substring(9).toFloat();
@@ -448,7 +448,7 @@ void parseCommand(String command) {
     }
     if (command == "SHOW RUNNING SEQUENCE") {
         if (isTestRunning) {
-            Serial.println("Processing SHOW RUNNING SEQUENCE...");
+            //Serial.println("Processing SHOW RUNNING SEQUENCE...");
             Serial.print("Running sequence: Target temp = ");
             Serial.print(temperatureDesired, 2);
             Serial.print(" Duration = ");
