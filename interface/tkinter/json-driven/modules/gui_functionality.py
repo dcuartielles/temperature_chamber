@@ -1,11 +1,5 @@
 # imports
 import tkinter as tk
-from PIL import Image, ImageTk  # for images
-import serial
-import time
-import json
-from tkinter import messagebox, Listbox
-from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 
 # function to clear the entry widget
@@ -17,7 +11,7 @@ def clear_entry_on_click(event):
         event.widget['fg'] = 'black'  # change text color to normal if needed
 
 # clear entries in case of EMERGENCY STOP
-def clear_entry_on_stop():
+def clear_entry_on_stop(ent_duration, ent_temp):
     ent_duration.delete(0, tk.END)
     ent_temp.delete(0, tk.END)
 

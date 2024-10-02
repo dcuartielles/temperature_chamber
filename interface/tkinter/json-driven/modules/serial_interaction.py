@@ -1,24 +1,20 @@
 # imports
 import tkinter as tk
-from PIL import Image, ImageTk  # for images
 import serial
 import time
-import json
-from tkinter import messagebox, Listbox
-from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 
-# global flag for stopping the reading process
+from gui_functionality import clear_entry_on_stop
+
+window = tk.Tk()
+
+# global variables for interaction with main
 is_stopped = False
-
-# global flag for starting a new test sequence
 starting = False
-
-# declare listbox as it's used in functions below
-listbox = None
+lbl_monitor = None
 
 # set up serial communication
-def serial_setup(port='COM15', baudrate=9600, timeout=5, lbl_monitor=None): # adjust port if necessary
+def serial_setup(port='COM15', baudrate=9600, timeout=5): # adjust port if necessary
     try:
         ser = serial.Serial(port, baudrate, timeout=timeout)
         print(f'connected to arduino port: {port}')
@@ -31,46 +27,7 @@ def serial_setup(port='COM15', baudrate=9600, timeout=5, lbl_monitor=None): # ad
         if lbl_monitor:
                 lbl_monitor['text'] = f'error: {e}'
         return None
-''' need to erase this part as it closes serial right after opening it
-    finally:
-            # Close serial connection
-            if 'ser' in locals() and ser.is_open:
-                ser.close()
-                print('Serial port closed.')'''
 
-
-# parse decoded serial response for smooth data extraction
-'''def parse_serial_response(response):
-    # split the response string into key-value pairs
-    data = response.split(' | ')
-
-    # create a dictionary to store parsed values
-    parsed_data = {}
-
-    # loop through each key-value pair and split by ':'
-    for item in data:
-
-        try:
-                key, value = item.split(': ')
-
-                # clean the key and value, and store them in dictionary
-                key = key.strip()
-                value = value.strip()
-
-                # assign specific values based on key
-                if key == 'Room_temp':
-                    parsed_data['Room_temp'] = float(value)
-                elif key == 'Desired_temp':
-                    parsed_data['Desired_temp'] = float(value)
-                elif key == 'Heater':
-                    parsed_data['Heater'] = bool(int(value))  # convert '1' or '0' to True/False
-                elif key == 'Cooler':
-                    parsed_data['Cooler'] = bool(int(value))  # convert '1' or '0' to True/False
-        except ValueError:
-                # handle the case where splitting fails
-                print(f"Could not parse item: '{item}'")
-                continue  # Skip to the next item
-    return parsed_data'''
 
 ser = serial_setup()
 # read data from serial
@@ -107,7 +64,7 @@ def read_data():
         window.after(1500, read_data) # run this method every 1.5 sec
 
 # show serial updates re: running test sequence
-def running_sequence():
+def running_sequence(listbox):
     global is_stopped
     global starting
 
@@ -144,7 +101,7 @@ def send_command(ser, command):
 
 
 # emergency stop
-def emergency_stop():
+def emergency_stop(lbl_monitor, listbox):
     global is_stopped
     is_stopped = True  # set flag to stop the read_data loop
 
