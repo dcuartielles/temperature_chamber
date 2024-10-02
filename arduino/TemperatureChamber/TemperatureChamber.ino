@@ -267,40 +267,45 @@ void PWMCooler(int dutyCycle, unsigned long PeriodCooler) {
 void parseTextFromJson(JsonDocument& doc) {
     jsonBuffer.clear();
 
-    for (JsonPair kv : doc.as<JsonObject>()) {
-        const char* testName = kv.key().c_str();
-        JsonArray sequences = kv.value().as<JsonArray>();
+    if (!doc.is<JsonArray>()) {
+        Serial.println("Error: Expected JSON array");
+        return;
+    }
 
-        Serial.print("Parsed test: ");
-        Serial.println(testName);
+    JsonArray sequences = doc.as<JsonArray>();
+    int numSequences = sequences.size();
+    if (numSequences > 5) numSequences = 5;
 
-        int numSequences = sequences.size();
-        if (numSequences > 5) numSequences = 5;
+    currentTest.numSequences = numSequences;
 
-        currentTest.numSequences = numSequences;
-        for (int i = 0; i < numSequences; i++) {
-            JsonObject sequence = sequences[i];
-            currentTest.sequences[i].targetTemp = sequences["temp"];
-            currentTest.sequences[i].duration = sequences["duration"];
+    for (int i = 0; i < numSequences; i++) {
+        JsonObject sequence = sequences[i];
 
-            // debug
-            Serial.print("Step ");
-            Serial.print(i);
-            Serial.print(": Target Temp = ");
-            Serial.print(currentTest.sequences[i].targetTemp);
-            Serial.print(", Duration = ");
-            Serial.println(currentTest.sequences[i].duration);
+        if (!sequence.containsKey("temp") || !sequence.containsKey("duration")) {
+            Serial.println("Error: Missing 'temp' or 'duration' in JSON sequence");
+            continue;   // skip this sequence if the keys are missing
         }
 
-        // start the test with the first sequence
-        currentSequenceIndex = 0;
-        isTestRunning = true;
-        status = REPORT;
-        setTemperature(currentTest.sequences[0].targetTemp);  // <-- This ensures temperatureDesired is set at the start of the test
+        currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
+        currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
 
-        Serial.print("Starting test with target temp: ");
-        Serial.println(currentTest.sequences[0].targetTemp);
+        // debug
+        Serial.print("Step ");
+        Serial.print(i);
+        Serial.print(": Target Temp = ");
+        Serial.print(currentTest.sequences[i].targetTemp);
+        Serial.print(", Duration = ");
+        Serial.println(currentTest.sequences[i].duration);
     }
+
+    // start the test with the first sequence
+    currentSequenceIndex = 0;
+    isTestRunning = true;
+    status = REPORT;
+    setTemperature(currentTest.sequences[0].targetTemp);  // <-- This ensures temperatureDesired is set at the start of the test
+
+    Serial.print("Starting test with target temp: ");
+    Serial.println(currentTest.sequences[0].targetTemp);
 }
 
 void runCurrentSequence() {
@@ -634,6 +639,8 @@ void loop() {
             Serial.println("JSON detected, parsing...");
             parseTextFromJson(jsonBuffer);  // Parse the JSON
         } else {
+            Serial.print("Deserialization failed: ");
+            Serial.println(error.c_str());
             Serial.println("Command detected, parsing...");
             parseCommand(incomingString);  // Parse regular commands
         }
