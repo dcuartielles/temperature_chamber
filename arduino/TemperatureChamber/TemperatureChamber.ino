@@ -654,12 +654,12 @@ void loop() {
         DeserializationError error = deserializeJson(jsonBuffer, incomingString);
         // Handle the input string (either a command or JSON)
         if (!error) {
-            Serial.println("JSON detected, parsing...");
+            //Serial.println("JSON detected, parsing...");
             parseTextFromJson(jsonBuffer);  // Parse the JSON
         } else {
-            Serial.print("Deserialization failed: ");
-            Serial.println(error.c_str());
-            Serial.println("Command detected, parsing...");
+            //Serial.print("Deserialization failed: ");
+            //Serial.println(error.c_str());
+            //Serial.println("Command detected, parsing...");
             parseCommand(incomingString);  // Parse regular commands
         }
         //incomingString = "";  // Reset for the next command
