@@ -335,22 +335,25 @@ def add_placeholder(entry, placeholder_text):
 #### SERIAL INTERACTION ####
 
 # set up serial communication
-def serial_setup(port='COM15', baudrate=9600, timeout=5): # adjust port if necessary
+def serial_setup(port='COM15', baudrate=9600, timeout=5, lbl_monitor=None): # adjust port if necessary
     try:
         ser = serial.Serial(port, baudrate, timeout=timeout)
         print(f'connected to arduino port: {port}')
-        lbl_monitor['text'] = f'connected to arduino port: {port}'
+        if lbl_monitor:
+                lbl_monitor['text'] = f'connected to arduino port: {port}'
         time.sleep(1)  # make sure arduino is ready
         return ser
     except serial.SerialException as e:
         print(f'error: {e}')
-        # lbl_monitor['text'] = f'error: {e}'
+        if lbl_monitor:
+                lbl_monitor['text'] = f'error: {e}'
         return None
+    ''' need to erase this part as it closes serial right after opening it
     finally:
             # Close serial connection
             if 'ser' in locals() and ser.is_open:
                 ser.close()
-                print('Serial port closed.')
+                print('Serial port closed.')'''
 
 
 # parse decoded serial response for smooth data extraction
@@ -363,22 +366,27 @@ def parse_serial_response(response):
 
     # loop through each key-value pair and split by ':'
     for item in data:
-        key, value = item.split(': ')
 
-        # clean the key and value, and store them in the dictionary
-        key = key.strip()
-        value = value.strip()
+        try:
+                key, value = item.split(': ')
 
-        # assign specific values based on key
-        if key == 'Room_temp':
-            parsed_data['Room_temp'] = float(value)
-        elif key == 'Desired_temp':
-            parsed_data['Desired_temp'] = float(value)
-        elif key == 'Heater':
-            parsed_data['Heater'] = bool(int(value))  # convert '1' or '0' to True/False
-        elif key == 'Cooler':
-            parsed_data['Cooler'] = bool(int(value))  # convert '1' or '0' to True/False
+                # clean the key and value, and store them in dictionary
+                key = key.strip()
+                value = value.strip()
 
+                # assign specific values based on key
+                if key == 'Room_temp':
+                    parsed_data['Room_temp'] = float(value)
+                elif key == 'Desired_temp':
+                    parsed_data['Desired_temp'] = float(value)
+                elif key == 'Heater':
+                    parsed_data['Heater'] = bool(int(value))  # convert '1' or '0' to True/False
+                elif key == 'Cooler':
+                    parsed_data['Cooler'] = bool(int(value))  # convert '1' or '0' to True/False
+        except ValueError:
+                # handle the case where splitting fails
+                print(f"Could not parse item: '{item}'")
+                continue  # Skip to the next item
     return parsed_data
 
 
@@ -396,28 +404,31 @@ def read_data():
 
                 # parse the response
                 parsed_data = parse_serial_response(response)
-                room_temp = parsed_data.get('Room_temp', None)
-                desired_temp = parsed_data.get('Desired_temp', None)
-                heater_status = parsed_data.get('Heater', None)
-                cooler_status = parsed_data.get('Cooler', None)
+                room_temp = parsed_data.get('room_temp', None)
+                desired_temp = parsed_data.get('desired_temp', None)
+                heater_status = parsed_data.get('heater', None)
+                cooler_status = parsed_data.get('cooler', None)
 
                 if response:
                     print(f'arduino responded: {response}')
-                    lbl_monitor['text'] = f'{response}'
-                    lbl_r_temp['text'] = f'{room_temp}°C'
-                    lbl_d_temp['text'] = f'{desired_temp}°C'
-                    lbl_heater_status['text'] = f'{"ON" if heater_status else "OFF"}'
-                    lbl_cooler_status['text'] = f'{"ON" if cooler_status else "OFF"}'
+                    if lbl_monitor:
+                            lbl_monitor['text'] = f'{response}'
+                            lbl_r_temp['text'] = f'{room_temp}°C'
+                            lbl_d_temp['text'] = f'{desired_temp}°C'
+                            lbl_heater_status['text'] = f'{"ON" if heater_status else "OFF"}'
+                            lbl_cooler_status['text'] = f'{"ON" if cooler_status else "OFF"}'
                 else:
                     print('received unexpected message or no valid data.')
-                    lbl_monitor['text'] = 'received unexpected message or no valid data.'
+                    if lbl_monitor:
+                        lbl_monitor['text'] = 'received unexpected message or no valid data'
 
             except serial.SerialException as e:
-                print(f'Error reading data: {e}')
-                lbl_monitor['text'] = f'Error reading data: {e}'
+                print(f'error reading data: {e}')
+                if lbl_monitor:
+                    lbl_monitor['text'] = f'error reading data: {e}'
 
         # schedule the next read_data call only if the system is not stopped
-        window.after(1000, read_data)
+        window.after(500, read_data)
 
 
 # sends a command to arduino via serial
@@ -448,7 +459,7 @@ def emergency_stop():
     listbox.insert(0, 'EMERGENCY STOP')
 
 
-#### WRITE TO TXT FILE PART? ####
+#### WRITE TO TXT FILE PART: just the mechanics of it, for future reference ####
 
 # save listbox putput to a text file (for now)
 def save_text_file():
