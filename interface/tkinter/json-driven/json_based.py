@@ -285,7 +285,7 @@ def run_all_tests():
 
                 # print status and update the listbox
                 print(f'running {test_key}')
-                listbox.insert(tk.END, f'running {test_key}')
+                running_sequence()
             else:
                 print(f'{test_key} not found')
                 listbox.insert(0, f'{test_key} not found or empty')
@@ -398,7 +398,6 @@ def read_data():
         if ser and ser.is_open:
             try:
                 send_command(ser, 'SHOW DATA')  # send command to request data
-                time.sleep(0.2)  # wait for arduino to process the command
 
                 response = ser.readline().decode('utf-8').strip()  # decode serial response
 
@@ -418,7 +417,7 @@ def read_data():
                             lbl_heater_status['text'] = f'{"ON" if heater_status else "OFF"}'
                             lbl_cooler_status['text'] = f'{"ON" if cooler_status else "OFF"}'
                 else:
-                    print('received unexpected message or no valid data.')
+                    print('received unexpected message or no valid data')
                     if lbl_monitor:
                         lbl_monitor['text'] = 'received unexpected message or no valid data'
 
@@ -430,6 +429,31 @@ def read_data():
         # schedule the next read_data call only if the system is not stopped
         window.after(500, read_data)
 
+# show serial updates re: running test sequence
+def running_sequence():
+    global is_stopped
+
+    if not is_stopped: # run this only if system is not stopped
+        try:
+            send_command(ser, 'SHOW RUNNING SEQUENCE') # send command to request running test updates
+
+            response = ser.readline().decode('utf-8').strip() # decode serial response
+
+            # parse the response
+            parsed_data = parse_serial_response(response)
+            sequence = parsed_data.get('running_sequence', None)
+
+            if response:
+                print(f'about running sequence, arduino says: {response}')
+                listbox.insert(tk.END, f'running {sequence}')
+            else:
+                print('received unexpected message or no valid data')
+        except serial.SerialException as e:
+            print(f'error reading data: {e}')
+            listbox.insert(tk.END, f'error reading data: {e}')
+    # schedule the next running_sequence call only if the system is not stopped
+    window.after(500, running_sequence)
+
 
 # sends a command to arduino via serial
 def send_command(ser, command):
@@ -437,7 +461,7 @@ def send_command(ser, command):
         ser.reset_input_buffer()  # clear the gates
         ser.write((command + '\n').encode('utf-8'))  # encode command in serial
         print(f'sent command: {command}')  # debug line
-        time.sleep(0.05)  # small delay for command processing
+        time.sleep(0.02)  # small delay for command processing
 
     except serial.SerialException as e:
         print(f'error sending command: {e}')
