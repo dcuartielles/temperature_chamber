@@ -136,8 +136,8 @@ int currentSequenceIndex = 0;
 unsigned long sequenceStartTime = 0;
 
 // JSON Buffer for parsing
-char incomingString[512];
-StaticJsonDocument<1024> jsonBuffer;
+char incomingString[1024];
+StaticJsonDocument<2048> jsonBuffer;
 
 // Serial input variables
 String inputString = "";
@@ -265,10 +265,13 @@ void PWMCooler(int dutyCycle, unsigned long PeriodCooler) {
 }
 
 void parseTextFromJson(JsonDocument& doc) {
-    jsonBuffer.clear();
+
+    if (!doc.is<JsonArray>()) {
+        Serial.println("Error: Expected JSON array");
+        return;
+    }
 
     JsonArray sequences = doc.as<JsonArray>();
-
     int numSequences = sequences.size();
     if (numSequences > 5) numSequences = 5;
 
@@ -276,6 +279,11 @@ void parseTextFromJson(JsonDocument& doc) {
 
     for (int i = 0; i < numSequences; i++) {
         JsonObject sequence = sequences[i];
+
+        if (!sequence.containsKey("temp") || !sequence.containsKey("duration")) {
+            Serial.println("Error: Missing 'temp' or 'duration' in JSON sequence");
+            continue;   // skip this sequence if the keys are missing
+        }
 
         currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
         currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
@@ -288,6 +296,8 @@ void parseTextFromJson(JsonDocument& doc) {
         Serial.print(", Duration = ");
         Serial.println(currentTest.sequences[i].duration);
     }
+
+    jsonBuffer.clear();
 
     // start the test with the first sequence
     currentSequenceIndex = 0;
@@ -383,14 +393,14 @@ void setTemperature(float temp) {
     if (temperatureDesired >= TEMPERATURE_MAX) {
         temperatureDesired = TEMPERATURE_MAX;
         sendStatus("Specified temperature exceeds maximum allowed temperature\n");
-        sendStatus("Setting temperature to " + String(TEMPERATURE_MAX) + "¬¨‚àûC");
+        sendStatus("Setting temperature to " + String(TEMPERATURE_MAX) + "¬∞C");
     } else if (temperatureDesired <= TEMPERATURE_MIN) {
         temperatureDesired = TEMPERATURE_MIN;
         sendStatus("Specified temperature is lower than the minimum allowed temperature\n");
-        sendStatus("Setting temperature to " + String(TEMPERATURE_MIN) + "¬¨‚àûC");
+        sendStatus("Setting temperature to " + String(TEMPERATURE_MIN) + "¬∞C");
     } else {
         temperatureDesired = temp;
-        sendStatus("Setting temperature to " + String(temp) + "¬¨‚àûC");
+        sendStatus("Setting temperature to " + String(temp) + "¬∞C");
         Serial.print("Temperature desired set to: ");
         Serial.println(temp);  // Debug to confirm the desired temp is set
     }
@@ -624,12 +634,17 @@ void loop() {
         int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
         incomingString[len] = '\0'; // null-terminate the string
 
+        Serial.print("Received string: ");
+        Serial.println(incomingString);
+
         DeserializationError error = deserializeJson(jsonBuffer, incomingString);
         // Handle the input string (either a command or JSON)
         if (!error) {
             Serial.println("JSON detected, parsing...");
             parseTextFromJson(jsonBuffer);  // Parse the JSON
         } else {
+            Serial.print("Deserialization failed: ");
+            Serial.println(error.c_str());
             Serial.println("Command detected, parsing...");
             parseCommand(incomingString);  // Parse regular commands
         }
@@ -654,4 +669,3 @@ void loop() {
             break;
     }
 }
-
