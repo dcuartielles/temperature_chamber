@@ -603,16 +603,18 @@ void handleEmergencyStopState() {
     //Serial.println("s2 EMERGENCY: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater = " + String(stateHeater) + " stateCooler = " + String(stateCooler) + " lh = " + String(longheatingflag));
 }
 
-unsigned long lastUpdate = 0;
-unsigned long updateInterval = 500;
+//unsigned long lastUpdate = 0;
+//unsigned long updateInterval = 500;
 
 void loop() {  
 
+    /*
     unsigned long currentMillis = millis();
     if (currentMillis - lastUpdate >= updateInterval) {
         showData();
         lastUpdate = currentMillis;
     }
+    */
 
     temperatureRoomOld = temperatureRoom;
     stateHeaterOld = stateHeater;
