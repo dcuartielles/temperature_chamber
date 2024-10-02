@@ -134,6 +134,8 @@ struct Test {
 Test currentTest;
 int currentSequenceIndex = 0;
 unsigned long sequenceStartTime = 0;
+float currentTargetTemp = 0;
+unsigned long currentDuration = 0;
 
 // JSON Buffer for parsing
 char incomingString[1024];
@@ -322,18 +324,21 @@ void runCurrentSequence() {
     float targetTemp = currentSequence.targetTemp;
     unsigned long duration = currentSequence.duration;
 
-    // debug
-    Serial.print(" Running sequence: Target temp = ");
-    Serial.print(targetTemp);
-    Serial.print(" Duration = ");
-    Serial.println(duration);
+    // store current duration for the SHOW RUNNING SEQUENCE command
+    currentDuration = duration;
 
-    Serial.print("Status: ");
-    Serial.println(status);
+    // debug
+    //Serial.print(" Running sequence: Target temp = ");
+    //Serial.print(targetTemp);
+    //Serial.print(" Duration = ");
+    //Serial.println(duration);
+
+    //Serial.print("Status: ");
+    //Serial.println(status);
 
     // check if target temp is reached
     if (!isTemperatureReached(targetTemp, temperatureRoom)) {
-        Serial.println("Waiting for target temp to be reached");
+        //Serial.println("Waiting for target temp to be reached");
         return;
     }
     if (sequenceStartTime == 0) {
@@ -438,10 +443,16 @@ void parseCommand(String command) {
         Serial.println("System Report:");
         displaySerial();
     }
-    else if (command == "RUN TEST") {
-        currentTestState = RUNNING_TEST;
-        isTestRunning = true;
-        sendStatus("Starting Test1");
+    else if (command == "SHOW RUNNING SEQUENCE") {
+        if (isTestRunning) {
+            Serial.println("Processing SHOW RUNNING SEQUENCE...");
+            Serial.print("Running sequence: Target temp = ");
+            Serial.print(temperatureDesired, 2);
+            Serial.print(" Duration = ");
+            Serial.println(currentDuration);
+        } else {
+            Serial.println("No sequence is currently running.");
+        }
     }
     displayStatus();
 }
@@ -603,16 +614,18 @@ void handleEmergencyStopState() {
     //Serial.println("s2 EMERGENCY: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater = " + String(stateHeater) + " stateCooler = " + String(stateCooler) + " lh = " + String(longheatingflag));
 }
 
-unsigned long lastUpdate = 0;
-unsigned long updateInterval = 500;
+//unsigned long lastUpdate = 0;
+//unsigned long updateInterval = 500;
 
 void loop() {  
 
+    /*
     unsigned long currentMillis = millis();
     if (currentMillis - lastUpdate >= updateInterval) {
         showData();
         lastUpdate = currentMillis;
     }
+    */
 
     temperatureRoomOld = temperatureRoom;
     stateHeaterOld = stateHeater;
