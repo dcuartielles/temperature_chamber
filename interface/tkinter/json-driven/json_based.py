@@ -366,7 +366,7 @@ def capture_all_serial():
 
                 if response:
                     # print the entire response (debugging, regular data, etc.)
-                    print(f'from serial: {response}')
+                    #print(f'from serial: {response}')
 
                     # make a list of trigger responses
                     trigger_responses = ['Setting', 'Running', 'Test complete', 'Waiting', 'Target temp', 'Sequence complete', 'No sequence']
@@ -388,8 +388,8 @@ def capture_all_serial():
                 print(f'error reading serial data: {e}')
 
 
-        # schedule the next serial capture after 2 seconds
-        window.after(2000, capture_all_serial)
+        # schedule the next serial capture after 3 seconds
+        window.after(3000, capture_all_serial)
 
 
 # read data from serial
@@ -420,7 +420,7 @@ def read_data():
                     lbl_monitor['text'] = f'error reading data: {e}'
 
         # schedule the next read_data call only if the system is not stopped
-        window.after(1500, read_data) # run this method every 1.5 sec
+        window.after(1000, read_data) # run this method every 1 sec
 
 
 # sends a command to arduino via serial
