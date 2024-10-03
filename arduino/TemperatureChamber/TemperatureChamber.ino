@@ -309,7 +309,7 @@ void parseTextFromJson(JsonDocument& doc) {
 void runCurrentSequence() {
     if (currentSequenceIndex >= currentTest.numSequences) {
         // Test finished
-        //Serial.println("Test complete");
+        Serial.println("Test complete");
         isTestRunning = false;
         status = REPORT;
         return;
@@ -323,17 +323,19 @@ void runCurrentSequence() {
     currentDuration = duration;
 
     // debug
-    //Serial.print(" Running sequence: Target temp = ");
-    //Serial.print(targetTemp);
-    //Serial.print(" Duration = ");
-    //Serial.println(duration);
+    Serial.print(" Running sequence: Target temp = ");
+    Serial.print(targetTemp);
+    Serial.print(" Duration = ");
+    Serial.println(duration);
 
     //Serial.print("Status: ");
     //Serial.println(status);
 
     // check if target temp is reached
-    if (!isTemperatureReached(targetTemp, temperatureRoom)) {
-        //Serial.println("Waiting for target temp to be reached");
+    bool printedWaiting = false;
+    if (!isTemperatureReached(targetTemp, temperatureRoom) && !printedWaiting) {
+        Serial.println("Waiting for target temp to be reached");
+        printedWaiting = true;
         return;
     }
     if (sequenceStartTime == 0) {
