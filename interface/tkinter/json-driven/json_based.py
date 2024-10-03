@@ -204,7 +204,6 @@ def run_all_benchmark():
     test_data = open_file()
     global starting
 
-
     if test_data is not None:
 
         listbox.delete(0, tk.END)
@@ -599,7 +598,7 @@ btn_run_all_tests.grid(row=16, column=0, columnspan=3, sticky='ew', padx=5, pady
 # bind the focus event to the function for both entries
 ent_temp.bind('<Button-1>', clear_entry_on_click)
 ent_duration.bind('<Button-1>', clear_entry_on_click)
-add_placeholder(ent_temp, 'temperature in °C: ')  # ddd placeholder text
+add_placeholder(ent_temp, 'temperature in °C: ')  # add placeholder text
 add_placeholder(ent_duration, 'duration in minutes: ')
 
 # create & position the STOP button to span across all columns
