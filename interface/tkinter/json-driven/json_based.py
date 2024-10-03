@@ -204,7 +204,7 @@ def add_custom():
 # run all benchmark tests (test_1, test_2, test_3) automatically
 def run_all_benchmark():
     test_data = open_file()
-    global starting
+
 
     if test_data is not None:
 
@@ -224,8 +224,7 @@ def run_all_benchmark():
 
                 # print status and update the listbox
                 print(f'Running {test_key}')
-                starting = True
-                window.after(2500, running_sequence)
+
             else:
                 print(f'{test_key} not found')
                 listbox.insert(0, f'{test_key} not found')
@@ -239,7 +238,6 @@ def run_all_benchmark():
 # choose and run one test
 def pick_your_test(test_choice):
     test_data = open_file()
-    global starting
 
     if test_data is not None:
 
@@ -252,23 +250,19 @@ def pick_your_test(test_choice):
         if test_choice == 'test 1':
             test_1 = test_data.get('test_1', [])
             send_json_to_arduino(test_1)
-            starting = True
-            window.after(2500, running_sequence)
+
         elif test_choice == 'test 2':
             test_2 = test_data.get('test_2', [])
             send_json_to_arduino(test_2)
-            starting = True
-            window.after(2500, running_sequence)
+
         elif test_choice == 'test 3':
             test_3 = test_data.get('test_3', [])
             send_json_to_arduino(test_3)
-            starting = True
-            window.after(2500, running_sequence)
+
         else:
             custom_test = test_data.get('custom', [])
             send_json_to_arduino(custom_test)
-            starting = True
-            window.after(2500, running_sequence)
+
     else:
         print('no such test on file')
         listbox.insert(0, 'no such test on file')
@@ -276,7 +270,6 @@ def pick_your_test(test_choice):
 
 def run_all_tests():
     test_data = open_file()
-    global starting
 
     if test_data is not None:
 
@@ -295,8 +288,7 @@ def run_all_tests():
                 send_json_to_arduino(test)  # send the data to Arduino
                 # print status and update the listbox
                 print(f'running {test_key}')
-                starting = True
-                window.after(2500, running_sequence)
+
             else:
                 print(f'{test_key} not found')
                 listbox.insert(0, f'{test_key} not found or empty')
@@ -359,46 +351,8 @@ def serial_setup(port='COM15', baudrate=9600, timeout=5, lbl_monitor = None): # 
         if lbl_monitor:
                 lbl_monitor['text'] = f'error: {e}'
         return None
-''' need to erase this part as it closes serial right after opening it
-    finally:
-            # Close serial connection
-            if 'ser' in locals() and ser.is_open:
-                ser.close()
-                print('Serial port closed.')'''
 
 
-# parse decoded serial response for smooth data extraction
-'''def parse_serial_response(response):
-    # split the response string into key-value pairs
-    data = response.split(' | ')
-
-    # create a dictionary to store parsed values
-    parsed_data = {}
-
-    # loop through each key-value pair and split by ':'
-    for item in data:
-
-        try:
-                key, value = item.split(': ')
-
-                # clean the key and value, and store them in dictionary
-                key = key.strip()
-                value = value.strip()
-
-                # assign specific values based on key
-                if key == 'Room_temp':
-                    parsed_data['Room_temp'] = float(value)
-                elif key == 'Desired_temp':
-                    parsed_data['Desired_temp'] = float(value)
-                elif key == 'Heater':
-                    parsed_data['Heater'] = bool(int(value))  # convert '1' or '0' to True/False
-                elif key == 'Cooler':
-                    parsed_data['Cooler'] = bool(int(value))  # convert '1' or '0' to True/False
-        except ValueError:
-                # handle the case where splitting fails
-                print(f"Could not parse item: '{item}'")
-                continue  # Skip to the next item
-    return parsed_data'''
 # read all serial output
 def capture_all_serial():
     global is_stopped
@@ -415,10 +369,10 @@ def capture_all_serial():
                     print(f'from serial: {response}')
 
                     # make a list of trigger responses
-                    trigger_responses = ['Setting ', 'Running ', 'Test complete', 'Waiting', 'Target temp', 'Sequence complete', 'No sequence']
+                    trigger_responses = ['Setting', 'Running', 'Test complete', 'Waiting', 'Target temp', 'Sequence complete', 'No sequence']
 
-                    # display the response in the listbox
-                    if any(response.startswith(trigger) for trigger in trigger_responses):
+                    # display the response in the listbox if triggered
+                    if any(response.strip().startswith(trigger) for trigger in trigger_responses):
                         starting = True # set flag to True
                         print(response)
                         listbox.insert(tk.END, response)  # insert the response into the listbox
@@ -467,30 +421,6 @@ def read_data():
 
         # schedule the next read_data call only if the system is not stopped
         window.after(1500, read_data) # run this method every 1.5 sec
-
-# Non-blocking running sequence function
-def running_sequence():
-    global is_stopped
-    global starting
-
-    if not is_stopped and starting:  # run this only if the system is not stopped and a new test sequence begins
-        if ser and ser.is_open:
-            try:
-                send_command(ser, 'SHOW RUNNING SEQUENCE')  # send command to request running test updates
-                response = ser.readline().decode('utf-8').strip()  # decode serial response
-
-                if response:
-                    print(f'about running sequence, arduino says: {response}')
-                    listbox.insert(tk.END, response)  # insert the response into the listbox
-                    starting = False  # reset flag after receiving a response
-                else:
-                    print('received unexpected message or no valid data')
-            except serial.SerialException as e:
-                print(f'error reading data: {e}')
-                listbox.insert(tk.END, f'error reading data: {e}')
-
-        # schedule the next call of this function (continue polling for updates)
-        window.after(2500, running_sequence)
 
 
 # sends a command to arduino via serial
