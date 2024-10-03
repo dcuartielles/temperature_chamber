@@ -14,7 +14,7 @@ is_stopped = False
 starting = False
 
 # declare listbox as it's used in functions below
-listbox = None
+#listbox = None
 
 
 ###############        FUNCTIONALITY AND LOGIC       ###############
@@ -204,6 +204,7 @@ def add_custom():
 # run all benchmark tests (test_1, test_2, test_3) automatically
 def run_all_benchmark():
     test_data = open_file()
+    global starting
 
 
     if test_data is not None:
@@ -221,9 +222,9 @@ def run_all_benchmark():
 
             if test:  # if the test data is available
                 send_json_to_arduino(test)  # send the data to Arduino
-
                 # print status and update the listbox
                 print(f'Running {test_key}')
+                capture_all_serial()
 
             else:
                 print(f'{test_key} not found')
@@ -238,6 +239,7 @@ def run_all_benchmark():
 # choose and run one test
 def pick_your_test(test_choice):
     test_data = open_file()
+    global starting
 
     if test_data is not None:
 
@@ -250,18 +252,23 @@ def pick_your_test(test_choice):
         if test_choice == 'test 1':
             test_1 = test_data.get('test_1', [])
             send_json_to_arduino(test_1)
+            capture_all_serial()
+
 
         elif test_choice == 'test 2':
             test_2 = test_data.get('test_2', [])
             send_json_to_arduino(test_2)
+            capture_all_serial()
 
         elif test_choice == 'test 3':
             test_3 = test_data.get('test_3', [])
             send_json_to_arduino(test_3)
+            capture_all_serial()
 
         else:
             custom_test = test_data.get('custom', [])
             send_json_to_arduino(custom_test)
+            capture_all_serial()
 
     else:
         print('no such test on file')
@@ -286,6 +293,7 @@ def run_all_tests():
 
             if test:  # if the test data is available
                 send_json_to_arduino(test)  # send the data to Arduino
+                capture_all_serial()
                 # print status and update the listbox
                 print(f'running {test_key}')
 
@@ -369,7 +377,9 @@ def capture_all_serial():
                     #print(f'from serial: {response}')
 
                     # make a list of trigger responses
-                    trigger_responses = ['Setting', 'Running', 'Test complete', 'Waiting', 'Target temp', 'Sequence complete', 'No sequence']
+                    trigger_responses = ['Setting', 'Running', 'Test complete', 'Target temp', 'Sequence complete']
+# TO DO: SCROLLABLE LISTBOX
+# RUNNING IN TOP ROW IN BOLD OR SOMETHING WHILE ALL THE OTHERS SCROLL BELOW
 
                     # display the response in the listbox if triggered
                     if any(response.strip().startswith(trigger) for trigger in trigger_responses):
@@ -405,7 +415,7 @@ def read_data():
                 response = ser.readline().decode('utf-8').strip()  # decode serial response
 
                 if response:
-                    print(f'arduino responded: {response}')
+                    #print(f'arduino responded: {response}')
                     if lbl_monitor:
                         lbl_monitor['text'] = f'{response}'
 
@@ -601,6 +611,5 @@ frm_tests.grid(row=0, column=0)
 # set data reading from serial every 0.5 second
 window.after(500, read_data)
 window.after(1000, clear_out_custom)
-window.after(1500, capture_all_serial)
 
 window.mainloop()

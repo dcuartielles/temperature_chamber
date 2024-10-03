@@ -41,5 +41,66 @@
             "duration": 120000
         }
     ],
-    "custom": []
+    "custom": [
+        {
+            "temp": 2.0,
+            "duration": 120000.0
+        },
+        {
+            "temp": 3.0,
+            "duration": 180000.0
+        },
+        {
+            "temp": 12.0,
+            "duration": 720000.0
+        },
+        {
+            "temp": 23.0,
+            "duration": 13920000.0
+        },
+        {
+            "temp": 23.0,
+            "duration": 1380000.0
+        },
+        {
+            "temp": 23.0,
+            "duration": 1380000.0
+        },
+        {
+            "temp": 23.0,
+            "duration": 1380000.0
+        },
+        {
+            "temp": 23.0,
+            "duration": 1380000.0
+        },
+        {
+            "temp": 23.0,
+            "duration": 1380000.0
+        },
+        {
+            "temp": 23.0,
+            "duration": 1380000.0
+        },
+        {
+            "temp": 23.0,
+            "duration": 1380000.0
+        },
+        {
+            "temp": 45.0,
+            "duration": 2700000.0
+        },
+        {
+            "temp": 45.0,
+            "duration": 2700000.0
+        },
+        {
+            "temp": 45.0,
+            "duration": 2040000.0
+        },
+        {
+            "temp": 45.0,
+            "duration": 32040000
+        }
+    ]
 }
