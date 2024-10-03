@@ -225,7 +225,7 @@ def run_all_benchmark():
                 # print status and update the listbox
                 print(f'Running {test_key}')
                 starting = True
-                window.after(1500, running_sequence)
+                window.after(2500, running_sequence)
             else:
                 print(f'{test_key} not found')
                 listbox.insert(0, f'{test_key} not found')
@@ -253,22 +253,22 @@ def pick_your_test(test_choice):
             test_1 = test_data.get('test_1', [])
             send_json_to_arduino(test_1)
             starting = True
-            window.after(1500, running_sequence)
+            window.after(2500, running_sequence)
         elif test_choice == 'test 2':
             test_2 = test_data.get('test_2', [])
             send_json_to_arduino(test_2)
             starting = True
-            window.after(1500, running_sequence)
+            window.after(2500, running_sequence)
         elif test_choice == 'test 3':
             test_3 = test_data.get('test_3', [])
             send_json_to_arduino(test_3)
             starting = True
-            window.after(1500, running_sequence)
+            window.after(2500, running_sequence)
         else:
             custom_test = test_data.get('custom', [])
             send_json_to_arduino(custom_test)
             starting = True
-            window.after(1500, running_sequence)
+            window.after(2500, running_sequence)
     else:
         print('no such test on file')
         listbox.insert(0, 'no such test on file')
@@ -296,7 +296,7 @@ def run_all_tests():
                 # print status and update the listbox
                 print(f'running {test_key}')
                 starting = True
-                window.after(1500, running_sequence)
+                window.after(2500, running_sequence)
             else:
                 print(f'{test_key} not found')
                 listbox.insert(0, f'{test_key} not found or empty')
@@ -346,7 +346,7 @@ def add_placeholder(entry, placeholder_text):
 #### SERIAL INTERACTION ####
 
 # set up serial communication
-def serial_setup(port='COM15', baudrate=9600, timeout=5, lbl_monitor=None): # adjust port if necessary
+def serial_setup(port='COM15', baudrate=9600, timeout=5, lbl_monitor = None): # adjust port if necessary
     try:
         ser = serial.Serial(port, baudrate, timeout=timeout)
         print(f'connected to arduino port: {port}')
@@ -412,7 +412,7 @@ def capture_all_serial():
 
                 if response:
                     # print the entire response (debugging, regular data, etc.)
-                    print(f'Captured from serial: {response}')
+                    print(f'from serial: {response}')
 
                     # display the response in the GUI label or listbox
 
@@ -421,16 +421,16 @@ def capture_all_serial():
 
                 else:
                     # Handle case where no valid data was received
-                    print('No valid data received')
+                    print('no valid data received')
 
 
             except serial.SerialException as e:
                 # Handle serial communication errors
-                print(f'Error reading serial data: {e}')
+                print(f'error reading serial data: {e}')
 
 
-        # Schedule the next serial capture after 1.5 seconds
-        window.after(1500, capture_all_serial)
+        # schedule the next serial capture after 2.5 seconds
+        window.after(2500, capture_all_serial)
 
 
 # read data from serial
@@ -476,39 +476,17 @@ def running_sequence():
 
                 if response:
                     print(f'about running sequence, arduino says: {response}')
-                    listbox.insert(tk.END, response)  # Insert the response into the listbox
-                    starting = False  # Reset flag after receiving a response
+                    listbox.insert(tk.END, response)  # insert the response into the listbox
+                    starting = False  # reset flag after receiving a response
                 else:
                     print('received unexpected message or no valid data')
             except serial.SerialException as e:
                 print(f'error reading data: {e}')
                 listbox.insert(tk.END, f'error reading data: {e}')
 
-        # Schedule the next call of this function (continue polling for updates)
-        window.after(1500, running_sequence)
+        # schedule the next call of this function (continue polling for updates)
+        window.after(2500, running_sequence)
 
-'''
-# show serial updates re: running test sequence
-def running_sequence():
-    global is_stopped
-    global starting
-
-    if not is_stopped and starting: # run this only if system is not stopped and a new test sequence begins
-        try:
-            send_command(ser, 'SHOW RUNNING SEQUENCE') # send command to request running test updates
-
-            response = ser.readline().decode('utf-8').strip() # decode serial response
-
-            if response:
-                print(f'about running sequence, arduino says: {response}')
-                listbox.insert(tk.END, response)
-                starting = False
-            else:
-                print('received unexpected message or no valid data')
-        except serial.SerialException as e:
-            print(f'error reading data: {e}')
-            listbox.insert(tk.END, f'error reading data: {e}')
-'''
 
 # sends a command to arduino via serial
 def send_command(ser, command):
