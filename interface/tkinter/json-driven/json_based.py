@@ -224,7 +224,8 @@ def run_all_benchmark():
 
                 # print status and update the listbox
                 print(f'Running {test_key}')
-                running_sequence()
+                starting = True
+                window.after(1500, running_sequence)
             else:
                 print(f'{test_key} not found')
                 listbox.insert(0, f'{test_key} not found')
@@ -251,19 +252,23 @@ def pick_your_test(test_choice):
         if test_choice == 'test 1':
             test_1 = test_data.get('test_1', [])
             send_json_to_arduino(test_1)
-            running_sequence()
+            starting = True
+            window.after(1500, running_sequence)
         elif test_choice == 'test 2':
             test_2 = test_data.get('test_2', [])
             send_json_to_arduino(test_2)
-            running_sequence()
+            starting = True
+            window.after(1500, running_sequence)
         elif test_choice == 'test 3':
             test_3 = test_data.get('test_3', [])
             send_json_to_arduino(test_3)
-            running_sequence()
+            starting = True
+            window.after(1500, running_sequence)
         else:
             custom_test = test_data.get('custom', [])
             send_json_to_arduino(custom_test)
-            running_sequence()
+            starting = True
+            window.after(1500, running_sequence)
     else:
         print('no such test on file')
         listbox.insert(0, 'no such test on file')
@@ -290,7 +295,8 @@ def run_all_tests():
                 send_json_to_arduino(test)  # send the data to Arduino
                 # print status and update the listbox
                 print(f'running {test_key}')
-                running_sequence()
+                starting = True
+                window.after(1500, running_sequence)
             else:
                 print(f'{test_key} not found')
                 listbox.insert(0, f'{test_key} not found or empty')
@@ -428,6 +434,32 @@ def read_data():
         # schedule the next read_data call only if the system is not stopped
         window.after(1500, read_data) # run this method every 1.5 sec
 
+# Non-blocking running sequence function
+def running_sequence():
+    global is_stopped
+    global starting
+
+    if not is_stopped and starting:  # run this only if the system is not stopped and a new test sequence begins
+        if ser and ser.is_open:
+            try:
+                send_command(ser, 'SHOW RUNNING SEQUENCE')  # send command to request running test updates
+
+                response = ser.readline().decode('utf-8').strip()  # decode serial response
+
+                if response:
+                    print(f'about running sequence, arduino says: {response}')
+                    listbox.insert(tk.END, response)  # Insert the response into the listbox
+                    starting = False  # Reset flag after receiving a response
+                else:
+                    print('received unexpected message or no valid data')
+            except serial.SerialException as e:
+                print(f'error reading data: {e}')
+                listbox.insert(tk.END, f'error reading data: {e}')
+
+        # Schedule the next call of this function (continue polling for updates)
+        window.after(1500, running_sequence)
+
+'''
 # show serial updates re: running test sequence
 def running_sequence():
     global is_stopped
@@ -448,7 +480,7 @@ def running_sequence():
         except serial.SerialException as e:
             print(f'error reading data: {e}')
             listbox.insert(tk.END, f'error reading data: {e}')
-
+'''
 
 # sends a command to arduino via serial
 def send_command(ser, command):
