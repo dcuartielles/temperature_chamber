@@ -12,6 +12,60 @@ from gui_functionality import *
 from json_handling import *
 from txt_file_handling import *
 
+class App(tk.Tk):
+    def __init__(self, title, size):
+
+        # main setup
+        super().__init__()
+        self.title(title)
+        self.configure(bg='white')
+        # set an initial size for the window (width, height)
+        self.geometry(f'{size[0]}x{size[1]}')
+        # prepare the general grid
+        self.columnconfigure(0, weight=1)  # make sure gui is vertically expandable
+        self.rowconfigure(0, weight=1)  # and horizontally
+
+        # frame
+        self.canvasframe = Canvas(self)
+
+        # vertical scrollbar
+        self.verticalscrollbar = VerticalScrollbar(self)
+
+        # horizontal scrollbar
+        self.horizontalscrollbar = HorizontalScrollbar(self)
+
+
+        # run the app
+        self.mainloop()
+
+
+class Canvas(tk.Canvas):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.grid(row=0, column=0, sticky='nsew', bg='white', anchor='center')  # extend it across the whole window
+        self.configure(yscrollcommand=vertical_scrollbar.set, xscrollcommand=horizontal_scrollbar.set)
+
+        # bind the resizing event of the canvas to update the scrollable region dynamically
+        def update_scrollregion(event):
+            self.configure(scrollregion=canvas.bbox("all"))
+
+        self.bind('<Configure>', update_scrollregion)
+
+class VerticalScrollbar(tk.Scrollbar):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.grid(row=0, column=1, sticky='ns', orient="vertical", command=canvas.yview)
+
+class HorizontalScrollbar(tk.Scrollbar):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.grid(row=0, column=1, sticky='ew', orient="horizontal", command=canvas.xview)
+
+App('temperature chamber', (680, 700))
+
+
+
+
 # global flag for stopping the reading process
 is_stopped = False
 
@@ -24,16 +78,8 @@ listbox = None
 
 ser = serial_setup()  # necessary start for interactions with arduino
 
-# initialize a new window
-window = tk.Tk()
-window.title('temperature chamber')
-window.configure(bg='white')
-# set an initial size for the window (width, height)
-window.geometry("680x700")
 
-# prepare the general grid
-window.columnconfigure(0, weight=1)  # make sure gui is vertically expandable
-window.rowconfigure(0, weight=1)  # and horizontally
+
 
 # create a canvas to allow scrolling
 canvas = tk.Canvas(window, bg='white')

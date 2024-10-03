@@ -204,6 +204,7 @@ def add_custom():
 # run all benchmark tests (test_1, test_2, test_3) automatically
 def run_all_benchmark():
     test_data = open_file()
+    global starting
 
     if test_data is not None:
 
@@ -237,6 +238,7 @@ def run_all_benchmark():
 # choose and run one test
 def pick_your_test(test_choice):
     test_data = open_file()
+    global starting
 
     if test_data is not None:
 
@@ -269,6 +271,7 @@ def pick_your_test(test_choice):
 
 def run_all_tests():
     test_data = open_file()
+    global starting
 
     if test_data is not None:
 
