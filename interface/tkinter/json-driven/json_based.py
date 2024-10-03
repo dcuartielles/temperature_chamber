@@ -399,6 +399,38 @@ def serial_setup(port='COM15', baudrate=9600, timeout=5, lbl_monitor=None): # ad
                 print(f"Could not parse item: '{item}'")
                 continue  # Skip to the next item
     return parsed_data'''
+# read all serial output
+def capture_all_serial():
+    global is_stopped
+    global starting
+
+    if not is_stopped:  # only read data if the system is not stopped
+        if ser and ser.is_open:
+            try:
+                # read the entire response from the Arduino
+                response = ser.readline().decode('utf-8').strip()
+
+                if response:
+                    # print the entire response (debugging, regular data, etc.)
+                    print(f'Captured from serial: {response}')
+
+                    # display the response in the GUI label or listbox
+
+                    if response.startswith('Setting '):
+                        starting = True
+
+                else:
+                    # Handle case where no valid data was received
+                    print('No valid data received')
+
+
+            except serial.SerialException as e:
+                # Handle serial communication errors
+                print(f'Error reading serial data: {e}')
+
+
+        # Schedule the next serial capture after 1.5 seconds
+        window.after(1500, capture_all_serial)
 
 
 # read data from serial
@@ -417,9 +449,6 @@ def read_data():
                     print(f'arduino responded: {response}')
                     if lbl_monitor:
                         lbl_monitor['text'] = f'{response}'
-
-                    if response.startswith('Setting '):
-                        starting = True
 
                 else:
                     print('received unexpected message or no valid data')
@@ -443,7 +472,6 @@ def running_sequence():
         if ser and ser.is_open:
             try:
                 send_command(ser, 'SHOW RUNNING SEQUENCE')  # send command to request running test updates
-
                 response = ser.readline().decode('utf-8').strip()  # decode serial response
 
                 if response:
@@ -660,5 +688,6 @@ frm_tests.grid(row=0, column=0)
 # set data reading from serial every 0.5 second
 window.after(500, read_data)
 window.after(1000, clear_out_custom)
+window.after(1500, capture_all_serial)
 
 window.mainloop()
