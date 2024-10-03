@@ -414,23 +414,28 @@ def capture_all_serial():
                     # print the entire response (debugging, regular data, etc.)
                     print(f'from serial: {response}')
 
-                    # display the response in the GUI label or listbox
+                    # make a list of trigger responses
+                    trigger_responses = ['Setting ', 'Running ', 'Test complete', 'Waiting', 'Target temp', 'Sequence complete', 'No sequence']
 
-                    if response.startswith('Setting '):
-                        starting = True
+                    # display the response in the listbox
+                    if any(response.startswith(trigger) for trigger in trigger_responses):
+                        starting = True # set flag to True
+                        print(response)
+                        listbox.insert(tk.END, response)  # insert the response into the listbox
+                        starting = False  # reset flag after receiving a response so listbox doesn't keep updating
 
                 else:
-                    # Handle case where no valid data was received
+                    # handle case where no valid data was received
                     print('no valid data received')
 
 
             except serial.SerialException as e:
-                # Handle serial communication errors
+                # handle serial communication errors
                 print(f'error reading serial data: {e}')
 
 
-        # schedule the next serial capture after 2.5 seconds
-        window.after(2500, capture_all_serial)
+        # schedule the next serial capture after 2 seconds
+        window.after(2000, capture_all_serial)
 
 
 # read data from serial
