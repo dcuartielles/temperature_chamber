@@ -1,7 +1,7 @@
 import serial
 import time
 
-arduino_port = "/dev/cu.usbmodem143201"
+arduino_port = "/dev/cu.usbmodem34B7DA61DC282"
 baud = 9600
 timeout_duration = 5
 
@@ -28,9 +28,7 @@ def run_test(test_command):
             print("Serial port closed.")
 
 test_commands = [
-    "RUN TEST1",
-    "RUN TEST2",
-    "RUN TEST3"
+    "SHOW RUNNING SEQUENCE"
 ]
 
 for command in test_commands:
