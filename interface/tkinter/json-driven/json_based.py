@@ -187,18 +187,16 @@ def update_listbox():
     test_data = open_file()
     for i, step in enumerate(test_data['custom']):
         listbox.insert(tk.END, f'step {i + 1}: temp = {step["temp"]}°C, duration = {step["duration"]} mins')
+        listbox.yview_moveto(1)  # move the view to the last line (bottom)
 
 
 # add custom test
 def add_custom():
-    test_data = open_file()
-
-    if test_data is not None:
-        save_file(test_data)  # save back to json file
-        print('custom test added successfully')
-        ent_temp.delete(0, tk.END)  # clear the temp entry
-        ent_duration.delete(0, tk.END)  # clear the duration entry
-        listbox.insert(0, 'custom test uploaded')
+    print('custom test added successfully')
+    ent_temp.delete(0, tk.END)  # clear the temp entry
+    ent_duration.delete(0, tk.END)  # clear the duration entry
+    listbox.insert(tk.END, 'custom test uploaded')
+    listbox.yview_moveto(1)  # move the view to the last line (bottom)
 
 
 # run all benchmark tests (test_1, test_2, test_3) automatically
@@ -378,7 +376,6 @@ def capture_all_serial():
 
                     # make a list of trigger responses
                     trigger_responses = ['Setting', 'Running', 'Test complete', 'Target temp', 'Sequence complete']
-# TO DO: SCROLLABLE LISTBOX
 # RUNNING IN TOP ROW IN BOLD OR SOMETHING WHILE ALL THE OTHERS SCROLL BELOW
 
                     # display the response in the listbox if triggered
@@ -386,6 +383,7 @@ def capture_all_serial():
                         starting = True # set flag to True
                         print(response)
                         listbox.insert(tk.END, response)  # insert the response into the listbox
+                        listbox.yview_moveto(1)   # move the view to the last line (bottom)
                         starting = False  # reset flag after receiving a response so listbox doesn't keep updating
 
                 else:
@@ -556,8 +554,14 @@ btn_remove = tk.Button(frm_tests, text='remove step', command=remove_step, width
 btn_modify = tk.Button(frm_tests, text='modify step', command=modify_step, width=30, justify='center', bg='white',
                        fg='black')
 
-# listbox to display the current steps
+# listbox to display the current steps etc.
 listbox = Listbox(frm_tests, height=10, width=50)
+# create vertical scrollbar for the listbox
+lbx_scrollbar_v = tk.Scrollbar(frm_tests, orient="vertical", command=listbox.yview)
+
+# configure the listbox to work with the scrollbar
+listbox.config(yscrollcommand=lbx_scrollbar_v.set)
+
 # temp & duration entries & custom test step handling buttons
 ent_temp = tk.Entry(frm_tests, width=30, justify='center', bg='white', fg='black')
 ent_duration = tk.Entry(frm_tests, width=30, justify='center', bg='white', fg='black')
@@ -584,7 +588,9 @@ btn_add.grid(row=7, column=2, sticky='ew', padx=5, pady=5)
 btn_modify.grid(row=8, column=2, sticky='ew', padx=5, pady=5)
 btn_remove.grid(row=9, column=2, sticky='ew', padx=5, pady=5)
 
+#place listbox & its scrollbar
 listbox.grid(row=8, rowspan=5, columnspan=2, sticky='nsew', padx=5, pady=5)
+lbx_scrollbar_v.grid(row=8, column=1, rowspan=6, sticky='nse', padx=5, pady=5)
 
 btn_add_custom.grid(row=10, column=2, sticky='ew', padx=5, pady=5)
 btn_run_custom.grid(row=11, column=2, sticky='ew', padx=5, pady=5)
