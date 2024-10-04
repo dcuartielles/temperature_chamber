@@ -107,7 +107,6 @@ int stateHeater = 0;
 int stateCooler = 0;
 
 
-//////////////////// OLD //////////////////
 // State machine variables
 int stateHeaterOld = 0;
 int stateCoolerOld = 0;
@@ -115,7 +114,6 @@ int dutyCycleHeater = 0;
 int dutyCycleCooler = 0;
 int status = EMERGENCY_STOP;
 bool dataEvent = false;
-//////////////////// OLD //////////////////
 
 struct Sequence {
     float targetTemp;
@@ -144,11 +142,21 @@ bool receivingJson = false;
 
 // Define Variables
 double temperatureRoom;
-double temperatureDesired = 70;  // by default, we want to reach max temperature
+double temperatureDesired = -41;  // by default, we want to reach max temperature
 float TemperatureThreshold = 0;
 double temperatureRoomOld;
 double temperatureDesiredOld;
 int longheatingflag = 0;
+
+// function for checking how much memory remains after parsing JSON of different sizes
+extern "C" {
+    char* sbrk(int incr);
+}
+int freeMemory() {
+    char top;
+    return &top - sbrk(0);
+}
+
 
 void setup() {
     // Initialise Serial
@@ -162,6 +170,7 @@ void setup() {
     lcd.init();         // Initialize the LCD screen
     //lcd.backlight();  // Turn on the backlight of lcd
     temperatureRoom = getTemperature();
+    currentTest.numSequences = 0;
     showData();
 }
 
@@ -194,15 +203,45 @@ void showData() {
 void displayLCD(float tempRoom, int tempDesired) {
     lcd.backlight();  // turn off backlight
     lcd.display();
-    lcd.setCursor(0, 0);  // 1st argument represent the number of column of the first letter
-    lcd.print("Room: ");
-    lcd.print(tempRoom);
-    lcd.print(" C");
 
-    lcd.setCursor(0, 1);  // 2nd argument represent the number of the line we're writing on
-    lcd.print("Goal: ");
-    lcd.print(tempDesired);
-    lcd.print(" C");
+    lcd.setCursor(0, 0);
+    lcd.print("Room:");
+    lcd.print(tempRoom, 1);
+    lcd.print("C");
+
+    // if (isTestRunning) {
+    //     unsigned long elapsedTime = (millis() - sequenceStartTime) / 60000;
+    //     unsigned long remainingTime = (currentDuration / 60000) - elapsedTime;
+    //
+    //     lcd.setCursor(13, 0);
+    //     lcd.print(remainingTime);
+    //     lcd.print("m");
+    //
+    //     lcd.setCursor(0, 1);  // 2nd argument represent the number of the line we're writing on
+    //     lcd.print("Goal:");
+    //     lcd.print(tempDesired);
+    //     lcd.print("C");
+    //
+    //     float percentComplete = (float)(millis() - sequenceStartTime) / currentDuration * 100;
+    //
+    //     if (percentComplete > 100) percentComplete = 100;
+    //
+    //     lcd.setCursor(12, 1);
+    //     lcd.print((int)percentComplete);
+    //     lcd.print("%");
+    // } else if (currentSequenceIndex >= currentTest.numSequences && currentTest.numSequences != 0) {
+    //     lcd.setCursor(0, 1);  // 2nd argument represent the number of the line we're writing on
+    //     lcd.print("Test complete");
+    // } else {
+    // }
+    lcd.setCursor(0, 1);
+    if (tempDesired == -41) {
+        lcd.print("No goal set");
+    } else {
+        lcd.print("Goal: ");
+        lcd.print(tempDesired);
+        lcd.print(" C");
+    }
 }
 
 void displaySerial() {
@@ -260,15 +299,9 @@ void PWMCooler(int dutyCycle, unsigned long PeriodCooler) {
 }
 
 void parseTextFromJson(JsonDocument& doc) {
-
-    if (!doc.is<JsonArray>()) {
-        Serial.println("Error: Expected JSON array");
-        return;
-    }
-
     JsonArray sequences = doc.as<JsonArray>();
     int numSequences = sequences.size();
-    if (numSequences > 5) numSequences = 5;
+    if (numSequences > 5) numSequences = 5;         // how many?
 
     currentTest.numSequences = numSequences;
 
@@ -279,21 +312,16 @@ void parseTextFromJson(JsonDocument& doc) {
             Serial.println("Error: Missing 'temp' or 'duration' in JSON sequence");
             continue;   // skip this sequence if the keys are missing
         }
-
         currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
         currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
-
-        /*
         // debug
-        Serial.print("Step ");
-        Serial.print(i);
-        Serial.print(": Target Temp = ");
-        Serial.print(currentTest.sequences[i].targetTemp);
-        Serial.print(", Duration = ");
-        Serial.println(currentTest.sequences[i].duration);
-        */
+        // Serial.print("Step ");
+        // Serial.print(i);
+        // Serial.print(": Target Temp = ");
+        // Serial.print(currentTest.sequences[i].targetTemp);
+        // Serial.print(", Duration = ");
+        // Serial.println(currentTest.sequences[i].duration);
     }
-
     jsonBuffer.clear();
 
     // start the test with the first sequence
@@ -477,8 +505,18 @@ void handleResetState() {
 }
 
 void handleHeatingState() {
+    if (temperatureDesired == -41) return;
     //Serial.println("Entered s1 HEATING. actual status = " + String(status));
     cooler.off();
+
+    ////// TESTING
+    // check if target temp has been reached
+    float error = temperatureDesired - temperatureRoom;
+    if (error > 0) {
+        // Proportional control for heating
+        dutyCycleHeater = map(error, 0, 10, 20, 100);
+    }
+
     if (switchSystem.released()) {
         status = EMERGENCY_STOP;
         //Serial.println("s1 heating: emergency stop. status : " + String(status));
@@ -521,6 +559,7 @@ void handleHeatingState() {
 }
 
 void handleCoolingState() {
+    if (temperatureDesired == -41) return;
     //Serial.println("Entered s1 COOLING. actual status = " + String(status));
     heater.off();
     if (switchSystem.released()) {
@@ -628,8 +667,8 @@ void loop() {
         int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
         incomingString[len] = '\0'; // null-terminate the string
 
-        //Serial.print("Received string: ");
-        //Serial.println(incomingString);
+        Serial.print("Received string: ");
+        Serial.println(incomingString);
 
         DeserializationError error = deserializeJson(jsonBuffer, incomingString);
         // Handle the input string (either a command or JSON)
@@ -643,6 +682,11 @@ void loop() {
             parseCommand(incomingString);  // Parse regular commands
         }
         //incomingString = "";  // Reset for the next command
+
+        Serial.print("Free memory after JSON parsing: ");
+        Serial.println(freeMemory());
+
+        incomingString[0] = '\0';
     }
 
     switch (status) {
