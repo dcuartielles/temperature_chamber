@@ -1,9 +1,12 @@
-# imports
+# system and PyQt5 imports
 import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
+
+# functionality imports
+from jsonFunctionality import FileHandler
 
 # create window class
 class MainWindow(QMainWindow):
@@ -114,11 +117,18 @@ class MainWindow(QMainWindow):
                                           'font-weight: bold;')
         layout.addWidget(self.emergency_stop)
 
+        # connect functionality
+        self.load_button.clicked.connect(self.load_test)
+
         # set layout to the central widget
         self.central_widget.setLayout(layout)
-
         # automatically adjust window size
         self.adjustSize()
+
+    def load_test(self):
+        # create an instance of file handler, pass window as parent
+        file_handler = FileHandler(self)
+        test_data = file_handler.open_file()
 
 
 # method responsible for running the app
