@@ -36,7 +36,7 @@ class FileHandler:
             return None
 
 ######## to be reworked ########
-
+'''
 
     def send_json_to_arduino(test_data):
         json_data = json.dumps(test_data)  # convert py dictionary to json
@@ -163,3 +163,4 @@ class FileHandler:
             print('no test data found on file')
             listbox.delete(0, tk.END)
             listbox.insert(0, 'no test data found on file')
+'''

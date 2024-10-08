@@ -1,5 +1,5 @@
 # function to clear the entry widget
-def clear_entry_on_click(event):
+''' def clear_entry_on_click(event):
     if event.widget.get() in ['temperature in °C: ', 'numbers only', 'duration in minutes: ', 'max temperature = 100°C',
                               'enter a number',
                               'minimum duration is 1 minute']:  # check for placeholder or warning text
@@ -28,4 +28,4 @@ def add_placeholder(entry, placeholder_text):
 
     # bind the events
     entry.bind('<FocusIn>', on_focus_in)
-    entry.bind('<FocusOut>', on_focus_out)
+    entry.bind('<FocusOut>', on_focus_out)'''

@@ -3,10 +3,11 @@ import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 
 # functionality imports
-from jsonFunctionality import FileHandler
+from jsonFunctionality import *
+from serialInteraction import *
 
 # create window class
 class MainWindow(QMainWindow):
@@ -110,15 +111,16 @@ class MainWindow(QMainWindow):
         layout.addSpacerItem(QSpacerItem(0, 20))
 
         # emergency stop button
-        self.emergency_stop = QPushButton('emergency stop', self)
-        self.emergency_stop.setStyleSheet('background-color: red;'
+        self.emergency_stop_button = QPushButton('emergency stop', self)
+        self.emergency_stop_button.setStyleSheet('background-color: red;'
                                           'color: white;'
                                           'font-size: 20px;'
                                           'font-weight: bold;')
-        layout.addWidget(self.emergency_stop)
+        layout.addWidget(self.emergency_stop_button)
 
         # connect functionality
         self.load_button.clicked.connect(self.load_test)
+        self.emergency_stop_button.clicked.connect(self.emergency_stop)
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
@@ -129,6 +131,10 @@ class MainWindow(QMainWindow):
         # create an instance of file handler, pass window as parent
         file_handler = FileHandler(self)
         test_data = file_handler.open_file()
+
+    def emergency_stop(self):
+        serial_com = SerialCommunication(self)
+        stop = serial_com.emergency_stop()
 
 
 # method responsible for running the app
