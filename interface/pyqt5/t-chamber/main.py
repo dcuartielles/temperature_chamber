@@ -128,15 +128,158 @@ class MainWindow(QMainWindow):
         self.load_button.clicked.connect(self.json_handler.open_file)
         self.emergency_stop_button.clicked.connect(self.serial_com.emergency_stop)
         self.emergency_stop_button.clicked.connect(self.clear_entries)
+        self.run_button.clicked.connect(self.json_handler.run_all_tests)
+        self.custom_button.clicked.connect(self.json_handler.run_custom)
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
         # automatically adjust window size
         self.adjustSize()
 
+    '''
+    add:
+    def clear_entry_on_click(event):
+        if event.widget.get() in ['temperature in °C: ', 'numbers only', 'duration in minutes: ', 'max temperature = 100°C',
+                                  'enter a number',
+                                  'minimum duration is 1 minute']:  # check for placeholder or warning text
+            event.widget.delete(0, tk.END)  # clear the entry widget
+            event.widget['fg'] = 'black'  # change text color to normal if needed
+            
+    # CHANGE: SET TEMP & DURATION ONLY
+    def add_step():
+        test_data = open_file()
+    
+        if test_data is not None:
+            # get input and clear it of potential empty spaces
+            temp_string = ent_temp.get().strip()
+            duration_string = ent_duration.get().strip()
+    
+            # initialize temp and duration
+            temp = None
+            duration = None
+            is_valid = True  # track overall validity
+    
+            if temp_string:
+                try:
+                    temp = float(temp_string)
+                    if temp >= 100:
+                        print('max 100')
+                        ent_temp.delete(0, tk.END)  # clear the entry
+                        ent_temp.insert(0, 'max temperature = 100°C')  # show error message in entry
+                        is_valid = False
+    
+                except ValueError:
+                    print('numbers only')
+                    ent_temp.delete(0, tk.END)  # clear the entry
+                    ent_temp.insert(0, 'numbers only')  # show error message in entry
+                    is_valid = False
+            else:
+                print('no temperature input')
+                ent_temp.delete(0, tk.END)  # clear the entry
+                ent_temp.insert(0, 'enter a number')  # show error message in entry
+                is_valid = False
+    
+            if duration_string:
+                try:
+                    duration = int(duration_string)
+                    if duration < 1:  # check for a minimum duration 
+                        print('minimum duration is 1 minute')
+                        ent_duration.delete(0, tk.END)
+                        ent_duration.insert(0, 'minimum duration is 1 minute')
+                        is_valid = False
+                except ValueError:
+                    print('numbers only')
+                    ent_duration.delete(0, tk.END)  # clear the entry
+                    ent_duration.insert(0, 'numbers only')  # show error message in entry
+                    is_valid = False
+            else:
+                print('no valid duration')
+                ent_duration.delete(0, tk.END)  # clear the entry
+                ent_duration.insert(0, 'enter a number')  # show error message in entry
+                is_valid = False
+    
+                # check if both entries are valid before proceeding
+            if is_valid and temp is not None and duration is not None:
+                new_sequence = {'temp': temp, 'duration': duration}
+                test_data = open_file()
+                test_data['custom'].append(new_sequence)
+                save_file(test_data)
+                update_listbox()
+            else:
+                print('cannot add custom test due to invalid inputs.')
+    
+        else:
+            print('unable to add custom test due to file loading error')
+    '''
     def clear_entries(self):
         self.set_temp_input.clear()
         self.set_duration_input.clear()
+
+    # CHANGE: SET TEMP & DURATION ONLY
+    def set_temp(self):
+        test_data = self.json_handler.open_file()
+        if test_data is not None:
+            # get input and clear it of potential empty spaces
+            temp_string = self.set_temp_input.get().strip()
+            duration_string = self.set_duration_input.get().strip()
+
+            # initialize temp and duration
+            temp = None
+            duration = None
+            is_valid = True  # track overall validity
+
+            if temp_string:
+                try:
+                    temp = int(temp_string)
+                    if temp >= 100:
+                        print('max 100')
+                        self.set_temp_input.clear()  # clear the entry
+                        self.set_temp_input.insert('max temperature = 100°C')  # show error message in entry
+                        is_valid = False
+
+                except ValueError:
+                    print('numbers only')
+                    self.set_temp_input.clear()  # clear the entry
+                    self.set_temp_input.insert('numbers only')  # show error message in entry
+                    is_valid = False
+            else:
+                print('no temperature input')
+                self.set_temp_input.clear()  # clear the entry
+                self.set_temp_input.insert('enter a number')  # show error message in entry
+                is_valid = False
+
+            if duration_string:
+                try:
+                    duration = int(duration_string)
+                    if duration < 1:  # check for a minimum duration
+                        print('minimum duration is 1 minute')
+                        self.set_duration_input.clear()
+                        self.set_duration_input.insert('minimum duration is 1 minute')
+                        is_valid = False
+                except ValueError:
+                    print('numbers only')
+                    self.set_duration_input.clear()  # clear the entry
+                    self.set_duration_input.insert('numbers only')  # show error message in entry
+                    is_valid = False
+            else:
+                print('no valid duration')
+                self.set_duration_input.clear()  # clear the entry
+                self.set_duration_input.insert('enter a number')  # show error message in entry
+                is_valid = False
+
+                # check if both entries are valid before proceeding
+            if is_valid and temp is not None and duration is not None:
+                new_sequence = {'temp': temp, 'duration': duration}
+                test_data = open_file()
+                test_data['custom'].append(new_sequence)
+                save_file(test_data)
+                update_listbox()
+            else:
+                print('cannot add custom test due to invalid inputs.')
+
+        else:
+            print('unable to add custom test due to file loading error')
+
 
 # method responsible for running the app
 def main():
