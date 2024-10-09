@@ -142,10 +142,10 @@ bool receivingJson = false;
 
 // Define Variables
 double temperatureRoom;
-double temperatureDesired = -41;  // by default, we want to reach max temperature
+double temperatureDesired = -41;  // Invalid value to start the chamber in RESET state
 float TemperatureThreshold = 0;
-double temperatureRoomOld;
-double temperatureDesiredOld;
+// double temperatureRoomOld;
+// double temperatureDesiredOld;
 int longheatingflag = 0;
 
 // function for checking how much memory remains after parsing JSON of different sizes
@@ -167,11 +167,9 @@ void setup() {
     sensors2.begin();
 
     // Initialise LCD
-    lcd.init();         // Initialize the LCD screen
-    //lcd.backlight();  // Turn on the backlight of lcd
+    lcd.init();
     temperatureRoom = getTemperature();
     currentTest.numSequences = 0;
-    showData();
 }
 
 float getTemperature() {
@@ -185,20 +183,20 @@ float getTemperature() {
     return roomTemperature;
 }
 
-void showData() {
-    displayLCD(temperatureRoom, temperatureDesired);
-    displaySerial();
-    if(abs(temperatureRoomOld - temperatureRoom) > 0.1 || 
-            (temperatureDesiredOld - temperatureDesired)!= 0 || 
-            stateHeaterOld != stateHeater || stateCoolerOld != stateCooler) {
-        dataEvent = true;; // if the temp gradient is more than 0.1 deg
-    } else {
-        dataEvent = false;
-    }
-    if (dataEvent) {
-        displaySerial();
-    }
-}
+// void showData() {
+//     displayLCD(temperatureRoom, temperatureDesired);
+//     displaySerial();
+//     if(abs(temperatureRoomOld - temperatureRoom) > 0.1 || 
+//             (temperatureDesiredOld - temperatureDesired)!= 0 || 
+//             stateHeaterOld != stateHeater || stateCoolerOld != stateCooler) {
+//         dataEvent = true;; // if the temp gradient is more than 0.1 deg
+//     } else {
+//         dataEvent = false;
+//     }
+//     if (dataEvent) {
+//         displaySerial();
+//     }
+// }
 
 void displayLCD(float tempRoom, int tempDesired) {
     lcd.backlight();  // turn off backlight
@@ -209,23 +207,19 @@ void displayLCD(float tempRoom, int tempDesired) {
     lcd.print(tempRoom);
     lcd.print(" C");
 
+    //// Attempt at showing test updates on LCD, but LCD too smol
     // if (isTestRunning) {
     //     unsigned long elapsedTime = (millis() - sequenceStartTime) / 60000;
     //     unsigned long remainingTime = (currentDuration / 60000) - elapsedTime;
-    //
     //     lcd.setCursor(13, 0);
     //     lcd.print(remainingTime);
     //     lcd.print("m");
-    //
     //     lcd.setCursor(0, 1);  // 2nd argument represent the number of the line we're writing on
     //     lcd.print("Goal:");
     //     lcd.print(tempDesired);
     //     lcd.print("C");
-    //
     //     float percentComplete = (float)(millis() - sequenceStartTime) / currentDuration * 100;
-    //
     //     if (percentComplete > 100) percentComplete = 100;
-    //
     //     lcd.setCursor(12, 1);
     //     lcd.print((int)percentComplete);
     //     lcd.print("%");
@@ -234,6 +228,7 @@ void displayLCD(float tempRoom, int tempDesired) {
     //     lcd.print("Test complete");
     // } else {
     // }
+
     lcd.setCursor(0, 1);
     lcd.print("Goal: ");
     if (tempDesired == -41) {
@@ -254,11 +249,11 @@ void displaySerial() {
     Serial.print(F(" | Cooler: "));
     Serial.print(stateCooler);
     Serial.print(F(" | LH Indicator: "));
-    Serial.println(longheatingflag);  // End with a newline for the next set of data
+    Serial.println(longheatingflag);
 }
 
 void displayLCDOff() {
-    lcd.noBacklight();  // turn off backlight
+    lcd.noBacklight();
     lcd.noDisplay();
 }
 
@@ -275,25 +270,29 @@ bool holdForPeriod(unsigned long duration) {
 }
 
 void PWMHeater(int dutyCycle, unsigned long PeriodHeater) {
-    if (millis() - timerHeater > dutyCycle * PeriodHeater / 100) {
+    unsigned long elapsedTime = millis() - timerHeater;
+    if (elapsedTime > (dutyCycle * PeriodHeater) / 100) {
         heater.off();
     } else {
         cooler.off();
         heater.on();
     }
-    if (millis() - timerHeater > PeriodHeater) timerHeater = millis();
+    if (elapsedTime > PeriodHeater) {
+        timerHeater = millis();
+    }
 }
 
 // dutyCycle has to be 0..100
 
 void PWMCooler(int dutyCycle, unsigned long PeriodCooler) {
-    if (millis() - timerCooler > dutyCycle * PeriodCooler / 100) {
+    unsigned long elapsedTime = millis() - timerCooler;
+    if (elapsedTime > (dutyCycle * PeriodCooler) / 100) {
         cooler.off();
     } else {
         heater.off();
         cooler.on();
     }
-    if (millis() - timerCooler > PeriodCooler) { 
+    if (elapsedTime > PeriodCooler) { 
         timerCooler = millis();
     }
 }
@@ -314,13 +313,6 @@ void parseTextFromJson(JsonDocument& doc) {
         }
         currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
         currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
-        // debug
-        // Serial.print("Step ");
-        // Serial.print(i);
-        // Serial.print(": Target Temp = ");
-        // Serial.print(currentTest.sequences[i].targetTemp);
-        // Serial.print(", Duration = ");
-        // Serial.println(currentTest.sequences[i].duration);
     }
     jsonBuffer.clear();
 
@@ -331,17 +323,12 @@ void parseTextFromJson(JsonDocument& doc) {
     // Ensure desired temperature is set and transition to the appropriate state
     setTemperature(currentTest.sequences[0].targetTemp);
     status =  REPORT;
-
-
-    //Serial.print("Starting test with target temp: ");
-    //Serial.println(currentTest.sequences[0].targetTemp);
 }
 
 bool printedWaiting = false;
 
 void runCurrentSequence() {
     if (currentSequenceIndex >= currentTest.numSequences) {
-        // Test finished
         Serial.println("Test complete");
         isTestRunning = false;
         printedWaiting = false;
@@ -356,14 +343,10 @@ void runCurrentSequence() {
     // store current duration for the SHOW RUNNING SEQUENCE command
     currentDuration = duration;
 
-    // debug
     Serial.print("Running sequence: Target temp = ");
     Serial.print(targetTemp);
     Serial.print(" Duration = ");
     Serial.println(duration);
-
-    //Serial.print("Status: ");
-    //Serial.println(status);
 
     // check if target temp is reached
     if (!isTemperatureReached(targetTemp, temperatureRoom)) {
@@ -385,15 +368,6 @@ void runCurrentSequence() {
 
         if (currentSequenceIndex < currentTest.numSequences) {
             setTemperature(currentTest.sequences[currentSequenceIndex].targetTemp);
-
-            // TemperatureThreshold = temperatureRoom - temperatureDesired;
-            // if (TemperatureThreshold < -0.1) {
-            //     status = HEATING;
-            // } else if (TemperatureThreshold > 0.4) {
-            //     status = COOLING;
-            // } else {
-            //     status = REPORT;
-            // }
         }
     }
 }
@@ -475,24 +449,12 @@ void parseCommand(String command) {
     //displayStatus();
 }
 
-// void runTestSequence(float temperature, unsigned long duration, String stepDescription) {
-//     if (!isTestRunning) {
-//         //sendStatus("Starting: " + stepDescription);
-//         setTemperature(temperature);
-//         startTime = millis();
-//         isTestRunning = true;
-//     }
-//
-//     if (holdForPeriod(duration)) {
-//         //sendStatus(stepDescription + " complete");
-//         isTestRunning = false;  // Test step is done, can proceed to the next one
-//     }
-// }
-
 void handleResetState() {
     if (switchSystem.read() == LOW) {
         displayLCD(temperatureRoom, temperatureDesired);
         readAndParseSerial();
+    } else {
+        displayLCDOff();
     }
 
     if (switchSystem.read() == HIGH) {
@@ -539,7 +501,7 @@ void handleHeatingState() {
     }
 
     PWMHeater(dutyCycleHeater, PeriodHeater);
-    stateCooler = 0;    // TODO: Test
+    stateCooler = 0;
     stateHeater = 1;
 
     Serial.println("DutyCycleHeater: " + String(dutyCycleHeater));
@@ -574,7 +536,7 @@ void handleCoolingState() {
     longheatingflag = 0;
 
     PWMCooler(dutyCycleCooler, PeriodCooler);
-    stateHeater = 0;    // TODO: Test
+    stateHeater = 0;
     stateCooler = 1;
 
     Serial.println("DutyCycleCooler: " + String(dutyCycleCooler));
@@ -596,17 +558,16 @@ void handleReportState() {
 }
 
 void handleEmergencyStopState() {
-    if (switchSystem.held()) {
-        status = RESET;
-    }
-
     heater.off();
     cooler.off();
     stateHeater = 0;
     stateCooler = 0;
     displayLCDOff();
     longheatingflag =0;
-    //inputString ="";
+    inputString ="";
+    if (switchSystem.held()) {
+        status = RESET;
+    }
 }
 
 void readAndParseSerial() {
@@ -627,9 +588,6 @@ void readAndParseSerial() {
                 parseCommand(incomingString);  // Parse regular commands
             }
 
-            //Serial.print("Free memory after JSON parsing: ");
-            //Serial.println(freeMemory());
-
             incomingString[0] = '\0';
         }
     } else {
@@ -643,16 +601,20 @@ unsigned long updateInterval = 500;
 void loop() {  
 
     unsigned long currentMillis = millis();
-    if (currentMillis - lastUpdate >= updateInterval) {
+    if ((currentMillis - lastUpdate >= updateInterval) && switchSystem.read() == LOW) {
         displayLCD(temperatureRoom, temperatureDesired);
         displaySerial();
         lastUpdate = currentMillis;
+    } else {
+        displayLCDOff();
+        Serial.println("LCD turning off");
     }
 
-    temperatureRoomOld = temperatureRoom;
-    stateHeaterOld = stateHeater;
-    stateCoolerOld = stateCooler;
-    temperatureDesiredOld = temperatureDesired;
+    // Used in showData()
+    // temperatureRoomOld = temperatureRoom;
+    // stateHeaterOld = stateHeater;
+    // stateCoolerOld = stateCooler;
+    // temperatureDesiredOld = temperatureDesired;
 
     // get latest room temp
     temperatureRoom = getTemperature();
@@ -682,5 +644,4 @@ void loop() {
             handleEmergencyStopState();
             break;
     }
-
 }
