@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QLineEdit
 
 
+# create entry functionality class
 class EntryHandler:
     def __init__(self):
         self.entries = []  # store references to all entries

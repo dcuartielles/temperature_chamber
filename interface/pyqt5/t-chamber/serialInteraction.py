@@ -2,19 +2,19 @@ import serial
 import time
 
 
-
+# create serial communication class
 class SerialCommunication:
     def __init__(self, port='COM15', baudrate=9600, timeout=5):
         self.port = port
         self.baudrate = baudrate
         self.timeout = timeout
-        self.ser = None # future serial connection object
-        self.is_stopped = False # flag to stop the read loop
+        self.ser = None  # future serial connection object
+        self.is_stopped = False  # flag to stop the read loop
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
         if port:
-            self.port = port # allow dynamic port change
+            self.port = port  # allow dynamic port change
         if baudrate:
             self.baudrate = baudrate
 
@@ -69,14 +69,14 @@ class SerialCommunication:
             print('serial communication is closed or stopped')
             return None
 
-    def capture_all_serial(self, callback= None):
+    def capture_all_serial(self, callback=None):
         if not self.is_stopped and self.ser and self.ser.is_open:
             try:
                 response = self.ser.readline().decode('utf-8').strip()
                 if response:
                     print(response)
                     if callback:
-                        callback(response) # use callback to send data to gui
+                        callback(response)  # use callback to send data to gui
                 else:
                     print('no valid data received')
             except serial.SerialException as e:
@@ -84,6 +84,6 @@ class SerialCommunication:
 
     # emergency stop
     def emergency_stop(self):
-        self.is_stopped = True # set flag to stop the read_data loop
+        self.is_stopped = True  # set flag to stop the read_data loop
         self.send_command('EMERGENCY STOP')
         print('emergency stop issued')

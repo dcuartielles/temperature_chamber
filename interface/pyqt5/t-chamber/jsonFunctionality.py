@@ -2,11 +2,13 @@ import json
 from PyQt5.QtWidgets import QFileDialog
 from serialInteraction import SerialCommunication
 
+
+# create file handler class
 class FileHandler:
     def __init__(self, parent=None):
         self.parent = parent  # optional: parent window for the dialog
         # initialize SerialCommunication class to handle serial interactions
-        self.serial_com = SerialCommunication() # create an instance of SC
+        self.serial_com = SerialCommunication()  # create an instance of SC
         self.serial_com.serial_setup(port='COM15', baudrate=9600)
 
     # open a file using a file dialog and return the file content
@@ -56,6 +58,7 @@ class FileHandler:
         except Exception as e:
             print(f'failed to save file: {e}')
 
+    ''' not sure if this is necessary anymore
     # clear out any old custom test from file at the beginning of the session:
     def clear_out_custom(self):
         test_data = self.open_file()
@@ -65,6 +68,7 @@ class FileHandler:
 
         self.save_file(test_data)  # save the updated dictionary back to the JSON file
         return test_data  # return the python dictionary
+    '''
 
     # send json to arduino
     def send_json_to_arduino(self, test_data):
@@ -82,7 +86,6 @@ class FileHandler:
         else:
             print('serial communication is not open')
 
-
     # run the entire test file
     def run_all_tests(self):
         test_data = self.open_file()
@@ -90,13 +93,13 @@ class FileHandler:
         if test_data is not None:
             all_tests = [key for key in test_data.keys()]
 
-            # iterate through each test test and run it
+            # iterate through each test and run it
             for test_key in all_tests:
                 test = test_data.get(test_key, [])
 
                 if test:  # if the test data is available
                     self.send_json_to_arduino(test)  # send the data to Arduino
-                    self.serial_com.capture_all_serial(callback= None)
+                    self.serial_com.capture_all_serial(callback=None)
                     # print status and update the listbox
                     print(f'running {test_key}')
                 else:

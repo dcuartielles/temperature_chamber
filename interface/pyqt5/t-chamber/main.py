@@ -1,6 +1,5 @@
 # system and PyQt5 imports
 import sys
-from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt, QTimer
@@ -8,11 +7,14 @@ from PyQt5.QtCore import Qt, QTimer
 # functionality imports
 from jsonFunctionality import *
 from serialInteraction import *
+from interfaceFunctionality import *
+
 
 # create window class
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.entry_handler = EntryHandler()  # create an instance of EntryHandler
         self.initUI()
 
     # method responsible for all gui elements
@@ -68,11 +70,12 @@ class MainWindow(QMainWindow):
         # set temperature and duration in their own layout part
         input_layout = QHBoxLayout()
         self.set_temp_input = QLineEdit(self)
-        self.set_temp_input.setPlaceholderText('temperature in °c: ')
+        self.entry_handler.add_entry(self.set_temp_input, 'temperature in °c: ')
         self.set_temp_input.setStyleSheet('color: #009FAF;'
                                           'font-weight: bold')
         self.set_duration_input = QLineEdit(self)
-        self.set_duration_input.setPlaceholderText('duration in minutes: ')
+        self.entry_handler.add_entry(self.set_duration_input, 'duration in minutes: ')
+        self.entry_handler.on_focus_in(self.set_duration_input, 'duration in minutes: ')
         self.set_duration_input.setStyleSheet('color: #009FAF;'
                                               'font-weight: bold')
         self.set_button = QPushButton('set', self)
