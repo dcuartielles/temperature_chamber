@@ -7,14 +7,20 @@ from PyQt5.QtCore import Qt, QTimer
 # functionality imports
 from jsonFunctionality import *
 from serialInteraction import *
-from interfaceFunctionality import *
 
 
 # create window class
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.entry_handler = EntryHandler()  # create an instance of EntryHandler
+
+        # create an instance of SerialCommunication
+        self.serial_com = SerialCommunication(self)
+        self.serial_com.serial_setup(port='COM15', baudrate=9600)
+
+        # create an instance of json file handler
+        self.json_handler = FileHandler(self)
+
         self.initUI()
 
     # method responsible for all gui elements
@@ -70,14 +76,11 @@ class MainWindow(QMainWindow):
         # set temperature and duration in their own layout part
         input_layout = QHBoxLayout()
         self.set_temp_input = QLineEdit(self)
-        self.entry_handler.add_entry(self.set_temp_input, 'temperature in °c: ')
-        self.set_temp_input.setStyleSheet('color: #009FAF;'
-                                          'font-weight: bold')
+        self.set_temp_input.setPlaceholderText('temperature in °C :')
+        self.set_temp_input.setStyleSheet('color: #009FAF;')
         self.set_duration_input = QLineEdit(self)
-        self.entry_handler.add_entry(self.set_duration_input, 'duration in minutes: ')
-        self.entry_handler.on_focus_in(self.set_duration_input, 'duration in minutes: ')
-        self.set_duration_input.setStyleSheet('color: #009FAF;'
-                                              'font-weight: bold')
+        self.set_duration_input.setPlaceholderText('duration in minutes: ')
+        self.set_duration_input.setStyleSheet('color: #009FAF;')
         self.set_button = QPushButton('set', self)
         input_layout.addWidget(self.set_temp_input)
         input_layout.addWidget(self.set_duration_input)
@@ -122,23 +125,18 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.emergency_stop_button)
 
         # connect functionality
-        self.load_button.clicked.connect(self.load_test)
-        self.emergency_stop_button.clicked.connect(self.emergency_stop)
+        self.load_button.clicked.connect(self.json_handler.open_file)
+        self.emergency_stop_button.clicked.connect(self.serial_com.emergency_stop)
+        self.emergency_stop_button.clicked.connect(self.clear_entries)
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
         # automatically adjust window size
         self.adjustSize()
 
-    def load_test(self):
-        # create an instance of file handler, pass window as parent
-        file_handler = FileHandler(self)
-        test_data = file_handler.open_file()
-
-    def emergency_stop(self):
-        serial_com = SerialCommunication(self)
-        stop = serial_com.emergency_stop()
-
+    def clear_entries(self):
+        self.set_temp_input.clear()
+        self.set_duration_input.clear()
 
 # method responsible for running the app
 def main():
