@@ -1,6 +1,5 @@
 import serial
 import time
-import json
 
 
 
@@ -70,12 +69,6 @@ class SerialCommunication:
             print('serial communication is closed or stopped')
             return None
 
-    # emergency stop
-    def emergency_stop(self):
-        self.is_stopped = True # set flag to stop the read_data loop
-        self.send_command('EMERGENCY STOP')
-        print('emergency stop issued')
-
     def capture_all_serial(self, callback= None):
         if not self.is_stopped and self.ser and self.ser.is_open:
             try:
@@ -88,3 +81,9 @@ class SerialCommunication:
                     print('no valid data received')
             except serial.SerialException as e:
                 print(f'error reading serial: {e}')
+
+    # emergency stop
+    def emergency_stop(self):
+        self.is_stopped = True # set flag to stop the read_data loop
+        self.send_command('EMERGENCY STOP')
+        print('emergency stop issued')
