@@ -122,6 +122,7 @@ class FileHandler:
         else:
             print('no such test on file')
 
+    # set temp & duration from the gui
     def set_temp(self, input_dictionary):
         if input_dictionary is not None:
             self.send_json_to_arduino(input_dictionary)

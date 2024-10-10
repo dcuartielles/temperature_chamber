@@ -1,12 +1,14 @@
 # system and PyQt5 imports
 import sys
+import threading
+import time
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, pyqtSlot
 
 # functionality imports
-from jsonFunctionality import *
-from serialInteraction import *
+from jsonFunctionality import FileHandler
+from serialInteraction import SerialCommunication
 
 
 # create window class
@@ -25,6 +27,11 @@ class MainWindow(QMainWindow):
         self.input_dictionary = {}
 
         self.initUI()
+
+        # create and start the serial reading thread
+        self.serial_thread = threading.Thread(target=self.update_chamber_monitor)
+        self.serial_thread.daemon = True  # allows thread to exit when the app exits
+        self.serial_thread.start()
 
     # method responsible for all gui elements
     def initUI(self):
@@ -140,11 +147,36 @@ class MainWindow(QMainWindow):
         # automatically adjust window size
         self.adjustSize()
 
+    # method to be run in separate thread
+    def update_chamber_monitor(self):
+        while True:
+            # call the `read_data` method from serialInteraction
+            response = self.serial_com.read_data()
+
+            if response:
+                # update gui in main thread using QTimer
+                self.update_gui(response)
+
+            # slight delay for serial port to process
+            time.sleep(1)
+
+    # gui updates from main thread
+    @pyqtSlot(str)  # decorator signalling a slot --> allowing for comm btw parts of app, esp across threads
+    def update_gui(self, message):
+        QTimer.singleShot(0, lambda: self.chamber_monitor_update(message))  # 0: trigger update when main thread is free
+
+    # the actual chamber_monitor QList updating
+    def chamber_monitor_update(self, message):
+        self.chamber_monitor.clear()  # clear old data
+        item = QListWidgetItem(message)
+        item.setTextAlignment(Qt.AlignCenter)
+        self.chamber_monitor.addItem(item)
+
     def clear_entries(self):
         self.set_temp_input.clear()
         self.set_duration_input.clear()
 
-    # CHANGE: SET TEMP & DURATION ONLY
+    # set tem & duration independently of test file
     def set_temp_and_duration(self):
 
         # get input and clear it of potential empty spaces
