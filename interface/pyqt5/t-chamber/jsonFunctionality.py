@@ -121,3 +121,9 @@ class FileHandler:
                 self.serial_com.capture_all_serial(callback=None)
         else:
             print('no such test on file')
+
+    def set_temp(self, input_dictionary):
+        if input_dictionary is not None:
+            self.send_json_to_arduino(input_dictionary)
+        else:
+            print('nothing to set the t-chamber to')
