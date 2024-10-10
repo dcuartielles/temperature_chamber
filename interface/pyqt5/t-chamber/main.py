@@ -4,11 +4,13 @@ import threading
 import time
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import Qt, QTimer, pyqtSlot
+from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 
 # functionality imports
 from jsonFunctionality import FileHandler
 from serialInteraction import SerialCommunication
+from chamberMonitorWorker import ChamberMonitorWorker
+from serialCaptureWorker import SerialCaptureWorker
 
 
 # create window class
@@ -28,14 +30,16 @@ class MainWindow(QMainWindow):
 
         self.initUI()
 
-        # create and start the serial reading thread
-        self.serial_thread = threading.Thread(target=self.update_chamber_monitor)
-        self.serial_thread.daemon = True  # allows thread to exit when the app exits
-        self.serial_thread.start()
+        # create chamber monitor worker thread
+        self.chamber_worker = ChamberMonitorWorker(self.serial_com)
+        self.chamber_worker.update_chamber_monitor.connect(self.update_chamber_monitor)
 
-        # handle running test update thread
-        self.capture_active = False  # flag to control serial capture
-        # timer
+        # create serial capture worker thread
+        self.capture_worker = SerialCaptureWorker(self.serial_com)
+        self.capture_worker.update_instruction_listbox.connect(self.update_instruction_listbox)
+
+        # start the chamber monitor worker
+        self.chamber_worker.start()
 
     # method responsible for all gui elements
     def initUI(self):
@@ -142,8 +146,8 @@ class MainWindow(QMainWindow):
         self.load_button.clicked.connect(self.json_handler.open_file)
         self.emergency_stop_button.clicked.connect(self.serial_com.emergency_stop)
         self.emergency_stop_button.clicked.connect(self.clear_entries)
-        self.run_button.clicked.connect(self.json_handler.run_all_tests)
-        self.custom_button.clicked.connect(self.json_handler.run_custom)
+        self.run_button.clicked.connect(self.on_run_button_clicked)
+        self.custom_button.clicked.connect(self.on_custom_button_clicked)
         self.set_button.clicked.connect(self.set_temp_and_duration)
 
         # set layout to the central widget
@@ -152,34 +156,41 @@ class MainWindow(QMainWindow):
         self.adjustSize()
 
     # GUI FUNCTIONALITY-RELATED METHODS
-    # method to be run in separate thread
-    def update_chamber_monitor(self):
-        while True:
-            # call the `read_data` method from serialInteraction
-            response = self.serial_com.read_data()
-
-            if response:
-                # update gui in main thread using QTimer
-                self.update_gui(response)
-
-            # slight delay for serial port to process
-            time.sleep(1)
-
-    # gui updates from main thread
-    @pyqtSlot(str)  # decorator signalling a slot --> allowing for comm btw parts of app, esp across threads
-    def update_gui(self, message):
-        QTimer.singleShot(0, lambda: self.chamber_monitor_update(message))  # 0: trigger update when main thread is free
-
-    # the actual chamber_monitor QList updating
-    def chamber_monitor_update(self, message):
+    # the actual chamber_monitor QList updates
+    def update_chamber_monitor(self, message):
         self.chamber_monitor.clear()  # clear old data
         item = QListWidgetItem(message)
         item.setTextAlignment(Qt.AlignCenter)
         self.chamber_monitor.addItem(item)
 
+    # the actual instruction listbox updates
+    def update_instruction_listbox(self, message):
+        self.instruction_listbox.addItem(message)
+        self.instruction_listbox.scrollToBottom()
+
+    # button click handlers
+    def on_run_button_clicked(self):
+        if not self.capture_worker.isRunning():
+            self.capture_worker.start()
+        self.instruction_listbox.clear()  # clear the listbox initially if needed
+        # run tests
+        self.json_handler.run_all_tests()
+
+    def on_custom_button_clicked(self):
+        if not self.capture_worker.isRunning():
+            self.capture_worker.start()
+        self.instruction_listbox.clear()  # clear the listbox initially if needed
+        # run custom test
+        self.json_handler.run_custom('custom')
+
+    # stop both workers
+    def closeEvent(self, event):
+        self.chamber_worker.stop()
+        self.capture_worker.stop()
+        super().closeEvent(event)
+
     # set tem & duration independently of test file
     def set_temp_and_duration(self):
-
         # get input and clear it of potential empty spaces
         temp_string = self.set_temp_input.text().strip()
         duration_string = self.set_duration_input.text().strip()

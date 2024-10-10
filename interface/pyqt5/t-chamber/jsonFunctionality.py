@@ -58,18 +58,6 @@ class FileHandler:
         except Exception as e:
             print(f'failed to save file: {e}')
 
-    ''' not sure if this is necessary anymore
-    # clear out any old custom test from file at the beginning of the session:
-    def clear_out_custom(self):
-        test_data = self.open_file()
-        # check if the 'custom' key exists and reset it to an empty list
-        if 'custom' in test_data:
-            test_data['custom'] = []  # keep the key but clear its contents
-
-        self.save_file(test_data)  # save the updated dictionary back to the JSON file
-        return test_data  # return the python dictionary
-    '''
-
     # send json to arduino
     def send_json_to_arduino(self, test_data):
         json_data = json.dumps(test_data)  # convert py dictionary to json
