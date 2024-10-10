@@ -125,6 +125,7 @@ struct Test {
     int numSequences;
 };
 
+// Test variables
 bool isTestRunning = false;
 Test currentTest;
 int currentSequenceIndex = 0;
@@ -135,10 +136,6 @@ unsigned long currentDuration = 0;
 // JSON Buffer for parsing
 char incomingString[1024];
 StaticJsonDocument<2048> jsonBuffer;
-
-// Serial input variables
-String inputString = "";
-bool receivingJson = false;
 
 // Define Variables
 double temperatureRoom;
@@ -395,24 +392,18 @@ enum TestState { IDLE, RUNNING_TEST };
 TestState currentTestState = IDLE;
 unsigned long startTime = 0;    // Timing variable for test steps
 
-
-// Update status over Serial
-void sendStatus(String status) {
-    Serial.println(status);
-}
-
 void setTemperature(float temp) {
     if (temp >= TEMPERATURE_MAX) {
         temperatureDesired = TEMPERATURE_MAX;
-        sendStatus("Specified temperature exceeds maximum allowed temperature\n");
-        sendStatus("Setting temperature to " + String(TEMPERATURE_MAX) + "¬∞C");
+        Serial.println("Specified temperature exceeds maximum allowed temperature\n");
+        Serial.println("Setting temperature to " + String(TEMPERATURE_MAX) + "¬∞C");
     } else if (temp <= TEMPERATURE_MIN) {
         temperatureDesired = TEMPERATURE_MIN;
-        sendStatus("Specified temperature is lower than the minimum allowed temperature\n");
-        sendStatus("Setting temperature to " + String(TEMPERATURE_MIN) + "¬∞C");
+        Serial.println("Specified temperature is lower than the minimum allowed temperature\n");
+        Serial.println("Setting temperature to " + String(TEMPERATURE_MIN) + "¬∞C");
     } else {
         temperatureDesired = temp;
-        sendStatus("Setting temperature to " + String(temp) + "¬∞C");
+        Serial.println("Setting temperature to " + String(temp) + "¬∞C");
         Serial.print("Temperature desired set to: ");
         Serial.println(temp);  // Debug to confirm the desired temp is set
     }
@@ -569,7 +560,6 @@ void handleEmergencyStopState() {
     stateCooler = 0;
     displayLCDOff();
     longheatingflag =0;
-    inputString ="";
     if (switchSystem.held()) {
         status = RESET;
     }
