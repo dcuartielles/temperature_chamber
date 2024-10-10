@@ -33,6 +33,10 @@ class MainWindow(QMainWindow):
         self.serial_thread.daemon = True  # allows thread to exit when the app exits
         self.serial_thread.start()
 
+        # handle running test update thread
+        self.capture_active = False  # flag to control serial capture
+        # timer
+
     # method responsible for all gui elements
     def initUI(self):
         # main window and window logo
@@ -147,6 +151,7 @@ class MainWindow(QMainWindow):
         # automatically adjust window size
         self.adjustSize()
 
+    # GUI FUNCTIONALITY-RELATED METHODS
     # method to be run in separate thread
     def update_chamber_monitor(self):
         while True:
@@ -171,10 +176,6 @@ class MainWindow(QMainWindow):
         item = QListWidgetItem(message)
         item.setTextAlignment(Qt.AlignCenter)
         self.chamber_monitor.addItem(item)
-
-    def clear_entries(self):
-        self.set_temp_input.clear()
-        self.set_duration_input.clear()
 
     # set tem & duration independently of test file
     def set_temp_and_duration(self):
@@ -239,6 +240,10 @@ class MainWindow(QMainWindow):
         msg_box.setStandardButtons(QMessageBox.Ok)
         msg_box.exec_()  # this will display the message box
 
+    # auxiliary method for emergency stop
+    def clear_entries(self):
+        self.set_temp_input.clear()
+        self.set_duration_input.clear()
 
 # method responsible for running the app
 def main():
