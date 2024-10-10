@@ -326,12 +326,14 @@ void parseTextFromJson(JsonDocument& doc) {
 }
 
 bool printedWaiting = false;
+bool printedRunning = false;
 
 void runCurrentSequence() {
     if (currentSequenceIndex >= currentTest.numSequences) {
         Serial.println("Test complete");
         isTestRunning = false;
         printedWaiting = false;
+        printedRunning = false;
         status = REPORT;
         return;
     }
@@ -343,10 +345,13 @@ void runCurrentSequence() {
     // store current duration for the SHOW RUNNING SEQUENCE command
     currentDuration = duration;
 
-    Serial.print("Running sequence: Target temp = ");
-    Serial.print(targetTemp);
-    Serial.print(" Duration = ");
-    Serial.println(duration);
+    if (!printedRunning) {
+        Serial.print("Running sequence: Target temp = ");
+        Serial.print(targetTemp);
+        Serial.print(" Duration = ");
+        Serial.println(duration);
+        printedRunning = true;
+    }
 
     // check if target temp is reached
     if (!isTemperatureReached(targetTemp, temperatureRoom)) {
@@ -504,8 +509,8 @@ void handleHeatingState() {
     stateCooler = 0;
     stateHeater = 1;
 
-    Serial.println("DutyCycleHeater: " + String(dutyCycleHeater));
-    Serial.println("PeriodHeater: " + String(PeriodHeater));
+    // Serial.println("DutyCycleHeater: " + String(dutyCycleHeater));
+    // Serial.println("PeriodHeater: " + String(PeriodHeater));
 
 }
 
@@ -539,8 +544,8 @@ void handleCoolingState() {
     stateHeater = 0;
     stateCooler = 1;
 
-    Serial.println("DutyCycleCooler: " + String(dutyCycleCooler));
-    Serial.println("PeriodCooler: " + String(PeriodCooler));
+    // Serial.println("DutyCycleCooler: " + String(dutyCycleCooler));
+    // Serial.println("PeriodCooler: " + String(PeriodCooler));
 }
 
 void handleReportState() {
@@ -591,23 +596,27 @@ void readAndParseSerial() {
             incomingString[0] = '\0';
         }
     } else {
-        Serial.println("Switches are OFF. Test will not be processed.");
+        //Serial.println("Switches are OFF. Test will not be processed.");
     }
 }
 
 unsigned long lastUpdate = 0;
 unsigned long updateInterval = 500;
 
+bool printedLCDOff = false;
+
 void loop() {  
 
     unsigned long currentMillis = millis();
-    if ((currentMillis - lastUpdate >= updateInterval) && switchSystem.read() == LOW) {
+    if (switchSystem.read() == LOW) {
         displayLCD(temperatureRoom, temperatureDesired);
-        displaySerial();
-        lastUpdate = currentMillis;
+        //displaySerial();
+        if (currentMillis - lastUpdate >= updateInterval) {
+            lastUpdate = currentMillis;
+        }
     } else {
         displayLCDOff();
-        Serial.println("LCD turning off");
+        //Serial.println("LCD turning off");
     }
 
     // Used in showData()
