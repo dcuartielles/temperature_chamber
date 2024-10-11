@@ -16,10 +16,10 @@ class SerialCaptureWorker(QThread):
     def run(self):
         while self.is_running:
             with self.lock:
-                response = self.serial_com.capture_all_serial()
+                response = self.ser.readline().decode('utf-8').strip()
                 if response:
                     self.process_response(response)
-            time.sleep(0.5)
+                    time.sleep(1.3)
 
     def process_response(self, response):
         trigger_responses = ['Setting', 'Running', 'Test complete', 'Target temp', 'Sequence complete']
