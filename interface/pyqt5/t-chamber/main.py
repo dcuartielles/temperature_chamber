@@ -17,27 +17,28 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-
-
         # create an instance of json file handler
         self.json_handler = FileHandler(self)
+
+        # create a dictionary for setting temp & duration
+        self.input_dictionary = []
 
         # create an instance of SerialCommunication
         self.serial_com = SerialCommunication(self)
         self.serial_com.serial_setup(port='COM15', baudrate=9600)
 
-        # create a dictionary for setting temp & duration
-        self.input_dictionary = []
+        if self.serial_com and self.serial_com.ser and self.serial_com.ser.is_open:
+            # create serial capture worker thread
+            self.capture_worker = SerialCaptureWorker(self.serial_com)
+            self.capture_worker.update_listbox.connect(self.update_listbox)
+            self.capture_worker.update_chamber_monitor.connect(self.update_chamber_monitor)
+
+            # start the worker thread
+            self.capture_worker.start()
+        else:
+            print('serial communication is not available, gui running dry')
 
         self.initUI()
-
-        # create serial capture worker thread
-        self.capture_worker = SerialCaptureWorker(self.serial_com)
-        self.capture_worker.update_listbox.connect(self.update_listbox)
-        self.capture_worker.update_chamber_monitor.connect(self.update_chamber_monitor)
-
-        # start the worker thread
-        self.capture_worker.start()
 
     # method responsible for all gui elements
     def initUI(self):
@@ -176,12 +177,6 @@ class MainWindow(QMainWindow):
         # run custom test
         self.json_handler.run_custom()
 
-    # stop both workers
-    def closeEvent(self, event):
-        if self.capture_worker:
-            self.capture_worker.stop()
-            super().closeEvent(event)
-
     # set tem & duration independently of test file
     def add_temp_and_duration(self):
         # get input and clear it of potential empty spaces
@@ -189,31 +184,44 @@ class MainWindow(QMainWindow):
         duration_string = self.set_duration_input.text().strip()
 
         is_valid = True  # track overall validity
+        # initialize temp and duration
+        temp = None
+        duration = None
 
-        try:
-            temp = float(temp_string)
-            if temp >= 100:
-                self.show_error_message('error', 'max temperature = 100°C')  # show error message
+        if temp_string:
+            try:
+                temp = float(temp_string)
+                if temp >= 100:
+                    self.show_error_message('error', 'max temperature = 100°C')  # show error message
+                    is_valid = False
+
+            except ValueError:
+                print('numbers only')
+                self.show_error_message('error', 'numbers only')  # show error message
                 is_valid = False
-        except ValueError:
-            print('numbers only')
-            self.show_error_message('error', 'numbers only')  # show error message
+        else:
+            print('no temp input')
             is_valid = False
 
-        try:
-            duration = int(duration_string)
-            if duration < 1:  # check for a minimum duration
-                print('minimum duration is 1 minute')
-                self.show_error_message('error', 'minimum duration is 1 minute')
+        if duration_string:
+            try:
+                duration = int(duration_string)
+                if duration < 1:  # check for a minimum duration
+                    print('minimum duration is 1 minute')
+                    self.show_error_message('error', 'minimum duration is 1 minute')
+                    is_valid = False
+            except ValueError:
+                print('numbers only')
+                self.show_error_message('error', 'numbers only')
                 is_valid = False
-        except ValueError:
-            print('numbers only')
-            self.show_error_message('error', 'numbers only')
+        else:
+            print('no valid duration')
             is_valid = False
 
         # check if both entries are valid before proceeding
         if is_valid and temp is not None and duration is not None:
-            self.input_dictionary.append({'temp': temp, 'duration': duration * 60000})  # convert dur to milliseconds
+            new_sequence = {'temp': temp, 'duration': duration * 60000}
+            self.input_dictionary.append(new_sequence)  # convert dur to milliseconds
             print(self.input_dictionary)
             return self.input_dictionary
         else:
@@ -249,6 +257,12 @@ class MainWindow(QMainWindow):
     def clear_entries(self):
         self.set_temp_input.clear()
         self.set_duration_input.clear()
+
+    # stop both workers
+    def closeEvent(self, event):
+        if self.capture_worker:
+            self.capture_worker.stop()
+            super().closeEvent(event)
 
 # method responsible for running the app
 def main():

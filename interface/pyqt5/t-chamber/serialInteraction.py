@@ -49,21 +49,6 @@ class SerialCommunication:
         except Exception as e:
             print(f'unexpected error: {e}')
 
-    '''
-    # read all serial
-    def capture_all_serial(self, callback=None):
-        if not self.is_stopped and self.ser and self.ser.is_open:
-            try:
-                response = self.ser.readline().decode('utf-8').strip()
-                if response:
-                    print(response)
-                    if callback:
-                        callback(response)  # use callback to send data to gui
-                else:
-                    print('no valid data received')
-            except serial.SerialException as e:
-                print(f'error reading serial: {e}') '''
-
     # read data
     def read_data(self):
         if not self.is_stopped and self.ser and self.ser.is_open:

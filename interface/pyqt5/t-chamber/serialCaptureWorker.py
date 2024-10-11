@@ -1,34 +1,20 @@
 import time
 from PyQt5.QtCore import QThread, pyqtSignal
 import serial
+import threading
 
 
 class SerialCaptureWorker(QThread):
     update_listbox = pyqtSignal(str)  # signal to update instruction listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
 
-    def __init__(self, serial_com, retry_attempts=5, retry_delay=2.0):
+    def __init__(self, serial_com):
         super().__init__()
         self.serial_com = serial_com
         self.is_running = True
         self.last_command_time = time.time()
-        self.retry_attempts = retry_attempts
-        self.retry_delay = retry_delay
 
     def run(self):
-        attempts = 0
-        while attempts < self.retry_attempts:
-
-            if self.serial_com and self.serial_com.ser.is_open:
-                print('serial connection established')
-                break
-            else:
-                print(f'attempt {attempts + 1}/{self.retry_attempts}: waiting for serial communication')
-                time.sleep(self.retry_delay)
-                attempts += 1
-        if not self.serial_com.ser or not self.serial_com.ser.is_open:
-            print(f'failed to establish serial connection after {self.retry_attempts} attempts')
-            return
 
         while self.is_running:
             response = self.serial_com.ser.readline().decode('utf-8').strip()  # continuous readout from serial
