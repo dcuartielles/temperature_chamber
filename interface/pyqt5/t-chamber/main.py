@@ -9,7 +9,6 @@ from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 # functionality imports
 from jsonFunctionality import FileHandler
 from serialInteraction import SerialCommunication
-from chamberMonitorWorker import ChamberMonitorWorker
 from serialCaptureWorker import SerialCaptureWorker
 
 
@@ -18,30 +17,27 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        # create an instance of SerialCommunication
-        self.serial_com = SerialCommunication(self)
-        self.serial_com.serial_setup(port='COM15', baudrate=9600)
+
 
         # create an instance of json file handler
         self.json_handler = FileHandler(self)
+
+        # create an instance of SerialCommunication
+        self.serial_com = SerialCommunication(self)
+        self.serial_com.serial_setup(port='COM15', baudrate=9600)
 
         # create a dictionary for setting temp & duration
         self.input_dictionary = []
 
         self.initUI()
 
-        self.serial_lock = threading.Lock()
-
-        # create chamber monitor worker thread
-        self.chamber_worker = ChamberMonitorWorker(self.serial_com, self.serial_lock)
-        self.chamber_worker.update_chamber_monitor.connect(self.update_chamber_monitor)
-
         # create serial capture worker thread
-        self.capture_worker = SerialCaptureWorker(self.serial_com, self.serial_lock)
-        self.capture_worker.update_instruction_listbox.connect(self.update_instruction_listbox)
+        self.capture_worker = SerialCaptureWorker(self.serial_com)
+        self.capture_worker.update_listbox.connect(self.update_listbox)
+        self.capture_worker.update_chamber_monitor.connect(self.update_chamber_monitor)
 
-        # start the chamber monitor worker
-        self.chamber_worker.start()
+        # start the worker thread
+        self.capture_worker.start()
 
     # method responsible for all gui elements
     def initUI(self):
@@ -166,33 +162,25 @@ class MainWindow(QMainWindow):
         item.setTextAlignment(Qt.AlignCenter)
         self.chamber_monitor.addItem(item)
 
-    # the actual instruction listbox updates
-    def update_instruction_listbox(self, message):
-        self.instruction_listbox.addItem(message)
-        self.instruction_listbox.scrollToBottom()
+    # the actual listbox updates
+    def update_listbox(self, message):
+        self.listbox.addItem(message)
+        self.listbox.scrollToBottom()
 
     # button click handlers
     def on_run_button_clicked(self):
-        if not self.capture_worker.isRunning():
-            self.capture_worker.start()
-        self.instruction_listbox.clear()  # clear the listbox initially if needed
         # run tests
         self.json_handler.run_all_tests()
 
     def on_custom_button_clicked(self):
-
-        if not self.capture_worker.isRunning():
-            self.capture_worker.start()
-        self.instruction_listbox.clear()  # clear the listbox initially if needed
         # run custom test
         self.json_handler.run_custom()
 
-
     # stop both workers
     def closeEvent(self, event):
-        self.chamber_worker.stop()
-        self.capture_worker.stop()
-        super().closeEvent(event)
+        if self.capture_worker:
+            self.capture_worker.stop()
+            super().closeEvent(event)
 
     # set tem & duration independently of test file
     def add_temp_and_duration(self):
@@ -201,7 +189,6 @@ class MainWindow(QMainWindow):
         duration_string = self.set_duration_input.text().strip()
 
         is_valid = True  # track overall validity
-
 
         try:
             temp = float(temp_string)

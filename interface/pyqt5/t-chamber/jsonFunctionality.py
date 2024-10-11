@@ -113,9 +113,8 @@ class FileHandler:
 
     # set temp & duration from the gui
     def set_temp(self, input_dictionary):
-
         if input_dictionary is not None:
-            # print(input_dictionary)
+            print(input_dictionary)
             self.send_json_to_arduino(input_dictionary)
         else:
             print('nothing to set the t-chamber to')
