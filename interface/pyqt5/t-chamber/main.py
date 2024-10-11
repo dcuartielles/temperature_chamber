@@ -26,16 +26,18 @@ class MainWindow(QMainWindow):
         self.json_handler = FileHandler(self)
 
         # create a dictionary for setting temp & duration
-        self.input_dictionary = {}
+        self.input_dictionary = []
 
         self.initUI()
 
+        self.serial_lock = threading.Lock()
+
         # create chamber monitor worker thread
-        self.chamber_worker = ChamberMonitorWorker(self.serial_com)
+        self.chamber_worker = ChamberMonitorWorker(self.serial_com, self.serial_lock)
         self.chamber_worker.update_chamber_monitor.connect(self.update_chamber_monitor)
 
         # create serial capture worker thread
-        self.capture_worker = SerialCaptureWorker(self.serial_com)
+        self.capture_worker = SerialCaptureWorker(self.serial_com, self.serial_lock)
         self.capture_worker.update_instruction_listbox.connect(self.update_instruction_listbox)
 
         # start the chamber monitor worker
@@ -122,8 +124,7 @@ class MainWindow(QMainWindow):
         self.chamber_label = QLabel('temperature chamber situation', self)
         self.chamber_monitor = QListWidget(self)
         self.chamber_monitor.setFixedHeight(40)
-        self.chamber_monitor.setStyleSheet('color: #009FAF;'
-                                           'font-size: 20px;')
+        self.chamber_monitor.setStyleSheet('color: #009FAF;')
         # create a QListWidgetItem with centered text
         item = QListWidgetItem('arduino will keep you posted on current temperature and such')
         item.setTextAlignment(Qt.AlignCenter)  # center text
@@ -149,6 +150,8 @@ class MainWindow(QMainWindow):
         self.run_button.clicked.connect(self.on_run_button_clicked)
         self.custom_button.clicked.connect(self.on_custom_button_clicked)
         self.set_button.clicked.connect(self.set_temp_and_duration)
+        self.set_temp_input.returnPressed.connect(self.check_inputs)
+        self.set_duration_input.returnPressed.connect(self.check_inputs)
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
@@ -181,7 +184,8 @@ class MainWindow(QMainWindow):
             self.capture_worker.start()
         self.instruction_listbox.clear()  # clear the listbox initially if needed
         # run custom test
-        self.json_handler.run_custom('custom')
+        self.json_handler.run_custom()
+
 
     # stop both workers
     def closeEvent(self, event):
@@ -190,56 +194,58 @@ class MainWindow(QMainWindow):
         super().closeEvent(event)
 
     # set tem & duration independently of test file
-    def set_temp_and_duration(self):
+    def add_temp_and_duration(self):
         # get input and clear it of potential empty spaces
         temp_string = self.set_temp_input.text().strip()
         duration_string = self.set_duration_input.text().strip()
 
-        # initialize temp and duration
-        temp = None
-        duration = None
         is_valid = True  # track overall validity
 
-        if temp_string:
-            try:
-                temp = int(temp_string)
-                if temp >= 100:
-                    print('max 100')
-                    self.show_error_message('error', 'max temperature = 100°C')  # show error message
-                    is_valid = False
 
-            except ValueError:
-                print('numbers only')
-                self.show_error_message('error', 'numbers only')  # show error message
+        try:
+            temp = float(temp_string)
+            if temp >= 100:
+                self.show_error_message('error', 'max temperature = 100°C')  # show error message
                 is_valid = False
-        else:
-            print('no temperature input')
-            self.show_error_message('error', 'enter a number')  # show error message
+        except ValueError:
+            print('numbers only')
+            self.show_error_message('error', 'numbers only')  # show error message
             is_valid = False
 
-        if duration_string:
-            try:
-                duration = int(duration_string)
-                if duration < 1:  # check for a minimum duration
-                    print('minimum duration is 1 minute')
-                    self.show_error_message('error', 'minimum duration is 1 minute')
-                    is_valid = False
-            except ValueError:
-                print('numbers only')
-                self.show_error_message('error', 'numbers only')
+        try:
+            duration = int(duration_string)
+            if duration < 1:  # check for a minimum duration
+                print('minimum duration is 1 minute')
+                self.show_error_message('error', 'minimum duration is 1 minute')
                 is_valid = False
-        else:
-            print('no valid duration')
-            self.show_error_message('error', 'enter a number')  # show error message in entry
+        except ValueError:
+            print('numbers only')
+            self.show_error_message('error', 'numbers only')
             is_valid = False
 
         # check if both entries are valid before proceeding
         if is_valid and temp is not None and duration is not None:
-            self.input_dictionary = {'temp': temp, 'duration': duration}
-            self.json_handler.set_temp(self.input_dictionary)
-            print('temp and duration set')
+            self.input_dictionary.append({'temp': temp, 'duration': duration * 60000})  # convert dur to milliseconds
+            print(self.input_dictionary)
+            return self.input_dictionary
         else:
             print('invalid inputs')
+            return None
+
+    # make sure both temp & duration are submitted by user
+    def check_inputs(self):
+        if self.set_temp_input.text() and self.set_duration_input.text():
+            self.add_temp_and_duration()
+
+    # actually set temp & duration
+    def set_temp_and_duration(self):
+        if self.input_dictionary:
+            self.json_handler.set_temp(self.input_dictionary)
+            print(f'this was sent to arduino: {self.input_dictionary}')
+        else:
+            self.show_error_message('error', 'could not set temp & duration')
+            print('could not set temp & duration')
+
 
     # helper method to display error messages using QMessageBox
     @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data
