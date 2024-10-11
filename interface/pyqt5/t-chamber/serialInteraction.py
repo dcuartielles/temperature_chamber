@@ -69,19 +69,6 @@ class SerialCommunication:
             print('serial communication is closed or stopped')
             return None
 
-    def capture_all_serial(self, callback=None):
-        if not self.is_stopped and self.ser and self.ser.is_open:
-            try:
-                response = self.ser.readline().decode('utf-8').strip()
-                if response:
-                    print(response)
-                    if callback:
-                        callback(response)  # use callback to send data to gui
-                else:
-                    print('no valid data received')
-            except serial.SerialException as e:
-                print(f'error reading serial: {e}')
-
     # emergency stop
     def emergency_stop(self):
         self.is_stopped = True  # set flag to stop the read_data loop

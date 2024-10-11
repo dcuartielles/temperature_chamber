@@ -88,7 +88,6 @@ class FileHandler:
 
                 if test:  # if the test data is available
                     self.send_json_to_arduino(test)  # send the data to Arduino
-                    self.serial_com.capture_all_serial(callback=None)
                     # print status and update the listbox
                     print(f'running {test}')
                 else:
@@ -106,7 +105,6 @@ class FileHandler:
             custom_test = test_data.get('custom', [])
             if custom_test:
                 self.send_json_to_arduino(custom_test)
-                self.serial_com.capture_all_serial(callback=None)
                 print(f'running {custom_test}')
             else:
                 print('no custom test found')
