@@ -1,13 +1,13 @@
 import time
-
 from PyQt5.QtCore import QThread, pyqtSignal
 import threading
+import serial
 
 
 class SerialCaptureWorker(QThread):
     update_instruction_listbox = pyqtSignal(str)  # signal to update instruction listbox
 
-    def __init__(self, serial_com,lock):
+    def __init__(self, serial_com, lock):
         super().__init__()
         self.serial_com = serial_com
         self.lock = lock

@@ -2,6 +2,7 @@ import time
 from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import threading
+import serial
 
 
 class ChamberMonitorWorker(QThread):

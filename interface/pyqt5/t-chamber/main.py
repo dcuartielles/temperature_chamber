@@ -180,6 +180,7 @@ class MainWindow(QMainWindow):
         self.json_handler.run_all_tests()
 
     def on_custom_button_clicked(self):
+
         if not self.capture_worker.isRunning():
             self.capture_worker.start()
         self.instruction_listbox.clear()  # clear the listbox initially if needed
