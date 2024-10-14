@@ -17,25 +17,23 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        # create an instance of SerialCommunication
+        ''' create an instance of SerialCommunication
         self.serial_com = SerialCommunication(self)
-        self.serial_com.serial_setup(port='COM15', baudrate=9600)
+        self.serial_com.serial_setup(port='COM15', baudrate=9600)'''
 
         # create an instance of json file handler
-        self.json_handler = FileHandler(self, self.serial_com)
+        self.json_handler = FileHandler(self)
 
         # create a dictionary for setting temp & duration
         self.input_dictionary = []
 
+        # create serial worker thread
+        self.serial_worker = SerialCaptureWorker(port='COM15', baudrate=9600)
+        self.serial_worker.update_listbox.connect(self.update_listbox)
+        self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
+        self.serial_worker.start()  # Start the worker thread
+
         self.initUI()
-
-        # create serial capture worker thread
-        self.capture_worker = SerialCaptureWorker(self.serial_com)
-        # self.capture_worker.update_listbox.connect(self.update_listbox)
-        self.capture_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
-
-        # start the worker thread
-        self.capture_worker.start()
 
     # method responsible for all gui elements
     def initUI(self):
@@ -139,13 +137,13 @@ class MainWindow(QMainWindow):
 
         # connect functionality
         self.load_button.clicked.connect(self.json_handler.open_file)
-        self.emergency_stop_button.clicked.connect(self.serial_com.emergency_stop)
+        self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.emergency_stop_button.clicked.connect(self.clear_entries)
         self.run_button.clicked.connect(self.on_run_button_clicked)
         self.custom_button.clicked.connect(self.on_custom_button_clicked)
         self.set_button.clicked.connect(self.set_temp_and_duration)
-        self.set_temp_input.returnPressed.connect(self.check_inputs)
-        self.set_duration_input.returnPressed.connect(self.check_inputs)
+        # self.set_temp_input.returnPressed.connect(self.check_inputs)
+        # self.set_duration_input.returnPressed.connect(self.check_inputs)
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
@@ -168,11 +166,11 @@ class MainWindow(QMainWindow):
     # button click handlers
     def on_run_button_clicked(self):
         # run tests
-        self.json_handler.run_all_tests()
+        self.serial_worker.run_all_tests()
 
     def on_custom_button_clicked(self):
         # run custom test
-        self.json_handler.run_custom()
+        self.serial_worker.run_custom()
 
     # set tem & duration independently of test file
     def add_temp_and_duration(self):
@@ -234,7 +232,7 @@ class MainWindow(QMainWindow):
     # actually set temp & duration
     def set_temp_and_duration(self):
         if self.input_dictionary:
-            self.json_handler.set_temp(self.input_dictionary, self.serial_com)
+            self.serial_worker.set_temp(self.input_dictionary)
             print(f'this was sent to arduino: {self.input_dictionary}')
         else:
             self.show_error_message('error', 'could not set temp & duration')
