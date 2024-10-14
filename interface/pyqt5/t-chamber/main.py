@@ -27,7 +27,8 @@ class MainWindow(QMainWindow):
         self.input_dictionary = []
 
         # create serial worker thread
-        self.serial_worker = SerialCaptureWorker(port='COM15', baudrate=9600)
+        self.serial_worker = SerialCaptureWorker(self)
+        self.serial_worker.serial_setup(port='COM15', baudrate=9600)
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.start()  # start the worker thread
@@ -141,8 +142,8 @@ class MainWindow(QMainWindow):
         self.run_button.clicked.connect(self.on_run_button_clicked)
         self.custom_button.clicked.connect(self.on_custom_button_clicked)
         self.set_button.clicked.connect(self.set_temp_and_duration)
-        # self.set_temp_input.returnPressed.connect(self.check_inputs)
-        # self.set_duration_input.returnPressed.connect(self.check_inputs)
+        self.set_temp_input.returnPressed.connect(self.check_inputs)
+        self.set_duration_input.returnPressed.connect(self.check_inputs)
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)

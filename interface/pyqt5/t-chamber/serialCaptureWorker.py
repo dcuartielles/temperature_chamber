@@ -2,6 +2,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import serial
 import json
+from jsonFunctionality import FileHandler
 
 class SerialCaptureWorker(QThread):
     update_listbox = pyqtSignal(str)  # signal to update instruction listbox
