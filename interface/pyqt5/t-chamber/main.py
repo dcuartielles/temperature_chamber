@@ -8,7 +8,6 @@ from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 
 # functionality imports
 from jsonFunctionality import FileHandler
-from serialInteraction import SerialCommunication
 from serialCaptureWorker import SerialCaptureWorker
 
 
@@ -29,9 +28,9 @@ class MainWindow(QMainWindow):
 
         # create serial worker thread
         self.serial_worker = SerialCaptureWorker(port='COM15', baudrate=9600)
-        self.serial_worker.update_listbox.connect(self.update_listbox)
+        self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
-        self.serial_worker.start()  # Start the worker thread
+        self.serial_worker.start()  # start the worker thread
 
         self.initUI()
 
@@ -159,18 +158,18 @@ class MainWindow(QMainWindow):
         self.chamber_monitor.addItem(item)
 
     # the actual listbox updates
-    def update_listbox(self, message):
+    def update_listbox_gui(self, message):
         self.listbox.addItem(message)
         self.listbox.scrollToBottom()
 
     # button click handlers
     def on_run_button_clicked(self):
         # run tests
-        self.serial_worker.run_all_tests()
+        self.serial_worker.run_all_tests(self)
 
     def on_custom_button_clicked(self):
         # run custom test
-        self.serial_worker.run_custom()
+        self.serial_worker.run_custom(self)
 
     # set tem & duration independently of test file
     def add_temp_and_duration(self):
