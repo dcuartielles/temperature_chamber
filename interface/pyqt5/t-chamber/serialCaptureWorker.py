@@ -168,27 +168,3 @@ class SerialCaptureWorker(QThread):
         self.is_stopped = True  # set flag to stop the read_data loop
         self.send_command('EMERGENCY STOP')
         print('emergency stop issued')
-
-'''
-class SerialCaptureWorker(QThread):
-    update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
-
-    def __init__(self, serial_com):
-        super().__init__()
-        self.serial_com = serial_com
-        self.is_open = True
-
-    def run(self):
-        while self.is_open:
-            response = self.serial_com.read_data()  # call method that sends command and reads response
-            if response:
-                self.update_chamber_monitor.emit(response)
-            time.sleep(1)
-
-    def stop(self):
-        self.is_open = False
-        self.quit()
-        self.wait()
-
-
-'''
