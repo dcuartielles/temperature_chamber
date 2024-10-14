@@ -572,8 +572,8 @@ void readAndParseSerial() {
             int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
             incomingString[len] = '\0'; // null-terminate the string
 
-            Serial.print("Received string: ");
-            Serial.println(incomingString);
+            // Serial.print("Received string: ");
+            // Serial.println(incomingString);
 
             DeserializationError error = deserializeJson(jsonBuffer, incomingString);
             // Handle the input string (either a command or JSON)
