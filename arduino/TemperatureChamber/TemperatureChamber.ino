@@ -566,7 +566,7 @@ void handleEmergencyStopState() {
 }
 
 void readAndParseSerial() {
-    if (switchSystem.read() == LOW && switchStart.read() == LOW) {
+    if (switchSystem.read() == LOW) {
         if (Serial.available() > 0) {
             // Read the incoming data in chunks instead of one character at a time
             int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
