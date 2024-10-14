@@ -17,6 +17,7 @@ class SerialCaptureWorker(QThread):
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
         self.last_command_time = time.time()
+        self.test_data = None
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):

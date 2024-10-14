@@ -41,7 +41,8 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('temperature chamber')
         self.setGeometry(600, 200, 0, 0) # decide where on the screen the window will appear
         self.setWindowIcon(QIcon('arduino_logo.png'))
-        self.setStyleSheet('background-color: white;')
+        self.setStyleSheet('background-color: white;'
+                           'color: black;')
 
         # central widget to hold layout
         self.central_widget = QWidget(self)
