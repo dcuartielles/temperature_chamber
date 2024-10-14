@@ -17,28 +17,25 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        # create an instance of json file handler
-        self.json_handler = FileHandler(self)
-
-        # create a dictionary for setting temp & duration
-        self.input_dictionary = []
-
         # create an instance of SerialCommunication
         self.serial_com = SerialCommunication(self)
         self.serial_com.serial_setup(port='COM15', baudrate=9600)
 
-        if self.serial_com and self.serial_com.ser and self.serial_com.ser.is_open:
-            # create serial capture worker thread
-            self.capture_worker = SerialCaptureWorker(self.serial_com)
-            self.capture_worker.update_listbox.connect(self.update_listbox)
-            self.capture_worker.update_chamber_monitor.connect(self.update_chamber_monitor)
+        # create an instance of json file handler
+        self.json_handler = FileHandler(self, self.serial_com)
 
-            # start the worker thread
-            self.capture_worker.start()
-        else:
-            print('serial communication is not available, gui running dry')
+        # create a dictionary for setting temp & duration
+        self.input_dictionary = []
 
         self.initUI()
+
+        # create serial capture worker thread
+        self.capture_worker = SerialCaptureWorker(self.serial_com)
+        # self.capture_worker.update_listbox.connect(self.update_listbox)
+        self.capture_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
+
+        # start the worker thread
+        self.capture_worker.start()
 
     # method responsible for all gui elements
     def initUI(self):
@@ -157,7 +154,7 @@ class MainWindow(QMainWindow):
 
     # GUI FUNCTIONALITY-RELATED METHODS
     # the actual chamber_monitor QList updates
-    def update_chamber_monitor(self, message):
+    def update_chamber_monitor_gui(self, message):
         self.chamber_monitor.clear()  # clear old data
         item = QListWidgetItem(message)
         item.setTextAlignment(Qt.AlignCenter)
@@ -221,6 +218,7 @@ class MainWindow(QMainWindow):
         # check if both entries are valid before proceeding
         if is_valid and temp is not None and duration is not None:
             new_sequence = {'temp': temp, 'duration': duration * 60000}
+            self.input_dictionary.clear() # clear the dictionary so that only the latest input counts
             self.input_dictionary.append(new_sequence)  # convert dur to milliseconds
             print(self.input_dictionary)
             return self.input_dictionary
@@ -236,7 +234,7 @@ class MainWindow(QMainWindow):
     # actually set temp & duration
     def set_temp_and_duration(self):
         if self.input_dictionary:
-            self.json_handler.set_temp(self.input_dictionary)
+            self.json_handler.set_temp(self.input_dictionary, self.serial_com)
             print(f'this was sent to arduino: {self.input_dictionary}')
         else:
             self.show_error_message('error', 'could not set temp & duration')

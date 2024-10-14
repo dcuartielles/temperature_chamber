@@ -4,6 +4,33 @@ import serial
 import threading
 
 
+import time
+
+from PyQt5.QtCore import QThread, pyqtSignal
+import time
+import serial
+
+
+class SerialCaptureWorker(QThread):
+    update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
+
+    def __init__(self, serial_com):
+        super().__init__()
+        self.serial_com = serial_com
+        self.is_open = True
+
+    def run(self):
+        while self.is_open:
+            response = self.serial_com.read_data()  # call method that sends command and reads response
+            if response:
+                self.update_chamber_monitor.emit(response)
+            time.sleep(1)
+
+    def stop(self):
+        self.is_open = False
+        self.quit()
+        self.wait()
+'''
 class SerialCaptureWorker(QThread):
     update_listbox = pyqtSignal(str)  # signal to update instruction listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
@@ -24,7 +51,6 @@ class SerialCaptureWorker(QThread):
             if time.time() - self.last_command_time > 1.5:
                 self.last_command_time = time.time()
                 self.trigger_read_data()
-            time.sleep(0.1)
 
     def trigger_read_data(self):
         response = self.serial_com.read_data()
@@ -40,3 +66,4 @@ class SerialCaptureWorker(QThread):
         self.is_running = False
         self.quit()
         self.wait()
+'''

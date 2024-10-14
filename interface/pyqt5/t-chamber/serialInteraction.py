@@ -17,7 +17,6 @@ class SerialCommunication:
             self.port = port  # allow dynamic port change
         if baudrate:
             self.baudrate = baudrate
-
         try:
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
             print(f'connected to arduino port: {self.port}')

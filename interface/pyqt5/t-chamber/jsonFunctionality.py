@@ -6,13 +6,13 @@ from serialInteraction import SerialCommunication
 
 # create file handler class
 class FileHandler:
-    def __init__(self, parent=None):
+    def __init__(self, serial_com, parent=None):
         self.parent = parent  # optional: parent window for the dialog
+        self.serial_com = serial_com
         # initialize SerialCommunication class to handle serial interactions
-        self.serial_com = SerialCommunication()  # create an instance of SC
-        self.serial_com.serial_setup(port='COM15', baudrate=9600)
+        # self.serial_com = SerialCommunication()  # create an instance of SC
+        # self.serial_com.serial_setup(port='COM15', baudrate=9600)
 
-        self.test_data = None
 
     # open a file using a file dialog and return the file content
     def open_file(self):
@@ -60,18 +60,15 @@ class FileHandler:
         json_data = json.dumps(test_data)  # convert py dictionary to json
 
         if self.serial_com.ser and self.serial_com.ser.is_open:
-            try:
-                self.serial_com.ser.write((json_data + '\n').encode('utf-8'))
-                time.sleep(0.02)
-                print(f'sent to arduino: {json_data}')
-
-                # continuously read Arduino output
+            self.serial_com.ser.write((json_data + '\n').encode('utf-8'))
+            time.sleep(0.02)
+            print(f'sent to arduino: {json_data}')
+            # continuously read Arduino output
+            while True:
                 if self.serial_com.ser.in_waiting > 0:
                     response = self.serial_com.ser.readline().decode('utf-8').strip()
-                    time.sleep(0.02)
+                    # time.sleep(0.02)
                     print(f'arduino says: {response}')
-            except Exception as e:
-                print(f'got this error: {e}')
         else:
             print('serial communication is not open')
 
@@ -87,9 +84,9 @@ class FileHandler:
                 test = test_data.get(test_key, [])
 
                 if test:  # if the test data is available
-                    self.send_json_to_arduino(test)  # send the data to Arduino
+                    self.send_json_to_arduino(test)  # send the data to arduino
                     # print status and update the listbox
-                    print(f'running {test}')
+                    print(f'running {test_key}')
                 else:
                     print(f'{test_key} not found')
 
