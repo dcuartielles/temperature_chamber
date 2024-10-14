@@ -23,8 +23,9 @@ class MainWindow(QMainWindow):
         # create an instance of json file handler
         self.json_handler = FileHandler(self)
 
-        # create a dictionary for setting temp & duration
+        # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
         self.input_dictionary = []
+        self.test_data = None
 
         # create serial worker thread
         self.serial_worker = SerialCaptureWorker(self)
@@ -137,7 +138,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.emergency_stop_button)
 
         # connect functionality
-        self.load_button.clicked.connect(self.json_handler.open_file)
+        self.load_button.clicked.connect(self.load_test_file)
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.emergency_stop_button.clicked.connect(self.clear_entries)
         self.run_button.clicked.connect(self.on_run_button_clicked)
@@ -164,14 +165,26 @@ class MainWindow(QMainWindow):
         self.listbox.addItem(message)
         self.listbox.scrollToBottom()
 
+    # load test file and store it in the app
+    def load_test_file(self):
+        self.test_data = self.json_handler.open_file()
+        if self.test_data:
+            print('Test data loaded successfully')
+        else:
+            print('Failed to load test data')
+
     # button click handlers
     def on_run_button_clicked(self):
-        # run tests
-        self.serial_worker.run_all_tests(self)
+        if self.test_data:  # ensure test data is loaded
+            self.serial_worker.run_all_tests(self.test_data)
+        else:
+            self.show_error_message('error', 'no test data loaded')
 
     def on_custom_button_clicked(self):
-        # run custom test
-        self.serial_worker.run_custom(self)
+        if self.test_data:  # ensure test data is loaded
+            self.serial_worker.run_custom(self.test_data)
+        else:
+            self.show_error_message('error', 'no test data loaded')
 
     # set tem & duration independently of test file
     def add_temp_and_duration(self):
