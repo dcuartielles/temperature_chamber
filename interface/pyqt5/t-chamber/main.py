@@ -76,14 +76,14 @@ class MainWindow(QMainWindow):
         test_part_layout = QHBoxLayout()
         test_button_layout = QVBoxLayout()
         self.instruction_listbox = QListWidget(self)
-        self.instruction_listbox.addItems(['* start by loading a test from a file',
-                                           '* make sure the serial port number is correct',
+        self.instruction_listbox.addItems(['* start by loading a test file',
+                                           '* make sure the serial port numbers are correct',
                                            '* run full test sequence',
-                                           '* or run just custom test'])
+                                           '* sit back and watch the test outcomes'])
         self.instruction_listbox.setFixedSize(475, 230)
-        self.load_button = QPushButton('load test', self)
+        self.load_button = QPushButton('load test file', self)
         self.load_button.setFixedSize(195, 37)
-        self.run_button = QPushButton('run test', self)
+        self.run_button = QPushButton('run benchmark tests', self)
         self.run_button.setFixedSize(195, 37)
         self.custom_button = QPushButton('run custom test only', self)
         self.custom_button.setFixedSize(195, 37)
