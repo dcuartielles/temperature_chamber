@@ -26,9 +26,8 @@ def get_arduino_boards():
                 if "boards" in board and board["boards"]:
                     port = board.get("port", "")
                     board_name = board["boards"][0].get("name", "Unknown Board")
-                    fqbn = board["boards"][0].get("fqbn", "Unknown FQBN")
                     # add (port, board_name, fqbn) to the list
-                    arduino_ports.append((port, board_name, fqbn))
+                    arduino_ports.append((port, board_name))
 
             return arduino_ports
         except json.JSONDecodeError:
