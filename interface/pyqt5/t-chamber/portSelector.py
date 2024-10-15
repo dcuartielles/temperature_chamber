@@ -46,5 +46,8 @@ class PortSelector(QWidget):
         self.c_port_dropdown.clear()
         self.c_port_dropdown.addItems(ports)
 
-    def get_selected_port(self):
-        return self.t_port_dropdown.currentText() | self.c_port_dropdown.currentText()
+    def get_selected_t_port(self):
+        return self.t_port_dropdown.currentText()
+
+    def get_selected_c_port(self):
+        return self.c_port_dropdown.currentText()

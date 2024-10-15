@@ -8,7 +8,7 @@ class SerialCaptureWorker(QThread):
     update_listbox = pyqtSignal(str)  # signal to update instruction listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
 
-    def __init__(self, port='COM15', baudrate=9600, timeout=5):
+    def __init__(self, port, baudrate=9600, timeout=5):
         super().__init__()
         self.port = port
         self.baudrate = baudrate

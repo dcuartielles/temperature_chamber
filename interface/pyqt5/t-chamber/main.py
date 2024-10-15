@@ -25,6 +25,8 @@ class MainWindow(QMainWindow):
 
         # create an instance of port selector
         self.port_selector = PortSelector()
+        selected_c_port = self.port_selector.get_selected_c_port()
+        selected_t_port = self.port_selector.get_selected_t_port()
 
         # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
         self.input_dictionary = []
@@ -32,7 +34,7 @@ class MainWindow(QMainWindow):
 
         # create serial worker thread
         self.serial_worker = SerialCaptureWorker(self)
-        self.serial_worker.serial_setup(port='COM15', baudrate=9600)  # initiate serial communication
+        self.serial_worker.serial_setup(port=selected_c_port, baudrate=9600)  # initiate serial communication
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.start()  # start the worker thread
