@@ -12,16 +12,17 @@ class PortSelector(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.label = QLabel("select port:")
         self.port_dropdown = QComboBox()
+        self.port_dropdown.setFixedSize(195, 37)
         self.setStyleSheet('background-color: white;'
-                           'color: #009FAF;')
+                           'color: #009FAF;'
+                           'alignment: right;')
 
         self.refresh_button = QPushButton("refresh")
+        self.refresh_button.setFixedSize(195, 37)
         self.refresh_button.clicked.connect(self.refresh_ports)
 
         layout = QVBoxLayout()
-        layout.addWidget(self.label)
         layout.addWidget(self.port_dropdown)
         layout.addWidget(self.refresh_button)
 

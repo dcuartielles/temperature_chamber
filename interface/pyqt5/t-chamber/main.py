@@ -8,6 +8,7 @@ from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 # functionality imports
 from jsonFunctionality import FileHandler
 from serialCaptureWorker import SerialCaptureWorker
+from portSelector import PortSelector
 
 
 # create window class
@@ -21,6 +22,9 @@ class MainWindow(QMainWindow):
 
         # create an instance of json file handler
         self.json_handler = FileHandler(self)
+
+        # create an instance of port selector
+        self.port_selector = PortSelector()
 
         # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
         self.input_dictionary = []
@@ -68,7 +72,7 @@ class MainWindow(QMainWindow):
                                            '* make sure the serial port number is correct',
                                            '* run full test sequence',
                                            '* or run just custom test'])
-        self.instruction_listbox.setFixedSize(475, 135)
+        self.instruction_listbox.setFixedSize(475, 230)
         self.load_button = QPushButton('load test', self)
         self.load_button.setFixedSize(195, 37)
         self.run_button = QPushButton('run test', self)
@@ -77,6 +81,9 @@ class MainWindow(QMainWindow):
         self.custom_button.setFixedSize(195, 37)
         test_part_layout.addWidget(self.instruction_listbox)
         test_part_layout.addLayout(test_button_layout)
+        # port selector
+        test_button_layout.addWidget(self.port_selector, alignment=Qt.AlignRight)
+        # test selection buttons
         test_button_layout.addWidget(self.load_button, alignment=Qt.AlignRight)
         test_button_layout.addWidget(self.run_button, alignment=Qt.AlignRight)
         test_button_layout.addWidget(self.custom_button, alignment=Qt.AlignRight)
