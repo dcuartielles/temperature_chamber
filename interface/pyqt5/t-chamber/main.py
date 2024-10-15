@@ -9,6 +9,7 @@ from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 from jsonFunctionality import FileHandler
 from serialCaptureWorker import SerialCaptureWorker
 from portSelector import PortSelector
+from testBoardWorker import TestBoardWorker
 
 
 # create window class
@@ -38,6 +39,11 @@ class MainWindow(QMainWindow):
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.start()  # start the worker thread
+
+        # create test board worker thread
+        self.test_board = TestBoardWorker(self)
+        self.test_board.serial_setup(port=selected_t_port, baudrate=9600)  # initiate serial communication
+        self.test_board.start()  # start test board thread
 
         self.initUI()
 
