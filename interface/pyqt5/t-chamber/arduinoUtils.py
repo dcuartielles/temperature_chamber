@@ -1,5 +1,6 @@
 import subprocess
 import json
+import logging
 
 
 def run_cli_command(command):
@@ -7,7 +8,7 @@ def run_cli_command(command):
         result = subprocess.run(command, capture_output=True, text=True, check=True)
         return result.stdout
     except subprocess.CalledProcessError as e:
-        print(f"Command failed: {e}")
+        logging.info(f"Command failed: {e}")
         return None
 
 
@@ -21,10 +22,10 @@ def detect_board(port):
             if board["port"]["address"] == port:
                 fqbn = board.get("matching_board", {}).get("fqbn", None)
                 if fqbn:
-                    print(f"Detected FQBN: {fqbn}")
+                    logging.info(f"Detected FQBN: {fqbn}")
                     return fqbn
                 else:
-                    print(f"No FQBN found for board on port {port}")
+                    logging.warning(f"No FQBN found for board on port {port}")
                     return None
     return None
 
@@ -38,7 +39,7 @@ def is_core_installed(fqbn):
         installed_cores = output.splitlines()
         for core in installed_cores:
             if core_name in core:
-                print(f"Core {core_name} is already installed.")
+                logging.info(f"Core {core_name} is already installed.")
                 return True
     return False
 
@@ -46,15 +47,15 @@ def is_core_installed(fqbn):
 def install_core_if_needed(fqbn):
     core_name = fqbn.split(":")[0]
     if not is_core_installed(fqbn):
-        print(f"Core {core_name} not installed. Installing...")
+        logging.info(f"Core {core_name} not installed. Installing...")
         command = ["arduino-cli", "core", "install", core_name]
         run_cli_command(command)
     else:
-        print(f"Core {core_name} is already installed.")
+        logging.info(f"Core {core_name} is already installed.")
 
 
 def compile_sketch(fqbn, sketch_path):
-    print(f"Compiling {sketch_path} for the board with FQBN {fqbn}...")
+    logging.info(f"Compiling {sketch_path} for the board with FQBN {fqbn}...")
     command = [
             "arduino-cli", "compile",
             "--fqbn", fqbn,
@@ -62,15 +63,15 @@ def compile_sketch(fqbn, sketch_path):
             ]
     result = run_cli_command(command)
     if result:
-        print(f"Compilation successful!")
+        logging.info(f"Compilation successful!")
         return True
     else:
-        print(f"Compilation failed")
+        logging.warning(f"Compilation failed")
         return False
 
 
 def upload_sketch(fqbn, port, sketch_path):
-    print(f"Uploading {sketch_path} to board with FQBN {fqbn} on port {port}...")
+    logging.info(f"Uploading {sketch_path} to board with FQBN {fqbn} on port {port}...")
     command = [
             "arduino-cli", "upload",
             "-p", port,
@@ -79,9 +80,9 @@ def upload_sketch(fqbn, port, sketch_path):
             ]
     result = run_cli_command(command)
     if result:
-        print("Upload successful!")
+        logging.info("Upload successful!")
     else:
-        print(f"Upload failed!")
+        logging.warning(f"Upload failed!")
 
 
 def handle_board_and_upload(port, sketch_path):
@@ -92,7 +93,7 @@ def handle_board_and_upload(port, sketch_path):
         if compile_sketch(fqbn, sketch_path):
             upload_sketch(fqbn, port, sketch_path)
         else:
-            print(f"Aborting upload due to compilation failure.")
+            logging.error(f"Aborting upload due to compilation failure.")
     else:
-        print(f"Failed to detect board on port {port}.")
+        logging.warning(f"Failed to detect board on port {port}.")
 
