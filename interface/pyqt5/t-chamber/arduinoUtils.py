@@ -11,6 +11,32 @@ def run_cli_command(command):
         return None
 
 
+# function to get available arduino boards using arduino-cli
+def get_arduino_boards():
+    command = ["arduino-cli", "board", "list", "--format", "json"]
+    output = run_cli_command(command)
+
+    if output:
+        try:
+            # parse the output as JSON
+            boards = json.loads(output)
+            arduino_ports = []
+
+            for board in boards:
+                if "boards" in board and board["boards"]:
+                    port = board.get("port", "")
+                    board_name = board["boards"][0].get("name", "Unknown Board")
+                    fqbn = board["boards"][0].get("fqbn", "Unknown FQBN")
+                    # add (port, board_name, fqbn) to the list
+                    arduino_ports.append((port, board_name, fqbn))
+
+            return arduino_ports
+        except json.JSONDecodeError:
+            print("Error parsing arduino-cli board list output")
+            return []
+    return []
+
+
 def detect_board(port):
     command = ["arduino-cli", "board", "list", "--format", "json"]
     output = run_cli_command(command)
