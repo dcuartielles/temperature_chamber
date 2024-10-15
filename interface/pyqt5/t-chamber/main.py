@@ -17,17 +17,13 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        ''' create an instance of SerialCommunication
-        self.serial_com = SerialCommunication(self)
-        self.serial_com.serial_setup(port='COM15', baudrate=9600)'''
-
         # create an instance of json file handler
         self.json_handler = FileHandler(self)
 
         # create an instance of port selector
         self.port_selector = PortSelector()
-        selected_c_port = self.port_selector.get_selected_c_port()
-        selected_t_port = self.port_selector.get_selected_t_port()
+        self.selected_c_port = self.port_selector.get_selected_c_port()
+        self.selected_t_port = self.port_selector.get_selected_t_port()
 
         # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
         self.input_dictionary = []
@@ -35,14 +31,15 @@ class MainWindow(QMainWindow):
 
         # create serial worker thread
         self.serial_worker = SerialCaptureWorker(self)
-        self.serial_worker.serial_setup(port=selected_c_port, baudrate=9600)  # initiate serial communication
+        self.serial_worker.serial_setup(port=self.selected_c_port, baudrate=9600)  # initiate serial communication
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.start()  # start the worker thread
 
         # create test board worker thread
         self.test_board = TestBoardWorker(self)
-        self.test_board.serial_setup(port=selected_t_port, baudrate=9600)  # initiate serial communication
+        self.test_board.serial_setup(port=self.selected_t_port, baudrate=9600)  # initiate serial communication
+        self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
 
         self.initUI()
@@ -179,6 +176,12 @@ class MainWindow(QMainWindow):
         self.listbox.addItem(message)
         self.listbox.scrollToBottom()
 
+    # the actual upper listbox updates
+    def update_upper_listbox_gui(self, message):
+        self.instruction_listbox.addItem(message)
+        self.instruction_listbox.scrollToBottom()
+
+
     # load test file and store it in the app
     def load_test_file(self):
         self.test_data = self.json_handler.open_file()
@@ -191,6 +194,7 @@ class MainWindow(QMainWindow):
     def on_run_button_clicked(self):
         if self.test_data:  # ensure test data is loaded
             self.serial_worker.run_all_tests(self.test_data)
+            self.test_board.run_all_tests(self.test_data, self.selected_t_port)
         else:
             self.show_error_message('error', 'no test data loaded')
 

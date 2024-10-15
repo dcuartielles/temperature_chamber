@@ -1,12 +1,11 @@
 from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import serial
-import json
+import arduinoUtils
 # from jsonFunctionality import FileHandler
 
 class TestBoardWorker(QThread):
-    update_listbox = pyqtSignal(str)  # signal to update instruction listbox
-    update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
+    update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
 
     def __init__(self, port, baudrate=9600, timeout=5):
         super().__init__()
@@ -33,6 +32,56 @@ class TestBoardWorker(QThread):
         except serial.SerialException as e:
             print(f'error: {e}')
             return False
+
+
+    # method to stop the serial communication
+    def stop(self):
+        self.is_running = False  # stop the worker thread loop
+        if self.ser and self.ser.is_open:
+            self.ser.close()  # close the serial connection
+            print(f'connection to {self.port} closed')
+        self.quit()
+        self.wait()
+
+    # run the entire test file REFACTOR FOR CLI
+    def run_all_tests(self, test_data, selected_t_port):
+        if test_data is not None:
+            all_tests = [key for key in test_data.keys()]
+
+            # iterate through each test and run it
+            for test_key in all_tests:
+
+                test = test_data.get(test_key, {})
+                sketch_path = test.get('sketch', "")  # get .ino file path
+
+                if sketch_path:  # if the test data is available
+                    arduinoUtils.upload_sketch(board_type=None, port=selected_t_port, sketch_path=self.sketch_path)
+                else:
+                    print('file path not found')
+
+        else:
+            # handle case when no test data is found
+            print('no test data found on file')
+
+    # serial response readout
+    def run(self):
+        print('thread is running')
+        while self.is_running:
+            if self.ser and self.ser.is_open:
+                # read incoming serial data
+                response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                if response:
+                    self.update_upper_listbox(response)
+            time.sleep(0.1)  # avoid excessive cpu usage
+
+    # show serial response
+    def show_response(self, response):
+        if response:
+            self.update_upper_listbox.emit(response)  # emit signal to update listbox
+
+
+'''
+unnecessary methods:
 
     # sends a command to arduino via serial
     def send_command(self, command):
@@ -67,17 +116,8 @@ class TestBoardWorker(QThread):
                 print('serial communication is not open')
         except serial.SerialException as e:
             print(f'error sending JSON: {e}')
-
-    # method to stop the serial communication
-    def stop(self):
-        self.is_running = False  # stop the worker thread loop
-        if self.ser and self.ser.is_open:
-            self.ser.close()  # close the serial connection
-            print(f'connection to {self.port} closed')
-        self.quit()
-        self.wait()
-
-    # read data
+            
+        # read data
     def read_data(self):
         if not self.is_stopped and self.ser and self.ser.is_open:
             try:
@@ -96,27 +136,6 @@ class TestBoardWorker(QThread):
         else:
             print('serial communication is closed or stopped')
             return None
-
-    # run the entire test file
-    def run_all_tests(self, test_data):
-        if test_data is not None:
-            all_tests = [key for key in test_data.keys()]
-
-            # iterate through each test and run it
-            for test_key in all_tests:
-                test = test_data.get(test_key, [])
-
-                if test:  # if the test data is available
-                    self.send_json_to_arduino(test)  # send the data to arduino
-                    # print status and update the listbox
-                    print(f'running {test_key}')
-                else:
-                    print(f'{test_key} not found')
-
-        else:
-            # handle case when no test data is found
-            print('no test data found on file')
-
     # run custom only
     def run_custom(self, test_data):
         if test_data is not None:
@@ -136,22 +155,8 @@ class TestBoardWorker(QThread):
             self.send_json_to_arduino(input_dictionary)
         else:
             print('nothing to set the t-chamber to')
-
-    def run(self):
-        print('thread is running')
-        while self.is_running:
-            if self.ser and self.ser.is_open:
-                # read incoming serial data
-                response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                if response:
-                    self.process_response(response)
-
-                if time.time() - self.last_command_time > 1.5:
-                    self.last_command_time = time.time()
-                    self.trigger_read_data()
-            time.sleep(0.1)  # avoid excessive cpu usage
-
-    def trigger_read_data(self):
+            
+        def trigger_read_data(self):
         response = self.read_data()  # read data using custom method
         if response:
             self.update_chamber_monitor.emit(response)  # emit signal to update the chamber monitor
@@ -168,3 +173,4 @@ class TestBoardWorker(QThread):
         self.is_stopped = True  # set flag to stop the read_data loop
         self.send_command('EMERGENCY STOP')
         print('emergency stop issued')
+'''

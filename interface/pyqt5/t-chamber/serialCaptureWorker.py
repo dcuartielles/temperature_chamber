@@ -5,7 +5,7 @@ import json
 # from jsonFunctionality import FileHandler
 
 class SerialCaptureWorker(QThread):
-    update_listbox = pyqtSignal(str)  # signal to update instruction listbox
+    update_listbox = pyqtSignal(str)  # signal to update listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
 
     def __init__(self, port, baudrate=9600, timeout=5):
