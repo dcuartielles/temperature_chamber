@@ -240,7 +240,11 @@ void displaySerial() {
     Serial.print(F("Room_temp: "));
     Serial.print(temperatureRoom);
     Serial.print(F(" | Desired_temp: "));
-    Serial.print(temperatureDesired);
+    if (temperatureDesired == -41) {
+        Serial.print("-");
+    } else {
+        Serial.print(temperatureDesired);
+    }
     Serial.print(F(" | Heater: "));
     Serial.print(stateHeater);
     Serial.print(F(" | Cooler: "));
