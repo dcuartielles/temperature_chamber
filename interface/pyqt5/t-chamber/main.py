@@ -187,9 +187,9 @@ class MainWindow(QMainWindow):
     def load_test_file(self):
         self.test_data = self.json_handler.open_file()
         if self.test_data:
-            print('Test data loaded successfully')
+            print('test data loaded successfully')
         else:
-            print('Failed to load test data')
+            print('failed to load test data')
 
     # button click handlers
     def on_run_button_clicked(self):

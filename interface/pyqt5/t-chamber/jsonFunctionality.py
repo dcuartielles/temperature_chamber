@@ -27,7 +27,7 @@ class FileHandler:
                 return self.test_data
 
         except FileNotFoundError:
-            print(f'File {filepath} not found.')
+            print(f'file {filepath} not found.')
             return None
 
     # save file
