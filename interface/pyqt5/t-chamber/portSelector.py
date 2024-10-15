@@ -1,5 +1,5 @@
 import serial.tools.list_ports
-from PyQt5.QtWidgets import QComboBox, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout
+from PyQt5.QtWidgets import QComboBox, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QSpacerItem
 
 # helper function to get available serial ports
 def get_available_ports():
@@ -12,8 +12,8 @@ class PortSelector(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.t_b_name_label = QLabel('test board')
-        self.c_b_name_label = QLabel('chamber board')
+        self.t_b_name_label = QLabel('board # 1')
+        self.c_b_name_label = QLabel('board # 2')
         self.t_port_dropdown = QComboBox()
         self.c_port_dropdown = QComboBox()
         self.setStyleSheet('background-color: white;'
@@ -26,15 +26,20 @@ class PortSelector(QWidget):
 
         layout = QVBoxLayout()
         port_layout = QHBoxLayout()
+        layout.addLayout(port_layout)
+        left_layout = QVBoxLayout()
         test_layout = QHBoxLayout()
-        layout.addLayout(test_layout)
         chamber_layout = QHBoxLayout()
-        layout.addLayout(chamber_layout)
         test_layout.addWidget(self.t_b_name_label)
         test_layout.addWidget(self.t_port_dropdown)
         chamber_layout.addWidget(self.c_b_name_label)
         chamber_layout.addWidget(self.c_port_dropdown)
-        chamber_layout.addWidget(self.refresh_button)
+        left_layout.addLayout(chamber_layout)
+        left_layout.addLayout(test_layout)
+        port_layout.addLayout(left_layout)
+        port_layout.addSpacerItem(QSpacerItem(30, 0))
+        port_layout.addWidget(self.refresh_button)
+        port_layout.addSpacerItem(QSpacerItem(30, 0))
 
 
         self.setLayout(layout)

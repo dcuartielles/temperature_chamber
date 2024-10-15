@@ -42,3 +42,19 @@
 2024-10-15 15:17:15,863 - INFO - thread is running
 2024-10-15 15:17:20,983 - ERROR - error: could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
 2024-10-15 15:17:21,003 - INFO - thread is running
+2024-10-15 15:32:37,818 - ERROR - error: could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2024-10-15 15:32:37,820 - INFO - thread is running
+2024-10-15 15:32:42,942 - ERROR - error: could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2024-10-15 15:32:42,959 - INFO - thread is running
+2024-10-15 15:36:00,655 - ERROR - error: could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2024-10-15 15:36:00,656 - INFO - thread is running
+2024-10-15 15:36:05,777 - ERROR - error: could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2024-10-15 15:36:05,795 - INFO - thread is running
+2024-10-15 15:36:30,236 - ERROR - error: could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2024-10-15 15:36:30,237 - INFO - thread is running
+2024-10-15 15:36:35,358 - ERROR - error: could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2024-10-15 15:36:35,377 - INFO - thread is running
+2024-10-15 15:37:22,183 - ERROR - error: could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2024-10-15 15:37:22,184 - INFO - thread is running
+2024-10-15 15:37:27,307 - ERROR - error: could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
+2024-10-15 15:37:27,331 - INFO - thread is running
