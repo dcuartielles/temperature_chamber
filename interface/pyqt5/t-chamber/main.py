@@ -178,6 +178,7 @@ class MainWindow(QMainWindow):
 
     # the actual upper listbox updates
     def update_upper_listbox_gui(self, message):
+        self.instruction_listbox.clear()
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
 
