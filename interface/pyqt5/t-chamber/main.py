@@ -5,7 +5,7 @@ import time
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
-
+import serial.tools.list_ports
 # functionality imports
 from jsonFunctionality import FileHandler
 from serialCaptureWorker import SerialCaptureWorker
@@ -273,6 +273,14 @@ class MainWindow(QMainWindow):
         if self.capture_worker:
             self.capture_worker.stop()
             super().closeEvent(event)
+
+
+# dynamically choose port, standalone helper function
+def get_available_ports():
+    ports = serial.tools.list_ports.comports()
+    available_ports = [port.device for port in ports]
+    return available_ports
+
 
 # method responsible for running the app
 def main():
