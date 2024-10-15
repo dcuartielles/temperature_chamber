@@ -2,6 +2,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import serial
 import arduinoUtils
+import logging
 # from jsonFunctionality import FileHandler
 
 class TestBoardWorker(QThread):
@@ -26,11 +27,11 @@ class TestBoardWorker(QThread):
             self.baudrate = baudrate
         try:
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
-            print(f'connected to arduino port: {self.port}')
+            logging.info(f'connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
             return True
         except serial.SerialException as e:
-            print(f'error: {e}')
+            logging.error(f'error: {e}')
             return False
 
 
@@ -39,7 +40,7 @@ class TestBoardWorker(QThread):
         self.is_running = False  # stop the worker thread loop
         if self.ser and self.ser.is_open:
             self.ser.close()  # close the serial connection
-            print(f'connection to {self.port} closed')
+            logging.info(f'connection to {self.port} closed')
         self.quit()
         self.wait()
 
@@ -52,18 +53,18 @@ class TestBoardWorker(QThread):
                 test = test_data.get(test_key, {})
                 sketch_path = test.get('sketch', "")  # get .ino file path
                 if sketch_path:  # if the test data is available
-                    arduinoUtils.upload_sketch(board_type=None, port=selected_t_port, sketch_path=sketch_path)
-                    print('ino sketch uploading')
+                    arduinoUtils.handle_board_and_upload(port=selected_t_port, sketch_path=sketch_path)
+                    logging.info('ino sketch uploading')
                 else:
-                    print('file path not found')
+                    logging.warning('file path not found')
 
         else:
             # handle case when no test data is found
-            print('can\'t do it')
+            logging.warning('can\'t do it')
 
     # serial response readout
     def run(self):
-        print('thread is running')
+        logging.info('thread is running')
         while self.is_running:
             if self.ser and self.ser.is_open:
                 # read incoming serial data

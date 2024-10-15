@@ -1,5 +1,6 @@
 # system and PyQt5 imports
 import sys
+import logging
 import threading
 import time
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox
@@ -10,6 +11,14 @@ from jsonFunctionality import FileHandler
 from serialCaptureWorker import SerialCaptureWorker
 from portSelector import PortSelector
 from testBoardWorker import TestBoardWorker
+
+
+# define global logging
+logging.basicConfig(
+    filename='serial_data.log',  # log file name
+    level=logging.INFO,  # log level
+    format='%(asctime)s - %(levelname)s - %(message)s'  # log format
+)
 
 
 # create window class
