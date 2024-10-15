@@ -1,11 +1,6 @@
-import serial.tools.list_ports
 from PyQt5.QtWidgets import QComboBox, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QSpacerItem
+import arduinoUtils
 
-# helper function to get available serial ports
-def get_available_ports():
-    ports = serial.tools.list_ports.comports()
-    available_ports = [port.device for port in ports]
-    return available_ports
 
 # class for the port selection ui
 class PortSelector(QWidget):
@@ -46,14 +41,15 @@ class PortSelector(QWidget):
 
         # initially populate the dropdown with available ports
         self.refresh_ports()
-
+    
     def refresh_ports(self):
-        ports = get_available_ports()
+        ports_and_boards = arduinoUtils.get_arduino_boards()
         self.t_port_dropdown.clear()
-        self.t_port_dropdown.addItems(ports)
+        self.t_port_dropdown.addItems(ports_and_boards)
         self.c_port_dropdown.clear()
-        self.c_port_dropdown.addItems(ports)
+        self.c_port_dropdown.addItems(ports_and_boards)
 
+    # REFACTOR TO ONLY GET THE PORTS
     def get_selected_t_port(self):
         return self.t_port_dropdown.currentText()
 
