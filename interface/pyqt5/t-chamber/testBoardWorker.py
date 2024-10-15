@@ -51,13 +51,12 @@ class TestBoardWorker(QThread):
             # iterate through each test and run it
             for test_key in all_tests:
                 test = test_data.get(test_key, {})
-                sketch_path = test.get('sketch', "")  # get .ino file path
+                sketch_path = test.get('sketch', '')  # get .ino file path
                 if sketch_path:  # if the test data is available
                     arduinoUtils.handle_board_and_upload(port=selected_t_port, sketch_path=sketch_path)
                     logging.info('ino sketch uploading')
                 else:
                     logging.warning('file path not found')
-
         else:
             # handle case when no test data is found
             logging.warning('can\'t do it')

@@ -12,27 +12,30 @@ class PortSelector(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.t_label = QLabel("test port")
-        self.c_label = QLabel("chamber port")
+        self.t_b_name_label = QLabel('test board')
+        self.c_b_name_label = QLabel('chamber board')
         self.t_port_dropdown = QComboBox()
         self.c_port_dropdown = QComboBox()
         self.setStyleSheet('background-color: white;'
                            'color: #009FAF;'
                            'alignment: right;')
 
-        self.refresh_button = QPushButton("refresh")
+        self.refresh_button = QPushButton('refresh')
+        self.refresh_button.setFixedSize(80, 37)
         self.refresh_button.clicked.connect(self.refresh_ports)
 
         layout = QVBoxLayout()
-        l_dropdown_layout = QHBoxLayout()
-        layout.addLayout(l_dropdown_layout)
-        d_dropdown_layout = QHBoxLayout()
-        layout.addLayout(d_dropdown_layout)
-        l_dropdown_layout.addWidget(self.t_label)
-        l_dropdown_layout.addWidget(self.c_label)
-        d_dropdown_layout.addWidget(self.t_port_dropdown)
-        d_dropdown_layout.addWidget(self.c_port_dropdown)
-        layout.addWidget(self.refresh_button)
+        port_layout = QHBoxLayout()
+        test_layout = QHBoxLayout()
+        layout.addLayout(test_layout)
+        chamber_layout = QHBoxLayout()
+        layout.addLayout(chamber_layout)
+        test_layout.addWidget(self.t_b_name_label)
+        test_layout.addWidget(self.t_port_dropdown)
+        chamber_layout.addWidget(self.c_b_name_label)
+        chamber_layout.addWidget(self.c_port_dropdown)
+        chamber_layout.addWidget(self.refresh_button)
+
 
         self.setLayout(layout)
 

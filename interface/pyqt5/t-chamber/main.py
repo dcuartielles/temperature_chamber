@@ -78,6 +78,11 @@ class MainWindow(QMainWindow):
         self.im_label.setFixedSize(100, 100)  # define logo dimensions
         layout.addWidget(self.im_label, alignment=Qt.AlignLeft)  # add logo to the layout
 
+        layout.addWidget(self.port_selector)
+
+        # add space btw sections: vertical 20px
+        layout.addSpacerItem(QSpacerItem(0, 20))
+
         # test handling & layout
         test_part_layout = QHBoxLayout()
         test_button_layout = QVBoxLayout()
@@ -86,21 +91,16 @@ class MainWindow(QMainWindow):
                                            '* make sure the serial port numbers are correct',
                                            '* run full test sequence',
                                            '* sit back and watch the test outcomes'])
-        self.instruction_listbox.setFixedSize(475, 230)
+        self.instruction_listbox.setFixedSize(475, 135)
         self.load_button = QPushButton('load test file', self)
         self.load_button.setFixedSize(195, 37)
         self.run_button = QPushButton('run benchmark tests', self)
         self.run_button.setFixedSize(195, 37)
-        self.custom_button = QPushButton('run custom test only', self)
-        self.custom_button.setFixedSize(195, 37)
         test_part_layout.addWidget(self.instruction_listbox)
         test_part_layout.addLayout(test_button_layout)
-        # port selector
-        test_button_layout.addWidget(self.port_selector, alignment=Qt.AlignRight)
         # test selection buttons
         test_button_layout.addWidget(self.load_button, alignment=Qt.AlignRight)
         test_button_layout.addWidget(self.run_button, alignment=Qt.AlignRight)
-        test_button_layout.addWidget(self.custom_button, alignment=Qt.AlignRight)
         # place them in the main layout
         layout.addLayout(test_part_layout)
 
@@ -162,7 +162,6 @@ class MainWindow(QMainWindow):
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.emergency_stop_button.clicked.connect(self.clear_entries)
         self.run_button.clicked.connect(self.on_run_button_clicked)
-        self.custom_button.clicked.connect(self.on_custom_button_clicked)
         self.set_button.clicked.connect(self.set_temp_and_duration)
         self.set_temp_input.returnPressed.connect(self.check_inputs)
         self.set_duration_input.returnPressed.connect(self.check_inputs)
@@ -191,7 +190,6 @@ class MainWindow(QMainWindow):
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
 
-
     # load test file and store it in the app
     def load_test_file(self):
         self.test_data = self.json_handler.open_file()
@@ -205,12 +203,6 @@ class MainWindow(QMainWindow):
         if self.test_data:  # ensure test data is loaded
             self.serial_worker.run_all_tests(self.test_data)
             self.test_board.run_all_tests(self.test_data, self.selected_t_port)
-        else:
-            self.show_error_message('error', 'no test data loaded')
-
-    def on_custom_button_clicked(self):
-        if self.test_data:  # ensure test data is loaded
-            self.serial_worker.run_custom(self.test_data)
         else:
             self.show_error_message('error', 'no test data loaded')
 
@@ -260,7 +252,7 @@ class MainWindow(QMainWindow):
             new_sequence = {'temp': temp, 'duration': duration * 60000}
             self.input_dictionary.clear() # clear the dictionary so that only the latest input counts
             self.input_dictionary.append(new_sequence)  # convert dur to milliseconds
-            print(self.input_dictionary)
+            logging.info(self.input_dictionary)
             return self.input_dictionary
         else:
             print('invalid inputs')
