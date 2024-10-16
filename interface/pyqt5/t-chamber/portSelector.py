@@ -7,8 +7,8 @@ class PortSelector(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.t_b_name_label = QLabel('board # 1')
-        self.c_b_name_label = QLabel('board # 2')
+        self.t_b_name_label = QLabel('test board')
+        self.c_b_name_label = QLabel('control board')
         self.t_port_dropdown = QComboBox()
         self.c_port_dropdown = QComboBox()
         self.setStyleSheet('background-color: white;'
@@ -41,17 +41,28 @@ class PortSelector(QWidget):
 
         # initially populate the dropdown with available ports
         self.refresh_ports()
+
+        # initially populate the dropdown with available ports
+        self.refresh_ports()
     
     def refresh_ports(self):
         ports_and_boards = arduinoUtils.get_arduino_boards()
         self.t_port_dropdown.clear()
-        self.t_port_dropdown.addItems(ports_and_boards)
         self.c_port_dropdown.clear()
-        self.c_port_dropdown.addItems(ports_and_boards)
+        # add both board name and port to dropdowns
+        for port, board_name in ports_and_boards:
+            display_text = f"{board_name} on {port}"
+            self.t_port_dropdown.addItem(display_text)
+            self.c_port_dropdown.addItem(display_text)
 
-    # REFACTOR TO ONLY GET THE PORTS
+            # store the port only as item data for easy retrieval
+            self.t_port_dropdown.setItemData(self.t_port_dropdown.count() - 1, port)
+            self.c_port_dropdown.setItemData(self.c_port_dropdown.count() - 1, port)
+
+    # get the selected port for the test board
     def get_selected_t_port(self):
-        return self.t_port_dropdown.currentText()
+        return self.t_port_dropdown.itemData(self.t_port_dropdown.currentIndex())
 
+    # get the selected port for the chamber board
     def get_selected_c_port(self):
-        return self.c_port_dropdown.currentText()
+        return self.c_port_dropdown.itemData(self.c_port_dropdown.currentIndex())
