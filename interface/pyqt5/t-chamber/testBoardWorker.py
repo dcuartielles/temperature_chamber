@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtCore import QThread, pyqtSignal, QTimer
 import time
 import serial
 import arduinoUtils
@@ -25,6 +25,7 @@ class TestBoardWorker(QThread):
         self.is_stopped = False  # flag to stop the read loop
         self.last_command_time = time.time()
         self.test_data = None
+        self.cli_running = False
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -88,30 +89,42 @@ class TestBoardWorker(QThread):
                 test = test_data.get(test_key, {})
                 sketch_path = test.get('sketch', '')  # get .ino file path
                 if sketch_path:  # if the sketch is available
-
                     self.pause_test_board()  # pause this thread
-                    self.cli_worker = CliWorker(selected_t_port, sketch_path)  # create a cli worker
-                    self.cli_thread = QThread()
-                    self.cli_worker.moveToThread(self.cli_thread)  # move cli worker to its thread
+                    if not self.cli_running:  # run only if cli is not already running
+                        self.cli_worker = CliWorker(selected_t_port, sketch_path)  # create a cli worker
+                        print('cli worker instantiated')
+                        self.cli_thread = QThread()
+                        print('cli thread created')
+                        self.cli_worker.moveToThread(self.cli_thread)  # move cli worker to its thread
+                        print('cli worker moved to its thread')
 
-                    # connect signals and slots
-                    self.cli_thread.started.connect(self.cli_worker.run)
-                    self.cli_worker.finished.connect(self.cli_thread.quit)
-                    self.cli_worker.finished.connect(self.resume_test_board)
-                    self.cli_worker.finished.connect(self.cli_worker.deleteLater)
-                    self.cli_thread.finished.connect(self.cli_thread.deleteLater)
+                        # connect signals and slots
+                        self.cli_thread.started.connect(self.cli_worker.run)
+                        print('cli thread started, running cli worker connected')
+                        self.cli_worker.finished.connect(self.on_cli_finished)
+                        self.cli_worker.finished.connect(self.cli_worker.deleteLater)
+                        self.cli_thread.finished.connect(self.cli_thread.deleteLater)
 
-                    # start the thread
-                    self.cli_thread.start()
+                        # start the thread
+                        self.cli_running = True
+                        self.cli_thread.start()
+                        print('starting the thread')
 
                     # wait for the thread to finish before moving to the next test/task
                     self.cli_thread.wait()
+                    print('waiting for thread to be done')
+
                 else:
                     logging.warning('sketch path not found')
             self.resume_serial.emit()  # emit resume signal to serial capture worker
         else:
             # handle case when no test data is found
             print('can\'t do it')
+
+    # handle cli forker finish
+    def on_cli_finished(self):
+        self.cli_running = False  # reset flag when CLI worker finishes
+        self.resume_test_board()  # resume test board
 
     def pause_test_board(self):
         self.is_stopped = True
