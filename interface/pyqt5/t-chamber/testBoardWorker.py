@@ -2,6 +2,8 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import serial
 import arduinoUtils
+from cliWorker import CliWorker
+
 import logging
 import threading
 
@@ -53,6 +55,8 @@ class TestBoardWorker(QThread):
             if not self.is_stopped:
                 try:
                     if self.ser and self.ser.is_open:
+                        logging.info('test worker thread is running')
+                        print('test worker thread is running')
                         # read incoming serial data
                         response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                         if response:
@@ -83,16 +87,39 @@ class TestBoardWorker(QThread):
             for test_key in all_tests:
                 test = test_data.get(test_key, {})
                 sketch_path = test.get('sketch', '')  # get .ino file path
-                print(sketch_path)
-                if sketch_path:  # if the test data is available
-                    arduinoUtils.handle_board_and_upload(port=selected_t_port, sketch_path=sketch_path)
-                    print('ino sketch uploading')
+                if sketch_path:  # if the sketch is available
+
+                    self.pause_test_board()  # pause this thread
+                    self.cli_worker = CliWorker(selected_t_port, sketch_path)  # create a cli worker
+                    self.cli_thread = QThread()
+                    self.cli_worker.moveToThread(self.cli_thread)  # move cli worker to its thread
+
+                    # connect signals and slots
+                    self.cli_thread.started.connect(self.cli_worker.run)
+                    self.cli_worker.finished.connect(self.cli_thread.quit)
+                    self.cli_worker.finished.connect(self.resume_test_board)
+                    self.cli_worker.finished.connect(self.cli_worker.deleteLater)
+                    self.cli_thread.finished.connect(self.cli_thread.deleteLater)
+
+                    # start the thread
+                    self.cli_thread.start()
+
+                    # wait for the thread to finish before moving to the next test/task
+                    self.cli_thread.wait()
                 else:
-                    logging.warning('file path not found')
+                    logging.warning('sketch path not found')
             self.resume_serial.emit()  # emit resume signal to serial capture worker
         else:
             # handle case when no test data is found
             print('can\'t do it')
+
+    def pause_test_board(self):
+        self.is_stopped = True
+        print('test board worker is paused')
+
+    def resume_test_board(self):
+        self.is_stopped = False
+        print('resuming test board worker')
 
     # show serial response
     def show_response(self, response):
