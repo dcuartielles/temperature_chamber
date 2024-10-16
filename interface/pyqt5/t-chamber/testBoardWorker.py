@@ -32,6 +32,7 @@ class TestBoardWorker(QThread):
         try:
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
             logging.info(f'connected to arduino port: {self.port}')
+            print(f'connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
             return True
         except serial.SerialException as e:
@@ -43,7 +44,8 @@ class TestBoardWorker(QThread):
         self.is_running = False  # stop the worker thread loop
         if self.ser and self.ser.is_open:
             self.ser.close()  # close the serial connection
-            logging.info(f'connection to {self.port} closed')
+            logging.info(f'connection to {self.port} closed now')
+            print(f'connection to {self.port} closed now')
         self.quit()
         self.wait()
 
@@ -59,19 +61,20 @@ class TestBoardWorker(QThread):
                 if sketch_path:  # if the test data is available
                     with TestBoardWorker._serial_lock:
                         arduinoUtils.handle_board_and_upload(port=selected_t_port, sketch_path=sketch_path)
-                        logging.info('ino sketch uploading')
+                        print('ino sketch uploading')
                 else:
                     logging.warning('file path not found')
             self.resume_serial.emit()  # emit resume signal to serial capture worker
         else:
             # handle case when no test data is found
-            logging.warning('can\'t do it')
+            print('can\'t do it')
 
     # serial response readout
     def run(self):
-        logging.info('test board thread is running')
         while self.is_running:
             if self.ser and self.ser.is_open:
+                logging.info('test board thread is running')
+                print('test board thread is running')
                 # read incoming serial data
                 response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                 if response:

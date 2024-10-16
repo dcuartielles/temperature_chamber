@@ -29,6 +29,7 @@ class SerialCaptureWorker(QThread):
         try:
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
             logging.info(f'connected to arduino port: {self.port}')
+            print(f'connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
             return True
         except serial.SerialException as e:
@@ -52,7 +53,8 @@ class SerialCaptureWorker(QThread):
                 logging.info(f'sent command: {command}')
                 time.sleep(0.01)  # small delay for command processing
             else:
-                logging.warning('serial connection is not open')
+                logging.warning('serial capture connection is not open')
+                print('serial capture connection is not open')
 
         except serial.SerialException as e:
             logging.error(f'error sending command: {e}')
@@ -73,7 +75,8 @@ class SerialCaptureWorker(QThread):
                     response = self.ser.readline().decode('utf-8').strip()
                     logging.info(f'arduino says: {response}')
             else:
-                logging.warning('serial communication is not open')
+                logging.warning('serial capture communication is not open')
+                print('serial capture communication is not open')
         except serial.SerialException as e:
             logging.error(f'error sending JSON: {e}')
 
@@ -103,7 +106,8 @@ class SerialCaptureWorker(QThread):
                 logging.error(f'error reading data: {e}')
                 return None
         else:
-            logging.warning('serial communication is closed or stopped')
+            logging.warning('serial capture communication is closed or stopped')
+            print('serial capture communication is closed or stopped')
             return None
 
     # run the entire test file
@@ -150,9 +154,10 @@ class SerialCaptureWorker(QThread):
             logging.warning('nothing to set the t-chamber to')
 
     def run(self):
-        logging.info('serial capture thread is running')
         while self.is_running:
             if self.ser and self.ser.is_open:
+                logging.info('serial capture thread is running')
+                print('serial capture thread is running')
                 # read incoming serial data
                 response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                 if response:
