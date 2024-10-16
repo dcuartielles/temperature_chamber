@@ -18,6 +18,7 @@ class TestBoardWorker(QThread):
         self.baudrate = baudrate
         self.timeout = timeout
         self.ser = None  # future serial connection object
+        self.is_open = True
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
         self.last_command_time = time.time()
@@ -41,15 +42,27 @@ class TestBoardWorker(QThread):
 
     # serial response readout
     def run(self):
+        if not self.serial_setup():
+            logging.error(f'failed to connect to {self.port}')
+            print(f'failed to connect to {self.port}')
+            return
+        logging.info('test board thread is running')
+        print('test board thread is running')
+
         while self.is_running:
-            if self.ser and self.ser.is_open:
-                logging.info('test board thread is running')
-                print('test board thread is running')
-                # read incoming serial data
-                response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                if response:
-                    self.show_response(response)
+            if not self.is_stopped:
+                try:
+                    if self.ser and self.ser.is_open:
+                        # read incoming serial data
+                        response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                        if response:
+                            self.show_response(response)
+                except serial.SerialException as e:
+                    logging.error(f'serial error: {e}')
+                    print(f'serial error: {e}')
+                    self.is_running = False
             time.sleep(0.1)  # avoid excessive cpu usage
+        self.stop()
 
     # method to stop the serial communication
     def stop(self):
@@ -70,6 +83,7 @@ class TestBoardWorker(QThread):
             for test_key in all_tests:
                 test = test_data.get(test_key, {})
                 sketch_path = test.get('sketch', '')  # get .ino file path
+                print(sketch_path)
                 if sketch_path:  # if the test data is available
                     arduinoUtils.handle_board_and_upload(port=selected_t_port, sketch_path=sketch_path)
                     print('ino sketch uploading')

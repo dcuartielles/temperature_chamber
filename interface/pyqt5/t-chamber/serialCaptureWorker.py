@@ -15,6 +15,7 @@ class SerialCaptureWorker(QThread):
         self.baudrate = baudrate
         self.timeout = timeout
         self.ser = None  # future serial connection object
+        self.is_open = True
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
         self.last_command_time = time.time()
@@ -38,20 +39,42 @@ class SerialCaptureWorker(QThread):
 
     # method to run the thread
     def run(self):
+        if not self.serial_setup():
+            logging.error(f'failed to connect to {self.port}')
+            print(f'failed to connect to {self.port}')
+            return
+        logging.info('serial capture thread is running')
+        print('serial capture thread is running')
+
         while self.is_running:
             if not self.is_stopped:
-                if self.ser and self.ser.is_open:
-                    logging.info('serial capture thread is running')
-                    print('serial capture thread is running')
-                    # read incoming serial data
-                    response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                    if response:
-                        self.process_response(response)
+                try:
+                    if self.ser and self.ser.is_open:
+                        logging.info('serial capture thread is running')
+                        print('serial capture thread is running')
+                        # read incoming serial data
+                        response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                        if response:
+                            self.process_response(response)
 
-                    if time.time() - self.last_command_time > 1.5:
-                        self.last_command_time = time.time()
-                        self.trigger_read_data()
+                        if time.time() - self.last_command_time > 1.5:
+                            self.last_command_time = time.time()
+                            self.trigger_read_data()
+                except serial.SerialException as e:
+                    logging.error(f'serial error: {e}')
+                    print(f'serial error: {e}')
+                    self.is_running = False
             time.sleep(0.1)  # avoid excessive cpu usage
+        self.stop()
+
+    # method to stop the serial communication
+    def stop(self):
+        self.is_running = False  # stop the worker thread loop
+        if self.ser and self.ser.is_open:
+            self.ser.close()  # close the serial connection
+            logging.info(f'connection to {self.port} closed')
+        self.quit()
+        self.wait()
 
     # pause flag for stopping communication temporarily when test board thread is dealing with cli
     def pause(self):
@@ -98,15 +121,6 @@ class SerialCaptureWorker(QThread):
                 print('serial capture communication is not open')
         except serial.SerialException as e:
             logging.error(f'error sending JSON: {e}')
-
-    # method to stop the serial communication
-    def stop(self):
-        self.is_running = False  # stop the worker thread loop
-        if self.ser and self.ser.is_open:
-            self.ser.close()  # close the serial connection
-            logging.info(f'connection to {self.port} closed')
-        self.quit()
-        self.wait()
 
     # read data
     def read_data(self):

@@ -37,7 +37,6 @@ class MainWindow(QMainWindow):
         self.serial_worker = None
         self.test_board = None
 
-
         # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
         self.input_dictionary = []
         self.test_data = None
@@ -183,7 +182,7 @@ class MainWindow(QMainWindow):
     # method to start running threads after ports have been selected
     def on_start_button_clicked(self):
         print('start button clicked')
-        # Retrieve selected ports after user has had a chance to pick them
+        # retrieve selected ports after user has had a chance to pick them
         self.selected_c_port = self.port_selector.get_selected_c_port()
         self.selected_t_port = self.port_selector.get_selected_t_port()
         print(self.selected_c_port)  # should return the port string
@@ -194,7 +193,6 @@ class MainWindow(QMainWindow):
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.start()  # start the worker thread
-        print('serial capture worker started')
 
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
@@ -202,7 +200,6 @@ class MainWindow(QMainWindow):
         self.test_board.resume_serial.connect(self.serial_worker.resume)
         self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
-        print('test board worker started')
 
     # the actual chamber_monitor QList updates
     def update_chamber_monitor_gui(self, message):
