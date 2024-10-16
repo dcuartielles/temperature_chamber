@@ -31,8 +31,11 @@ class MainWindow(QMainWindow):
 
         # create an instance of port selector
         self.port_selector = PortSelector()
+        print(self.port_selector.get_selected_c_port())  # should return the port string
+        print(self.port_selector.get_selected_t_port())  # should return the port string
         self.selected_c_port = self.port_selector.get_selected_c_port()
         self.selected_t_port = self.port_selector.get_selected_t_port()
+
 
         # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
         self.input_dictionary = []

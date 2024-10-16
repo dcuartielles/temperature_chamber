@@ -58,3 +58,15 @@
 2024-10-15 15:37:22,184 - INFO - thread is running
 2024-10-15 15:37:27,307 - ERROR - error: could not open port 'COM5': OSError(22, 'The semaphore timeout period has expired.', None, 121)
 2024-10-15 15:37:27,331 - INFO - thread is running
+2024-10-16 10:22:31,865 - ERROR - error: could not open port 'None': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2024-10-16 10:22:31,868 - ERROR - error: could not open port 'None': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2024-10-16 10:22:31,869 - INFO - thread is running
+2024-10-16 10:22:31,944 - INFO - thread is running
+2024-10-16 10:22:52,813 - WARNING - serial communication is not open
+2024-10-16 10:22:52,814 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 10:22:52,814 - WARNING - serial communication is not open
+2024-10-16 10:22:52,814 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-16 10:22:52,814 - WARNING - serial communication is not open
+2024-10-16 10:22:52,814 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 10:22:52,815 - WARNING - serial communication is not open
+2024-10-16 10:22:52,815 - INFO - running {'temp': 40, 'duration': 60000}

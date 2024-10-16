@@ -61,8 +61,14 @@ class PortSelector(QWidget):
 
     # get the selected port for the test board
     def get_selected_t_port(self):
-        return self.t_port_dropdown.itemData(self.t_port_dropdown.currentIndex())
+        port = self.t_port_dropdown.itemData(self.t_port_dropdown.currentIndex())
+        t_port = str(port)
+        print(f'selected port: {t_port}')
+        return t_port
 
     # get the selected port for the chamber board
     def get_selected_c_port(self):
-        return self.c_port_dropdown.itemData(self.c_port_dropdown.currentIndex())
+        port = self.c_port_dropdown.itemData(self.c_port_dropdown.currentIndex())
+        c_port = str(port)
+        print(f'selected port: {c_port}')
+        return c_port
