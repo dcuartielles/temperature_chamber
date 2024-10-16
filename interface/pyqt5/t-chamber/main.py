@@ -31,28 +31,16 @@ class MainWindow(QMainWindow):
 
         # create an instance of port selector
         self.port_selector = PortSelector()
-        self.selected_c_port = self.port_selector.get_selected_c_port()
-        self.selected_t_port = self.port_selector.get_selected_t_port()
-        print(self.selected_c_port)  # should return the port string
-        print(self.selected_t_port)  # should return the port string
+        self.selected_c_port = None
+        self.selected_t_port = None
+
+        self.serial_worker = None
+        self.test_board = None
 
 
         # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
         self.input_dictionary = []
         self.test_data = None
-
-        # create serial worker thread
-        self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
-        self.serial_worker.update_listbox.connect(self.update_listbox_gui)
-        self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
-        self.serial_worker.start()  # start the worker thread
-
-        # create test board worker thread
-        self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
-        self.test_board.pause_serial.connect(self.serial_worker.pause)
-        self.test_board.resume_serial.connect(self.serial_worker.resume)
-        self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
-        self.test_board.start()  # start test board thread
 
         self.initUI()
 
@@ -60,7 +48,7 @@ class MainWindow(QMainWindow):
     def initUI(self):
         # main window and window logo
         self.setWindowTitle('temperature chamber')
-        self.setGeometry(600, 200, 0, 0) # decide where on the screen the window will appear
+        self.setGeometry(600, 110, 0, 0) # decide where on the screen the window will appear
         self.setWindowIcon(QIcon('arduino_logo.png'))
         self.setStyleSheet('background-color: white;'
                            'color: black;')
@@ -81,10 +69,20 @@ class MainWindow(QMainWindow):
         self.im_label.setFixedSize(100, 100)  # define logo dimensions
         layout.addWidget(self.im_label, alignment=Qt.AlignLeft)  # add logo to the layout
 
+        # port selector
         layout.addWidget(self.port_selector)
 
         # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
+        layout.addSpacerItem(QSpacerItem(0, 18))
+
+        # start button
+        self.start_button = QPushButton('START')
+        self.start_button.setStyleSheet('background-color: #009FAF;'
+                                        'color: white;')
+        layout.addWidget(self.start_button)
+
+        # add space btw sections: vertical 30px
+        layout.addSpacerItem(QSpacerItem(0, 30))
 
         # test handling & layout
         test_part_layout = QHBoxLayout()
@@ -161,8 +159,9 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.emergency_stop_button)
 
         # connect functionality
+        self.start_button.clicked.connect(self.on_start_button_clicked)
         self.load_button.clicked.connect(self.load_test_file)
-        self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
+        # self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.emergency_stop_button.clicked.connect(self.clear_entries)
         self.run_button.clicked.connect(self.on_run_button_clicked)
         self.set_button.clicked.connect(self.set_temp_and_duration)
@@ -175,6 +174,29 @@ class MainWindow(QMainWindow):
         self.adjustSize()
 
     # GUI FUNCTIONALITY-RELATED METHODS
+
+    # method to start running threads after ports have been selected
+    def on_start_button_clicked(self):
+        # Retrieve selected ports after user has had a chance to pick them
+        self.selected_c_port = self.port_selector.get_selected_c_port()
+        self.selected_t_port = self.port_selector.get_selected_t_port()
+        print(self.selected_c_port)  # should return the port string
+        print(self.selected_t_port)  # should return the port string
+
+        # only now create the worker threads with the selected ports
+        self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
+        self.serial_worker.update_listbox.connect(self.update_listbox_gui)
+        self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
+        self.serial_worker.start()  # start the worker thread
+
+        # create test board worker thread
+        self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
+        self.test_board.pause_serial.connect(self.serial_worker.pause)
+        self.test_board.resume_serial.connect(self.serial_worker.resume)
+        self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
+        self.test_board.start()  # start test board thread
+
+
     # the actual chamber_monitor QList updates
     def update_chamber_monitor_gui(self, message):
         self.chamber_monitor.clear()  # clear old data

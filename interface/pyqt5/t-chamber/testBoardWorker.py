@@ -69,7 +69,7 @@ class TestBoardWorker(QThread):
 
     # serial response readout
     def run(self):
-        logging.info('thread is running')
+        logging.info('test board thread is running')
         while self.is_running:
             if self.ser and self.ser.is_open:
                 # read incoming serial data

@@ -98,3 +98,38 @@
 2024-10-16 13:13:30,384 - INFO - selected port: None
 2024-10-16 13:13:30,411 - INFO - thread is running
 2024-10-16 13:13:30,411 - INFO - thread is running
+2024-10-16 13:45:14,986 - INFO - selected port: COM15
+2024-10-16 13:45:14,986 - INFO - selected port: COM15
+2024-10-16 13:45:15,011 - INFO - thread is running
+2024-10-16 13:45:15,011 - INFO - thread is running
+2024-10-16 13:47:51,526 - WARNING - serial communication is not open
+2024-10-16 13:47:51,526 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 13:47:51,526 - WARNING - serial communication is not open
+2024-10-16 13:47:51,526 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-16 13:47:51,526 - WARNING - serial communication is not open
+2024-10-16 13:47:51,526 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 13:47:51,526 - WARNING - serial communication is not open
+2024-10-16 13:47:51,526 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-16 14:06:15,083 - INFO - selected port: None
+2024-10-16 14:06:15,084 - INFO - selected port: None
+2024-10-16 14:06:15,084 - INFO - thread is running
+2024-10-16 14:06:15,084 - INFO - thread is running
+2024-10-16 14:14:12,487 - INFO - selected port: COM15
+2024-10-16 14:14:12,487 - INFO - selected port: COM7
+2024-10-16 14:14:12,488 - INFO - thread is running
+2024-10-16 14:14:12,488 - INFO - thread is running
+2024-10-16 14:17:01,638 - INFO - selected port: COM15
+2024-10-16 14:17:01,639 - INFO - selected port: COM7
+2024-10-16 14:17:01,640 - INFO - serial capture thread is running
+2024-10-16 14:17:01,640 - INFO - test board thread is running
+2024-10-16 14:17:16,864 - INFO - [{'temp': 12.0, 'duration': 360000}]
+2024-10-16 14:17:18,739 - INFO - [{'temp': 12.0, 'duration': 360000}]
+2024-10-16 14:17:18,740 - WARNING - serial communication is not open
+2024-10-16 14:17:45,441 - WARNING - serial communication is not open
+2024-10-16 14:17:45,441 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 14:17:45,441 - WARNING - serial communication is not open
+2024-10-16 14:17:45,443 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-16 14:17:45,443 - WARNING - serial communication is not open
+2024-10-16 14:17:45,443 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 14:17:45,443 - WARNING - serial communication is not open
+2024-10-16 14:17:45,443 - INFO - running {'temp': 40, 'duration': 60000}

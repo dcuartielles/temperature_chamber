@@ -150,7 +150,7 @@ class SerialCaptureWorker(QThread):
             logging.warning('nothing to set the t-chamber to')
 
     def run(self):
-        logging.info('thread is running')
+        logging.info('serial capture thread is running')
         while self.is_running:
             if self.ser and self.ser.is_open:
                 # read incoming serial data
