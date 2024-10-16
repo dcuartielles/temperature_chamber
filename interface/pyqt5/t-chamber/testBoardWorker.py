@@ -7,7 +7,7 @@ import threading
 
 
 class TestBoardWorker(QThread):
-    _serial_lock = threading.Lock()  # shared lock for serial communication
+    # _serial_lock = threading.Lock()  # shared lock for serial communication
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
     pause_serial = pyqtSignal()  # signal to pause serial worker thread
     resume_serial = pyqtSignal()  # signal to resume it

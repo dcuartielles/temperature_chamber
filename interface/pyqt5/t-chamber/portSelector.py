@@ -1,3 +1,5 @@
+import logging
+
 from PyQt5.QtWidgets import QComboBox, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QSpacerItem
 import arduinoUtils
 
@@ -36,22 +38,18 @@ class PortSelector(QWidget):
         port_layout.addWidget(self.refresh_button)
         port_layout.addSpacerItem(QSpacerItem(30, 0))
 
-
         self.setLayout(layout)
 
         # initially populate the dropdown with available ports
         self.refresh_ports()
 
-        # initially populate the dropdown with available ports
-        self.refresh_ports()
-    
     def refresh_ports(self):
-        ports_and_boards = arduinoUtils.get_arduino_boards()
+        ports_and_boards = arduinoUtils.get_arduino_boards()  # should be [(port, board_name), (port, board_name)]
         self.t_port_dropdown.clear()
         self.c_port_dropdown.clear()
         # add both board name and port to dropdowns
-        for port, board_name in ports_and_boards:
-            display_text = f"{board_name} on {port}"
+        for port, name in ports_and_boards:
+            display_text = f"{name}: {port}"
             self.t_port_dropdown.addItem(display_text)
             self.c_port_dropdown.addItem(display_text)
 
@@ -63,12 +61,12 @@ class PortSelector(QWidget):
     def get_selected_t_port(self):
         port = self.t_port_dropdown.itemData(self.t_port_dropdown.currentIndex())
         t_port = str(port)
-        print(f'selected port: {t_port}')
+        logging.info(f'selected port: {t_port}')
         return t_port
 
     # get the selected port for the chamber board
     def get_selected_c_port(self):
         port = self.c_port_dropdown.itemData(self.c_port_dropdown.currentIndex())
         c_port = str(port)
-        print(f'selected port: {c_port}')
+        logging.info(f'selected port: {c_port}')
         return c_port
