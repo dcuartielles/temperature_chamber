@@ -70,3 +70,13 @@
 2024-10-16 10:22:52,814 - INFO - running {'temp': 50, 'duration': 60000}
 2024-10-16 10:22:52,815 - WARNING - serial communication is not open
 2024-10-16 10:22:52,815 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-16 10:33:34,513 - INFO - thread is running
+2024-10-16 10:33:34,513 - INFO - thread is running
+2024-10-16 10:33:57,283 - WARNING - serial communication is not open
+2024-10-16 10:33:57,283 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 10:33:57,284 - WARNING - serial communication is not open
+2024-10-16 10:33:57,284 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-16 10:33:57,285 - WARNING - serial communication is not open
+2024-10-16 10:33:57,285 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 10:33:57,285 - WARNING - serial communication is not open
+2024-10-16 10:33:57,285 - INFO - running {'temp': 40, 'duration': 60000}

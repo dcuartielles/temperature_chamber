@@ -35,6 +35,14 @@ class SerialCaptureWorker(QThread):
             logging.error(f'error: {e}')
             return False
 
+    # pause flag for stopping communication temporarily when test board thread is dealing with cli
+    def pause(self):
+        self.is_stopped = True
+
+    def resume(self):
+        self.is_stopped = False
+        self.last_command_time = time.time()  # reset the timing
+
     # sends a command to arduino via serial
     def send_command(self, command):
         try:

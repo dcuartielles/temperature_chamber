@@ -3,10 +3,14 @@ import time
 import serial
 import arduinoUtils
 import logging
-# from jsonFunctionality import FileHandler
+import threading
+
 
 class TestBoardWorker(QThread):
+    _serial_lock = threading.Lock()  # shared lock for serial communication
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
+    pause_serial = pyqtSignal()  # signal to pause serial worker thread
+    resume_serial = pyqtSignal()  # signal to resume it
 
     def __init__(self, port, baudrate=9600, timeout=5):
         super().__init__()
@@ -34,7 +38,6 @@ class TestBoardWorker(QThread):
             logging.error(f'error: {e}')
             return False
 
-
     # method to stop the serial communication
     def stop(self):
         self.is_running = False  # stop the worker thread loop
@@ -44,19 +47,22 @@ class TestBoardWorker(QThread):
         self.quit()
         self.wait()
 
-    # run the entire test file REFACTOR FOR CLI
+    # run the entire test file
     def run_all_tests(self, test_data, selected_t_port):
-        if test_data is not None and selected_t_port is not None:  # take test_data & port number from main
+        if test_data and selected_t_port:  # take test_data & port number from main
+            self.pause_serial.emit()  # emit pause signal to serial capture worker thread to avoid conflicts
             all_tests = [key for key in test_data.keys()]
             # iterate through each test and run it
             for test_key in all_tests:
                 test = test_data.get(test_key, {})
                 sketch_path = test.get('sketch', '')  # get .ino file path
                 if sketch_path:  # if the test data is available
-                    arduinoUtils.handle_board_and_upload(port=selected_t_port, sketch_path=sketch_path)
-                    logging.info('ino sketch uploading')
+                    with TestBoardWorker._serial_lock:
+                        arduinoUtils.handle_board_and_upload(port=selected_t_port, sketch_path=sketch_path)
+                        logging.info('ino sketch uploading')
                 else:
                     logging.warning('file path not found')
+            self.resume_serial.emit()  # emit resume signal to serial capture worker
         else:
             # handle case when no test data is found
             logging.warning('can\'t do it')

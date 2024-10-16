@@ -49,6 +49,8 @@ class MainWindow(QMainWindow):
 
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
+        self.test_board.pause_serial.connect(self.serial_worker.pause)
+        self.test_board.resume_serial.connect(self.serial_worker.resume)
         self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
 
@@ -200,10 +202,13 @@ class MainWindow(QMainWindow):
             print('failed to load test data')
 
     # button click handlers
+    #run all benchmark tests
     def on_run_button_clicked(self):
-        if self.test_data:  # ensure test data is loaded
-            self.serial_worker.run_all_tests(self.test_data)
-            self.test_board.run_all_tests(self.test_data, self.selected_t_port)
+        if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
+            if not self.serial_worker.is_stopped:
+                self.serial_worker.run_all_tests(self.test_data)
+            if not self.test_board.is_stopped:
+                self.test_board.run_all_tests(self.test_data, self.selected_t_port)
         else:
             self.show_error_message('error', 'no test data loaded')
 
