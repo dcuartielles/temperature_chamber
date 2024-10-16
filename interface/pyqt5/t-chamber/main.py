@@ -31,10 +31,10 @@ class MainWindow(QMainWindow):
 
         # create an instance of port selector
         self.port_selector = PortSelector()
-        print(self.port_selector.get_selected_c_port())  # should return the port string
-        print(self.port_selector.get_selected_t_port())  # should return the port string
         self.selected_c_port = self.port_selector.get_selected_c_port()
         self.selected_t_port = self.port_selector.get_selected_t_port()
+        print(self.selected_c_port)  # should return the port string
+        print(self.selected_t_port)  # should return the port string
 
 
         # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
@@ -42,15 +42,13 @@ class MainWindow(QMainWindow):
         self.test_data = None
 
         # create serial worker thread
-        self.serial_worker = SerialCaptureWorker(self)
-        self.serial_worker.serial_setup(port=self.selected_c_port, baudrate=9600)  # initiate serial communication
+        self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.start()  # start the worker thread
 
         # create test board worker thread
-        self.test_board = TestBoardWorker(self)
-        self.test_board.serial_setup(port=self.selected_t_port, baudrate=9600)  # initiate serial communication
+        self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
 
@@ -293,9 +291,9 @@ class MainWindow(QMainWindow):
 
     # stop both workers
     def closeEvent(self, event):
-        if self.capture_worker:
-            self.capture_worker.stop()
-            super().closeEvent(event)
+        self.serial_worker.stop()
+        self.test_board.stop()
+        event.accept()  # ensure the application closes
 
 
 # method responsible for running the app

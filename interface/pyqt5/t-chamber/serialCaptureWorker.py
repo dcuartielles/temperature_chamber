@@ -42,7 +42,7 @@ class SerialCaptureWorker(QThread):
                 self.ser.reset_input_buffer()  # clear the gates
                 self.ser.write((command + '\n').encode('utf-8'))  # encode command in serial
                 logging.info(f'sent command: {command}')
-                time.sleep(0.02)  # small delay for command processing
+                time.sleep(0.01)  # small delay for command processing
             else:
                 logging.warning('serial connection is not open')
 
@@ -57,7 +57,7 @@ class SerialCaptureWorker(QThread):
         try:
             if self.ser and self.ser.is_open:
                 self.ser.write((json_data + '\n').encode('utf-8'))
-                time.sleep(0.02)
+                time.sleep(0.01)
                 logging.info(f'sent to arduino: {json_data}')
 
                 # continuously read arduino output (blocking method, runs inside the thread)
