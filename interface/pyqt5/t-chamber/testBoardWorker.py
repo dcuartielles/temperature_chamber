@@ -12,7 +12,7 @@ class TestBoardWorker(QThread):
     pause_serial = pyqtSignal()  # signal to pause serial worker thread
     resume_serial = pyqtSignal()  # signal to resume it
 
-    def __init__(self, port, baudrate=9600, timeout=5):
+    def __init__(self, port, baudrate, timeout=5):
         super().__init__()
         self.port = port
         self.baudrate = baudrate
@@ -39,6 +39,18 @@ class TestBoardWorker(QThread):
             logging.error(f'error: {e}')
             return False
 
+    # serial response readout
+    def run(self):
+        while self.is_running:
+            if self.ser and self.ser.is_open:
+                logging.info('test board thread is running')
+                print('test board thread is running')
+                # read incoming serial data
+                response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                if response:
+                    self.show_response(response)
+            time.sleep(0.1)  # avoid excessive cpu usage
+
     # method to stop the serial communication
     def stop(self):
         self.is_running = False  # stop the worker thread loop
@@ -59,27 +71,14 @@ class TestBoardWorker(QThread):
                 test = test_data.get(test_key, {})
                 sketch_path = test.get('sketch', '')  # get .ino file path
                 if sketch_path:  # if the test data is available
-                    with TestBoardWorker._serial_lock:
-                        arduinoUtils.handle_board_and_upload(port=selected_t_port, sketch_path=sketch_path)
-                        print('ino sketch uploading')
+                    arduinoUtils.handle_board_and_upload(port=selected_t_port, sketch_path=sketch_path)
+                    print('ino sketch uploading')
                 else:
                     logging.warning('file path not found')
             self.resume_serial.emit()  # emit resume signal to serial capture worker
         else:
             # handle case when no test data is found
             print('can\'t do it')
-
-    # serial response readout
-    def run(self):
-        while self.is_running:
-            if self.ser and self.ser.is_open:
-                logging.info('test board thread is running')
-                print('test board thread is running')
-                # read incoming serial data
-                response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                if response:
-                    self.show_response(response)
-            time.sleep(0.1)  # avoid excessive cpu usage
 
     # show serial response
     def show_response(self, response):

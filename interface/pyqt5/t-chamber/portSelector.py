@@ -15,7 +15,8 @@ class PortSelector(QWidget):
         self.c_port_dropdown = QComboBox()
         self.setStyleSheet('background-color: white;'
                            'color: #009FAF;'
-                           'alignment: right;')
+                           'alignment: right;'
+                           'font-weight: bold;')
 
         self.refresh_button = QPushButton('refresh')
         self.refresh_button.setFixedSize(80, 37)

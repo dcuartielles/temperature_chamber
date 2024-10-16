@@ -9,7 +9,7 @@ class SerialCaptureWorker(QThread):
     update_listbox = pyqtSignal(str)  # signal to update listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
 
-    def __init__(self, port, baudrate=9600, timeout=5):
+    def __init__(self, port, baudrate, timeout=5):
         super().__init__()
         self.port = port
         self.baudrate = baudrate
@@ -36,13 +36,32 @@ class SerialCaptureWorker(QThread):
             logging.error(f'error: {e}')
             return False
 
+    # method to run the thread
+    def run(self):
+        while self.is_running:
+            if not self.is_stopped:
+                if self.ser and self.ser.is_open:
+                    logging.info('serial capture thread is running')
+                    print('serial capture thread is running')
+                    # read incoming serial data
+                    response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                    if response:
+                        self.process_response(response)
+
+                    if time.time() - self.last_command_time > 1.5:
+                        self.last_command_time = time.time()
+                        self.trigger_read_data()
+            time.sleep(0.1)  # avoid excessive cpu usage
+
     # pause flag for stopping communication temporarily when test board thread is dealing with cli
     def pause(self):
         self.is_stopped = True
+        print('serial capture worker is paused')
 
     def resume(self):
         self.is_stopped = False
         self.last_command_time = time.time()  # reset the timing
+        print('resuming serial capture worker')
 
     # sends a command to arduino via serial
     def send_command(self, command):
@@ -152,21 +171,6 @@ class SerialCaptureWorker(QThread):
             self.send_json_to_arduino(input_dictionary)
         else:
             logging.warning('nothing to set the t-chamber to')
-
-    def run(self):
-        while self.is_running:
-            if self.ser and self.ser.is_open:
-                logging.info('serial capture thread is running')
-                print('serial capture thread is running')
-                # read incoming serial data
-                response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                if response:
-                    self.process_response(response)
-
-                if time.time() - self.last_command_time > 1.5:
-                    self.last_command_time = time.time()
-                    self.trigger_read_data()
-            time.sleep(0.1)  # avoid excessive cpu usage
 
     def trigger_read_data(self):
         response = self.read_data()  # read data using custom method

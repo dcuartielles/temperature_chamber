@@ -72,13 +72,15 @@ class MainWindow(QMainWindow):
         # port selector
         layout.addWidget(self.port_selector)
 
-        # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 18))
+        # add space btw sections: vertical 15px
+        layout.addSpacerItem(QSpacerItem(0, 15))
 
         # start button
-        self.start_button = QPushButton('START')
+        self.start_button = QPushButton('start')
         self.start_button.setStyleSheet('background-color: #009FAF;'
-                                        'color: white;')
+                                        'color: white;'
+                                        'font-size: 20px;'
+                                        'font-weight: bold;')
         layout.addWidget(self.start_button)
 
         # add space btw sections: vertical 30px
@@ -158,6 +160,9 @@ class MainWindow(QMainWindow):
                                                  'font-weight: bold;')
         layout.addWidget(self.emergency_stop_button)
 
+        # add space btw sections: vertical 11px
+        layout.addSpacerItem(QSpacerItem(0, 11))
+
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
         self.load_button.clicked.connect(self.load_test_file)
@@ -177,6 +182,7 @@ class MainWindow(QMainWindow):
 
     # method to start running threads after ports have been selected
     def on_start_button_clicked(self):
+        print('start button clicked')
         # Retrieve selected ports after user has had a chance to pick them
         self.selected_c_port = self.port_selector.get_selected_c_port()
         self.selected_t_port = self.port_selector.get_selected_t_port()
@@ -188,6 +194,7 @@ class MainWindow(QMainWindow):
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.start()  # start the worker thread
+        print('serial capture worker started')
 
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
@@ -195,7 +202,7 @@ class MainWindow(QMainWindow):
         self.test_board.resume_serial.connect(self.serial_worker.resume)
         self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
-
+        print('test board worker started')
 
     # the actual chamber_monitor QList updates
     def update_chamber_monitor_gui(self, message):
