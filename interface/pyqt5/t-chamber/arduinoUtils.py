@@ -113,11 +113,8 @@ def handle_board_and_upload(port, sketch_path):
     fqbn = detect_board(port)
     if fqbn:
         install_core_if_needed(fqbn)
-
-        if compile_sketch(fqbn, sketch_path):
-            upload_sketch(fqbn, port, sketch_path)
-        else:
-            logging.error(f"Aborting upload due to compilation failure.")
+        compile_sketch(fqbn, sketch_path)
+        upload_sketch(fqbn, port, sketch_path)
     else:
         logging.warning(f"Failed to detect board on port {port}.")
 

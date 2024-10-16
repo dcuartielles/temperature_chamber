@@ -239,3 +239,101 @@
 2024-10-16 16:43:56,390 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
 2024-10-16 16:43:56,391 - INFO - running {'temp': 40, 'duration': 60000}
 2024-10-16 16:43:56,490 - WARNING - serial capture communication is closed or stopped
+2024-10-16 16:49:42,569 - INFO - selected port: COM15
+2024-10-16 16:49:42,570 - INFO - selected port: COM7
+2024-10-16 16:49:42,596 - INFO - connected to arduino port: COM7
+2024-10-16 16:49:42,596 - INFO - connected to arduino port: COM15
+2024-10-16 16:49:43,597 - INFO - serial capture thread is running
+2024-10-16 16:49:43,597 - INFO - test board thread is running
+2024-10-16 16:49:43,598 - INFO - serial capture thread is running
+2024-10-16 16:49:48,608 - INFO - sent command: SHOW DATA
+2024-10-16 16:49:48,710 - INFO - arduino says: Room_temp: 20.94 | Desired_temp: -41.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:49:48,811 - INFO - serial capture thread is running
+2024-10-16 16:49:53,823 - INFO - sent command: SHOW DATA
+2024-10-16 16:49:53,936 - INFO - arduino says: Room_temp: 20.94 | Desired_temp: -41.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:49:54,037 - INFO - serial capture thread is running
+2024-10-16 16:49:59,044 - INFO - sent command: SHOW DATA
+2024-10-16 16:49:59,161 - INFO - arduino says: Room_temp: 20.94 | Desired_temp: -41.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:49:59,263 - INFO - serial capture thread is running
+2024-10-16 16:50:04,264 - INFO - sent command: SHOW DATA
+2024-10-16 16:50:04,387 - INFO - arduino says: Room_temp: 20.94 | Desired_temp: -41.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:50:04,488 - INFO - serial capture thread is running
+2024-10-16 16:50:08,903 - INFO - [{'temp': 24.0, 'duration': 60000}]
+2024-10-16 16:50:09,495 - INFO - sent command: SHOW DATA
+2024-10-16 16:50:09,614 - INFO - arduino says: Room_temp: 20.94 | Desired_temp: -41.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:50:09,715 - INFO - serial capture thread is running
+2024-10-16 16:50:11,966 - INFO - [{'temp': 24.0, 'duration': 60000}]
+2024-10-16 16:50:11,978 - INFO - sent to arduino: [{"temp": 24.0, "duration": 60000}]
+2024-10-16 16:50:12,085 - INFO - sent command: SHOW DATA
+2024-10-16 16:50:12,324 - INFO - arduino says: Room_temp: 21.00 | Desired_temp: 24.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:50:12,426 - INFO - serial capture thread is running
+2024-10-16 16:50:12,528 - INFO - serial capture thread is running
+2024-10-16 16:50:12,630 - INFO - serial capture thread is running
+2024-10-16 16:50:17,632 - INFO - sent command: SHOW DATA
+2024-10-16 16:50:17,741 - INFO - arduino says: Room_temp: 21.06 | Desired_temp: 24.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:50:17,842 - INFO - serial capture thread is running
+2024-10-16 16:50:22,856 - INFO - sent command: SHOW DATA
+2024-10-16 16:50:22,954 - INFO - arduino says: Room_temp: 21.06 | Desired_temp: 24.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:50:23,056 - INFO - serial capture thread is running
+2024-10-16 16:50:28,063 - INFO - sent command: SHOW DATA
+2024-10-16 16:50:28,168 - INFO - arduino says: Room_temp: 21.06 | Desired_temp: 24.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:50:28,268 - INFO - serial capture thread is running
+2024-10-16 16:50:33,270 - INFO - sent command: SHOW DATA
+2024-10-16 16:50:33,379 - INFO - arduino says: Room_temp: 21.09 | Desired_temp: 24.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:50:33,480 - INFO - serial capture thread is running
+2024-10-16 16:50:38,486 - INFO - sent command: SHOW DATA
+2024-10-16 16:50:38,592 - INFO - arduino says: Room_temp: 21.12 | Desired_temp: 24.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:50:38,692 - INFO - serial capture thread is running
+2024-10-16 16:50:42,201 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-16 16:50:42,201 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 16:50:42,212 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-16 16:50:42,212 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-16 16:50:42,223 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-16 16:50:42,223 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 16:50:42,234 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-16 16:50:42,234 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-16 16:50:42,316 - WARNING - serial capture communication is closed or stopped
+2024-10-16 16:55:21,763 - INFO - selected port: COM15
+2024-10-16 16:55:21,764 - INFO - selected port: COM7
+2024-10-16 16:55:21,790 - INFO - connected to arduino port: COM7
+2024-10-16 16:55:21,790 - INFO - connected to arduino port: COM15
+2024-10-16 16:55:22,791 - INFO - test board thread is running
+2024-10-16 16:55:22,792 - INFO - serial capture thread is running
+2024-10-16 16:55:22,793 - INFO - serial capture thread is running
+2024-10-16 16:55:27,796 - INFO - sent command: SHOW DATA
+2024-10-16 16:55:27,910 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: -41.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:55:28,011 - INFO - serial capture thread is running
+2024-10-16 16:55:33,017 - INFO - sent command: SHOW DATA
+2024-10-16 16:55:33,136 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: -41.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:55:33,237 - INFO - serial capture thread is running
+2024-10-16 16:55:38,252 - INFO - sent command: SHOW DATA
+2024-10-16 16:55:38,363 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: -41.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:55:38,464 - INFO - serial capture thread is running
+2024-10-16 16:55:43,478 - INFO - sent command: SHOW DATA
+2024-10-16 16:55:43,589 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: -41.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:55:43,691 - INFO - serial capture thread is running
+2024-10-16 16:55:45,632 - INFO - [{'temp': 24.0, 'duration': 120000}]
+2024-10-16 16:55:47,701 - INFO - [{'temp': 24.0, 'duration': 120000}]
+2024-10-16 16:55:47,713 - INFO - sent to arduino: [{"temp": 24.0, "duration": 120000}]
+2024-10-16 16:55:47,820 - INFO - sent command: SHOW DATA
+2024-10-16 16:55:48,060 - INFO - arduino says: Room_temp: 21.25 | Desired_temp: 24.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:55:48,162 - INFO - serial capture thread is running
+2024-10-16 16:55:48,264 - INFO - serial capture thread is running
+2024-10-16 16:55:48,366 - INFO - serial capture thread is running
+2024-10-16 16:55:53,373 - INFO - sent command: SHOW DATA
+2024-10-16 16:55:53,547 - INFO - arduino says: Room_temp: 21.19 | Desired_temp: 24.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:55:53,648 - INFO - serial capture thread is running
+2024-10-16 16:55:58,657 - INFO - sent command: SHOW DATA
+2024-10-16 16:55:58,760 - INFO - arduino says: Room_temp: 21.19 | Desired_temp: 24.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:55:58,861 - INFO - serial capture thread is running
+2024-10-16 16:56:03,863 - INFO - sent command: SHOW DATA
+2024-10-16 16:56:03,972 - INFO - arduino says: Room_temp: 21.19 | Desired_temp: 24.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-16 16:56:04,073 - INFO - serial capture thread is running
+2024-10-16 16:56:05,186 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-16 16:56:05,186 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 16:56:05,197 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-16 16:56:05,197 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-16 16:56:05,208 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-16 16:56:05,208 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-16 16:56:05,219 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-16 16:56:05,219 - INFO - running {'temp': 40, 'duration': 60000}
