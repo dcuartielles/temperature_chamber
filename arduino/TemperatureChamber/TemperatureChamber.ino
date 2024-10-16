@@ -107,7 +107,6 @@ int stateHeater = 0;
 int stateCooler = 0;
 
 
-//////////////////// OLD //////////////////
 // State machine variables
 int stateHeaterOld = 0;
 int stateCoolerOld = 0;
@@ -115,7 +114,6 @@ int dutyCycleHeater = 0;
 int dutyCycleCooler = 0;
 int status = EMERGENCY_STOP;
 bool dataEvent = false;
-//////////////////// OLD //////////////////
 
 struct Sequence {
     float targetTemp;
@@ -323,7 +321,7 @@ void runCurrentSequence() {
     currentDuration = duration;
 
     // debug
-    Serial.print(" Running sequence: Target temp = ");
+    Serial.print("Running sequence: Target temp = ");
     Serial.print(targetTemp);
     Serial.print(" Duration = ");
     Serial.println(duration);
@@ -442,153 +440,118 @@ void parseCommand(String command) {
     //displayStatus();
 }
 
-void runTestSequence(float temperature, unsigned long duration, String stepDescription) {
-    if (!isTestRunning) {
-        //sendStatus("Starting: " + stepDescription);
-        setTemperature(temperature);
-        startTime = millis();
-        isTestRunning = true;
-    }
-
-    if (holdForPeriod(duration)) {
-        //sendStatus(stepDescription + " complete");
-        isTestRunning = false;  // Test step is done, can proceed to the next one
-    }
-}
+// void runTestSequence(float temperature, unsigned long duration, String stepDescription) {
+//     if (!isTestRunning) {
+//         //sendStatus("Starting: " + stepDescription);
+//         setTemperature(temperature);
+//         startTime = millis();
+//         isTestRunning = true;
+//     }
+//
+//     if (holdForPeriod(duration)) {
+//         //sendStatus(stepDescription + " complete");
+//         isTestRunning = false;  // Test step is done, can proceed to the next one
+//     }
+// }
 
 void handleResetState() {
-    //Serial.println("Entered s1 RESET. actual status = " + String(status));
     if (switchSystem.released() || switchSystem.read() == HIGH) {
         status = EMERGENCY_STOP; // shut everything down
-        //Serial.println("s1 reset: Emergency stop activated, status: " + String(status));
     }
     if (switchStart.pressed() || switchStart.held()) {
         status = REPORT; // check temperature and report result
-        //Serial.println("s1 reset: report. status : " + String(status));
     }
     changeTemperature();
 
-    // s2
-    //Serial.println("Entered s2 RESET. actual status = " + String(status));
     heater.off();
     cooler.off();
     stateHeater = 0;
     stateCooler = 0;
     longheatingflag =0;
-    //Serial.println("s2 reset: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater " + String(stateHeater) + " stateCooler = " + String(stateCooler) + " lh = " + String(longheatingflag));
 }
 
 void handleHeatingState() {
-    //Serial.println("Entered s1 HEATING. actual status = " + String(status));
     cooler.off();
     if (switchSystem.released()) {
         status = EMERGENCY_STOP;
-        //Serial.println("s1 heating: emergency stop. status : " + String(status));
     }
     if (switchSystem.read() == LOW && switchStart.released()) {
         status = RESET; // go to reset if startswitch is off and system is on
-        //Serial.println("s1 heating: reset. status : " + String(status));
     }
     if(TemperatureThreshold>-0.1) {
         status = REPORT;
         longheatingflag = 0;
-        //Serial.println("s1 heating: report lh = 0. actual: status = " + String(status) + " lh = " + String(longheatingflag));
     }
     if(TemperatureThreshold<-4 && TemperatureThreshold>-8) {
         dutyCycleHeater = 100;
         PeriodHeater = 60000;
         longheatingflag =1;
-        //Serial.println("s1 heating: duty = 100 period = 60000 lh = 1. actual : duty = " + String(dutyCycleHeater) + " period = " + String(PeriodHeater) + " lh = " + String(longheatingflag));
     }
     if(TemperatureThreshold<-8) {
         dutyCycleHeater = 100; PeriodHeater = 120000; longheatingflag = 1; // turn heater on for 2 mins
-        //Serial.println("s1 heating: duty = 100 period = 120000 lh = 1. actual: duty = " + String(dutyCycleHeater) + " period = " + String(PeriodHeater) + " lh = " + String(longheatingflag));
     } 
     if(TemperatureThreshold>-4 && longheatingflag == 0) {
         dutyCycleHeater = 80; PeriodHeater = 25000; //on for 20 seconds and off for 5
-        //Serial.println("s1 heating: duty = 80 period = 25000 lh = 0. actual: duty = " + String(dutyCycleHeater) + " period = " + String(PeriodHeater) + " lh = " + String(longheatingflag));
     }  
     if(TemperatureThreshold>-4 && longheatingflag == 1) {
         dutyCycleHeater = 0;  
-        //Serial.println("s1 heating: thresh >-4 lh = 1. actual: thresh = " + String(TemperatureThreshold) + " lh = " + String(longheatingflag));
     }
 
-    // s2
-    //Serial.println("Entered s2 HEATING. actual status = " + String(status));
     PWMHeater(dutyCycleHeater, PeriodHeater);
     stateCooler = 0;    // TODO: Test
     stateHeater = 1;
-    //Serial.println("s2 heating: stateHeater = 1 stateCooler = 0. actual: stateHeater = " + String(stateHeater) + " stateCooler = " + String(stateCooler));
 
 }
 
 void handleCoolingState() {
-    //Serial.println("Entered s1 COOLING. actual status = " + String(status));
     heater.off();
     if (switchSystem.released()) {
         status = EMERGENCY_STOP;
-        //Serial.println("s1 cooling: emergency stop. status : " + String(status));
     }
     if (switchSystem.read() == LOW && switchStart.released()) {
         status = RESET;
-        //Serial.println("s1 cooling: reset. status : " + String(status));
     }
     if(TemperatureThreshold<0.4) {
         status = REPORT;
-        //Serial.println("s1 cooling: thresh < 0.4. actual: thresh = " + String(TemperatureThreshold));
     }
     if(TemperatureThreshold > 1) {
         dutyCycleCooler = 100;
         PeriodCooler=2000;
-        //Serial.println("s1 cooling: thresh > 1. actual: thresh = " + String(TemperatureThreshold));
     }
     if(TemperatureThreshold < 1 && TemperatureThreshold > 0.4) {
         dutyCycleCooler = 29;
         PeriodCooler=7000; // on for 2 seconds and off for 5
-        //Serial.println("s1 cooling: 0.4 < thresh < 1. actual: thresh = " + String(TemperatureThreshold));
     } 
     longheatingflag = 0;
 
-    // s2
-    //Serial.println("Entered s2 COOLING. actual status = " + String(status));
     PWMCooler(dutyCycleCooler, PeriodCooler);
     stateHeater = 0;    // TODO: Test
     stateCooler = 1;
-    //Serial.println("s2 COOLING: stateHeater = 0 stateCooler = 1. actual: stateHeater " + String(stateHeater) + " stateCooler = " + String(stateCooler));
 }
 
 void handleReportState() {
-    //Serial.println("Entered s1 REPORT. actual status = " + String(status));
     if (switchSystem.released()) {
         status = EMERGENCY_STOP;
-        //Serial.println("s1 report: emergency stop. actual = " + String(status));
     }
     if (switchSystem.read() == LOW && switchStart.released()) {
         status = RESET;
-        //Serial.println("s1 reset: emergency stop. actual = " + String(status));
     }
     if (switchStart.read() == LOW)
     {
         if(TemperatureThreshold>0.4) {
             status = COOLING;
-            //Serial.println("s1 reset: thresh > 0.4 status = COOLING. actual: thresh = " + String(TemperatureThreshold) + " status = " + String(status));
         }
         if(TemperatureThreshold<-0.1) {
             status = HEATING;
-            //Serial.println("s1 reset: thresh < -0.1 status = HEATING. actual: thresh = " + String(TemperatureThreshold) + " status = " + String(status));
         }
     }
 }
 
 void handleEmergencyStopState() {
-    //Serial.println("Entered s1 EMERGENCY_STOP. actual status = " + String(status));
     if (switchSystem.pressed() || switchSystem.held()) {
         status = RESET;
-        //Serial.println("s1 emergency: reset. actual = " + String(status));
     }
 
-    // s2
-    //Serial.println("Entered s2 EMERGENCY_STOP. actual status = " + String(status));
     heater.off();
     cooler.off();
     stateHeater = 0;
@@ -596,7 +559,6 @@ void handleEmergencyStopState() {
     displayLCDOff();
     longheatingflag =0;
     inputString ="";
-    //Serial.println("s2 EMERGENCY: stateHeater = 0 stateCooler = 0 lh = 0. actual: stateHeater = " + String(stateHeater) + " stateCooler = " + String(stateCooler) + " lh = " + String(longheatingflag));
 }
 
 unsigned long lastUpdate = 0;

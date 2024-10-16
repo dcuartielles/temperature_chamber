@@ -20,13 +20,13 @@ def get_arduino_boards():
     if output:
         try:
             # parse the output as JSON
-            boards = json.loads(output)
+            boards_info = json.loads(output)
             arduino_ports = []
 
-            for board in boards:
-                if "boards" in board and board["boards"]:
-                    port = board.get("port", "")
-                    board_name = board["boards"][0].get("name", "Unknown Board")
+            for board in boards_info.get("detected_ports", []):
+                if "matching_boards" in board and board["matching_boards"]:
+                    port = board.get("port", {}).get("address", "Unknown Port")
+                    board_name = board["matching_boards"][0].get("name", "Unknown Board")
                     arduino_ports.append((port, board_name))
 
             return arduino_ports
