@@ -118,10 +118,11 @@ class MainWindow(QMainWindow):
         self.set_duration_input = QLineEdit(self)
         self.set_duration_input.setPlaceholderText('duration in minutes: ')
         self.set_duration_input.setStyleSheet('color: #009FAF;')
-        self.set_button = QPushButton('set', self)
+
+        # place elements
         input_layout.addWidget(self.set_temp_input)
         input_layout.addWidget(self.set_duration_input)
-        input_layout.addWidget(self.set_button)
+
         # add input layout part to main layout
         layout.addLayout(input_layout)
 
@@ -168,9 +169,8 @@ class MainWindow(QMainWindow):
         self.load_button.clicked.connect(self.load_test_file)
         self.emergency_stop_button.clicked.connect(self.clear_entries)
         self.run_button.clicked.connect(self.on_run_button_clicked)
-        self.set_button.clicked.connect(self.set_temp_and_duration)
-        self.set_temp_input.returnPressed.connect(self.check_inputs)
-        self.set_duration_input.returnPressed.connect(self.check_inputs)
+        self.set_temp_input.returnPressed.connect(self.on_enter_key)
+        self.set_duration_input.returnPressed.connect(self.on_enter_key)
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
@@ -240,6 +240,7 @@ class MainWindow(QMainWindow):
         else:
             self.show_error_message('error', 'no test data loaded')
 
+    '''
     # set tem & duration independently of test file
     def add_temp_and_duration(self):
         # get input and clear it of potential empty spaces
@@ -290,13 +291,54 @@ class MainWindow(QMainWindow):
             return self.input_dictionary
         else:
             print('invalid inputs')
-            return None
+            return None '''
+
+    # enter for temp & duration inputs
+    def on_enter_key(self):
+        # check both inputs only when the user presses enter
+        temp_string = self.set_temp_input.text().strip()
+        duration_string = self.set_duration_input.text().strip()
+
+        if temp_string and duration_string:  # make sure both fields are filled
+            is_valid = self.check_inputs(temp_string, duration_string)  # validate inputs
+
+            if is_valid and self.input_dictionary:  # if valid inputs
+                self.serial_worker.set_temp(self.input_dictionary)  # set temp in arduino
+                print(f'sent to arduino: {self.input_dictionary}')
+            else:
+                self.show_error_message('error', 'invalid temp or duration')  # show error if invalid
+        else:
+            self.show_error_message('error', 'you need to fill in both temp & duration')  # prompt to fill both fields
 
     # make sure both temp & duration are submitted by user
-    def check_inputs(self):
-        if self.set_temp_input.text() and self.set_duration_input.text():
-            self.add_temp_and_duration()
+    def check_inputs(self, temp_string, duration_string):
+        is_valid = True  # track overall validity
 
+        try:
+            temp = float(temp_string)
+            if temp >= 100:
+                self.show_error_message('error', 'max temperature = 100°C')
+                is_valid = False
+        except ValueError:
+            self.show_error_message('error', 'numbers only')
+            is_valid = False
+
+        try:
+            duration = int(duration_string)
+            if duration < 1:  # check for minimum duration
+                self.show_error_message('error', 'minimum duration is 1 minute')
+                is_valid = False
+        except ValueError:
+            self.show_error_message('error', 'numbers only')  #
+            is_valid = False
+
+        if is_valid:
+            self.input_dictionary.clear()  # clear previous input
+            new_sequence = {'temp': temp, 'duration': duration * 60000}  # convert duration to milliseconds
+            self.input_dictionary.append(new_sequence)  # append valid input to the dictionary
+            logging.info(self.input_dictionary)  # log temp & duration
+        return is_valid
+    '''
     # actually set temp & duration
     def set_temp_and_duration(self):
         if self.input_dictionary:
@@ -304,8 +346,7 @@ class MainWindow(QMainWindow):
             print(f'this was sent to arduino: {self.input_dictionary}')
         else:
             self.show_error_message('error', 'could not set temp & duration')
-            print('could not set temp & duration')
-
+            print('could not set temp & duration')'''
 
     # helper method to display error messages using QMessageBox
     @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data

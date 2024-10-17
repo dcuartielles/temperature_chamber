@@ -967,3 +967,4 @@
 2024-10-17 13:04:09,912 - INFO - test worker thread is running
 2024-10-17 13:04:10,771 - INFO - sent command: SHOW DATA
 2024-10-17 13:04:11,136 - INFO - arduino says: Room_temp: 22.00 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 14:41:36,329 - INFO - [{'temp': 12.0, 'duration': 60000}]
