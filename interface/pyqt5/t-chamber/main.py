@@ -1,7 +1,7 @@
 # system and PyQt5 imports
 import sys
 import logging
-import threading
+from threading import Semaphore
 import time
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
@@ -188,6 +188,9 @@ class MainWindow(QMainWindow):
         print(self.selected_c_port)  # should return the port string
         print(self.selected_t_port)  # should return the port string
 
+        self.serial_port_semaphore = Semaphore(1)
+        print('semaphore in place')
+
         # only now create the worker threads with the selected ports
         self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
@@ -196,7 +199,7 @@ class MainWindow(QMainWindow):
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
 
         # create test board worker thread
-        self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
+        self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600, semaphore=self.serial_port_semaphore)
         self.test_board.pause_serial.connect(self.serial_worker.pause)
         self.test_board.resume_serial.connect(self.serial_worker.resume)
         self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)

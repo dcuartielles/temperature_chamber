@@ -14,7 +14,7 @@ class TestBoardWorker(QThread):
     pause_serial = pyqtSignal()  # signal to pause serial worker thread
     resume_serial = pyqtSignal()  # signal to resume it
 
-    def __init__(self, port, baudrate, timeout=5):
+    def __init__(self, port, baudrate, semaphore, timeout=5):
         super().__init__()
         self.port = port
         self.baudrate = baudrate
@@ -26,7 +26,7 @@ class TestBoardWorker(QThread):
         self.last_command_time = time.time()
         self.test_data = None
         self.cli_running = False
-        self.semaphore = Semaphore()
+        self.semaphore = semaphore
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -56,6 +56,7 @@ class TestBoardWorker(QThread):
         while self.is_running:
             if not self.is_stopped:
                 try:
+                    self.semaphore.acquire()  # acquire semaphore before accessing serial port
                     if self.ser and self.ser.is_open:
                         logging.info('test worker thread is running')
                         print('test worker thread is running')
@@ -67,6 +68,8 @@ class TestBoardWorker(QThread):
                     logging.error(f'serial error: {e}')
                     print(f'serial error: {e}')
                     self.is_running = False
+                finally:
+                    self.semaphore.release()
             time.sleep(0.1)  # avoid excessive cpu usage
         self.stop()
 
@@ -88,8 +91,7 @@ class TestBoardWorker(QThread):
             self.pause_serial.emit()  # emit pause signal to serial capture worker thread to avoid conflicts
             all_tests = [key for key in test_data.keys()]
 
-            with self.lock:  # acquire lock before closing serial
-                self.pause_test_board()
+            self.semaphore.acquire()  # get the semaphore
 
             # iterate through each test and run it
             for test_key in all_tests:
@@ -101,7 +103,7 @@ class TestBoardWorker(QThread):
                     print(sketch_full_path)
 
                     if not self.cli_running:  # run only if cli is not already running
-                        self.cli_worker = CliWorker(selected_t_port, sketch_full_path)  # create a cli worker
+                        self.cli_worker = CliWorker(selected_t_port, sketch_full_path, self.semaphore)  # create a cli worker
                         print('cli worker instantiated')
                         self.cli_thread = QThread()
                         print('cli thread created')
@@ -115,10 +117,15 @@ class TestBoardWorker(QThread):
                         self.cli_worker.finished.connect(self.cli_worker.deleteLater)
                         self.cli_thread.finished.connect(self.cli_thread.deleteLater)
 
+                        # start the cli thread
+                        self.cli_thread.start()
+                        self.cli_running = True
+
                 else:
                     logging.warning('sketch path not found')
-            self.resume_serial.emit()  # emit resume signal to serial capture worker
 
+            self.semaphore.release()
+            self.resume_serial.emit()  # emit resume signal to serial capture worker
         else:
             # handle case when no test data is found
             print('can\'t do it')
@@ -126,17 +133,7 @@ class TestBoardWorker(QThread):
     # handle cli forker finish
     def on_cli_finished(self):
         self.cli_running = False  # reset flag when CLI worker finishes
-        with self.lock:
-            if self.ser and not self.ser.is_open:
-                self.ser.open()
-                print(f'serial connection to {self.port} reopened after upload')
-                logging.info(f'serial connection to {self.port} reopened after upload')
-
-    def pause_test_board(self):
-        if self.ser and self.ser.is_open:
-            self.ser.close()
-            logging.info(f'serial connection to {self.port} closed before upload')
-            print(f'serial connection to {self.port} closed before upload')
+        logging.info('cli worker finished running')
 
     # show serial response
     def show_response(self, response):
