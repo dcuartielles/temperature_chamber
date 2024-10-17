@@ -299,6 +299,25 @@ void PWMCooler(int dutyCycle, unsigned long PeriodCooler) {
 }
 
 void parseTextFromJson(JsonDocument& doc) {
+    JsonObject test = doc["test_1"];
+    if (!test.containsKey("chamber_sequences")) {
+        Serial.println("Error: Missing 'chamber_sequences' in test data");
+        return;
+    }
+
+    // For future display of test info on LCD
+    // if (test.containsKey("sketch")) {
+    //     const char* sketch = test["sketch"];
+    //     Serial.print("Sketch to upload: ");
+    //     Serial.println(sketch);
+    // }
+    // if (test.containsKey("expected output")) {
+    //     const char* expected_output = test["expected_output"];
+    //     Serial.print("Expected output: ");
+    //     Serial.println(expected_output);
+    // }
+    
+
     JsonArray sequences = doc.as<JsonArray>();
     int numSequences = sequences.size();
     if (numSequences > 5) numSequences = 5;         // how many?
