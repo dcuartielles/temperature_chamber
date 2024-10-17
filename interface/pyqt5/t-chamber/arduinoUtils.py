@@ -41,16 +41,17 @@ def detect_board(port):
     output = run_cli_command(command)
 
     if output:
-        boards = json.loads(output)
-        for board in boards:
+        boards_info = json.loads(output)
+        for board in boards_info.get("detected_ports", []):
             if board["port"]["address"] == port:
-                fqbn = board.get("matching_board", {}).get("fqbn", None)
-                if fqbn:
-                    logging.info(f"Detected FQBN: {fqbn}")
-                    return fqbn
-                else:
-                    logging.warning(f"No FQBN found for board on port {port}")
-                    return None
+                if "matching_boards" in board and board["matching_boards"]:
+                    fqbn = board["matching_boards"][0].get("fqbn", None)
+                    if fqbn:
+                        logging.info(f"Detected FQBN: {fqbn}")
+                        return fqbn
+                    else:
+                        logging.warning(f"No FQBN found for board on port {port}")
+                        return None
     return None
 
 
