@@ -83,7 +83,7 @@ class TestBoardWorker(QThread):
     def run_all_tests(self, test_data, selected_t_port, filepath):
         if test_data and selected_t_port and filepath:  # take test_data & port number from main
             logging.info(f'running test with testdata filepath: {filepath}')
-            test_data_filepath = os.path.dirname(filepath)
+            test_data_filepath = filepath.rsplit('/', 1)[0]
             self.pause_serial.emit()  # emit pause signal to serial capture worker thread to avoid conflicts
             all_tests = [key for key in test_data.keys()]
             # iterate through each test and run it
@@ -91,8 +91,9 @@ class TestBoardWorker(QThread):
                 test = test_data.get(test_key, {})
                 sketch_path = test.get('sketch', '')  # get .ino file path
                 if sketch_path:  # if the sketch is available
-                    sketch_filename = os.path.basename(sketch_path)  # get ino file name
-                    sketch_full_path = os.path.join(test_data_filepath, sketch_filename)
+                    sketch_filename = sketch_path.split('/')[-1]  # get ino file name
+                    sketch_full_path = test_data_filepath + '/' + sketch_filename
+                    print(sketch_full_path)
                     self.pause_test_board()  # pause this thread
                     if not self.cli_running:  # run only if cli is not already running
                         self.cli_worker = CliWorker(selected_t_port, sketch_full_path)  # create a cli worker
