@@ -676,3 +676,164 @@
 2024-10-17 10:45:23,819 - INFO - there was nothing worth saying here
 2024-10-17 10:45:23,920 - INFO - serial capture thread is running
 2024-10-17 10:45:23,981 - INFO - test worker thread is running
+2024-10-17 11:07:10,488 - INFO - selected port: COM15
+2024-10-17 11:07:10,490 - INFO - selected port: COM7
+2024-10-17 11:07:10,504 - INFO - connected to arduino port: COM15
+2024-10-17 11:07:10,505 - INFO - connected to arduino port: COM7
+2024-10-17 11:07:11,505 - INFO - serial capture thread is running
+2024-10-17 11:07:11,505 - INFO - serial capture thread is running
+2024-10-17 11:07:11,506 - INFO - test board thread is running
+2024-10-17 11:07:11,506 - INFO - test worker thread is running
+2024-10-17 11:07:16,507 - INFO - sent command: SHOW DATA
+2024-10-17 11:07:16,610 - INFO - arduino says: Room_temp: 27.34 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:07:16,712 - INFO - serial capture thread is running
+2024-10-17 11:07:21,713 - INFO - sent command: SHOW DATA
+2024-10-17 11:07:21,830 - INFO - arduino says: Room_temp: 27.34 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:07:21,931 - INFO - serial capture thread is running
+2024-10-17 11:07:25,113 - INFO - test worker thread is running
+2024-10-17 11:07:26,935 - INFO - sent command: SHOW DATA
+2024-10-17 11:07:27,049 - INFO - arduino says: Room_temp: 27.34 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:07:27,150 - INFO - serial capture thread is running
+2024-10-17 11:07:32,153 - INFO - sent command: SHOW DATA
+2024-10-17 11:07:32,268 - INFO - arduino says: Room_temp: 27.34 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:07:32,369 - INFO - serial capture thread is running
+2024-10-17 11:07:37,378 - INFO - sent command: SHOW DATA
+2024-10-17 11:07:37,489 - INFO - arduino says: Room_temp: 27.34 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:07:37,590 - INFO - serial capture thread is running
+2024-10-17 11:07:39,113 - INFO - test worker thread is running
+2024-10-17 11:07:42,603 - INFO - sent command: SHOW DATA
+2024-10-17 11:07:42,708 - INFO - arduino says: Room_temp: 27.34 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:07:42,808 - INFO - serial capture thread is running
+2024-10-17 11:07:47,814 - INFO - sent command: SHOW DATA
+2024-10-17 11:07:47,927 - INFO - arduino says: Room_temp: 27.34 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:07:48,029 - INFO - serial capture thread is running
+2024-10-17 11:07:53,043 - INFO - sent command: SHOW DATA
+2024-10-17 11:07:53,113 - INFO - test worker thread is running
+2024-10-17 11:07:53,149 - INFO - arduino says: Room_temp: 27.34 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:07:53,249 - INFO - serial capture thread is running
+2024-10-17 11:07:58,251 - INFO - sent command: SHOW DATA
+2024-10-17 11:07:58,367 - INFO - arduino says: Room_temp: 27.34 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:07:58,468 - INFO - serial capture thread is running
+2024-10-17 11:07:59,479 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-17 11:07:59,479 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-17 11:07:59,489 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-17 11:07:59,489 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-17 11:07:59,500 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-17 11:07:59,500 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-17 11:07:59,511 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-17 11:07:59,511 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-17 11:07:59,719 - INFO - serial capture thread is running
+2024-10-17 11:07:59,820 - INFO - serial capture thread is running
+2024-10-17 11:07:59,974 - INFO - serial capture thread is running
+2024-10-17 11:08:00,077 - INFO - serial capture thread is running
+2024-10-17 11:08:00,178 - INFO - serial capture thread is running
+2024-10-17 11:08:00,279 - INFO - serial capture thread is running
+2024-10-17 11:08:00,381 - INFO - serial capture thread is running
+2024-10-17 11:08:00,483 - INFO - serial capture thread is running
+2024-10-17 11:08:00,583 - INFO - serial capture thread is running
+2024-10-17 11:08:00,686 - INFO - serial capture thread is running
+2024-10-17 11:08:00,787 - INFO - serial capture thread is running
+2024-10-17 11:08:00,889 - INFO - serial capture thread is running
+2024-10-17 11:08:00,990 - INFO - serial capture thread is running
+2024-10-17 11:08:01,092 - INFO - serial capture thread is running
+2024-10-17 11:08:01,093 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:01,262 - INFO - arduino says: Room_temp: 26.97 | Desired_temp: 0.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+2024-10-17 11:08:01,363 - INFO - serial capture thread is running
+2024-10-17 11:08:01,718 - INFO - Detected FQBN: arduino:avr:uno
+2024-10-17 11:08:02,811 - INFO - Core arduino is already installed.
+2024-10-17 11:08:02,811 - INFO - Core arduino is already installed.
+2024-10-17 11:08:02,811 - INFO - Compiling ./alphabet.ino for the board with FQBN arduino:avr:uno...
+2024-10-17 11:08:02,866 - INFO - Command failed: Command '['arduino-cli', 'compile', '--fqbn', 'arduino:avr:uno', './alphabet.ino']' returned non-zero exit status 1.
+2024-10-17 11:08:02,867 - WARNING - Compilation failed
+2024-10-17 11:08:02,867 - ERROR - Aborting upload due to compilation failure.
+2024-10-17 11:08:06,364 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:06,509 - INFO - arduino says: Room_temp: 27.25 | Desired_temp: 0.00 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+2024-10-17 11:08:06,611 - INFO - serial capture thread is running
+2024-10-17 11:08:07,113 - INFO - test worker thread is running
+2024-10-17 11:08:11,622 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:11,741 - INFO - arduino says: Room_temp: 27.81 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:08:11,842 - INFO - serial capture thread is running
+2024-10-17 11:08:16,844 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:17,005 - INFO - arduino says: Room_temp: 28.00 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:08:17,107 - INFO - serial capture thread is running
+2024-10-17 11:08:21,113 - INFO - test worker thread is running
+2024-10-17 11:08:22,114 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:22,270 - INFO - arduino says: Room_temp: 27.97 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:08:22,371 - INFO - serial capture thread is running
+2024-10-17 11:08:27,385 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:27,534 - INFO - arduino says: Room_temp: 27.94 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:08:27,637 - INFO - serial capture thread is running
+2024-10-17 11:08:32,652 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:32,801 - INFO - arduino says: Room_temp: 27.87 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:08:32,902 - INFO - serial capture thread is running
+2024-10-17 11:08:35,113 - INFO - test worker thread is running
+2024-10-17 11:08:37,917 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:38,068 - INFO - arduino says: Room_temp: 27.78 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:08:38,169 - INFO - serial capture thread is running
+2024-10-17 11:08:43,170 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:43,332 - INFO - arduino says: Room_temp: 27.69 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:08:43,433 - INFO - serial capture thread is running
+2024-10-17 11:08:48,435 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:48,597 - INFO - arduino says: Room_temp: 27.66 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:08:48,698 - INFO - serial capture thread is running
+2024-10-17 11:08:49,112 - INFO - test worker thread is running
+2024-10-17 11:08:53,709 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:53,864 - INFO - arduino says: Room_temp: 27.62 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:08:53,965 - INFO - serial capture thread is running
+2024-10-17 11:08:58,976 - INFO - sent command: SHOW DATA
+2024-10-17 11:08:59,128 - INFO - arduino says: Room_temp: 27.59 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:08:59,230 - INFO - serial capture thread is running
+2024-10-17 11:09:03,112 - INFO - test worker thread is running
+2024-10-17 11:09:04,243 - INFO - sent command: SHOW DATA
+2024-10-17 11:09:04,395 - INFO - arduino says: Room_temp: 27.53 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:09:04,496 - INFO - serial capture thread is running
+2024-10-17 11:09:09,505 - INFO - sent command: SHOW DATA
+2024-10-17 11:09:09,661 - INFO - arduino says: Room_temp: 27.50 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:27:21,155 - INFO - selected port: COM15
+2024-10-17 11:27:21,156 - INFO - selected port: COM7
+2024-10-17 11:27:21,169 - INFO - connected to arduino port: COM7
+2024-10-17 11:27:21,171 - INFO - connected to arduino port: COM15
+2024-10-17 11:27:22,170 - INFO - test board thread is running
+2024-10-17 11:27:22,171 - INFO - test worker thread is running
+2024-10-17 11:27:22,171 - INFO - serial capture thread is running
+2024-10-17 11:27:22,171 - INFO - serial capture thread is running
+2024-10-17 11:27:27,177 - INFO - sent command: SHOW DATA
+2024-10-17 11:27:27,293 - INFO - arduino says: Room_temp: 24.91 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:27:27,394 - INFO - serial capture thread is running
+2024-10-17 11:27:32,398 - INFO - sent command: SHOW DATA
+2024-10-17 11:27:32,561 - INFO - arduino says: Room_temp: 24.91 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:27:32,661 - INFO - serial capture thread is running
+2024-10-17 11:27:35,776 - INFO - test worker thread is running
+2024-10-17 11:27:37,670 - INFO - sent command: SHOW DATA
+2024-10-17 11:27:37,827 - INFO - arduino says: Room_temp: 24.87 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:27:37,928 - INFO - serial capture thread is running
+2024-10-17 11:27:42,934 - INFO - sent command: SHOW DATA
+2024-10-17 11:27:43,093 - INFO - arduino says: Room_temp: 24.87 | Desired_temp: 0.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:27:43,194 - INFO - serial capture thread is running
+2024-10-17 11:27:45,560 - INFO - [{'temp': 30.0, 'duration': 60000}]
+2024-10-17 11:27:47,474 - INFO - [{'temp': 30.0, 'duration': 60000}]
+2024-10-17 11:27:47,485 - INFO - sent to arduino: [{"temp": 30.0, "duration": 60000}]
+2024-10-17 11:27:47,699 - INFO - sent command: SHOW DATA
+2024-10-17 11:27:47,753 - INFO - arduino says: ion = 60000
+2024-10-17 11:27:47,854 - INFO - serial capture thread is running
+2024-10-17 11:27:47,956 - INFO - serial capture thread is running
+2024-10-17 11:27:48,059 - INFO - serial capture thread is running
+2024-10-17 11:27:49,772 - INFO - test worker thread is running
+2024-10-17 11:27:53,059 - INFO - sent command: SHOW DATA
+2024-10-17 11:27:53,174 - INFO - arduino says: Room_temp: 24.87 | Desired_temp: 30.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:27:53,274 - INFO - serial capture thread is running
+2024-10-17 11:27:58,276 - INFO - sent command: SHOW DATA
+2024-10-17 11:27:58,401 - INFO - arduino says: Room_temp: 24.87 | Desired_temp: 30.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:27:58,501 - INFO - serial capture thread is running
+2024-10-17 11:28:03,512 - INFO - sent command: SHOW DATA
+2024-10-17 11:28:03,627 - INFO - arduino says: Room_temp: 24.87 | Desired_temp: 30.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-17 11:28:03,728 - INFO - serial capture thread is running
+2024-10-17 11:28:03,772 - INFO - test worker thread is running
+2024-10-17 11:28:05,426 - WARNING - serial capture communication is closed or stopped
+2024-10-17 11:28:05,427 - INFO - sent command: EMERGENCY STOP
+2024-10-17 11:28:05,438 - INFO - emergency stop issued
+2024-10-17 11:28:17,771 - INFO - test worker thread is running
+2024-10-17 11:28:31,768 - INFO - test worker thread is running
+2024-10-17 11:28:33,393 - INFO - connection to COM15 closed
+2024-10-17 11:28:33,425 - INFO - connection to COM7 closed now
+2024-10-17 11:35:41,274 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json

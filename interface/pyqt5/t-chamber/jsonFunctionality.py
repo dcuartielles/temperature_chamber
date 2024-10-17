@@ -1,4 +1,6 @@
 import json
+import logging
+
 from PyQt5.QtWidgets import QFileDialog
 
 
@@ -7,6 +9,8 @@ class FileHandler:
     def __init__(self, parent=None):
         self.parent = parent  # optional: parent window for the dialog
         self.test_data = None
+        self.filepath = None
+
 
     # open a file using a file dialog and return the file content
     def open_file(self):
@@ -22,13 +26,20 @@ class FileHandler:
             return None
 
         try:
+
             with open(filepath, mode='r', encoding='utf-8') as input_file:
+                logging.info(filepath)
                 self.test_data = json.load(input_file)  # convert JSON file content to a py dictionary
+                self.filepath = filepath
                 return self.test_data
 
         except FileNotFoundError:
             print(f'file {filepath} not found.')
             return None
+
+    # return the file path
+    def get_filepath(self):
+        return self.filepath
 
     # save file
     def save_file(self, test_data):

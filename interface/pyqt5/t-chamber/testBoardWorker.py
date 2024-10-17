@@ -4,6 +4,7 @@ import serial
 import arduinoUtils
 from cliWorker import CliWorker
 import logging
+import os
 import threading
 
 
@@ -79,8 +80,10 @@ class TestBoardWorker(QThread):
         self.wait()
 
     # run the entire test file
-    def run_all_tests(self, test_data, selected_t_port):
-        if test_data and selected_t_port:  # take test_data & port number from main
+    def run_all_tests(self, test_data, selected_t_port, filepath):
+        if test_data and selected_t_port and filepath:  # take test_data & port number from main
+            logging.info(f'running test with testdata filepath: {filepath}')
+            test_data_filepath = os.path.dirname(filepath)
             self.pause_serial.emit()  # emit pause signal to serial capture worker thread to avoid conflicts
             all_tests = [key for key in test_data.keys()]
             # iterate through each test and run it
@@ -88,9 +91,11 @@ class TestBoardWorker(QThread):
                 test = test_data.get(test_key, {})
                 sketch_path = test.get('sketch', '')  # get .ino file path
                 if sketch_path:  # if the sketch is available
+                    sketch_filename = os.path.basename(sketch_path)  # get ino file name
+                    sketch_full_path = os.path.join(test_data_filepath, sketch_filename)
                     self.pause_test_board()  # pause this thread
                     if not self.cli_running:  # run only if cli is not already running
-                        self.cli_worker = CliWorker(selected_t_port, sketch_path)  # create a cli worker
+                        self.cli_worker = CliWorker(selected_t_port, sketch_full_path)  # create a cli worker
                         print('cli worker instantiated')
                         self.cli_thread = QThread()
                         print('cli thread created')

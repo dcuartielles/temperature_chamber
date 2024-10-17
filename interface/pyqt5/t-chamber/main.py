@@ -40,6 +40,7 @@ class MainWindow(QMainWindow):
         # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
         self.input_dictionary = []
         self.test_data = None
+        self.filepath = None
 
         self.initUI()
 
@@ -222,6 +223,7 @@ class MainWindow(QMainWindow):
     # load test file and store it in the app
     def load_test_file(self):
         self.test_data = self.json_handler.open_file()
+        self.filepath = self.json_handler.get_filepath()
         if self.test_data:
             print('test data loaded successfully')
         else:
@@ -234,7 +236,7 @@ class MainWindow(QMainWindow):
             if not self.serial_worker.is_stopped:
                 self.serial_worker.run_all_tests(self.test_data)
             if not self.test_board.is_stopped:
-                self.test_board.run_all_tests(self.test_data, self.selected_t_port)
+                self.test_board.run_all_tests(self.test_data, self.selected_t_port, self.filepath)
         else:
             self.show_error_message('error', 'no test data loaded')
 
