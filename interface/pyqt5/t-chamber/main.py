@@ -165,7 +165,6 @@ class MainWindow(QMainWindow):
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
         self.load_button.clicked.connect(self.load_test_file)
-        # self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.emergency_stop_button.clicked.connect(self.clear_entries)
         self.run_button.clicked.connect(self.on_run_button_clicked)
         self.set_button.clicked.connect(self.set_temp_and_duration)
@@ -193,6 +192,7 @@ class MainWindow(QMainWindow):
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.start()  # start the worker thread
+        self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
 
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
