@@ -23,4 +23,3 @@ class CliWorker(QObject):
                 print(f'error in cli worker: {e}')
             finally:
                 self.finished.emit()
-
