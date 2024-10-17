@@ -11,6 +11,7 @@ class CliWorker(QObject):
         super().__init__()
         self.port = port
         self.sketch_path = sketch_path
+        self.lock = Lock()
 
     def run(self):
         with self.lock:

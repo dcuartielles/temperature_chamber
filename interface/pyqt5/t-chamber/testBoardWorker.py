@@ -3,7 +3,6 @@ import time
 import serial
 import arduinoUtils
 from cliWorker import CliWorker
-
 import logging
 import threading
 
@@ -100,7 +99,7 @@ class TestBoardWorker(QThread):
 
                         # connect signals and slots
                         self.cli_thread.started.connect(self.cli_worker.run)
-                        print('cli thread started, running cli worker connected')
+                        print('cli thread connected to cli run')
                         self.cli_worker.finished.connect(self.on_cli_finished)
                         self.cli_worker.finished.connect(self.cli_worker.deleteLater)
                         self.cli_thread.finished.connect(self.cli_thread.deleteLater)
@@ -108,11 +107,7 @@ class TestBoardWorker(QThread):
                         # start the thread
                         self.cli_running = True
                         self.cli_thread.start()
-                        print('starting the thread')
-
-                    # wait for the thread to finish before moving to the next test/task
-                    self.cli_thread.wait()
-                    print('waiting for thread to be done')
+                        print('starting the cli thread')
 
                 else:
                     logging.warning('sketch path not found')
