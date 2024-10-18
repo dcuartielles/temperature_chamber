@@ -131,7 +131,6 @@ class TestBoardWorker(QThread):
                         # start the cli thread
                         self.cli_thread.start()
                         self.cli_running = True
-                        self.cli_thread.wait()
 
                 else:
                     logging.warning('sketch path not found')
