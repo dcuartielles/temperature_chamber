@@ -91,8 +91,6 @@ class TestBoardWorker(QThread):
             self.pause_serial.emit()  # emit pause signal to serial capture worker thread to avoid conflicts
             all_tests = [key for key in test_data.keys()]
 
-            self.semaphore.acquire()  # get the semaphore
-
             # iterate through each test and run it
             for test_key in all_tests:
                 test = test_data.get(test_key, {})
@@ -117,14 +115,17 @@ class TestBoardWorker(QThread):
                         self.cli_worker.finished.connect(self.cli_worker.deleteLater)
                         self.cli_thread.finished.connect(self.cli_thread.deleteLater)
 
+                        self.semaphore.release()  # release the semaphore so the cli worker can take over the port
+
                         # start the cli thread
                         self.cli_thread.start()
                         self.cli_running = True
+                        self.cli_thread.wait()
 
                 else:
                     logging.warning('sketch path not found')
 
-            self.semaphore.release()
+            self.semaphore.acquire()
             self.resume_serial.emit()  # emit resume signal to serial capture worker
         else:
             # handle case when no test data is found

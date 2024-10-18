@@ -1,14 +1,16 @@
 import subprocess
 import json
 import logging
+import time
 
 
 def run_cli_command(command):
     try:
         result = subprocess.run(command, capture_output=True, text=True, check=True)
+        logging.info(f"Command succeeded: {' '.join(command)}")
         return result.stdout
     except subprocess.CalledProcessError as e:
-        logging.info(f"Command failed: {e}")
+        logging.info(f"Command failed: {e.stderr}")
         return None
 
 
@@ -106,8 +108,11 @@ def upload_sketch(fqbn, port, sketch_path):
     result = run_cli_command(command)
     if result:
         logging.info("Upload successful!")
+        return True
     else:
         logging.warning(f"Upload failed!")
+        return False
+
 
 
 def handle_board_and_upload(port, sketch_path):
@@ -116,7 +121,12 @@ def handle_board_and_upload(port, sketch_path):
         install_core_if_needed(fqbn)
 
         if compile_sketch(fqbn, sketch_path):
-            upload_sketch(fqbn, port, sketch_path)
+            if upload_sketch(fqbn, port, sketch_path):
+                return True
+            else:
+                logging.error('upload failed')
+                print('upload failed')
+                return False
         else:
             logging.error(f"Aborting upload due to compilation failure.")
     else:
