@@ -299,53 +299,68 @@ void PWMCooler(int dutyCycle, unsigned long PeriodCooler) {
 }
 
 void parseTextFromJson(JsonDocument& doc) {
-<<<<<<< HEAD
-=======
-    JsonObject test = doc["test_1"];
-    if (!test.containsKey("chamber_sequences")) {
-        Serial.println("Error: Missing 'chamber_sequences' in test data");
-        return;
-    }
+    // check if it's a test with "test_x keys
+    if (doc.containsKey("test_1")) {
+        JsonObject test = doc["test_1"];
+        if (!test.containsKey("chamber_sequences")) {
+            Serial.println("Error: Missing 'chamber_sequences' in test data");
+            return;
+        }
 
-    // For future display of test info on LCD
-    // if (test.containsKey("sketch")) {
-    //     const char* sketch = test["sketch"];
-    //     Serial.print("Sketch to upload: ");
-    //     Serial.println(sketch);
-    // }
-    // if (test.containsKey("expected output")) {
-    //     const char* expected_output = test["expected_output"];
-    //     Serial.print("Expected output: ");
-    //     Serial.println(expected_output);
-    // }
-    
-
->>>>>>> cli-integration
     JsonArray sequences = doc.as<JsonArray>();
     int numSequences = sequences.size();
     if (numSequences > 5) numSequences = 5;         // how many?
+        // For future display of test info on LCD
+        // if (test.containsKey("sketch")) {
+        //     const char* sketch = test["sketch"];
+        //     Serial.print("Sketch to upload: ");
+        //     Serial.println(sketch);
+        // }
+        // if (test.containsKey("expected output")) {
+        //     const char* expected_output = test["expected_output"];
+        //     Serial.print("Expected output: ");
+        //     Serial.println(expected_output);
+        // }
 
-    currentTest.numSequences = numSequences;
 
-    for (int i = 0; i < numSequences; i++) {
-        JsonObject sequence = sequences[i];
+        JsonArray sequences = test["chamber_sequences"];
+        int numSequences = sequences.size();
+        if (numSequences > 5) numSequences = 5;         // how many?
 
-        if (!sequence.containsKey("temp") || !sequence.containsKey("duration")) {
-            Serial.println("Error: Missing 'temp' or 'duration' in JSON sequence");
-            continue;   // skip this sequence if the keys are missing
+        currentTest.numSequences = numSequences;
+
+        for (int i = 0; i < numSequences; i++) {
+            JsonObject sequence = sequences[i];
+
+            if (!sequence.containsKey("temp") || !sequence.containsKey("duration")) {
+                Serial.println("Error: Missing 'temp' or 'duration' in JSON sequence");
+                continue;   // skip this sequence if the keys are missing
+            }
+            currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
+            currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
         }
-        currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
-        currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
+        jsonBuffer.clear();
+
+        // start the test with the first sequence
+        currentSequenceIndex = 0;
+        isTestRunning = true;
+
+        // Ensure desired temperature is set and transition to the appropriate state
+        setTemperature(currentTest.sequences[0].targetTemp);
+        status =  REPORT;
+    } else if (doc.containsKey("temp") && doc.containsKey("duration")) {
+        float temp = doc["temp"];
+        unsigned long duration = doc["duration"];
+        setTemperature(temp);
+        Serial.print("Manual temp set to ");
+        Serial.println(temp);
+        Serial.print("Duration: ");
+        Serial.println(duration);
+
+        jsonBuffer.clear();
+    } else {
+        Serial.println("Error: Invalid JSON format");
     }
-    jsonBuffer.clear();
-
-    // start the test with the first sequence
-    currentSequenceIndex = 0;
-    isTestRunning = true;
-
-    // Ensure desired temperature is set and transition to the appropriate state
-    setTemperature(currentTest.sequences[0].targetTemp);
-    status =  REPORT;
 }
 
 bool printedWaiting = false;
@@ -423,6 +438,7 @@ void setTemperature(float temp) {
         temperatureDesired = TEMPERATURE_MAX;
         Serial.println("Specified temperature exceeds maximum allowed temperature\n");
 <<<<<<< HEAD
+<<<<<<< HEAD
         Serial.println("Setting temperature to " + String(TEMPERATURE_MAX) + "¬∞C");
     } else if (temp <= TEMPERATURE_MIN) {
         temperatureDesired = TEMPERATURE_MIN;
@@ -433,16 +449,18 @@ void setTemperature(float temp) {
         Serial.println("Setting temperature to " + String(temp) + "¬∞C");
 =======
         Serial.println("Setting temperature to " + String(TEMPERATURE_MAX) + "¬¨‚àûC");
+=======
+        Serial.println("Setting temperature to " + String(TEMPERATURE_MAX) + "°");
+>>>>>>> cli-integration
     } else if (temp <= TEMPERATURE_MIN) {
         temperatureDesired = TEMPERATURE_MIN;
         Serial.println("Specified temperature is lower than the minimum allowed temperature\n");
-        Serial.println("Setting temperature to " + String(TEMPERATURE_MIN) + "¬¨‚àûC");
+        Serial.println("Setting temperature to " + String(TEMPERATURE_MIN) + "°");
     } else {
         temperatureDesired = temp;
-        Serial.println("Setting temperature to " + String(temp) + "¬¨‚àûC");
->>>>>>> cli-integration
+        Serial.println("Setting temperature to " + String(temp) + "°");
         Serial.print("Temperature desired set to: ");
-        Serial.println(temp);  // Debug to confirm the desired temp is set
+        Serial.println(temp);  // debug to confirm the desired temp is set
     }
 }
 
@@ -549,142 +567,6 @@ void handleCoolingState() {
     }
 
     heater.off();
-<<<<<<< HEAD
-=======
-
-    if (switchSystem.released()) {
-        status = EMERGENCY_STOP;
-    }
-    if (switchSystem.read() == LOW && switchStart.released()) {
-        status = RESET;
-    }
-
-    if(TemperatureThreshold < 0.4) {
-        status = REPORT;
-    } else if(TemperatureThreshold > 1) {
-        dutyCycleCooler = 100;
-        PeriodCooler=2000;
-    } else if(TemperatureThreshold < 1 && TemperatureThreshold > 0.4) {
-        dutyCycleCooler = 29;
-        PeriodCooler=7000; // on for 2 seconds and off for 5
-    } 
-    longheatingflag = 0;
-
-    PWMCooler(dutyCycleCooler, PeriodCooler);
-    stateHeater = 0;
-    stateCooler = 1;
-
-    // Serial.println("DutyCycleCooler: " + String(dutyCycleCooler));
-    // Serial.println("PeriodCooler: " + String(PeriodCooler));
-}
-
-void handleReportState() {
-    if (switchSystem.read() == HIGH) {
-        status = EMERGENCY_STOP;
-    } else if (switchStart.released()) {
-        status = RESET;
-    } else if (switchStart.read() == LOW) {
-        if(TemperatureThreshold > 0.4) {
-            status = COOLING;
-        } else if(TemperatureThreshold < -0.1) {
-            status = HEATING;
-        }
-    }
-}
-
-void handleEmergencyStopState() {
-    heater.off();
-    cooler.off();
-    stateHeater = 0;
-    stateCooler = 0;
-    displayLCDOff();
-    longheatingflag =0;
-    if (switchSystem.held()) {
-        status = RESET;
-    }
-}
-
-void readAndParseSerial() {
-    if (switchSystem.read() == LOW) {
-        if (Serial.available() > 0) {
-            // Read the incoming data in chunks instead of one character at a time
-            int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
-            incomingString[len] = '\0'; // null-terminate the string
-
-            // Serial.print("Received string: ");
-            // Serial.println(incomingString);
-
-            DeserializationError error = deserializeJson(jsonBuffer, incomingString);
-            // Handle the input string (either a command or JSON)
-            if (!error) {
-                parseTextFromJson(jsonBuffer);  // Parse the JSON
-            } else {
-                parseCommand(incomingString);  // Parse regular commands
-            }
-
-            incomingString[0] = '\0';
-        }
-    } else {
-        //Serial.println("Switches are OFF. Test will not be processed.");
-    }
-}
-
-unsigned long lastUpdate = 0;
-unsigned long updateInterval = 500;
-
-bool printedLCDOff = false;
-
-void loop() {  
-
-    unsigned long currentMillis = millis();
-    if (switchSystem.read() == LOW) {
-        displayLCD(temperatureRoom, temperatureDesired);
-        //displaySerial();
-        if (currentMillis - lastUpdate >= updateInterval) {
-            lastUpdate = currentMillis;
-        }
-    } else {
-        displayLCDOff();
-        //Serial.println("LCD turning off");
-    }
-
-    // Used in showData()
-    // temperatureRoomOld = temperatureRoom;
-    // stateHeaterOld = stateHeater;
-    // stateCoolerOld = stateCooler;
-    // temperatureDesiredOld = temperatureDesired;
-
-    // get latest room temp
-    temperatureRoom = getTemperature();
-    TemperatureThreshold = temperatureRoom - temperatureDesired;
-
-    // Check if data is available on the serial port
-    readAndParseSerial();
-
-    if (isTestRunning) {
-        runCurrentSequence();
-    }
-
-    switch (status) {
-        case RESET:
-            handleResetState();
-            break;
-        case HEATING:
-            handleHeatingState();
-            break;
-        case COOLING:
-            handleCoolingState();
-            break;
-        case REPORT:
-            handleReportState();
-            break;
-        case EMERGENCY_STOP:
-            handleEmergencyStopState();
-            break;
-    }
-}
->>>>>>> cli-integration
-
     if (switchSystem.released()) {
         status = EMERGENCY_STOP;
     }
