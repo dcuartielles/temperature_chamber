@@ -11,6 +11,7 @@ from jsonFunctionality import FileHandler
 from serialCaptureWorker import SerialCaptureWorker
 from portSelector import PortSelector
 from testBoardWorker import TestBoardWorker
+from cliWorker import CliWorker
 
 
 # define global logging

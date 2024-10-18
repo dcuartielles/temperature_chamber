@@ -1,18 +1,27 @@
 import logging
 from threading import Semaphore
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtCore import QThread, pyqtSignal
 import subprocess
 import json
+import logging
+import time
 
 
-class CliWorker(QObject):
+class CliWorker(QThread):
     finished = pyqtSignal()
 
-    def __init__(self, port, sketch_path, semaphore):
+    def __init__(self, port, sketch_path, semaphore, baudrate, timeout=5):
         super().__init__()
         self.port = port
-        self.sketch_path = sketch_path
-        self.semaphore = Semaphore()
+        self.baudrate = baudrate
+        self.timeout = timeout
+        self.ser = None  # future serial connection object
+        self.is_open = True
+        self.is_running = True  # flag to keep the thread running
+        self.is_stopped = False  # flag to stop the read loop
+        self.semaphore = semaphore
+        self.test_data = None
+        self.cli_running = False
 
     def run(self):
         logging.info('cli worker starting')
@@ -121,25 +130,25 @@ class CliWorker(QObject):
             "--fqbn", fqbn,
             sketch_path
         ]
-        self.semaphore.acquire()
-        try:
-            result = self.run_cli_command(command)
-            if result:
-                logging.info('upload successful!')
-                print('upload successful!')
-                return True
-            else:
-                logging.warning('upload failed!')
-                return False
-        finally:
+        result = self.run_cli_command(command)
+        if result:
+            logging.info('upload successful!')
+            print('upload successful!')
             self.semaphore.release()
             self.finished.emit()
+            return True
+        else:
+            logging.warning('upload failed!')
+            return False
+
+
 
     def handle_board_and_upload(self, port, sketch_path):
         fqbn = self.detect_board(port)
         if fqbn:
             self.install_core_if_needed(fqbn)
             if self.compile_sketch(fqbn, sketch_path):
+                self.semaphore.acquire()
                 if self.upload_sketch(fqbn, port, sketch_path):
                     return True
                 else:

@@ -1,8 +1,6 @@
 from PyQt5.QtCore import QThread, pyqtSignal, QTimer
 import time
 import serial
-import arduinoUtils
-from cliWorker import CliWorker
 import logging
 from threading import Semaphore
 
@@ -81,6 +79,7 @@ class TestBoardWorker(QThread):
         self.quit()
         self.wait()
 
+    '''
     def reopen_serial_port(self):
         # reopen the serial port with stored settings after closing it
         if self.ser and not self.ser.is_open:
@@ -92,7 +91,7 @@ class TestBoardWorker(QThread):
             except serial.SerialException as e:
                 logging.error(f'error reopening serial port {self.port}: {str(e)}')
                 return False
-        return True
+        return True '''
 
     # run the entire test file
     def run_all_tests(self, test_data, selected_t_port, filepath):
