@@ -385,23 +385,23 @@ void runCurrentSequence() {
     float targetTemp = currentSequence.targetTemp;
     unsigned long duration = currentSequence.duration;
 
-    Serial.print("Current sequence index: ");
-    Serial.println(currentSequenceIndex);
-    Serial.print("Target temp: ");
-    Serial.println(targetTemp);
-    Serial.print("Current room temp: ");
-    Serial.println(temperatureRoom);
+    // Serial.print("Current sequence index: ");
+    // Serial.println(currentSequenceIndex);
+    // Serial.print("Target temp: ");
+    // Serial.println(targetTemp);
+    // Serial.print("Current room temp: ");
+    // Serial.println(temperatureRoom);
 
     // store current duration for the SHOW RUNNING SEQUENCE command
     currentDuration = duration;
 
-    if (!printedRunning) {
-        Serial.print("Running sequence: Target temp = ");
-        Serial.print(targetTemp);
-        Serial.print(" Duration = ");
-        Serial.println(duration);
-        printedRunning = true;
-    }
+    // if (!printedRunning) {
+    //     Serial.print("Running sequence: Target temp = ");
+    //     Serial.print(targetTemp);
+    //     Serial.print(" Duration = ");
+    //     Serial.println(duration);
+    //     printedRunning = true;
+    // }
 
     // check if target temp is reached
     if (!isTemperatureReached(targetTemp, temperatureRoom)) {
@@ -490,7 +490,9 @@ void parseCommand(String command) {
             Serial.print("Running sequence: Target temp = ");
             Serial.print(temperatureDesired, 2);
             Serial.print(" Duration = ");
-            Serial.println(currentDuration);
+            Serial.print(currentDuration / 60000);
+            Serial.println(" minutes");
+
         } else {
             Serial.println("No sequence is currently running.");
         }
