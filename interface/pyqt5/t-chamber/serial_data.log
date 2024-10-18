@@ -2776,3 +2776,512 @@ Failed uploading: uploading error: exit status 1
 2024-10-18 10:07:26,123 - INFO - test worker thread is running
 2024-10-18 10:07:26,123 - ERROR - serial error: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
 2024-10-18 10:07:26,224 - INFO - connection to COM7 closed now
+2024-10-18 10:53:03,847 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-18 10:53:15,120 - INFO - selected port: COM15
+2024-10-18 10:53:15,120 - INFO - selected port: COM7
+2024-10-18 10:53:15,137 - INFO - connected to arduino port: COM7
+2024-10-18 10:53:15,139 - INFO - connected to arduino port: COM15
+2024-10-18 10:53:16,137 - INFO - test board thread is running
+2024-10-18 10:53:16,137 - INFO - test worker thread is running
+2024-10-18 10:53:16,139 - INFO - serial capture thread is running
+2024-10-18 10:53:16,139 - INFO - serial capture thread is running
+2024-10-18 10:53:16,748 - INFO - test worker thread is running
+2024-10-18 10:53:17,247 - INFO - test worker thread is running
+2024-10-18 10:53:17,747 - INFO - test worker thread is running
+2024-10-18 10:53:18,247 - INFO - test worker thread is running
+2024-10-18 10:53:18,747 - INFO - test worker thread is running
+2024-10-18 10:53:19,247 - INFO - test worker thread is running
+2024-10-18 10:53:19,746 - INFO - test worker thread is running
+2024-10-18 10:53:20,246 - INFO - test worker thread is running
+2024-10-18 10:53:20,746 - INFO - test worker thread is running
+2024-10-18 10:53:21,144 - INFO - sent command: SHOW DATA
+2024-10-18 10:53:21,246 - INFO - test worker thread is running
+2024-10-18 10:53:21,261 - INFO - arduino says: Room_temp: 29.44 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 10:53:21,362 - INFO - serial capture thread is running
+2024-10-18 10:53:21,745 - INFO - test worker thread is running
+2024-10-18 10:53:22,245 - INFO - test worker thread is running
+2024-10-18 10:53:22,744 - INFO - test worker thread is running
+2024-10-18 10:53:23,248 - INFO - test worker thread is running
+2024-10-18 10:53:23,748 - INFO - test worker thread is running
+2024-10-18 10:53:24,247 - INFO - test worker thread is running
+2024-10-18 10:53:24,747 - INFO - test worker thread is running
+2024-10-18 10:53:25,247 - INFO - test worker thread is running
+2024-10-18 10:53:25,747 - INFO - test worker thread is running
+2024-10-18 10:53:26,246 - INFO - test worker thread is running
+2024-10-18 10:53:26,363 - INFO - sent command: SHOW DATA
+2024-10-18 10:53:26,459 - INFO - arduino says: Room_temp: 29.44 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 10:53:26,560 - INFO - serial capture thread is running
+2024-10-18 10:53:26,746 - INFO - test worker thread is running
+2024-10-18 10:53:27,246 - INFO - test worker thread is running
+2024-10-18 10:53:27,746 - INFO - test worker thread is running
+2024-10-18 10:53:28,245 - INFO - test worker thread is running
+2024-10-18 10:53:28,745 - INFO - test worker thread is running
+2024-10-18 10:53:29,245 - INFO - test worker thread is running
+2024-10-18 10:53:30,748 - INFO - test worker thread is running
+2024-10-18 10:53:31,248 - INFO - test worker thread is running
+2024-10-18 10:53:31,573 - INFO - sent command: SHOW DATA
+2024-10-18 10:53:31,681 - INFO - arduino says: Room_temp: 29.44 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 10:53:31,747 - INFO - test worker thread is running
+2024-10-18 10:53:31,781 - INFO - serial capture thread is running
+2024-10-18 10:53:32,247 - INFO - test worker thread is running
+2024-10-18 10:53:32,747 - INFO - test worker thread is running
+2024-10-18 10:53:33,246 - INFO - test worker thread is running
+2024-10-18 10:53:33,746 - INFO - test worker thread is running
+2024-10-18 10:53:33,999 - INFO - [{'temp': 32.0, 'duration': 120000}]
+2024-10-18 10:53:33,999 - INFO - [{'temp': 32.0, 'duration': 120000}]
+2024-10-18 10:53:34,011 - INFO - sent to arduino: {"temp": 32.0, "duration": 120000}
+2024-10-18 10:53:34,191 - INFO - sent command: SHOW DATA
+2024-10-18 10:53:34,246 - INFO - test worker thread is running
+2024-10-18 10:53:34,360 - INFO - arduino says: Room_temp: 29.34 | Desired_temp: 32.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 10:53:34,461 - INFO - serial capture thread is running
+2024-10-18 10:53:34,746 - INFO - test worker thread is running
+2024-10-18 10:53:35,245 - INFO - test worker thread is running
+2024-10-18 10:53:35,745 - INFO - test worker thread is running
+2024-10-18 10:53:36,245 - INFO - test worker thread is running
+2024-10-18 10:53:36,744 - INFO - test worker thread is running
+2024-10-18 10:53:37,244 - INFO - test worker thread is running
+2024-10-18 10:53:37,744 - INFO - test worker thread is running
+2024-10-18 10:53:38,248 - INFO - test worker thread is running
+2024-10-18 10:53:38,747 - INFO - test worker thread is running
+2024-10-18 10:53:39,247 - INFO - test worker thread is running
+2024-10-18 10:53:39,467 - INFO - sent command: SHOW DATA
+2024-10-18 10:53:39,570 - INFO - arduino says: Room_temp: 29.06 | Desired_temp: 32.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-18 10:53:39,671 - INFO - serial capture thread is running
+2024-10-18 10:53:39,747 - INFO - test worker thread is running
+2024-10-18 10:53:40,246 - INFO - test worker thread is running
+2024-10-18 10:53:40,746 - INFO - test worker thread is running
+2024-10-18 10:53:41,246 - INFO - test worker thread is running
+2024-10-18 10:53:41,746 - INFO - test worker thread is running
+2024-10-18 10:53:42,245 - INFO - test worker thread is running
+2024-10-18 10:53:42,745 - INFO - test worker thread is running
+2024-10-18 10:53:43,244 - INFO - test worker thread is running
+2024-10-18 10:53:44,682 - INFO - sent command: SHOW DATA
+2024-10-18 10:53:44,743 - INFO - test worker thread is running
+2024-10-18 10:53:44,782 - INFO - arduino says: Room_temp: 29.03 | Desired_temp: 32.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-18 10:53:44,884 - INFO - serial capture thread is running
+2024-10-18 10:53:45,247 - INFO - test worker thread is running
+2024-10-18 10:53:45,747 - INFO - test worker thread is running
+2024-10-18 10:53:46,247 - INFO - test worker thread is running
+2024-10-18 10:53:46,746 - INFO - test worker thread is running
+2024-10-18 10:53:47,246 - INFO - test worker thread is running
+2024-10-18 10:53:47,746 - INFO - test worker thread is running
+2024-10-18 10:53:48,246 - INFO - test worker thread is running
+2024-10-18 10:53:48,745 - INFO - test worker thread is running
+2024-10-18 10:53:49,245 - INFO - test worker thread is running
+2024-10-18 10:53:49,329 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 10:53:49,745 - INFO - test worker thread is running
+2024-10-18 10:53:49,895 - INFO - sent command: SHOW DATA
+2024-10-18 10:53:49,995 - INFO - arduino says: Room_temp: 29.03 | Desired_temp: 32.00 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-18 10:53:50,096 - INFO - serial capture thread is running
+2024-10-18 10:53:50,245 - INFO - test worker thread is running
+2024-10-18 10:53:50,744 - INFO - test worker thread is running
+2024-10-18 10:53:51,244 - INFO - test worker thread is running
+2024-10-18 10:53:51,744 - INFO - test worker thread is running
+2024-10-18 10:53:52,243 - INFO - test worker thread is running
+2024-10-18 10:53:52,747 - INFO - test worker thread is running
+2024-10-18 10:53:53,246 - INFO - test worker thread is running
+2024-10-18 10:53:53,746 - INFO - test worker thread is running
+2024-10-18 10:53:54,246 - INFO - test worker thread is running
+2024-10-18 10:53:54,746 - INFO - test worker thread is running
+2024-10-18 10:53:54,947 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 10:53:54,947 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 10:53:54,958 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 10:53:54,958 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 10:53:54,969 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 10:53:54,969 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 10:53:54,980 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 10:53:54,980 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 10:53:54,980 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 10:53:54,981 - INFO - serial connection to COM7 closed before upload
+2024-10-18 11:15:13,815 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-18 11:15:27,707 - INFO - selected port: COM15
+2024-10-18 11:15:27,707 - INFO - selected port: COM7
+2024-10-18 11:15:27,720 - INFO - connected to arduino port: COM7
+2024-10-18 11:15:27,722 - INFO - connected to arduino port: COM15
+2024-10-18 11:15:28,721 - INFO - test board thread is running
+2024-10-18 11:15:28,721 - INFO - test worker thread is running
+2024-10-18 11:15:28,724 - INFO - serial capture thread is running
+2024-10-18 11:15:28,724 - INFO - serial capture thread is running
+2024-10-18 11:15:29,333 - INFO - test worker thread is running
+2024-10-18 11:15:29,833 - INFO - test worker thread is running
+2024-10-18 11:15:30,333 - INFO - test worker thread is running
+2024-10-18 11:15:30,832 - INFO - test worker thread is running
+2024-10-18 11:15:31,332 - INFO - test worker thread is running
+2024-10-18 11:15:31,832 - INFO - test worker thread is running
+2024-10-18 11:15:32,332 - INFO - test worker thread is running
+2024-10-18 11:15:32,831 - INFO - test worker thread is running
+2024-10-18 11:15:33,331 - INFO - test worker thread is running
+2024-10-18 11:15:33,737 - INFO - sent command: SHOW DATA
+2024-10-18 11:15:33,831 - INFO - test worker thread is running
+2024-10-18 11:15:33,847 - INFO - arduino says: Room_temp: 31.16 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 11:15:33,948 - INFO - serial capture thread is running
+2024-10-18 11:15:34,331 - INFO - test worker thread is running
+2024-10-18 11:15:34,834 - INFO - test worker thread is running
+2024-10-18 11:15:35,334 - INFO - test worker thread is running
+2024-10-18 11:15:35,833 - INFO - test worker thread is running
+2024-10-18 11:15:36,334 - INFO - test worker thread is running
+2024-10-18 11:15:36,833 - INFO - test worker thread is running
+2024-10-18 11:15:37,333 - INFO - test worker thread is running
+2024-10-18 11:15:37,832 - INFO - test worker thread is running
+2024-10-18 11:15:38,332 - INFO - test worker thread is running
+2024-10-18 11:15:38,832 - INFO - test worker thread is running
+2024-10-18 11:15:38,959 - INFO - sent command: SHOW DATA
+2024-10-18 11:15:39,064 - INFO - arduino says: Room_temp: 31.16 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 11:15:39,166 - INFO - serial capture thread is running
+2024-10-18 11:15:39,332 - INFO - test worker thread is running
+2024-10-18 11:15:39,831 - INFO - test worker thread is running
+2024-10-18 11:15:40,331 - INFO - test worker thread is running
+2024-10-18 11:15:40,831 - INFO - test worker thread is running
+2024-10-18 11:15:41,334 - INFO - test worker thread is running
+2024-10-18 11:15:41,834 - INFO - test worker thread is running
+2024-10-18 11:15:43,333 - INFO - test worker thread is running
+2024-10-18 11:15:43,463 - INFO - [{'temp': 35.0, 'duration': 120000}]
+2024-10-18 11:15:43,463 - INFO - [{'temp': 35.0, 'duration': 120000}]
+2024-10-18 11:15:43,474 - INFO - sent to arduino: {"temp": 35.0, "duration": 120000}
+2024-10-18 11:15:43,620 - INFO - sent command: SHOW DATA
+2024-10-18 11:15:43,824 - INFO - arduino says: Room_temp: 31.12 | Desired_temp: 35.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 11:15:43,833 - INFO - test worker thread is running
+2024-10-18 11:15:43,925 - INFO - serial capture thread is running
+2024-10-18 11:15:44,333 - INFO - test worker thread is running
+2024-10-18 11:15:44,832 - INFO - test worker thread is running
+2024-10-18 11:15:45,332 - INFO - test worker thread is running
+2024-10-18 11:15:45,832 - INFO - test worker thread is running
+2024-10-18 11:15:46,332 - INFO - test worker thread is running
+2024-10-18 11:15:46,831 - INFO - test worker thread is running
+2024-10-18 11:15:47,331 - INFO - test worker thread is running
+2024-10-18 11:15:47,831 - INFO - test worker thread is running
+2024-10-18 11:15:48,334 - INFO - test worker thread is running
+2024-10-18 11:15:48,834 - INFO - test worker thread is running
+2024-10-18 11:15:48,932 - INFO - sent command: SHOW DATA
+2024-10-18 11:15:49,120 - INFO - arduino says: Room_temp: 30.78 | Desired_temp: 35.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 11:15:49,221 - INFO - serial capture thread is running
+2024-10-18 11:15:49,334 - INFO - test worker thread is running
+2024-10-18 11:15:49,834 - INFO - test worker thread is running
+2024-10-18 11:15:50,333 - INFO - test worker thread is running
+2024-10-18 11:15:50,833 - INFO - test worker thread is running
+2024-10-18 11:15:51,333 - INFO - test worker thread is running
+2024-10-18 11:15:51,832 - INFO - test worker thread is running
+2024-10-18 11:15:52,332 - INFO - test worker thread is running
+2024-10-18 11:15:52,832 - INFO - test worker thread is running
+2024-10-18 11:15:53,332 - INFO - test worker thread is running
+2024-10-18 11:15:53,831 - INFO - test worker thread is running
+2024-10-18 11:15:54,222 - INFO - sent command: SHOW DATA
+2024-10-18 11:15:54,329 - INFO - arduino says: Room_temp: 30.78 | Desired_temp: 35.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 11:15:54,331 - INFO - test worker thread is running
+2024-10-18 11:15:54,430 - INFO - serial capture thread is running
+2024-10-18 11:15:54,831 - INFO - test worker thread is running
+2024-10-18 11:15:55,335 - INFO - test worker thread is running
+2024-10-18 11:15:55,834 - INFO - test worker thread is running
+2024-10-18 11:15:57,333 - INFO - test worker thread is running
+2024-10-18 11:15:57,833 - INFO - test worker thread is running
+2024-10-18 11:15:58,332 - INFO - test worker thread is running
+2024-10-18 11:15:58,832 - INFO - test worker thread is running
+2024-10-18 11:15:59,332 - INFO - test worker thread is running
+2024-10-18 11:15:59,436 - INFO - sent command: SHOW DATA
+2024-10-18 11:15:59,539 - INFO - arduino says: Room_temp: 30.78 | Desired_temp: 35.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 11:15:59,640 - INFO - serial capture thread is running
+2024-10-18 11:15:59,730 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 11:15:59,832 - INFO - test worker thread is running
+2024-10-18 11:16:00,331 - INFO - test worker thread is running
+2024-10-18 11:16:00,831 - INFO - test worker thread is running
+2024-10-18 11:16:01,332 - INFO - test worker thread is running
+2024-10-18 11:16:01,831 - INFO - test worker thread is running
+2024-10-18 11:16:02,334 - INFO - test worker thread is running
+2024-10-18 11:16:02,834 - INFO - test worker thread is running
+2024-10-18 11:16:02,972 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 11:16:02,972 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 11:16:02,983 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 11:16:02,983 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 11:16:02,994 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 11:16:02,994 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 11:16:03,005 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 11:16:03,005 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 11:16:03,005 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 11:16:03,007 - INFO - serial connection to COM7 closed before upload
+2024-10-18 11:16:03,062 - INFO - cli worker starting
+2024-10-18 11:16:03,176 - WARNING - serial capture communication is closed or stopped
+2024-10-18 11:16:05,160 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-18 11:16:05,161 - INFO - Detected FQBN: arduino:avr:uno
+2024-10-18 11:16:06,190 - INFO - Command succeeded: arduino-cli core list
+2024-10-18 11:16:06,191 - INFO - Core arduino is already installed.
+2024-10-18 11:16:06,191 - INFO - Core arduino is already installed.
+2024-10-18 11:16:06,191 - INFO - Compiling C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino for the board with FQBN arduino:avr:uno...
+2024-10-18 11:16:10,180 - INFO - Command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-18 11:16:10,180 - INFO - Compilation successful!
+2024-10-18 11:16:10,180 - INFO - Uploading C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino to board with FQBN arduino:avr:uno on port COM7...
+2024-10-18 11:16:13,989 - INFO - Command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-18 11:16:13,989 - INFO - Upload successful!
+2024-10-18 11:16:13,989 - INFO - cli code is running
+2024-10-18 11:16:13,989 - INFO - cli worker releasing the semaphore
+2024-10-18 11:21:57,806 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-18 11:22:04,274 - INFO - selected port: COM15
+2024-10-18 11:22:04,274 - INFO - selected port: COM7
+2024-10-18 11:22:04,287 - INFO - connected to arduino port: COM7
+2024-10-18 11:22:04,290 - INFO - connected to arduino port: COM15
+2024-10-18 11:22:05,289 - INFO - test board thread is running
+2024-10-18 11:22:05,290 - INFO - test worker thread is running
+2024-10-18 11:22:05,292 - INFO - serial capture thread is running
+2024-10-18 11:22:05,292 - INFO - serial capture thread is running
+2024-10-18 11:22:05,905 - INFO - test worker thread is running
+2024-10-18 11:22:06,405 - INFO - test worker thread is running
+2024-10-18 11:22:06,904 - INFO - test worker thread is running
+2024-10-18 11:22:07,408 - INFO - test worker thread is running
+2024-10-18 11:22:07,908 - INFO - test worker thread is running
+2024-10-18 11:22:08,408 - INFO - test worker thread is running
+2024-10-18 11:22:08,907 - INFO - test worker thread is running
+2024-10-18 11:22:09,407 - INFO - test worker thread is running
+2024-10-18 11:22:09,907 - INFO - test worker thread is running
+2024-10-18 11:22:10,293 - INFO - sent command: SHOW DATA
+2024-10-18 11:22:10,402 - INFO - arduino says: Room_temp: 37.81 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 11:22:10,407 - INFO - test worker thread is running
+2024-10-18 11:22:10,503 - INFO - serial capture thread is running
+2024-10-18 11:22:10,912 - INFO - test worker thread is running
+2024-10-18 11:22:11,406 - INFO - test worker thread is running
+2024-10-18 11:22:11,905 - INFO - test worker thread is running
+2024-10-18 11:22:12,405 - INFO - test worker thread is running
+2024-10-18 11:22:12,905 - INFO - test worker thread is running
+2024-10-18 11:22:13,409 - INFO - test worker thread is running
+2024-10-18 11:22:13,908 - INFO - test worker thread is running
+2024-10-18 11:22:14,408 - INFO - test worker thread is running
+2024-10-18 11:22:14,908 - INFO - test worker thread is running
+2024-10-18 11:22:15,408 - INFO - test worker thread is running
+2024-10-18 11:22:15,515 - INFO - sent command: SHOW DATA
+2024-10-18 11:22:15,621 - INFO - arduino says: Room_temp: 37.81 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 11:22:15,723 - INFO - serial capture thread is running
+2024-10-18 11:22:15,907 - INFO - test worker thread is running
+2024-10-18 11:22:16,407 - INFO - test worker thread is running
+2024-10-18 11:22:16,906 - INFO - test worker thread is running
+2024-10-18 11:22:17,406 - INFO - test worker thread is running
+2024-10-18 11:22:17,906 - INFO - test worker thread is running
+2024-10-18 11:22:18,406 - INFO - test worker thread is running
+2024-10-18 11:22:18,905 - INFO - test worker thread is running
+2024-10-18 11:22:19,909 - INFO - test worker thread is running
+2024-10-18 11:22:20,409 - INFO - test worker thread is running
+2024-10-18 11:22:20,735 - INFO - sent command: SHOW DATA
+2024-10-18 11:22:20,908 - INFO - test worker thread is running
+2024-10-18 11:22:21,408 - INFO - test worker thread is running
+2024-10-18 11:22:21,908 - INFO - test worker thread is running
+2024-10-18 11:22:22,407 - INFO - test worker thread is running
+2024-10-18 11:22:22,907 - INFO - test worker thread is running
+2024-10-18 11:22:23,407 - INFO - test worker thread is running
+2024-10-18 11:22:23,906 - INFO - test worker thread is running
+2024-10-18 11:22:24,407 - INFO - test worker thread is running
+2024-10-18 11:22:24,906 - INFO - test worker thread is running
+2024-10-18 11:22:25,410 - INFO - test worker thread is running
+2024-10-18 11:22:25,761 - INFO - there was nothing worth saying here
+2024-10-18 11:22:25,861 - INFO - serial capture thread is running
+2024-10-18 11:22:25,910 - INFO - test worker thread is running
+2024-10-18 11:22:26,409 - INFO - test worker thread is running
+2024-10-18 11:22:26,909 - INFO - test worker thread is running
+2024-10-18 11:22:27,409 - INFO - test worker thread is running
+2024-10-18 11:22:27,908 - INFO - test worker thread is running
+2024-10-18 11:22:28,408 - INFO - test worker thread is running
+2024-10-18 11:22:28,908 - INFO - test worker thread is running
+2024-10-18 11:22:29,408 - INFO - test worker thread is running
+2024-10-18 11:22:29,907 - INFO - test worker thread is running
+2024-10-18 11:22:30,179 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 11:22:30,407 - INFO - test worker thread is running
+2024-10-18 11:22:30,877 - INFO - sent command: SHOW DATA
+2024-10-18 11:22:30,910 - INFO - test worker thread is running
+2024-10-18 11:22:31,410 - INFO - test worker thread is running
+2024-10-18 11:22:31,910 - INFO - test worker thread is running
+2024-10-18 11:22:32,410 - INFO - test worker thread is running
+2024-10-18 11:22:32,909 - INFO - test worker thread is running
+2024-10-18 11:22:33,909 - INFO - test worker thread is running
+2024-10-18 11:22:34,409 - INFO - test worker thread is running
+2024-10-18 11:22:34,908 - INFO - test worker thread is running
+2024-10-18 11:22:35,408 - INFO - test worker thread is running
+2024-10-18 11:22:35,901 - INFO - there was nothing worth saying here
+2024-10-18 11:22:35,908 - INFO - test worker thread is running
+2024-10-18 11:22:36,002 - INFO - serial capture thread is running
+2024-10-18 11:22:36,407 - INFO - test worker thread is running
+2024-10-18 11:22:36,911 - INFO - test worker thread is running
+2024-10-18 11:22:37,411 - INFO - test worker thread is running
+2024-10-18 11:22:37,911 - INFO - test worker thread is running
+2024-10-18 11:22:38,411 - INFO - test worker thread is running
+2024-10-18 11:22:38,910 - INFO - test worker thread is running
+2024-10-18 11:22:39,410 - INFO - test worker thread is running
+2024-10-18 11:22:39,909 - INFO - test worker thread is running
+2024-10-18 11:22:40,409 - INFO - test worker thread is running
+2024-10-18 11:22:40,909 - INFO - test worker thread is running
+2024-10-18 11:22:41,017 - INFO - sent command: SHOW DATA
+2024-10-18 11:22:41,409 - INFO - test worker thread is running
+2024-10-18 11:22:41,908 - INFO - test worker thread is running
+2024-10-18 11:22:42,408 - INFO - test worker thread is running
+2024-10-18 11:22:42,912 - INFO - test worker thread is running
+2024-10-18 11:22:43,412 - INFO - test worker thread is running
+2024-10-18 11:22:43,911 - INFO - test worker thread is running
+2024-10-18 11:22:44,411 - INFO - test worker thread is running
+2024-10-18 11:22:44,910 - INFO - test worker thread is running
+2024-10-18 11:22:45,410 - INFO - test worker thread is running
+2024-10-18 11:22:45,910 - INFO - test worker thread is running
+2024-10-18 11:22:46,042 - INFO - there was nothing worth saying here
+2024-10-18 11:22:46,189 - INFO - serial capture thread is running
+2024-10-18 11:22:46,409 - INFO - test worker thread is running
+2024-10-18 11:22:46,909 - INFO - test worker thread is running
+2024-10-18 11:22:47,909 - INFO - test worker thread is running
+2024-10-18 11:22:48,408 - INFO - test worker thread is running
+2024-10-18 11:22:48,912 - INFO - test worker thread is running
+2024-10-18 11:22:49,412 - INFO - test worker thread is running
+2024-10-18 11:22:49,911 - INFO - test worker thread is running
+2024-10-18 11:22:50,411 - INFO - test worker thread is running
+2024-10-18 11:22:50,911 - INFO - test worker thread is running
+2024-10-18 11:22:51,204 - INFO - sent command: SHOW DATA
+2024-10-18 11:22:51,411 - INFO - test worker thread is running
+2024-10-18 11:22:51,911 - INFO - test worker thread is running
+2024-10-18 11:22:52,410 - INFO - test worker thread is running
+2024-10-18 11:22:52,910 - INFO - test worker thread is running
+2024-10-18 11:22:53,410 - INFO - test worker thread is running
+2024-10-18 11:22:53,909 - INFO - test worker thread is running
+2024-10-18 11:22:54,413 - INFO - test worker thread is running
+2024-10-18 11:22:54,913 - INFO - test worker thread is running
+2024-10-18 11:22:55,412 - INFO - test worker thread is running
+2024-10-18 11:22:55,913 - INFO - test worker thread is running
+2024-10-18 11:22:56,230 - INFO - there was nothing worth saying here
+2024-10-18 11:22:56,331 - INFO - serial capture thread is running
+2024-10-18 11:22:56,412 - INFO - test worker thread is running
+2024-10-18 11:22:56,912 - INFO - test worker thread is running
+2024-10-18 11:22:57,411 - INFO - test worker thread is running
+2024-10-18 11:22:57,911 - INFO - test worker thread is running
+2024-10-18 11:22:58,411 - INFO - test worker thread is running
+2024-10-18 11:22:58,911 - INFO - test worker thread is running
+2024-10-18 11:22:59,410 - INFO - test worker thread is running
+2024-10-18 11:22:59,910 - INFO - test worker thread is running
+2024-10-18 11:23:00,414 - INFO - test worker thread is running
+2024-10-18 11:23:00,909 - INFO - test worker thread is running
+2024-10-18 11:23:01,339 - INFO - sent command: SHOW DATA
+2024-10-18 11:23:01,913 - INFO - test worker thread is running
+2024-10-18 11:23:02,412 - INFO - test worker thread is running
+2024-10-18 11:23:02,912 - INFO - test worker thread is running
+2024-10-18 11:23:03,412 - INFO - test worker thread is running
+2024-10-18 11:23:03,912 - INFO - test worker thread is running
+2024-10-18 11:23:04,411 - INFO - test worker thread is running
+2024-10-18 11:23:04,911 - INFO - test worker thread is running
+2024-10-18 11:23:05,411 - INFO - test worker thread is running
+2024-10-18 11:23:05,910 - INFO - test worker thread is running
+2024-10-18 11:23:06,360 - INFO - there was nothing worth saying here
+2024-10-18 11:23:06,414 - INFO - test worker thread is running
+2024-10-18 11:23:06,460 - INFO - serial capture thread is running
+2024-10-18 11:23:06,914 - INFO - test worker thread is running
+2024-10-18 11:23:07,414 - INFO - test worker thread is running
+2024-10-18 11:23:07,913 - INFO - test worker thread is running
+2024-10-18 11:23:08,413 - INFO - test worker thread is running
+2024-10-18 11:23:08,913 - INFO - test worker thread is running
+2024-10-18 11:23:09,412 - INFO - test worker thread is running
+2024-10-18 11:23:09,912 - INFO - test worker thread is running
+2024-10-18 11:23:10,412 - INFO - test worker thread is running
+2024-10-18 11:23:10,911 - INFO - test worker thread is running
+2024-10-18 11:23:11,411 - INFO - test worker thread is running
+2024-10-18 11:23:11,475 - INFO - sent command: SHOW DATA
+2024-10-18 11:23:11,915 - INFO - test worker thread is running
+2024-10-18 11:23:12,415 - INFO - test worker thread is running
+2024-10-18 11:23:12,914 - INFO - test worker thread is running
+2024-10-18 11:23:13,414 - INFO - test worker thread is running
+2024-10-18 11:23:13,914 - INFO - test worker thread is running
+2024-10-18 11:23:14,414 - INFO - test worker thread is running
+2024-10-18 11:23:14,515 - INFO - [{'temp': 40.0, 'duration': 180000}]
+2024-10-18 11:23:14,515 - INFO - [{'temp': 40.0, 'duration': 180000}]
+2024-10-18 11:23:14,527 - INFO - sent to arduino: {"temp": 40.0, "duration": 180000}
+2024-10-18 11:23:14,913 - INFO - test worker thread is running
+2024-10-18 11:23:15,913 - INFO - test worker thread is running
+2024-10-18 11:23:16,413 - INFO - test worker thread is running
+2024-10-18 11:23:16,499 - INFO - there was nothing worth saying here
+2024-10-18 11:23:16,600 - INFO - serial capture thread is running
+2024-10-18 11:23:16,912 - INFO - test worker thread is running
+2024-10-18 11:23:17,412 - INFO - test worker thread is running
+2024-10-18 11:23:17,915 - INFO - test worker thread is running
+2024-10-18 11:23:18,415 - INFO - test worker thread is running
+2024-10-18 11:23:18,915 - INFO - test worker thread is running
+2024-10-18 11:23:19,416 - INFO - test worker thread is running
+2024-10-18 11:23:19,914 - INFO - test worker thread is running
+2024-10-18 11:23:20,414 - INFO - test worker thread is running
+2024-10-18 11:23:20,914 - INFO - test worker thread is running
+2024-10-18 11:23:21,413 - INFO - test worker thread is running
+2024-10-18 11:23:21,608 - INFO - sent command: SHOW DATA
+2024-10-18 11:23:21,913 - INFO - test worker thread is running
+2024-10-18 11:23:22,413 - INFO - test worker thread is running
+2024-10-18 11:23:22,913 - INFO - test worker thread is running
+2024-10-18 11:23:23,412 - INFO - test worker thread is running
+2024-10-18 11:23:23,916 - INFO - test worker thread is running
+2024-10-18 11:23:24,416 - INFO - test worker thread is running
+2024-10-18 11:23:24,915 - INFO - test worker thread is running
+2024-10-18 11:23:25,415 - INFO - test worker thread is running
+2024-10-18 11:23:25,915 - INFO - test worker thread is running
+2024-10-18 11:23:26,414 - INFO - test worker thread is running
+2024-10-18 11:23:26,625 - INFO - there was nothing worth saying here
+2024-10-18 11:23:26,725 - INFO - serial capture thread is running
+2024-10-18 11:23:26,914 - INFO - test worker thread is running
+2024-10-18 11:23:27,414 - INFO - test worker thread is running
+2024-10-18 11:23:27,913 - INFO - test worker thread is running
+2024-10-18 11:23:28,413 - INFO - test worker thread is running
+2024-10-18 11:23:28,914 - INFO - test worker thread is running
+2024-10-18 11:23:29,916 - INFO - test worker thread is running
+2024-10-18 11:23:30,416 - INFO - test worker thread is running
+2024-10-18 11:23:30,916 - INFO - test worker thread is running
+2024-10-18 11:23:31,415 - INFO - test worker thread is running
+2024-10-18 11:23:31,737 - INFO - sent command: SHOW DATA
+2024-10-18 11:23:31,849 - INFO - arduino says: Room_temp: 37.84 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 11:23:31,919 - INFO - test worker thread is running
+2024-10-18 11:23:31,950 - INFO - serial capture thread is running
+2024-10-18 11:23:32,415 - INFO - test worker thread is running
+2024-10-18 11:23:32,915 - INFO - test worker thread is running
+2024-10-18 11:23:33,415 - INFO - test worker thread is running
+2024-10-18 11:23:33,818 - INFO - [{'temp': 42.0, 'duration': 180000}]
+2024-10-18 11:23:33,819 - INFO - [{'temp': 42.0, 'duration': 180000}]
+2024-10-18 11:23:33,830 - INFO - sent to arduino: {"temp": 42.0, "duration": 180000}
+2024-10-18 11:23:33,915 - INFO - test worker thread is running
+2024-10-18 11:23:33,976 - INFO - sent command: SHOW DATA
+2024-10-18 11:23:34,168 - INFO - arduino says: Room_temp: 37.72 | Desired_temp: 42.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 11:23:34,269 - INFO - serial capture thread is running
+2024-10-18 11:23:34,414 - INFO - test worker thread is running
+2024-10-18 11:23:34,914 - INFO - test worker thread is running
+2024-10-18 11:23:35,417 - INFO - test worker thread is running
+2024-10-18 11:23:35,917 - INFO - test worker thread is running
+2024-10-18 11:23:36,417 - INFO - test worker thread is running
+2024-10-18 11:23:36,917 - INFO - test worker thread is running
+2024-10-18 11:23:37,417 - INFO - test worker thread is running
+2024-10-18 11:23:37,916 - INFO - test worker thread is running
+2024-10-18 11:23:38,416 - INFO - test worker thread is running
+2024-10-18 11:23:38,916 - INFO - test worker thread is running
+2024-10-18 11:23:39,280 - INFO - sent command: SHOW DATA
+2024-10-18 11:23:39,380 - INFO - arduino says: Room_temp: 37.78 | Desired_temp: 42.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 11:23:39,415 - INFO - test worker thread is running
+2024-10-18 11:23:39,481 - INFO - serial capture thread is running
+2024-10-18 11:23:39,914 - INFO - test worker thread is running
+2024-10-18 11:23:40,414 - INFO - test worker thread is running
+2024-10-18 11:23:40,918 - INFO - test worker thread is running
+2024-10-18 11:23:41,418 - INFO - test worker thread is running
+2024-10-18 11:23:41,917 - INFO - test worker thread is running
+2024-10-18 11:23:42,417 - INFO - test worker thread is running
+2024-10-18 11:23:42,725 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 11:23:42,917 - INFO - test worker thread is running
+2024-10-18 11:23:43,917 - INFO - test worker thread is running
+2024-10-18 11:23:44,416 - INFO - test worker thread is running
+2024-10-18 11:23:44,486 - INFO - sent command: SHOW DATA
+2024-10-18 11:23:44,590 - INFO - arduino says: Room_temp: 37.78 | Desired_temp: 42.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 11:23:44,691 - INFO - serial capture thread is running
+2024-10-18 11:23:44,916 - INFO - test worker thread is running
+2024-10-18 11:23:45,416 - INFO - test worker thread is running
+2024-10-18 11:23:45,668 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 11:23:45,668 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 11:23:45,679 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 11:23:45,679 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 11:23:45,690 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 11:23:45,690 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 11:23:45,701 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 11:23:45,701 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 11:23:45,701 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 11:23:45,702 - INFO - serial connection to COM7 closed before upload
+2024-10-18 11:23:45,703 - INFO - cli worker starting
+2024-10-18 11:23:47,881 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-18 11:23:47,881 - INFO - Detected FQBN: arduino:avr:uno
+2024-10-18 11:23:48,880 - INFO - Command succeeded: arduino-cli core list
+2024-10-18 11:23:48,880 - INFO - Core arduino is already installed.
+2024-10-18 11:23:48,881 - INFO - Core arduino is already installed.
+2024-10-18 11:23:48,881 - INFO - Compiling C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino for the board with FQBN arduino:avr:uno...
+2024-10-18 11:23:51,661 - INFO - Command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-18 11:23:51,661 - INFO - Compilation successful!
+2024-10-18 11:23:51,661 - INFO - Uploading C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino to board with FQBN arduino:avr:uno on port COM7...
+2024-10-18 11:23:55,460 - INFO - Command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-18 11:23:55,460 - INFO - Upload successful!
+2024-10-18 11:23:55,460 - INFO - cli code is running

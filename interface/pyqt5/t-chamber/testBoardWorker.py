@@ -4,8 +4,7 @@ import serial
 import arduinoUtils
 from cliWorker import CliWorker
 import logging
-import os
-from threading import Semaphore
+# from threading import Lock
 
 
 class TestBoardWorker(QThread):
@@ -14,7 +13,7 @@ class TestBoardWorker(QThread):
     pause_serial = pyqtSignal()  # signal to pause serial worker thread
     resume_serial = pyqtSignal()  # signal to resume it
 
-    def __init__(self, port, baudrate, semaphore, timeout=5):
+    def __init__(self, port, baudrate, timeout=5):
         super().__init__()
         self.port = port
         self.baudrate = baudrate
@@ -26,7 +25,7 @@ class TestBoardWorker(QThread):
         self.last_command_time = time.time()
         self.test_data = None
         self.cli_running = False
-        self.semaphore = semaphore
+        # self.lock = Lock()
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -56,7 +55,6 @@ class TestBoardWorker(QThread):
         while self.is_running:
             if not self.is_stopped:
                 try:
-                    self.semaphore.acquire()  # acquire semaphore before accessing serial port
                     if self.ser and self.ser.is_open:
                         logging.info('test worker thread is running')
                         print('test worker thread is running')
@@ -68,8 +66,6 @@ class TestBoardWorker(QThread):
                     logging.error(f'serial error: {e}')
                     print(f'serial error: {e}')
                     self.is_running = False
-                finally:
-                    self.semaphore.release()
             time.sleep(0.1)  # avoid excessive cpu usage
         self.stop()
 
@@ -90,7 +86,7 @@ class TestBoardWorker(QThread):
                 # reinitialize serial with the stored settings
                 self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
                 logging.info(f'serial connection to {self.port} reopened successfully.')
-                time.sleep(1)  # give time for Arduino to reset
+                time.sleep(1)  # give time for arduino to reset
             except serial.SerialException as e:
                 logging.error(f'error reopening serial port {self.port}: {str(e)}')
                 return False
@@ -118,6 +114,7 @@ class TestBoardWorker(QThread):
                     print(sketch_full_path)
 
                     if not self.cli_running:  # run only if cli is not already running
+
                         self.cli_worker = CliWorker(selected_t_port, sketch_full_path)  # create a cli worker
                         print('cli worker instantiated')
                         self.cli_thread = QThread()
@@ -131,8 +128,6 @@ class TestBoardWorker(QThread):
                         self.cli_worker.finished.connect(self.on_cli_finished)
                         self.cli_worker.finished.connect(self.cli_worker.deleteLater)
                         self.cli_thread.finished.connect(self.cli_thread.deleteLater)
-
-                        self.semaphore.release()  # release the semaphore so the cli worker can take over the port
 
                         # start the cli thread
                         self.cli_thread.start()
@@ -149,7 +144,6 @@ class TestBoardWorker(QThread):
                 else:
                     logging.error('failed to reopen the serial port after running tests.')
 
-            self.semaphore.acquire()
             self.resume_serial.emit()  # emit resume signal to serial capture worker
 
         else:
