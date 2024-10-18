@@ -4,7 +4,7 @@ import serial
 import arduinoUtils
 from cliWorker import CliWorker
 import logging
-import threading
+import os
 from threading import Semaphore
 
 
@@ -83,6 +83,19 @@ class TestBoardWorker(QThread):
         self.quit()
         self.wait()
 
+    def reopen_serial_port(self):
+        # reopen the serial port with stored settings after closing it
+        if self.ser and not self.ser.is_open:
+            try:
+                # reinitialize serial with the stored settings
+                self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+                logging.info(f'serial connection to {self.port} reopened successfully.')
+                time.sleep(1)  # give time for Arduino to reset
+            except serial.SerialException as e:
+                logging.error(f'error reopening serial port {self.port}: {str(e)}')
+                return False
+        return True
+
     # run the entire test file
     def run_all_tests(self, test_data, selected_t_port, filepath):
         if test_data and selected_t_port and filepath:  # take test_data & port number from main
@@ -90,6 +103,10 @@ class TestBoardWorker(QThread):
             test_data_filepath = filepath.rsplit('/', 1)[0]
             self.pause_serial.emit()  # emit pause signal to serial capture worker thread to avoid conflicts
             all_tests = [key for key in test_data.keys()]
+
+            if self.ser and self.ser.is_open:
+                self.ser.close()
+                logging.info(f'serial connection to {self.port} closed before upload')
 
             # iterate through each test and run it
             for test_key in all_tests:
@@ -101,7 +118,7 @@ class TestBoardWorker(QThread):
                     print(sketch_full_path)
 
                     if not self.cli_running:  # run only if cli is not already running
-                        self.cli_worker = CliWorker(selected_t_port, sketch_full_path, self.semaphore)  # create a cli worker
+                        self.cli_worker = CliWorker(selected_t_port, sketch_full_path)  # create a cli worker
                         print('cli worker instantiated')
                         self.cli_thread = QThread()
                         print('cli thread created')
@@ -125,15 +142,23 @@ class TestBoardWorker(QThread):
                 else:
                     logging.warning('sketch path not found')
 
+            # after running all tests, check the serial connection state
+            if self.ser and not self.ser.is_open:
+                if self.reopen_serial_port():  # using the function to reopen the port
+                    self.ser.is_stopped = False  # set is_stopped to False before resuming
+                else:
+                    logging.error('failed to reopen the serial port after running tests.')
+
             self.semaphore.acquire()
             self.resume_serial.emit()  # emit resume signal to serial capture worker
+
         else:
             # handle case when no test data is found
             print('can\'t do it')
 
     # handle cli forker finish
     def on_cli_finished(self):
-        self.cli_running = False  # reset flag when CLI worker finishes
+        self.cli_running = False  # reset flag when cli worker finishes
         logging.info('cli worker finished running')
 
     # show serial response
