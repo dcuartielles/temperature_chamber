@@ -5,6 +5,7 @@ import time
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
+
 # functionality imports
 from jsonFunctionality import FileHandler
 from serialCaptureWorker import SerialCaptureWorker
@@ -200,6 +201,8 @@ class MainWindow(QMainWindow):
         self.test_board.resume_serial.connect(self.serial_worker.resume)
         self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
+        self.test_board.pause_serial.connect(self.serial_worker.pause_capture)
+        self.test_board.resume_serial.connect(self.serial_worker.resume_capture)
 
     # the actual chamber_monitor QList updates
     def update_chamber_monitor_gui(self, message):

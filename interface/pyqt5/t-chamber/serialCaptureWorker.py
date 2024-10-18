@@ -3,7 +3,7 @@ import time
 import serial
 import json
 import logging
-# from jsonFunctionality import FileHandler
+from threading import Semaphore
 
 class SerialCaptureWorker(QThread):
     update_listbox = pyqtSignal(str)  # signal to update listbox
@@ -186,6 +186,12 @@ class SerialCaptureWorker(QThread):
             self.send_json_to_arduino(set_temp_data)
         else:
             logging.warning('nothing to set the t-chamber to')
+
+    def pause_capture(self):
+        self.is_stopped = True  # set a flag to pause processing but don't block the entire thread
+
+    def resume_capture(self):
+        self.is_stopped = False  # resume processing
 
     def trigger_read_data(self):
         response = self.read_data()  # read data using custom method

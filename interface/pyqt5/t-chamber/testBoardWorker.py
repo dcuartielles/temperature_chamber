@@ -4,7 +4,6 @@ import serial
 import arduinoUtils
 from cliWorker import CliWorker
 import logging
-# from threading import Lock
 
 
 class TestBoardWorker(QThread):
@@ -25,7 +24,6 @@ class TestBoardWorker(QThread):
         self.last_command_time = time.time()
         self.test_data = None
         self.cli_running = False
-        # self.lock = Lock()
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -97,10 +95,10 @@ class TestBoardWorker(QThread):
         if test_data and selected_t_port and filepath:  # take test_data & port number from main
             logging.info(f'running test with testdata filepath: {filepath}')
             test_data_filepath = filepath.rsplit('/', 1)[0]
-            self.pause_serial.emit()  # emit pause signal to serial capture worker thread to avoid conflicts
             all_tests = [key for key in test_data.keys()]
 
             if self.ser and self.ser.is_open:
+                self.pause_serial.emit()  # emit pause signal to serial capture worker thread to avoid conflicts
                 self.ser.close()
                 logging.info(f'serial connection to {self.port} closed before upload')
 
@@ -132,7 +130,7 @@ class TestBoardWorker(QThread):
                         # start the cli thread
                         self.cli_thread.start()
                         self.cli_running = True
-                        self.cli_thread.wait()
+                        # self.cli_thread.wait()
 
                 else:
                     logging.warning('sketch path not found')
@@ -141,10 +139,9 @@ class TestBoardWorker(QThread):
             if self.ser and not self.ser.is_open:
                 if self.reopen_serial_port():  # using the function to reopen the port
                     self.ser.is_stopped = False  # set is_stopped to False before resuming
+                    self.resume_serial.emit()  # emit resume signal to serial capture worker
                 else:
                     logging.error('failed to reopen the serial port after running tests.')
-
-            self.resume_serial.emit()  # emit resume signal to serial capture worker
 
         else:
             # handle case when no test data is found
