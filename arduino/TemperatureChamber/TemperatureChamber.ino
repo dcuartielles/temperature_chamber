@@ -259,7 +259,7 @@ void displayLCDOff() {
 }
 
 bool isTemperatureReached(float targetTemp, float currentTemp) {
-    return abs(targetTemp - currentTemp) <= 0.1;
+    return currentTemp >= targetTemp - 0.1;
 }
 
 bool holdForPeriod(unsigned long duration) {
