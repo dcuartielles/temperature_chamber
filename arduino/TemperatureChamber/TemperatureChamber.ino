@@ -318,7 +318,7 @@ void parseTextFromJson(JsonDocument& doc) {
     // }
     
 
-    JsonArray sequences = doc.as<JsonArray>();
+    JsonArray sequences = test["chamber_sequences"];
     int numSequences = sequences.size();
     if (numSequences > 5) numSequences = 5;         // how many?
 
@@ -419,16 +419,16 @@ void setTemperature(float temp) {
     if (temp >= TEMPERATURE_MAX) {
         temperatureDesired = TEMPERATURE_MAX;
         Serial.println("Specified temperature exceeds maximum allowed temperature\n");
-        Serial.println("Setting temperature to " + String(TEMPERATURE_MAX) + "¬¨‚àûC");
+        Serial.println("Setting temperature to " + String(TEMPERATURE_MAX) + "°");
     } else if (temp <= TEMPERATURE_MIN) {
         temperatureDesired = TEMPERATURE_MIN;
         Serial.println("Specified temperature is lower than the minimum allowed temperature\n");
-        Serial.println("Setting temperature to " + String(TEMPERATURE_MIN) + "¬¨‚àûC");
+        Serial.println("Setting temperature to " + String(TEMPERATURE_MIN) + "°");
     } else {
         temperatureDesired = temp;
-        Serial.println("Setting temperature to " + String(temp) + "¬¨‚àûC");
+        Serial.println("Setting temperature to " + String(temp) + "°");
         Serial.print("Temperature desired set to: ");
-        Serial.println(temp);  // Debug to confirm the desired temp is set
+        Serial.println(temp);  // debug to confirm the desired temp is set
     }
 }
 
