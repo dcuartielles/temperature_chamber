@@ -4,6 +4,7 @@ import serial
 import arduinoUtils
 from cliWorker import CliWorker
 import logging
+from threading import Semaphore
 
 
 class TestBoardWorker(QThread):
@@ -130,7 +131,7 @@ class TestBoardWorker(QThread):
                         # start the cli thread
                         self.cli_thread.start()
                         self.cli_running = True
-                        # self.cli_thread.wait()
+                        self.cli_thread.wait()
 
                 else:
                     logging.warning('sketch path not found')
