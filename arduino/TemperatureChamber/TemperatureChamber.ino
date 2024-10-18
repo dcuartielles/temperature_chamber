@@ -437,21 +437,6 @@ void setTemperature(float temp) {
     if (temp >= TEMPERATURE_MAX) {
         temperatureDesired = TEMPERATURE_MAX;
         Serial.println("Specified temperature exceeds maximum allowed temperature\n");
-<<<<<<< HEAD
-<<<<<<< HEAD
-        Serial.println("Setting temperature to " + String(TEMPERATURE_MAX) + "¬∞C");
-    } else if (temp <= TEMPERATURE_MIN) {
-        temperatureDesired = TEMPERATURE_MIN;
-        Serial.println("Specified temperature is lower than the minimum allowed temperature\n");
-        Serial.println("Setting temperature to " + String(TEMPERATURE_MIN) + "¬∞C");
-    } else {
-        temperatureDesired = temp;
-        Serial.println("Setting temperature to " + String(temp) + "¬∞C");
-=======
-        Serial.println("Setting temperature to " + String(TEMPERATURE_MAX) + "¬¨‚àûC");
-=======
-        Serial.println("Setting temperature to " + String(TEMPERATURE_MAX) + "°");
->>>>>>> cli-integration
     } else if (temp <= TEMPERATURE_MIN) {
         temperatureDesired = TEMPERATURE_MIN;
         Serial.println("Specified temperature is lower than the minimum allowed temperature\n");
