@@ -8,7 +8,6 @@ from threading import Semaphore
 
 
 class TestBoardWorker(QThread):
-    # _serial_lock = threading.Lock()  # shared lock for serial communication
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
     pause_serial = pyqtSignal()  # signal to pause serial worker thread
     resume_serial = pyqtSignal()  # signal to resume it
@@ -25,6 +24,7 @@ class TestBoardWorker(QThread):
         self.last_command_time = time.time()
         self.test_data = None
         self.cli_running = False
+        self.semaphore = Semaphore(1)
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -53,6 +53,7 @@ class TestBoardWorker(QThread):
 
         while self.is_running:
             if not self.is_stopped:
+                self.semaphore.acquire()
                 try:
                     if self.ser and self.ser.is_open:
                         logging.info('test worker thread is running')
@@ -65,6 +66,8 @@ class TestBoardWorker(QThread):
                     logging.error(f'serial error: {e}')
                     print(f'serial error: {e}')
                     self.is_running = False
+                finally:
+                    self.semaphore.release()
             time.sleep(0.1)  # avoid excessive cpu usage
         self.stop()
 
@@ -102,11 +105,13 @@ class TestBoardWorker(QThread):
                 self.pause_serial.emit()  # emit pause signal to serial capture worker thread to avoid conflicts
                 self.ser.close()
                 logging.info(f'serial connection to {self.port} closed before upload')
+                self.semaphore.release()
 
             # iterate through each test and run it
             for test_key in all_tests:
                 test = test_data.get(test_key, {})
                 sketch_path = test.get('sketch', '')  # get .ino file path
+
                 if sketch_path:  # if the sketch is available
                     sketch_filename = sketch_path.split('/')[-1]  # get ino file name
                     sketch_full_path = test_data_filepath + '/' + sketch_filename
@@ -114,7 +119,7 @@ class TestBoardWorker(QThread):
 
                     if not self.cli_running:  # run only if cli is not already running
 
-                        self.cli_worker = CliWorker(selected_t_port, sketch_full_path)  # create a cli worker
+                        self.cli_worker = CliWorker(selected_t_port, sketch_full_path, self.semaphore)  # create a cli worker
                         print('cli worker instantiated')
                         self.cli_thread = QThread()
                         print('cli thread created')
@@ -149,8 +154,13 @@ class TestBoardWorker(QThread):
 
     # handle cli forker finish
     def on_cli_finished(self):
-        self.cli_running = False  # reset flag when cli worker finishes
         logging.info('cli worker finished running')
+        self.semaphore.acquire()
+        self.cli_running = False  # reset flag when cli worker finishes
+        if self.reopen_serial_port():
+            logging.info('serial port reopened after cli worker finished')
+        else:
+            logging.error('failed to reopen serial port')
 
     # show serial response
     def show_response(self, response):

@@ -1,5 +1,5 @@
 import logging
-from threading import Lock
+from threading import Semaphore
 from PyQt5.QtCore import QObject, pyqtSignal
 import subprocess
 import json
@@ -8,24 +8,25 @@ import json
 class CliWorker(QObject):
     finished = pyqtSignal()
 
-    def __init__(self, port, sketch_path):
+    def __init__(self, port, sketch_path, semaphore):
         super().__init__()
         self.port = port
         self.sketch_path = sketch_path
-        self.lock = Lock()
+        self.semaphore = Semaphore()
 
     def run(self):
         logging.info('cli worker starting')
-        with self.lock:
-            try:
-                if self.handle_board_and_upload(port=self.port, sketch_path=self.sketch_path):
-                    print('cli code is running')
-                    logging.info('cli code is running')
-                else:
-                    logging.error('cli process encountered an issue')
-            except Exception as e:
-                logging.error(f'error in cli worker: {e}')
-                print(f'error in cli worker: {e}')
+        try:
+            if self.handle_board_and_upload(port=self.port, sketch_path=self.sketch_path):
+                print('cli code is running')
+                logging.info('cli code is running')
+            else:
+                logging.error('cli process encountered an issue')
+        except Exception as e:
+            logging.error(f'error in cli worker: {e}')
+            print(f'error in cli worker: {e}')
+        finally:
+            self.finished.emit()
 
     def run_cli_command(self, command):
         try:
@@ -120,22 +121,26 @@ class CliWorker(QObject):
             "--fqbn", fqbn,
             sketch_path
         ]
-        result = self.run_cli_command(command)
-        if result:
-            logging.info('upload successful!')
-            return True
-        else:
-            logging.warning('upload failed!')
-            return False
+        self.semaphore.acquire()
+        try:
+            result = self.run_cli_command(command)
+            if result:
+                logging.info('upload successful!')
+                print('upload successful!')
+                return True
+            else:
+                logging.warning('upload failed!')
+                return False
+        finally:
+            self.semaphore.release()
+            self.finished.emit()
 
     def handle_board_and_upload(self, port, sketch_path):
         fqbn = self.detect_board(port)
         if fqbn:
             self.install_core_if_needed(fqbn)
-
             if self.compile_sketch(fqbn, sketch_path):
                 if self.upload_sketch(fqbn, port, sketch_path):
-                    self.finished.emit()
                     return True
                 else:
                     logging.error('upload failed')

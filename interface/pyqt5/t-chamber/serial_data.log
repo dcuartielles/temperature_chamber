@@ -3824,3 +3824,1152 @@ Failed uploading: uploading error: exit status 1
 2024-10-18 12:38:11,242 - INFO - test worker thread is running
 2024-10-18 12:38:11,741 - INFO - test worker thread is running
 2024-10-18 12:38:12,241 - INFO - test worker thread is running
+2024-10-18 13:24:20,097 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-18 13:24:29,983 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-18 13:24:33,164 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-18 13:24:37,973 - INFO - selected port: COM15
+2024-10-18 13:24:37,974 - INFO - selected port: COM7
+2024-10-18 13:24:37,991 - INFO - connected to arduino port: COM7
+2024-10-18 13:24:37,993 - INFO - connected to arduino port: COM15
+2024-10-18 13:24:38,992 - INFO - test board thread is running
+2024-10-18 13:24:38,992 - INFO - test worker thread is running
+2024-10-18 13:24:38,994 - INFO - serial capture thread is running
+2024-10-18 13:24:38,994 - INFO - serial capture thread is running
+2024-10-18 13:24:39,607 - INFO - test worker thread is running
+2024-10-18 13:24:40,107 - INFO - test worker thread is running
+2024-10-18 13:24:40,607 - INFO - test worker thread is running
+2024-10-18 13:24:41,106 - INFO - test worker thread is running
+2024-10-18 13:24:41,606 - INFO - test worker thread is running
+2024-10-18 13:24:42,106 - INFO - test worker thread is running
+2024-10-18 13:24:42,605 - INFO - test worker thread is running
+2024-10-18 13:24:43,109 - INFO - test worker thread is running
+2024-10-18 13:24:43,609 - INFO - test worker thread is running
+2024-10-18 13:24:44,001 - INFO - sent command: SHOW DATA
+2024-10-18 13:24:44,108 - INFO - test worker thread is running
+2024-10-18 13:24:44,608 - INFO - test worker thread is running
+2024-10-18 13:24:45,108 - INFO - test worker thread is running
+2024-10-18 13:24:45,608 - INFO - test worker thread is running
+2024-10-18 13:24:46,107 - INFO - test worker thread is running
+2024-10-18 13:24:46,607 - INFO - test worker thread is running
+2024-10-18 13:24:47,107 - INFO - test worker thread is running
+2024-10-18 13:24:47,606 - INFO - test worker thread is running
+2024-10-18 13:24:48,106 - INFO - test worker thread is running
+2024-10-18 13:24:48,606 - INFO - test worker thread is running
+2024-10-18 13:24:49,012 - INFO - there was nothing worth saying here
+2024-10-18 13:24:49,106 - INFO - test worker thread is running
+2024-10-18 13:24:49,113 - INFO - serial capture thread is running
+2024-10-18 13:24:49,611 - INFO - test worker thread is running
+2024-10-18 13:24:50,109 - INFO - test worker thread is running
+2024-10-18 13:24:50,609 - INFO - test worker thread is running
+2024-10-18 13:24:51,109 - INFO - test worker thread is running
+2024-10-18 13:24:51,608 - INFO - test worker thread is running
+2024-10-18 13:24:52,108 - INFO - test worker thread is running
+2024-10-18 13:24:53,607 - INFO - test worker thread is running
+2024-10-18 13:24:54,107 - INFO - test worker thread is running
+2024-10-18 13:24:54,121 - INFO - sent command: SHOW DATA
+2024-10-18 13:24:54,606 - INFO - test worker thread is running
+2024-10-18 13:24:55,106 - INFO - test worker thread is running
+2024-10-18 13:24:55,606 - INFO - test worker thread is running
+2024-10-18 13:24:56,110 - INFO - test worker thread is running
+2024-10-18 13:24:56,609 - INFO - test worker thread is running
+2024-10-18 13:24:57,109 - INFO - test worker thread is running
+2024-10-18 13:24:57,609 - INFO - test worker thread is running
+2024-10-18 13:24:58,108 - INFO - test worker thread is running
+2024-10-18 13:24:58,608 - INFO - test worker thread is running
+2024-10-18 13:24:59,108 - INFO - test worker thread is running
+2024-10-18 13:24:59,135 - INFO - there was nothing worth saying here
+2024-10-18 13:24:59,236 - INFO - serial capture thread is running
+2024-10-18 13:24:59,608 - INFO - test worker thread is running
+2024-10-18 13:25:00,107 - INFO - test worker thread is running
+2024-10-18 13:25:00,607 - INFO - test worker thread is running
+2024-10-18 13:25:01,107 - INFO - test worker thread is running
+2024-10-18 13:25:01,606 - INFO - test worker thread is running
+2024-10-18 13:25:02,110 - INFO - test worker thread is running
+2024-10-18 13:25:02,610 - INFO - test worker thread is running
+2024-10-18 13:25:03,109 - INFO - test worker thread is running
+2024-10-18 13:25:03,609 - INFO - test worker thread is running
+2024-10-18 13:25:04,109 - INFO - test worker thread is running
+2024-10-18 13:25:04,250 - INFO - sent command: SHOW DATA
+2024-10-18 13:25:04,609 - INFO - test worker thread is running
+2024-10-18 13:25:05,109 - INFO - test worker thread is running
+2024-10-18 13:25:05,608 - INFO - test worker thread is running
+2024-10-18 13:25:06,108 - INFO - test worker thread is running
+2024-10-18 13:25:07,607 - INFO - test worker thread is running
+2024-10-18 13:25:08,107 - INFO - test worker thread is running
+2024-10-18 13:25:08,610 - INFO - test worker thread is running
+2024-10-18 13:25:09,110 - INFO - test worker thread is running
+2024-10-18 13:25:09,263 - INFO - there was nothing worth saying here
+2024-10-18 13:25:09,364 - INFO - serial capture thread is running
+2024-10-18 13:25:09,610 - INFO - test worker thread is running
+2024-10-18 13:25:10,110 - INFO - test worker thread is running
+2024-10-18 13:25:10,609 - INFO - test worker thread is running
+2024-10-18 13:25:11,109 - INFO - test worker thread is running
+2024-10-18 13:25:11,609 - INFO - test worker thread is running
+2024-10-18 13:25:12,109 - INFO - test worker thread is running
+2024-10-18 13:25:12,608 - INFO - test worker thread is running
+2024-10-18 13:25:13,108 - INFO - test worker thread is running
+2024-10-18 13:25:13,608 - INFO - test worker thread is running
+2024-10-18 13:25:14,107 - INFO - test worker thread is running
+2024-10-18 13:25:14,370 - INFO - sent command: SHOW DATA
+2024-10-18 13:25:14,607 - INFO - test worker thread is running
+2024-10-18 13:25:15,111 - INFO - test worker thread is running
+2024-10-18 13:25:15,610 - INFO - test worker thread is running
+2024-10-18 13:25:16,110 - INFO - test worker thread is running
+2024-10-18 13:25:16,610 - INFO - test worker thread is running
+2024-10-18 13:25:17,110 - INFO - test worker thread is running
+2024-10-18 13:25:17,609 - INFO - test worker thread is running
+2024-10-18 13:25:18,109 - INFO - test worker thread is running
+2024-10-18 13:25:18,609 - INFO - test worker thread is running
+2024-10-18 13:25:19,108 - INFO - test worker thread is running
+2024-10-18 13:25:19,389 - INFO - there was nothing worth saying here
+2024-10-18 13:25:19,490 - INFO - serial capture thread is running
+2024-10-18 13:25:19,608 - INFO - test worker thread is running
+2024-10-18 13:25:20,107 - INFO - test worker thread is running
+2024-10-18 13:25:21,610 - INFO - test worker thread is running
+2024-10-18 13:25:22,111 - INFO - test worker thread is running
+2024-10-18 13:25:22,610 - INFO - test worker thread is running
+2024-10-18 13:25:23,110 - INFO - test worker thread is running
+2024-10-18 13:25:23,609 - INFO - test worker thread is running
+2024-10-18 13:25:24,109 - INFO - test worker thread is running
+2024-10-18 13:25:24,495 - INFO - sent command: SHOW DATA
+2024-10-18 13:25:24,609 - INFO - test worker thread is running
+2024-10-18 13:25:25,109 - INFO - test worker thread is running
+2024-10-18 13:25:25,608 - INFO - test worker thread is running
+2024-10-18 13:25:26,108 - INFO - test worker thread is running
+2024-10-18 13:25:26,608 - INFO - test worker thread is running
+2024-10-18 13:25:27,107 - INFO - test worker thread is running
+2024-10-18 13:25:27,612 - INFO - test worker thread is running
+2024-10-18 13:25:28,111 - INFO - test worker thread is running
+2024-10-18 13:25:28,611 - INFO - test worker thread is running
+2024-10-18 13:25:29,110 - INFO - test worker thread is running
+2024-10-18 13:25:29,506 - INFO - there was nothing worth saying here
+2024-10-18 13:25:29,606 - INFO - serial capture thread is running
+2024-10-18 13:25:29,610 - INFO - test worker thread is running
+2024-10-18 13:25:30,110 - INFO - test worker thread is running
+2024-10-18 13:25:30,610 - INFO - test worker thread is running
+2024-10-18 13:25:31,109 - INFO - test worker thread is running
+2024-10-18 13:25:31,609 - INFO - test worker thread is running
+2024-10-18 13:25:32,109 - INFO - test worker thread is running
+2024-10-18 13:25:32,608 - INFO - test worker thread is running
+2024-10-18 13:25:33,108 - INFO - test worker thread is running
+2024-10-18 13:25:33,608 - INFO - test worker thread is running
+2024-10-18 13:25:34,111 - INFO - test worker thread is running
+2024-10-18 13:25:34,612 - INFO - sent command: SHOW DATA
+2024-10-18 13:25:35,611 - INFO - test worker thread is running
+2024-10-18 13:25:36,110 - INFO - test worker thread is running
+2024-10-18 13:25:36,610 - INFO - test worker thread is running
+2024-10-18 13:25:37,110 - INFO - test worker thread is running
+2024-10-18 13:25:37,610 - INFO - test worker thread is running
+2024-10-18 13:25:38,109 - INFO - test worker thread is running
+2024-10-18 13:25:38,609 - INFO - test worker thread is running
+2024-10-18 13:25:39,109 - INFO - test worker thread is running
+2024-10-18 13:25:39,608 - INFO - test worker thread is running
+2024-10-18 13:25:39,627 - INFO - there was nothing worth saying here
+2024-10-18 13:25:39,727 - INFO - serial capture thread is running
+2024-10-18 13:25:40,108 - INFO - test worker thread is running
+2024-10-18 13:25:40,612 - INFO - test worker thread is running
+2024-10-18 13:25:41,112 - INFO - test worker thread is running
+2024-10-18 13:25:41,611 - INFO - test worker thread is running
+2024-10-18 13:25:42,111 - INFO - test worker thread is running
+2024-10-18 13:25:42,611 - INFO - test worker thread is running
+2024-10-18 13:25:43,110 - INFO - test worker thread is running
+2024-10-18 13:25:43,610 - INFO - test worker thread is running
+2024-10-18 13:25:44,110 - INFO - test worker thread is running
+2024-10-18 13:25:44,609 - INFO - test worker thread is running
+2024-10-18 13:25:44,734 - INFO - sent command: SHOW DATA
+2024-10-18 13:25:45,109 - INFO - test worker thread is running
+2024-10-18 13:25:45,609 - INFO - test worker thread is running
+2024-10-18 13:25:46,109 - INFO - test worker thread is running
+2024-10-18 13:25:46,612 - INFO - test worker thread is running
+2024-10-18 13:25:47,112 - INFO - test worker thread is running
+2024-10-18 13:25:47,612 - INFO - test worker thread is running
+2024-10-18 13:25:48,111 - INFO - test worker thread is running
+2024-10-18 13:25:49,610 - INFO - test worker thread is running
+2024-10-18 13:25:49,751 - INFO - there was nothing worth saying here
+2024-10-18 13:25:49,858 - INFO - serial capture thread is running
+2024-10-18 13:25:50,110 - INFO - test worker thread is running
+2024-10-18 13:25:50,610 - INFO - test worker thread is running
+2024-10-18 13:25:51,109 - INFO - test worker thread is running
+2024-10-18 13:25:51,609 - INFO - test worker thread is running
+2024-10-18 13:25:52,109 - INFO - test worker thread is running
+2024-10-18 13:25:52,609 - INFO - test worker thread is running
+2024-10-18 13:25:53,112 - INFO - test worker thread is running
+2024-10-18 13:25:53,612 - INFO - test worker thread is running
+2024-10-18 13:25:54,112 - INFO - test worker thread is running
+2024-10-18 13:25:54,612 - INFO - test worker thread is running
+2024-10-18 13:25:54,861 - INFO - sent command: SHOW DATA
+2024-10-18 13:25:54,957 - INFO - arduino says: Room_temp: 37.44 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 13:25:55,058 - INFO - serial capture thread is running
+2024-10-18 13:25:55,112 - INFO - test worker thread is running
+2024-10-18 13:25:55,612 - INFO - test worker thread is running
+2024-10-18 13:25:56,111 - INFO - test worker thread is running
+2024-10-18 13:25:56,610 - INFO - test worker thread is running
+2024-10-18 13:25:57,110 - INFO - test worker thread is running
+2024-10-18 13:25:57,610 - INFO - test worker thread is running
+2024-10-18 13:25:58,110 - INFO - test worker thread is running
+2024-10-18 13:25:58,609 - INFO - test worker thread is running
+2024-10-18 13:25:59,109 - INFO - test worker thread is running
+2024-10-18 13:25:59,613 - INFO - test worker thread is running
+2024-10-18 13:26:00,062 - INFO - sent command: SHOW DATA
+2024-10-18 13:26:00,112 - INFO - test worker thread is running
+2024-10-18 13:26:00,177 - INFO - arduino says: Room_temp: 37.44 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 13:26:00,278 - INFO - serial capture thread is running
+2024-10-18 13:26:00,612 - INFO - test worker thread is running
+2024-10-18 13:26:01,112 - INFO - test worker thread is running
+2024-10-18 13:26:01,611 - INFO - test worker thread is running
+2024-10-18 13:26:02,111 - INFO - test worker thread is running
+2024-10-18 13:26:03,611 - INFO - test worker thread is running
+2024-10-18 13:26:04,110 - INFO - test worker thread is running
+2024-10-18 13:26:04,610 - INFO - test worker thread is running
+2024-10-18 13:26:05,110 - INFO - test worker thread is running
+2024-10-18 13:26:05,279 - INFO - sent command: SHOW DATA
+2024-10-18 13:26:05,374 - INFO - arduino says: Room_temp: 37.44 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 13:26:05,475 - INFO - serial capture thread is running
+2024-10-18 13:26:05,613 - INFO - test worker thread is running
+2024-10-18 13:26:06,113 - INFO - test worker thread is running
+2024-10-18 13:26:06,613 - INFO - test worker thread is running
+2024-10-18 13:26:07,112 - INFO - test worker thread is running
+2024-10-18 13:26:07,612 - INFO - test worker thread is running
+2024-10-18 13:26:08,112 - INFO - test worker thread is running
+2024-10-18 13:26:08,612 - INFO - test worker thread is running
+2024-10-18 13:26:09,009 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 13:26:09,111 - INFO - test worker thread is running
+2024-10-18 13:26:09,611 - INFO - test worker thread is running
+2024-10-18 13:26:10,111 - INFO - test worker thread is running
+2024-10-18 13:26:10,481 - INFO - sent command: SHOW DATA
+2024-10-18 13:26:10,597 - INFO - arduino says: Room_temp: 37.44 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 13:26:10,611 - INFO - test worker thread is running
+2024-10-18 13:26:10,697 - INFO - serial capture thread is running
+2024-10-18 13:26:11,024 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 13:26:11,024 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 13:26:11,036 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 13:26:11,036 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 13:26:11,047 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 13:26:11,047 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 13:26:11,058 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 13:26:11,058 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 13:26:11,058 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 13:26:11,059 - INFO - serial connection to COM7 closed before upload
+2024-10-18 13:26:11,113 - INFO - cli worker starting
+2024-10-18 13:26:11,135 - INFO - serial connection to COM7 reopened successfully.
+2024-10-18 13:26:11,212 - INFO - test worker thread is running
+2024-10-18 13:26:12,170 - INFO - serial capture thread is running
+2024-10-18 13:26:12,271 - INFO - serial capture thread is running
+2024-10-18 13:26:12,372 - INFO - serial capture thread is running
+2024-10-18 13:26:12,473 - INFO - serial capture thread is running
+2024-10-18 13:26:12,575 - INFO - serial capture thread is running
+2024-10-18 13:26:12,678 - INFO - serial capture thread is running
+2024-10-18 13:26:12,749 - INFO - test worker thread is running
+2024-10-18 13:26:12,779 - INFO - serial capture thread is running
+2024-10-18 13:26:12,880 - INFO - serial capture thread is running
+2024-10-18 13:26:12,981 - INFO - serial capture thread is running
+2024-10-18 13:26:13,083 - INFO - serial capture thread is running
+2024-10-18 13:26:13,185 - INFO - serial capture thread is running
+2024-10-18 13:26:13,190 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-18 13:26:13,190 - INFO - detected fqbn: arduino:avr:uno
+2024-10-18 13:26:13,248 - INFO - test worker thread is running
+2024-10-18 13:26:13,286 - INFO - serial capture thread is running
+2024-10-18 13:26:13,388 - INFO - serial capture thread is running
+2024-10-18 13:26:13,489 - INFO - serial capture thread is running
+2024-10-18 13:26:13,590 - INFO - serial capture thread is running
+2024-10-18 13:26:13,692 - INFO - serial capture thread is running
+2024-10-18 13:26:13,748 - INFO - test worker thread is running
+2024-10-18 13:26:14,206 - INFO - command succeeded: arduino-cli core list
+2024-10-18 13:26:14,207 - INFO - core arduino is already installed.
+2024-10-18 13:26:14,207 - INFO - core arduino is already installed.
+2024-10-18 13:26:14,207 - INFO - compiling C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino for the board with fqbn arduino:avr:uno...
+2024-10-18 13:26:14,252 - INFO - test worker thread is running
+2024-10-18 13:26:14,752 - INFO - test worker thread is running
+2024-10-18 13:26:15,251 - INFO - test worker thread is running
+2024-10-18 13:26:15,751 - INFO - test worker thread is running
+2024-10-18 13:26:16,250 - INFO - test worker thread is running
+2024-10-18 13:26:16,752 - INFO - test worker thread is running
+2024-10-18 13:26:17,250 - INFO - test worker thread is running
+2024-10-18 13:26:17,699 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-18 13:26:17,699 - INFO - compilation successful!
+2024-10-18 13:26:17,699 - INFO - uploading C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino to board with fqbn arduino:avr:uno on port COM7...
+2024-10-18 13:26:17,750 - INFO - test worker thread is running
+2024-10-18 13:26:18,249 - INFO - test worker thread is running
+2024-10-18 13:26:18,699 - INFO - sent command: SHOW DATA
+2024-10-18 13:26:18,749 - INFO - test worker thread is running
+2024-10-18 13:26:18,847 - INFO - arduino says: Room_temp: 39.81 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 13:26:18,948 - INFO - serial capture thread is running
+2024-10-18 13:26:18,981 - INFO - command failed: avrdude: ser_open(): can't open device "\\.\COM7": Access is denied.
+
+
+Failed uploading: uploading error: exit status 1
+
+2024-10-18 13:26:18,981 - WARNING - upload failed!
+2024-10-18 13:26:18,981 - ERROR - upload failed
+2024-10-18 13:26:18,981 - ERROR - cli process encountered an issue
+2024-10-18 13:26:19,249 - INFO - test worker thread is running
+2024-10-18 13:26:19,748 - INFO - test worker thread is running
+2024-10-18 13:26:20,252 - INFO - test worker thread is running
+2024-10-18 13:26:20,752 - INFO - test worker thread is running
+2024-10-18 13:26:21,252 - INFO - test worker thread is running
+2024-10-18 13:26:21,751 - INFO - test worker thread is running
+2024-10-18 13:26:22,251 - INFO - test worker thread is running
+2024-10-18 13:26:22,751 - INFO - test worker thread is running
+2024-10-18 13:26:23,171 - ERROR - error sending command: WriteFile failed (OSError(9, 'The handle is invalid.', None, 6))
+2024-10-18 13:26:23,173 - INFO - connection to COM15 closed
+2024-10-18 13:33:14,427 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-18 13:33:23,348 - INFO - selected port: COM15
+2024-10-18 13:33:23,350 - INFO - selected port: COM7
+2024-10-18 13:33:23,363 - INFO - connected to arduino port: COM7
+2024-10-18 13:33:23,365 - INFO - connected to arduino port: COM15
+2024-10-18 13:33:24,364 - INFO - test board thread is running
+2024-10-18 13:33:24,364 - INFO - test worker thread is running
+2024-10-18 13:33:24,367 - INFO - serial capture thread is running
+2024-10-18 13:33:24,367 - INFO - serial capture thread is running
+2024-10-18 13:33:24,984 - INFO - test worker thread is running
+2024-10-18 13:33:25,486 - INFO - test worker thread is running
+2024-10-18 13:33:25,984 - INFO - test worker thread is running
+2024-10-18 13:33:26,483 - INFO - test worker thread is running
+2024-10-18 13:33:26,983 - INFO - test worker thread is running
+2024-10-18 13:33:27,483 - INFO - test worker thread is running
+2024-10-18 13:33:27,983 - INFO - test worker thread is running
+2024-10-18 13:33:28,482 - INFO - test worker thread is running
+2024-10-18 13:33:28,982 - INFO - test worker thread is running
+2024-10-18 13:33:29,380 - INFO - sent command: SHOW DATA
+2024-10-18 13:33:29,479 - INFO - arduino says: Room_temp: 39.97 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 13:33:29,486 - INFO - test worker thread is running
+2024-10-18 13:33:29,580 - INFO - serial capture thread is running
+2024-10-18 13:33:29,986 - INFO - test worker thread is running
+2024-10-18 13:33:30,485 - INFO - test worker thread is running
+2024-10-18 13:33:30,985 - INFO - test worker thread is running
+2024-10-18 13:33:31,485 - INFO - test worker thread is running
+2024-10-18 13:33:31,984 - INFO - test worker thread is running
+2024-10-18 13:33:32,484 - INFO - test worker thread is running
+2024-10-18 13:33:32,984 - INFO - test worker thread is running
+2024-10-18 13:33:33,483 - INFO - test worker thread is running
+2024-10-18 13:33:33,983 - INFO - test worker thread is running
+2024-10-18 13:33:34,483 - INFO - test worker thread is running
+2024-10-18 13:33:34,585 - INFO - sent command: SHOW DATA
+2024-10-18 13:33:34,701 - INFO - arduino says: Room_temp: 39.97 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 13:33:34,802 - INFO - serial capture thread is running
+2024-10-18 13:33:34,983 - INFO - test worker thread is running
+2024-10-18 13:33:35,486 - INFO - test worker thread is running
+2024-10-18 13:33:35,986 - INFO - test worker thread is running
+2024-10-18 13:33:36,486 - INFO - test worker thread is running
+2024-10-18 13:33:36,986 - INFO - test worker thread is running
+2024-10-18 13:33:37,486 - INFO - test worker thread is running
+2024-10-18 13:33:38,789 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 13:33:38,985 - INFO - test worker thread is running
+2024-10-18 13:33:39,484 - INFO - test worker thread is running
+2024-10-18 13:33:39,804 - INFO - sent command: SHOW DATA
+2024-10-18 13:33:39,921 - INFO - arduino says: Room_temp: 39.97 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 13:33:39,984 - INFO - test worker thread is running
+2024-10-18 13:33:40,023 - INFO - serial capture thread is running
+2024-10-18 13:33:40,484 - INFO - test worker thread is running
+2024-10-18 13:33:40,983 - INFO - test worker thread is running
+2024-10-18 13:33:41,487 - INFO - test worker thread is running
+2024-10-18 13:33:41,986 - INFO - test worker thread is running
+2024-10-18 13:33:42,486 - INFO - test worker thread is running
+2024-10-18 13:33:42,515 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 13:33:42,515 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 13:33:42,526 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 13:33:42,526 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 13:33:42,537 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 13:33:42,537 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 13:33:42,552 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 13:33:42,552 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 13:33:42,552 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 13:33:42,552 - INFO - serial connection to COM7 closed before upload
+2024-10-18 13:33:42,554 - INFO - cli worker starting
+2024-10-18 13:33:42,576 - INFO - serial connection to COM7 reopened successfully.
+2024-10-18 13:33:42,652 - INFO - test worker thread is running
+2024-10-18 13:33:42,656 - WARNING - serial capture communication is closed or stopped
+2024-10-18 13:33:43,660 - INFO - serial capture thread is running
+2024-10-18 13:33:43,762 - INFO - serial capture thread is running
+2024-10-18 13:33:43,863 - INFO - serial capture thread is running
+2024-10-18 13:33:43,964 - INFO - serial capture thread is running
+2024-10-18 13:33:44,065 - INFO - serial capture thread is running
+2024-10-18 13:33:44,167 - INFO - serial capture thread is running
+2024-10-18 13:33:44,194 - INFO - test worker thread is running
+2024-10-18 13:33:44,269 - INFO - serial capture thread is running
+2024-10-18 13:33:44,370 - INFO - serial capture thread is running
+2024-10-18 13:33:44,471 - INFO - serial capture thread is running
+2024-10-18 13:33:44,573 - INFO - serial capture thread is running
+2024-10-18 13:33:44,675 - INFO - serial capture thread is running
+2024-10-18 13:33:44,694 - INFO - test worker thread is running
+2024-10-18 13:33:44,777 - INFO - serial capture thread is running
+2024-10-18 13:33:44,879 - INFO - serial capture thread is running
+2024-10-18 13:33:44,901 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-18 13:33:44,901 - INFO - detected fqbn: arduino:avr:uno
+2024-10-18 13:33:44,981 - INFO - serial capture thread is running
+2024-10-18 13:33:45,081 - INFO - serial capture thread is running
+2024-10-18 13:33:45,081 - INFO - sent command: SHOW DATA
+2024-10-18 13:33:45,194 - INFO - test worker thread is running
+2024-10-18 13:33:45,200 - INFO - arduino says: Room_temp: 39.75 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 13:33:45,302 - INFO - serial capture thread is running
+2024-10-18 13:33:45,694 - INFO - test worker thread is running
+2024-10-18 13:33:46,080 - INFO - command succeeded: arduino-cli core list
+2024-10-18 13:33:46,080 - INFO - core arduino is already installed.
+2024-10-18 13:33:46,080 - INFO - core arduino is already installed.
+2024-10-18 13:33:46,080 - INFO - compiling C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino for the board with fqbn arduino:avr:uno...
+2024-10-18 13:33:46,193 - INFO - test worker thread is running
+2024-10-18 13:33:46,693 - INFO - test worker thread is running
+2024-10-18 13:33:47,193 - INFO - test worker thread is running
+2024-10-18 13:33:47,696 - INFO - test worker thread is running
+2024-10-18 13:33:48,196 - INFO - test worker thread is running
+2024-10-18 13:33:48,696 - INFO - test worker thread is running
+2024-10-18 13:33:49,195 - INFO - test worker thread is running
+2024-10-18 13:33:49,695 - INFO - test worker thread is running
+2024-10-18 13:33:50,195 - INFO - test worker thread is running
+2024-10-18 13:33:50,250 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-18 13:33:50,250 - INFO - compilation successful!
+2024-10-18 13:33:50,250 - INFO - uploading C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino to board with fqbn arduino:avr:uno on port COM7...
+2024-10-18 13:33:50,307 - INFO - sent command: SHOW DATA
+2024-10-18 13:33:50,429 - INFO - arduino says: Room_temp: 39.75 | Desired_temp: 40.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-18 13:33:50,530 - INFO - serial capture thread is running
+2024-10-18 13:33:50,694 - INFO - test worker thread is running
+2024-10-18 13:33:51,194 - INFO - test worker thread is running
+2024-10-18 13:33:51,657 - INFO - command failed: avrdude: ser_open(): can't open device "\\.\COM7": Access is denied.
+
+
+Failed uploading: uploading error: exit status 1
+
+2024-10-18 13:33:51,657 - WARNING - upload failed!
+2024-10-18 13:33:51,657 - ERROR - upload failed
+2024-10-18 13:33:51,658 - ERROR - cli process encountered an issue
+2024-10-18 13:33:51,694 - INFO - test worker thread is running
+2024-10-18 13:33:52,194 - INFO - test worker thread is running
+2024-10-18 13:33:52,693 - INFO - test worker thread is running
+2024-10-18 13:33:52,794 - INFO - sent command: SHOW DATA
+2024-10-18 13:33:52,794 - INFO - connection to COM15 closed
+2024-10-18 13:33:52,804 - ERROR - error reading data: Attempting to use a port that is not open
+2024-10-18 13:33:52,907 - INFO - connection to COM7 closed now
+2024-10-18 14:05:59,855 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-18 14:06:09,151 - INFO - selected port: COM15
+2024-10-18 14:06:09,151 - INFO - selected port: COM7
+2024-10-18 14:06:09,165 - INFO - connected to arduino port: COM7
+2024-10-18 14:06:09,166 - INFO - connected to arduino port: COM15
+2024-10-18 14:06:10,166 - INFO - test board thread is running
+2024-10-18 14:06:10,167 - INFO - test worker thread is running
+2024-10-18 14:06:10,168 - INFO - serial capture thread is running
+2024-10-18 14:06:10,168 - INFO - serial capture thread is running
+2024-10-18 14:06:10,270 - INFO - serial capture thread is running
+2024-10-18 14:06:10,372 - INFO - serial capture thread is running
+2024-10-18 14:06:10,474 - INFO - serial capture thread is running
+2024-10-18 14:06:10,576 - INFO - serial capture thread is running
+2024-10-18 14:06:10,679 - INFO - serial capture thread is running
+2024-10-18 14:06:10,680 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:10,748 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:10,785 - INFO - test worker thread is running
+2024-10-18 14:06:10,849 - INFO - serial capture thread is running
+2024-10-18 14:06:10,952 - INFO - serial capture thread is running
+2024-10-18 14:06:11,054 - INFO - serial capture thread is running
+2024-10-18 14:06:11,158 - INFO - serial capture thread is running
+2024-10-18 14:06:11,260 - INFO - serial capture thread is running
+2024-10-18 14:06:11,285 - INFO - test worker thread is running
+2024-10-18 14:06:11,362 - INFO - serial capture thread is running
+2024-10-18 14:06:11,464 - INFO - serial capture thread is running
+2024-10-18 14:06:11,566 - INFO - serial capture thread is running
+2024-10-18 14:06:11,668 - INFO - serial capture thread is running
+2024-10-18 14:06:11,770 - INFO - serial capture thread is running
+2024-10-18 14:06:11,785 - INFO - test worker thread is running
+2024-10-18 14:06:11,871 - INFO - serial capture thread is running
+2024-10-18 14:06:11,973 - INFO - serial capture thread is running
+2024-10-18 14:06:12,076 - INFO - serial capture thread is running
+2024-10-18 14:06:12,216 - INFO - serial capture thread is running
+2024-10-18 14:06:12,217 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:12,285 - INFO - test worker thread is running
+2024-10-18 14:06:12,290 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:12,391 - INFO - serial capture thread is running
+2024-10-18 14:06:12,492 - INFO - serial capture thread is running
+2024-10-18 14:06:12,594 - INFO - serial capture thread is running
+2024-10-18 14:06:12,697 - INFO - serial capture thread is running
+2024-10-18 14:06:12,784 - INFO - test worker thread is running
+2024-10-18 14:06:12,799 - INFO - serial capture thread is running
+2024-10-18 14:06:12,900 - INFO - serial capture thread is running
+2024-10-18 14:06:13,002 - INFO - serial capture thread is running
+2024-10-18 14:06:13,104 - INFO - serial capture thread is running
+2024-10-18 14:06:13,205 - INFO - serial capture thread is running
+2024-10-18 14:06:13,284 - INFO - test worker thread is running
+2024-10-18 14:06:13,306 - INFO - serial capture thread is running
+2024-10-18 14:06:13,408 - INFO - serial capture thread is running
+2024-10-18 14:06:13,509 - INFO - serial capture thread is running
+2024-10-18 14:06:13,610 - INFO - serial capture thread is running
+2024-10-18 14:06:13,712 - INFO - serial capture thread is running
+2024-10-18 14:06:13,784 - INFO - test worker thread is running
+2024-10-18 14:06:13,813 - INFO - serial capture thread is running
+2024-10-18 14:06:13,814 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:13,831 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:13,932 - INFO - serial capture thread is running
+2024-10-18 14:06:14,033 - INFO - serial capture thread is running
+2024-10-18 14:06:14,134 - INFO - serial capture thread is running
+2024-10-18 14:06:14,237 - INFO - serial capture thread is running
+2024-10-18 14:06:14,284 - INFO - test worker thread is running
+2024-10-18 14:06:14,339 - INFO - serial capture thread is running
+2024-10-18 14:06:14,440 - INFO - serial capture thread is running
+2024-10-18 14:06:14,542 - INFO - serial capture thread is running
+2024-10-18 14:06:14,643 - INFO - serial capture thread is running
+2024-10-18 14:06:14,744 - INFO - serial capture thread is running
+2024-10-18 14:06:14,783 - INFO - test worker thread is running
+2024-10-18 14:06:14,845 - INFO - serial capture thread is running
+2024-10-18 14:06:14,946 - INFO - serial capture thread is running
+2024-10-18 14:06:15,047 - INFO - serial capture thread is running
+2024-10-18 14:06:15,149 - INFO - serial capture thread is running
+2024-10-18 14:06:15,251 - INFO - serial capture thread is running
+2024-10-18 14:06:15,283 - INFO - test worker thread is running
+2024-10-18 14:06:15,352 - INFO - serial capture thread is running
+2024-10-18 14:06:15,352 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:15,372 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:15,473 - INFO - serial capture thread is running
+2024-10-18 14:06:15,574 - INFO - serial capture thread is running
+2024-10-18 14:06:15,676 - INFO - serial capture thread is running
+2024-10-18 14:06:15,779 - INFO - serial capture thread is running
+2024-10-18 14:06:15,783 - INFO - test worker thread is running
+2024-10-18 14:06:15,880 - INFO - serial capture thread is running
+2024-10-18 14:06:15,982 - INFO - serial capture thread is running
+2024-10-18 14:06:16,083 - INFO - serial capture thread is running
+2024-10-18 14:06:16,185 - INFO - serial capture thread is running
+2024-10-18 14:06:16,282 - INFO - test worker thread is running
+2024-10-18 14:06:16,317 - INFO - serial capture thread is running
+2024-10-18 14:06:16,419 - INFO - serial capture thread is running
+2024-10-18 14:06:16,520 - INFO - serial capture thread is running
+2024-10-18 14:06:16,621 - INFO - serial capture thread is running
+2024-10-18 14:06:16,722 - INFO - serial capture thread is running
+2024-10-18 14:06:16,782 - INFO - test worker thread is running
+2024-10-18 14:06:16,823 - INFO - serial capture thread is running
+2024-10-18 14:06:16,925 - INFO - serial capture thread is running
+2024-10-18 14:06:16,926 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:17,143 - INFO - arduino says: Room_temp: 39.28 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:17,244 - INFO - serial capture thread is running
+2024-10-18 14:06:17,286 - INFO - test worker thread is running
+2024-10-18 14:06:17,345 - INFO - serial capture thread is running
+2024-10-18 14:06:17,447 - INFO - serial capture thread is running
+2024-10-18 14:06:17,548 - INFO - serial capture thread is running
+2024-10-18 14:06:17,671 - INFO - serial capture thread is running
+2024-10-18 14:06:17,772 - INFO - serial capture thread is running
+2024-10-18 14:06:17,785 - INFO - test worker thread is running
+2024-10-18 14:06:17,873 - INFO - serial capture thread is running
+2024-10-18 14:06:17,975 - INFO - serial capture thread is running
+2024-10-18 14:06:18,075 - INFO - serial capture thread is running
+2024-10-18 14:06:18,177 - INFO - serial capture thread is running
+2024-10-18 14:06:18,278 - INFO - serial capture thread is running
+2024-10-18 14:06:18,285 - INFO - test worker thread is running
+2024-10-18 14:06:18,380 - INFO - serial capture thread is running
+2024-10-18 14:06:18,480 - INFO - serial capture thread is running
+2024-10-18 14:06:18,482 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:18,683 - INFO - arduino says: Room_temp: 39.28 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:18,784 - INFO - serial capture thread is running
+2024-10-18 14:06:18,785 - INFO - test worker thread is running
+2024-10-18 14:06:18,885 - INFO - serial capture thread is running
+2024-10-18 14:06:19,010 - INFO - serial capture thread is running
+2024-10-18 14:06:19,112 - INFO - serial capture thread is running
+2024-10-18 14:06:19,213 - INFO - serial capture thread is running
+2024-10-18 14:06:19,284 - INFO - test worker thread is running
+2024-10-18 14:06:19,315 - INFO - serial capture thread is running
+2024-10-18 14:06:19,416 - INFO - serial capture thread is running
+2024-10-18 14:06:19,517 - INFO - serial capture thread is running
+2024-10-18 14:06:19,618 - INFO - serial capture thread is running
+2024-10-18 14:06:19,719 - INFO - serial capture thread is running
+2024-10-18 14:06:19,784 - INFO - test worker thread is running
+2024-10-18 14:06:19,820 - INFO - serial capture thread is running
+2024-10-18 14:06:19,921 - INFO - serial capture thread is running
+2024-10-18 14:06:20,023 - INFO - serial capture thread is running
+2024-10-18 14:06:20,024 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:20,224 - INFO - arduino says: Room_temp: 39.31 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:20,284 - INFO - test worker thread is running
+2024-10-18 14:06:20,326 - INFO - serial capture thread is running
+2024-10-18 14:06:20,427 - INFO - serial capture thread is running
+2024-10-18 14:06:20,528 - INFO - serial capture thread is running
+2024-10-18 14:06:20,630 - INFO - serial capture thread is running
+2024-10-18 14:06:20,731 - INFO - serial capture thread is running
+2024-10-18 14:06:20,784 - INFO - test worker thread is running
+2024-10-18 14:06:20,832 - INFO - serial capture thread is running
+2024-10-18 14:06:20,933 - INFO - serial capture thread is running
+2024-10-18 14:06:21,034 - INFO - serial capture thread is running
+2024-10-18 14:06:21,135 - INFO - serial capture thread is running
+2024-10-18 14:06:21,236 - INFO - serial capture thread is running
+2024-10-18 14:06:21,283 - INFO - test worker thread is running
+2024-10-18 14:06:21,337 - INFO - serial capture thread is running
+2024-10-18 14:06:21,438 - INFO - serial capture thread is running
+2024-10-18 14:06:21,539 - INFO - serial capture thread is running
+2024-10-18 14:06:21,540 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:21,766 - INFO - arduino says: Room_temp: 39.31 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:21,783 - INFO - test worker thread is running
+2024-10-18 14:06:21,867 - INFO - serial capture thread is running
+2024-10-18 14:06:21,968 - INFO - serial capture thread is running
+2024-10-18 14:06:22,069 - INFO - serial capture thread is running
+2024-10-18 14:06:22,170 - INFO - serial capture thread is running
+2024-10-18 14:06:22,271 - INFO - serial capture thread is running
+2024-10-18 14:06:22,283 - INFO - test worker thread is running
+2024-10-18 14:06:22,373 - INFO - serial capture thread is running
+2024-10-18 14:06:22,474 - INFO - serial capture thread is running
+2024-10-18 14:06:22,575 - INFO - serial capture thread is running
+2024-10-18 14:06:22,676 - INFO - serial capture thread is running
+2024-10-18 14:06:22,778 - INFO - serial capture thread is running
+2024-10-18 14:06:22,782 - INFO - test worker thread is running
+2024-10-18 14:06:22,879 - INFO - serial capture thread is running
+2024-10-18 14:06:22,980 - INFO - serial capture thread is running
+2024-10-18 14:06:23,131 - INFO - serial capture thread is running
+2024-10-18 14:06:23,132 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:23,286 - INFO - test worker thread is running
+2024-10-18 14:06:23,307 - INFO - arduino says: Room_temp: 39.38 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:23,408 - INFO - serial capture thread is running
+2024-10-18 14:06:23,509 - INFO - serial capture thread is running
+2024-10-18 14:06:23,611 - INFO - serial capture thread is running
+2024-10-18 14:06:23,712 - INFO - serial capture thread is running
+2024-10-18 14:06:23,814 - INFO - serial capture thread is running
+2024-10-18 14:06:23,915 - INFO - serial capture thread is running
+2024-10-18 14:06:24,016 - INFO - serial capture thread is running
+2024-10-18 14:06:24,118 - INFO - serial capture thread is running
+2024-10-18 14:06:24,219 - INFO - serial capture thread is running
+2024-10-18 14:06:24,320 - INFO - serial capture thread is running
+2024-10-18 14:06:24,422 - INFO - serial capture thread is running
+2024-10-18 14:06:24,523 - INFO - serial capture thread is running
+2024-10-18 14:06:24,625 - INFO - serial capture thread is running
+2024-10-18 14:06:24,725 - INFO - serial capture thread is running
+2024-10-18 14:06:24,728 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:24,785 - INFO - test worker thread is running
+2024-10-18 14:06:24,800 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:24,901 - INFO - serial capture thread is running
+2024-10-18 14:06:25,002 - INFO - serial capture thread is running
+2024-10-18 14:06:25,103 - INFO - serial capture thread is running
+2024-10-18 14:06:25,206 - INFO - serial capture thread is running
+2024-10-18 14:06:25,285 - INFO - test worker thread is running
+2024-10-18 14:06:25,307 - INFO - serial capture thread is running
+2024-10-18 14:06:25,409 - INFO - serial capture thread is running
+2024-10-18 14:06:25,510 - INFO - serial capture thread is running
+2024-10-18 14:06:25,612 - INFO - serial capture thread is running
+2024-10-18 14:06:25,713 - INFO - serial capture thread is running
+2024-10-18 14:06:25,785 - INFO - test worker thread is running
+2024-10-18 14:06:25,831 - INFO - serial capture thread is running
+2024-10-18 14:06:25,934 - INFO - serial capture thread is running
+2024-10-18 14:06:26,035 - INFO - serial capture thread is running
+2024-10-18 14:06:26,136 - INFO - serial capture thread is running
+2024-10-18 14:06:26,238 - INFO - serial capture thread is running
+2024-10-18 14:06:26,239 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:26,285 - INFO - test worker thread is running
+2024-10-18 14:06:26,389 - INFO - arduino says: Room_temp: 39.44 | Desired_temp: 40.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:26,490 - INFO - serial capture thread is running
+2024-10-18 14:06:26,592 - INFO - serial capture thread is running
+2024-10-18 14:06:26,693 - INFO - serial capture thread is running
+2024-10-18 14:06:26,784 - INFO - test worker thread is running
+2024-10-18 14:06:26,795 - INFO - serial capture thread is running
+2024-10-18 14:06:26,896 - INFO - serial capture thread is running
+2024-10-18 14:06:26,997 - INFO - serial capture thread is running
+2024-10-18 14:06:27,099 - INFO - serial capture thread is running
+2024-10-18 14:06:27,200 - INFO - serial capture thread is running
+2024-10-18 14:06:27,284 - INFO - test worker thread is running
+2024-10-18 14:06:27,301 - INFO - serial capture thread is running
+2024-10-18 14:06:27,402 - INFO - serial capture thread is running
+2024-10-18 14:06:27,504 - INFO - serial capture thread is running
+2024-10-18 14:06:27,604 - INFO - serial capture thread is running
+2024-10-18 14:06:27,706 - INFO - serial capture thread is running
+2024-10-18 14:06:27,784 - INFO - test worker thread is running
+2024-10-18 14:06:27,808 - INFO - serial capture thread is running
+2024-10-18 14:06:27,810 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:27,882 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:27,983 - INFO - serial capture thread is running
+2024-10-18 14:06:28,084 - INFO - serial capture thread is running
+2024-10-18 14:06:28,186 - INFO - serial capture thread is running
+2024-10-18 14:06:28,283 - INFO - test worker thread is running
+2024-10-18 14:06:28,289 - INFO - serial capture thread is running
+2024-10-18 14:06:28,390 - INFO - serial capture thread is running
+2024-10-18 14:06:28,492 - INFO - serial capture thread is running
+2024-10-18 14:06:28,593 - INFO - serial capture thread is running
+2024-10-18 14:06:28,695 - INFO - serial capture thread is running
+2024-10-18 14:06:28,783 - INFO - test worker thread is running
+2024-10-18 14:06:28,797 - INFO - serial capture thread is running
+2024-10-18 14:06:28,898 - INFO - serial capture thread is running
+2024-10-18 14:06:29,000 - INFO - serial capture thread is running
+2024-10-18 14:06:29,101 - INFO - serial capture thread is running
+2024-10-18 14:06:29,202 - INFO - serial capture thread is running
+2024-10-18 14:06:29,287 - INFO - test worker thread is running
+2024-10-18 14:06:29,304 - INFO - serial capture thread is running
+2024-10-18 14:06:29,407 - INFO - serial capture thread is running
+2024-10-18 14:06:29,408 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:29,424 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:29,524 - INFO - serial capture thread is running
+2024-10-18 14:06:29,625 - INFO - serial capture thread is running
+2024-10-18 14:06:29,726 - INFO - serial capture thread is running
+2024-10-18 14:06:29,787 - INFO - test worker thread is running
+2024-10-18 14:06:29,830 - INFO - serial capture thread is running
+2024-10-18 14:06:29,933 - INFO - serial capture thread is running
+2024-10-18 14:06:30,035 - INFO - serial capture thread is running
+2024-10-18 14:06:30,136 - INFO - serial capture thread is running
+2024-10-18 14:06:30,237 - INFO - serial capture thread is running
+2024-10-18 14:06:30,286 - INFO - test worker thread is running
+2024-10-18 14:06:30,338 - INFO - serial capture thread is running
+2024-10-18 14:06:30,439 - INFO - serial capture thread is running
+2024-10-18 14:06:30,541 - INFO - serial capture thread is running
+2024-10-18 14:06:30,642 - INFO - serial capture thread is running
+2024-10-18 14:06:30,743 - INFO - serial capture thread is running
+2024-10-18 14:06:30,786 - INFO - test worker thread is running
+2024-10-18 14:06:30,844 - INFO - serial capture thread is running
+2024-10-18 14:06:30,945 - INFO - serial capture thread is running
+2024-10-18 14:06:30,946 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:30,964 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:31,065 - INFO - serial capture thread is running
+2024-10-18 14:06:31,166 - INFO - serial capture thread is running
+2024-10-18 14:06:31,267 - INFO - serial capture thread is running
+2024-10-18 14:06:31,286 - INFO - test worker thread is running
+2024-10-18 14:06:31,370 - INFO - serial capture thread is running
+2024-10-18 14:06:31,472 - INFO - serial capture thread is running
+2024-10-18 14:06:31,573 - INFO - serial capture thread is running
+2024-10-18 14:06:31,675 - INFO - serial capture thread is running
+2024-10-18 14:06:31,736 - INFO - [{'temp': 67.0, 'duration': 120000}]
+2024-10-18 14:06:31,736 - INFO - [{'temp': 67.0, 'duration': 120000}]
+2024-10-18 14:06:31,748 - INFO - sent to arduino: {"temp": 67.0, "duration": 120000}
+2024-10-18 14:06:31,748 - INFO - arduino says: Target temp: 50.00
+2024-10-18 14:06:31,748 - INFO - arduino says: Current room temp: 39.47
+2024-10-18 14:06:31,749 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:31,750 - INFO - arduino says: Target temp: 50.00
+2024-10-18 14:06:31,750 - INFO - arduino says: Current room temp: 39.47
+2024-10-18 14:06:31,776 - INFO - serial capture thread is running
+2024-10-18 14:06:31,786 - INFO - test worker thread is running
+2024-10-18 14:06:31,879 - INFO - serial capture thread is running
+2024-10-18 14:06:31,980 - INFO - serial capture thread is running
+2024-10-18 14:06:32,082 - INFO - serial capture thread is running
+2024-10-18 14:06:32,184 - INFO - serial capture thread is running
+2024-10-18 14:06:32,285 - INFO - test worker thread is running
+2024-10-18 14:06:32,286 - INFO - serial capture thread is running
+2024-10-18 14:06:32,389 - INFO - serial capture thread is running
+2024-10-18 14:06:32,490 - INFO - serial capture thread is running
+2024-10-18 14:06:32,491 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:32,671 - INFO - arduino says: Room_temp: 39.53 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:32,772 - INFO - serial capture thread is running
+2024-10-18 14:06:32,785 - INFO - test worker thread is running
+2024-10-18 14:06:32,874 - INFO - serial capture thread is running
+2024-10-18 14:06:32,975 - INFO - serial capture thread is running
+2024-10-18 14:06:33,077 - INFO - serial capture thread is running
+2024-10-18 14:06:33,178 - INFO - serial capture thread is running
+2024-10-18 14:06:33,279 - INFO - serial capture thread is running
+2024-10-18 14:06:33,285 - INFO - test worker thread is running
+2024-10-18 14:06:33,380 - INFO - serial capture thread is running
+2024-10-18 14:06:33,481 - INFO - serial capture thread is running
+2024-10-18 14:06:33,583 - INFO - serial capture thread is running
+2024-10-18 14:06:33,685 - INFO - serial capture thread is running
+2024-10-18 14:06:33,784 - INFO - test worker thread is running
+2024-10-18 14:06:33,786 - INFO - serial capture thread is running
+2024-10-18 14:06:33,888 - INFO - serial capture thread is running
+2024-10-18 14:06:34,008 - INFO - serial capture thread is running
+2024-10-18 14:06:34,010 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:34,211 - INFO - arduino says: Room_temp: 39.56 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:34,284 - INFO - test worker thread is running
+2024-10-18 14:06:34,312 - INFO - serial capture thread is running
+2024-10-18 14:06:34,412 - INFO - serial capture thread is running
+2024-10-18 14:06:34,514 - INFO - serial capture thread is running
+2024-10-18 14:06:34,616 - INFO - serial capture thread is running
+2024-10-18 14:06:34,717 - INFO - serial capture thread is running
+2024-10-18 14:06:34,783 - INFO - test worker thread is running
+2024-10-18 14:06:34,819 - INFO - serial capture thread is running
+2024-10-18 14:06:34,921 - INFO - serial capture thread is running
+2024-10-18 14:06:35,022 - INFO - serial capture thread is running
+2024-10-18 14:06:35,124 - INFO - serial capture thread is running
+2024-10-18 14:06:35,225 - INFO - serial capture thread is running
+2024-10-18 14:06:35,287 - INFO - test worker thread is running
+2024-10-18 14:06:35,327 - INFO - serial capture thread is running
+2024-10-18 14:06:35,428 - INFO - serial capture thread is running
+2024-10-18 14:06:35,529 - INFO - serial capture thread is running
+2024-10-18 14:06:35,530 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:35,753 - INFO - arduino says: Room_temp: 39.56 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:35,787 - INFO - test worker thread is running
+2024-10-18 14:06:35,854 - INFO - serial capture thread is running
+2024-10-18 14:06:35,955 - INFO - serial capture thread is running
+2024-10-18 14:06:36,057 - INFO - serial capture thread is running
+2024-10-18 14:06:36,159 - INFO - serial capture thread is running
+2024-10-18 14:06:36,261 - INFO - serial capture thread is running
+2024-10-18 14:06:36,287 - INFO - test worker thread is running
+2024-10-18 14:06:36,362 - INFO - serial capture thread is running
+2024-10-18 14:06:36,464 - INFO - serial capture thread is running
+2024-10-18 14:06:36,565 - INFO - serial capture thread is running
+2024-10-18 14:06:36,667 - INFO - serial capture thread is running
+2024-10-18 14:06:36,768 - INFO - serial capture thread is running
+2024-10-18 14:06:36,786 - INFO - test worker thread is running
+2024-10-18 14:06:36,869 - INFO - serial capture thread is running
+2024-10-18 14:06:36,971 - INFO - serial capture thread is running
+2024-10-18 14:06:37,073 - INFO - serial capture thread is running
+2024-10-18 14:06:37,074 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:37,286 - INFO - test worker thread is running
+2024-10-18 14:06:37,292 - INFO - arduino says: Room_temp: 39.56 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:37,394 - INFO - serial capture thread is running
+2024-10-18 14:06:37,495 - INFO - serial capture thread is running
+2024-10-18 14:06:37,596 - INFO - serial capture thread is running
+2024-10-18 14:06:37,698 - INFO - serial capture thread is running
+2024-10-18 14:06:37,799 - INFO - serial capture thread is running
+2024-10-18 14:06:37,900 - INFO - serial capture thread is running
+2024-10-18 14:06:38,001 - INFO - serial capture thread is running
+2024-10-18 14:06:38,117 - INFO - serial capture thread is running
+2024-10-18 14:06:38,218 - INFO - serial capture thread is running
+2024-10-18 14:06:38,319 - INFO - serial capture thread is running
+2024-10-18 14:06:38,420 - INFO - serial capture thread is running
+2024-10-18 14:06:38,520 - INFO - serial capture thread is running
+2024-10-18 14:06:38,622 - INFO - serial capture thread is running
+2024-10-18 14:06:38,623 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:38,785 - INFO - test worker thread is running
+2024-10-18 14:06:38,834 - INFO - arduino says: Room_temp: 39.59 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:38,935 - INFO - serial capture thread is running
+2024-10-18 14:06:39,037 - INFO - serial capture thread is running
+2024-10-18 14:06:39,138 - INFO - serial capture thread is running
+2024-10-18 14:06:39,239 - INFO - serial capture thread is running
+2024-10-18 14:06:39,285 - INFO - test worker thread is running
+2024-10-18 14:06:39,340 - INFO - serial capture thread is running
+2024-10-18 14:06:39,467 - INFO - serial capture thread is running
+2024-10-18 14:06:39,569 - INFO - serial capture thread is running
+2024-10-18 14:06:39,670 - INFO - serial capture thread is running
+2024-10-18 14:06:39,771 - INFO - serial capture thread is running
+2024-10-18 14:06:39,785 - INFO - test worker thread is running
+2024-10-18 14:06:39,872 - INFO - serial capture thread is running
+2024-10-18 14:06:39,973 - INFO - serial capture thread is running
+2024-10-18 14:06:40,075 - INFO - serial capture thread is running
+2024-10-18 14:06:40,176 - INFO - serial capture thread is running
+2024-10-18 14:06:40,177 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:40,284 - INFO - test worker thread is running
+2024-10-18 14:06:40,377 - INFO - arduino says: Room_temp: 39.59 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:40,477 - INFO - serial capture thread is running
+2024-10-18 14:06:40,579 - INFO - serial capture thread is running
+2024-10-18 14:06:40,680 - INFO - serial capture thread is running
+2024-10-18 14:06:40,784 - INFO - test worker thread is running
+2024-10-18 14:06:40,835 - INFO - serial capture thread is running
+2024-10-18 14:06:40,937 - INFO - serial capture thread is running
+2024-10-18 14:06:41,038 - INFO - serial capture thread is running
+2024-10-18 14:06:41,139 - INFO - serial capture thread is running
+2024-10-18 14:06:41,240 - INFO - serial capture thread is running
+2024-10-18 14:06:41,284 - INFO - test worker thread is running
+2024-10-18 14:06:41,341 - INFO - serial capture thread is running
+2024-10-18 14:06:41,442 - INFO - serial capture thread is running
+2024-10-18 14:06:41,543 - INFO - serial capture thread is running
+2024-10-18 14:06:41,644 - INFO - serial capture thread is running
+2024-10-18 14:06:41,745 - INFO - serial capture thread is running
+2024-10-18 14:06:41,745 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:41,787 - INFO - test worker thread is running
+2024-10-18 14:06:41,917 - INFO - arduino says: Room_temp: 39.63 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:42,018 - INFO - serial capture thread is running
+2024-10-18 14:06:42,119 - INFO - serial capture thread is running
+2024-10-18 14:06:42,221 - INFO - serial capture thread is running
+2024-10-18 14:06:42,287 - INFO - test worker thread is running
+2024-10-18 14:06:42,322 - INFO - serial capture thread is running
+2024-10-18 14:06:42,423 - INFO - serial capture thread is running
+2024-10-18 14:06:42,524 - INFO - serial capture thread is running
+2024-10-18 14:06:42,625 - INFO - serial capture thread is running
+2024-10-18 14:06:42,726 - INFO - serial capture thread is running
+2024-10-18 14:06:42,787 - INFO - test worker thread is running
+2024-10-18 14:06:42,827 - INFO - serial capture thread is running
+2024-10-18 14:06:42,929 - INFO - serial capture thread is running
+2024-10-18 14:06:43,030 - INFO - serial capture thread is running
+2024-10-18 14:06:43,132 - INFO - serial capture thread is running
+2024-10-18 14:06:43,233 - INFO - serial capture thread is running
+2024-10-18 14:06:43,286 - INFO - test worker thread is running
+2024-10-18 14:06:43,335 - INFO - serial capture thread is running
+2024-10-18 14:06:43,335 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:43,411 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:43,511 - INFO - serial capture thread is running
+2024-10-18 14:06:43,613 - INFO - serial capture thread is running
+2024-10-18 14:06:43,714 - INFO - serial capture thread is running
+2024-10-18 14:06:43,786 - INFO - test worker thread is running
+2024-10-18 14:06:43,816 - INFO - serial capture thread is running
+2024-10-18 14:06:43,917 - INFO - serial capture thread is running
+2024-10-18 14:06:44,018 - INFO - serial capture thread is running
+2024-10-18 14:06:44,120 - INFO - serial capture thread is running
+2024-10-18 14:06:44,222 - INFO - serial capture thread is running
+2024-10-18 14:06:44,286 - INFO - test worker thread is running
+2024-10-18 14:06:44,323 - INFO - serial capture thread is running
+2024-10-18 14:06:44,425 - INFO - serial capture thread is running
+2024-10-18 14:06:44,525 - INFO - serial capture thread is running
+2024-10-18 14:06:44,627 - INFO - serial capture thread is running
+2024-10-18 14:06:44,728 - INFO - serial capture thread is running
+2024-10-18 14:06:44,786 - INFO - test worker thread is running
+2024-10-18 14:06:44,829 - INFO - serial capture thread is running
+2024-10-18 14:06:44,930 - INFO - serial capture thread is running
+2024-10-18 14:06:44,930 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:44,952 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:45,052 - INFO - serial capture thread is running
+2024-10-18 14:06:45,153 - INFO - serial capture thread is running
+2024-10-18 14:06:45,254 - INFO - serial capture thread is running
+2024-10-18 14:06:45,285 - INFO - test worker thread is running
+2024-10-18 14:06:45,357 - INFO - serial capture thread is running
+2024-10-18 14:06:45,458 - INFO - serial capture thread is running
+2024-10-18 14:06:45,559 - INFO - serial capture thread is running
+2024-10-18 14:06:45,661 - INFO - serial capture thread is running
+2024-10-18 14:06:45,763 - INFO - serial capture thread is running
+2024-10-18 14:06:45,785 - INFO - test worker thread is running
+2024-10-18 14:06:45,864 - INFO - serial capture thread is running
+2024-10-18 14:06:45,965 - INFO - serial capture thread is running
+2024-10-18 14:06:46,067 - INFO - serial capture thread is running
+2024-10-18 14:06:46,168 - INFO - serial capture thread is running
+2024-10-18 14:06:46,269 - INFO - serial capture thread is running
+2024-10-18 14:06:46,285 - INFO - test worker thread is running
+2024-10-18 14:06:46,370 - INFO - serial capture thread is running
+2024-10-18 14:06:46,472 - INFO - serial capture thread is running
+2024-10-18 14:06:46,473 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:46,492 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:46,594 - INFO - serial capture thread is running
+2024-10-18 14:06:46,694 - INFO - serial capture thread is running
+2024-10-18 14:06:46,784 - INFO - test worker thread is running
+2024-10-18 14:06:46,796 - INFO - serial capture thread is running
+2024-10-18 14:06:46,898 - INFO - serial capture thread is running
+2024-10-18 14:06:46,999 - INFO - serial capture thread is running
+2024-10-18 14:06:47,100 - INFO - serial capture thread is running
+2024-10-18 14:06:47,202 - INFO - serial capture thread is running
+2024-10-18 14:06:47,284 - INFO - test worker thread is running
+2024-10-18 14:06:47,303 - INFO - serial capture thread is running
+2024-10-18 14:06:47,404 - INFO - serial capture thread is running
+2024-10-18 14:06:47,505 - INFO - serial capture thread is running
+2024-10-18 14:06:47,606 - INFO - serial capture thread is running
+2024-10-18 14:06:47,708 - INFO - serial capture thread is running
+2024-10-18 14:06:47,788 - INFO - test worker thread is running
+2024-10-18 14:06:47,809 - INFO - serial capture thread is running
+2024-10-18 14:06:47,910 - INFO - serial capture thread is running
+2024-10-18 14:06:48,011 - INFO - serial capture thread is running
+2024-10-18 14:06:48,012 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:48,034 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:48,135 - INFO - serial capture thread is running
+2024-10-18 14:06:48,236 - INFO - serial capture thread is running
+2024-10-18 14:06:48,288 - INFO - test worker thread is running
+2024-10-18 14:06:48,338 - INFO - serial capture thread is running
+2024-10-18 14:06:48,440 - INFO - serial capture thread is running
+2024-10-18 14:06:48,542 - INFO - serial capture thread is running
+2024-10-18 14:06:48,643 - INFO - serial capture thread is running
+2024-10-18 14:06:48,744 - INFO - serial capture thread is running
+2024-10-18 14:06:48,787 - INFO - test worker thread is running
+2024-10-18 14:06:48,845 - INFO - serial capture thread is running
+2024-10-18 14:06:48,947 - INFO - serial capture thread is running
+2024-10-18 14:06:49,049 - INFO - serial capture thread is running
+2024-10-18 14:06:49,150 - INFO - serial capture thread is running
+2024-10-18 14:06:49,251 - INFO - serial capture thread is running
+2024-10-18 14:06:49,287 - INFO - test worker thread is running
+2024-10-18 14:06:49,352 - INFO - serial capture thread is running
+2024-10-18 14:06:49,453 - INFO - serial capture thread is running
+2024-10-18 14:06:49,555 - INFO - serial capture thread is running
+2024-10-18 14:06:49,556 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:49,576 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:49,677 - INFO - serial capture thread is running
+2024-10-18 14:06:49,778 - INFO - serial capture thread is running
+2024-10-18 14:06:49,787 - INFO - test worker thread is running
+2024-10-18 14:06:49,879 - INFO - serial capture thread is running
+2024-10-18 14:06:49,981 - INFO - serial capture thread is running
+2024-10-18 14:06:50,083 - INFO - serial capture thread is running
+2024-10-18 14:06:50,184 - INFO - serial capture thread is running
+2024-10-18 14:06:50,285 - INFO - serial capture thread is running
+2024-10-18 14:06:50,287 - INFO - test worker thread is running
+2024-10-18 14:06:50,390 - INFO - serial capture thread is running
+2024-10-18 14:06:50,491 - INFO - serial capture thread is running
+2024-10-18 14:06:50,592 - INFO - serial capture thread is running
+2024-10-18 14:06:50,693 - INFO - serial capture thread is running
+2024-10-18 14:06:50,786 - INFO - test worker thread is running
+2024-10-18 14:06:50,795 - INFO - serial capture thread is running
+2024-10-18 14:06:50,896 - INFO - serial capture thread is running
+2024-10-18 14:06:50,997 - INFO - serial capture thread is running
+2024-10-18 14:06:51,099 - INFO - serial capture thread is running
+2024-10-18 14:06:51,100 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:51,116 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:06:51,217 - INFO - serial capture thread is running
+2024-10-18 14:06:51,286 - INFO - test worker thread is running
+2024-10-18 14:06:51,319 - INFO - serial capture thread is running
+2024-10-18 14:06:51,421 - INFO - serial capture thread is running
+2024-10-18 14:06:51,523 - INFO - serial capture thread is running
+2024-10-18 14:06:51,625 - INFO - serial capture thread is running
+2024-10-18 14:06:51,748 - INFO - serial capture thread is running
+2024-10-18 14:06:51,849 - INFO - serial capture thread is running
+2024-10-18 14:06:51,950 - INFO - serial capture thread is running
+2024-10-18 14:06:52,052 - INFO - serial capture thread is running
+2024-10-18 14:06:52,154 - INFO - serial capture thread is running
+2024-10-18 14:06:52,255 - INFO - serial capture thread is running
+2024-10-18 14:06:52,356 - INFO - serial capture thread is running
+2024-10-18 14:06:52,457 - INFO - serial capture thread is running
+2024-10-18 14:06:52,559 - INFO - serial capture thread is running
+2024-10-18 14:06:52,660 - INFO - serial capture thread is running
+2024-10-18 14:06:52,660 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:52,788 - INFO - test worker thread is running
+2024-10-18 14:06:52,889 - INFO - arduino says: Room_temp: 39.78 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:52,990 - INFO - serial capture thread is running
+2024-10-18 14:06:53,107 - INFO - serial capture thread is running
+2024-10-18 14:06:53,208 - INFO - serial capture thread is running
+2024-10-18 14:06:53,285 - INFO - test worker thread is running
+2024-10-18 14:06:53,310 - INFO - serial capture thread is running
+2024-10-18 14:06:53,411 - INFO - serial capture thread is running
+2024-10-18 14:06:53,513 - INFO - serial capture thread is running
+2024-10-18 14:06:53,615 - INFO - serial capture thread is running
+2024-10-18 14:06:53,717 - INFO - serial capture thread is running
+2024-10-18 14:06:53,789 - INFO - test worker thread is running
+2024-10-18 14:06:53,819 - INFO - serial capture thread is running
+2024-10-18 14:06:53,921 - INFO - serial capture thread is running
+2024-10-18 14:06:54,022 - INFO - serial capture thread is running
+2024-10-18 14:06:54,124 - INFO - serial capture thread is running
+2024-10-18 14:06:54,226 - INFO - serial capture thread is running
+2024-10-18 14:06:54,227 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:54,288 - INFO - test worker thread is running
+2024-10-18 14:06:54,429 - INFO - arduino says: Room_temp: 39.81 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:54,531 - INFO - serial capture thread is running
+2024-10-18 14:06:54,632 - INFO - serial capture thread is running
+2024-10-18 14:06:54,733 - INFO - serial capture thread is running
+2024-10-18 14:06:54,788 - INFO - test worker thread is running
+2024-10-18 14:06:54,834 - INFO - serial capture thread is running
+2024-10-18 14:06:54,936 - INFO - serial capture thread is running
+2024-10-18 14:06:55,037 - INFO - serial capture thread is running
+2024-10-18 14:06:55,139 - INFO - serial capture thread is running
+2024-10-18 14:06:55,240 - INFO - serial capture thread is running
+2024-10-18 14:06:55,288 - INFO - test worker thread is running
+2024-10-18 14:06:55,341 - INFO - serial capture thread is running
+2024-10-18 14:06:55,443 - INFO - serial capture thread is running
+2024-10-18 14:06:55,544 - INFO - serial capture thread is running
+2024-10-18 14:06:55,646 - INFO - serial capture thread is running
+2024-10-18 14:06:55,685 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 14:06:55,747 - INFO - serial capture thread is running
+2024-10-18 14:06:55,749 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:55,787 - INFO - test worker thread is running
+2024-10-18 14:06:55,970 - INFO - arduino says: Room_temp: 39.84 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:56,072 - INFO - serial capture thread is running
+2024-10-18 14:06:56,173 - INFO - serial capture thread is running
+2024-10-18 14:06:56,275 - INFO - serial capture thread is running
+2024-10-18 14:06:56,287 - INFO - test worker thread is running
+2024-10-18 14:06:56,377 - INFO - serial capture thread is running
+2024-10-18 14:06:56,478 - INFO - serial capture thread is running
+2024-10-18 14:06:56,579 - INFO - serial capture thread is running
+2024-10-18 14:06:56,680 - INFO - serial capture thread is running
+2024-10-18 14:06:56,782 - INFO - serial capture thread is running
+2024-10-18 14:06:56,788 - INFO - test worker thread is running
+2024-10-18 14:06:56,884 - INFO - serial capture thread is running
+2024-10-18 14:06:56,986 - INFO - serial capture thread is running
+2024-10-18 14:06:57,087 - INFO - serial capture thread is running
+2024-10-18 14:06:57,189 - INFO - serial capture thread is running
+2024-10-18 14:06:57,287 - INFO - test worker thread is running
+2024-10-18 14:06:57,290 - INFO - serial capture thread is running
+2024-10-18 14:06:57,290 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:57,511 - INFO - arduino says: Room_temp: 39.88 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:57,612 - INFO - serial capture thread is running
+2024-10-18 14:06:57,713 - INFO - serial capture thread is running
+2024-10-18 14:06:57,787 - INFO - test worker thread is running
+2024-10-18 14:06:57,815 - INFO - serial capture thread is running
+2024-10-18 14:06:57,916 - INFO - serial capture thread is running
+2024-10-18 14:06:58,017 - INFO - serial capture thread is running
+2024-10-18 14:06:58,119 - INFO - serial capture thread is running
+2024-10-18 14:06:58,220 - INFO - serial capture thread is running
+2024-10-18 14:06:58,286 - INFO - test worker thread is running
+2024-10-18 14:06:58,322 - INFO - serial capture thread is running
+2024-10-18 14:06:58,424 - INFO - serial capture thread is running
+2024-10-18 14:06:58,555 - INFO - serial capture thread is running
+2024-10-18 14:06:58,657 - INFO - serial capture thread is running
+2024-10-18 14:06:58,758 - INFO - serial capture thread is running
+2024-10-18 14:06:58,786 - INFO - test worker thread is running
+2024-10-18 14:06:58,860 - INFO - serial capture thread is running
+2024-10-18 14:06:58,860 - INFO - sent command: SHOW DATA
+2024-10-18 14:06:59,052 - INFO - arduino says: Room_temp: 39.94 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:06:59,153 - INFO - serial capture thread is running
+2024-10-18 14:06:59,255 - INFO - serial capture thread is running
+2024-10-18 14:06:59,285 - INFO - test worker thread is running
+2024-10-18 14:06:59,356 - INFO - serial capture thread is running
+2024-10-18 14:06:59,457 - INFO - serial capture thread is running
+2024-10-18 14:06:59,559 - INFO - serial capture thread is running
+2024-10-18 14:06:59,660 - INFO - serial capture thread is running
+2024-10-18 14:06:59,761 - INFO - serial capture thread is running
+2024-10-18 14:06:59,785 - INFO - test worker thread is running
+2024-10-18 14:06:59,863 - INFO - serial capture thread is running
+2024-10-18 14:06:59,964 - INFO - serial capture thread is running
+2024-10-18 14:07:00,065 - INFO - serial capture thread is running
+2024-10-18 14:07:00,167 - INFO - serial capture thread is running
+2024-10-18 14:07:00,268 - INFO - serial capture thread is running
+2024-10-18 14:07:00,289 - INFO - test worker thread is running
+2024-10-18 14:07:00,370 - INFO - serial capture thread is running
+2024-10-18 14:07:00,371 - INFO - sent command: SHOW DATA
+2024-10-18 14:07:00,594 - INFO - arduino says: Room_temp: 39.97 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:07:00,695 - INFO - serial capture thread is running
+2024-10-18 14:07:00,788 - INFO - test worker thread is running
+2024-10-18 14:07:00,796 - INFO - serial capture thread is running
+2024-10-18 14:07:00,898 - INFO - serial capture thread is running
+2024-10-18 14:07:01,000 - INFO - serial capture thread is running
+2024-10-18 14:07:01,101 - INFO - serial capture thread is running
+2024-10-18 14:07:01,202 - INFO - serial capture thread is running
+2024-10-18 14:07:01,288 - INFO - test worker thread is running
+2024-10-18 14:07:01,303 - INFO - serial capture thread is running
+2024-10-18 14:07:01,404 - INFO - serial capture thread is running
+2024-10-18 14:07:01,506 - INFO - serial capture thread is running
+2024-10-18 14:07:01,607 - INFO - serial capture thread is running
+2024-10-18 14:07:01,708 - INFO - serial capture thread is running
+2024-10-18 14:07:01,788 - INFO - test worker thread is running
+2024-10-18 14:07:01,810 - INFO - serial capture thread is running
+2024-10-18 14:07:01,911 - INFO - serial capture thread is running
+2024-10-18 14:07:01,912 - INFO - sent command: SHOW DATA
+2024-10-18 14:07:02,135 - INFO - arduino says: Room_temp: 40.00 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:07:02,236 - INFO - serial capture thread is running
+2024-10-18 14:07:02,288 - INFO - test worker thread is running
+2024-10-18 14:07:02,337 - INFO - serial capture thread is running
+2024-10-18 14:07:02,438 - INFO - serial capture thread is running
+2024-10-18 14:07:02,539 - INFO - serial capture thread is running
+2024-10-18 14:07:02,658 - INFO - serial capture thread is running
+2024-10-18 14:07:02,760 - INFO - serial capture thread is running
+2024-10-18 14:07:02,787 - INFO - test worker thread is running
+2024-10-18 14:07:02,861 - INFO - serial capture thread is running
+2024-10-18 14:07:02,963 - INFO - serial capture thread is running
+2024-10-18 14:07:03,064 - INFO - serial capture thread is running
+2024-10-18 14:07:03,166 - INFO - serial capture thread is running
+2024-10-18 14:07:03,267 - INFO - serial capture thread is running
+2024-10-18 14:07:03,287 - INFO - test worker thread is running
+2024-10-18 14:07:03,368 - INFO - serial capture thread is running
+2024-10-18 14:07:03,469 - INFO - serial capture thread is running
+2024-10-18 14:07:03,470 - INFO - sent command: SHOW DATA
+2024-10-18 14:07:03,677 - INFO - arduino says: Room_temp: 40.03 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:07:03,777 - INFO - serial capture thread is running
+2024-10-18 14:07:03,787 - INFO - test worker thread is running
+2024-10-18 14:07:03,879 - INFO - serial capture thread is running
+2024-10-18 14:07:03,994 - INFO - serial capture thread is running
+2024-10-18 14:07:04,095 - INFO - serial capture thread is running
+2024-10-18 14:07:04,196 - INFO - serial capture thread is running
+2024-10-18 14:07:04,286 - INFO - test worker thread is running
+2024-10-18 14:07:04,298 - INFO - serial capture thread is running
+2024-10-18 14:07:04,399 - INFO - serial capture thread is running
+2024-10-18 14:07:04,501 - INFO - serial capture thread is running
+2024-10-18 14:07:04,602 - INFO - serial capture thread is running
+2024-10-18 14:07:04,703 - INFO - serial capture thread is running
+2024-10-18 14:07:04,786 - INFO - test worker thread is running
+2024-10-18 14:07:04,805 - INFO - serial capture thread is running
+2024-10-18 14:07:04,906 - INFO - serial capture thread is running
+2024-10-18 14:07:05,008 - INFO - serial capture thread is running
+2024-10-18 14:07:05,009 - INFO - sent command: SHOW DATA
+2024-10-18 14:07:05,217 - INFO - arduino says: Room_temp: 40.06 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:07:05,286 - INFO - test worker thread is running
+2024-10-18 14:07:05,319 - INFO - serial capture thread is running
+2024-10-18 14:07:05,420 - INFO - serial capture thread is running
+2024-10-18 14:07:05,521 - INFO - serial capture thread is running
+2024-10-18 14:07:05,623 - INFO - serial capture thread is running
+2024-10-18 14:07:05,724 - INFO - serial capture thread is running
+2024-10-18 14:07:05,826 - INFO - serial capture thread is running
+2024-10-18 14:07:05,927 - INFO - serial capture thread is running
+2024-10-18 14:07:06,029 - INFO - serial capture thread is running
+2024-10-18 14:07:06,130 - INFO - serial capture thread is running
+2024-10-18 14:07:06,232 - INFO - serial capture thread is running
+2024-10-18 14:07:06,333 - INFO - serial capture thread is running
+2024-10-18 14:07:06,434 - INFO - serial capture thread is running
+2024-10-18 14:07:06,536 - INFO - serial capture thread is running
+2024-10-18 14:07:06,537 - INFO - sent command: SHOW DATA
+2024-10-18 14:07:06,758 - INFO - arduino says: Room_temp: 40.09 | Desired_temp: 67.00 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-18 14:07:06,789 - INFO - test worker thread is running
+2024-10-18 14:07:06,859 - INFO - serial capture thread is running
+2024-10-18 14:07:06,960 - INFO - serial capture thread is running
+2024-10-18 14:07:07,062 - INFO - serial capture thread is running
+2024-10-18 14:07:07,163 - INFO - serial capture thread is running
+2024-10-18 14:07:07,264 - INFO - serial capture thread is running
+2024-10-18 14:07:07,289 - INFO - test worker thread is running
+2024-10-18 14:07:07,366 - INFO - serial capture thread is running
+2024-10-18 14:07:07,467 - INFO - serial capture thread is running
+2024-10-18 14:07:07,569 - INFO - serial capture thread is running
+2024-10-18 14:07:07,670 - INFO - serial capture thread is running
+2024-10-18 14:07:07,772 - INFO - serial capture thread is running
+2024-10-18 14:07:07,788 - INFO - test worker thread is running
+2024-10-18 14:07:07,874 - INFO - serial capture thread is running
+2024-10-18 14:07:07,919 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 14:07:07,920 - INFO - arduino says: Current room temp: 40.13
+2024-10-18 14:07:07,921 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:07:07,921 - INFO - arduino says: Target temp: 50.00
+2024-10-18 14:07:07,922 - INFO - arduino says: Current room temp: 40.13
+2024-10-18 14:07:07,923 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:07:07,923 - INFO - arduino says: Target temp: 50.00
+2024-10-18 14:07:07,924 - INFO - arduino says: Current room temp: 40.13
+2024-10-18 14:07:07,924 - INFO - arduino says: Current sequence index: 0
+2024-10-18 14:07:07,925 - INFO - arduino says: Target temp: 50.00
+2024-10-18 14:07:07,925 - INFO - arduino says: Current room temp: 40.13
+2024-10-18 14:07:07,925 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 14:07:07,936 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 14:07:07,936 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 14:07:07,946 - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-10-18 14:07:07,946 - INFO - running {'temp': 50, 'duration': 60000}
+2024-10-18 14:07:07,957 - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-10-18 14:07:07,975 - INFO - serial capture thread is running
+2024-10-18 14:07:07,986 - INFO - running {'temp': 40, 'duration': 60000}
+2024-10-18 14:07:07,987 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-18 14:07:07,988 - INFO - serial connection to COM7 closed before upload
+2024-10-18 14:07:07,989 - INFO - cli worker starting

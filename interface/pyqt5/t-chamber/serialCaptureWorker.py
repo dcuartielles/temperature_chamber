@@ -152,15 +152,13 @@ class SerialCaptureWorker(QThread):
             for test_key in all_tests:
 
                 test = test_data.get(test_key, {})
-                chamber_sequences = test.get('chamber_sequences', [])  # get temp & duration sequences
 
-                if chamber_sequences:  # if the test data is available
-                    for sequence in chamber_sequences:
-                        self.send_json_to_arduino(sequence)  # send the data to arduino
-                        # print status and update the listbox
-                        logging.info(f'running {sequence}')
+                if 'chamber_sequences' in test:  # if the test data is available
+                    self.send_json_to_arduino({test_key: test})  # send the data to arduino
+                    # print status and update the listbox
+                    logging.info(f'sending full test {test_key}')
                 else:
-                    logging.warning(f'{chamber_sequences} not found')
+                    logging.warning(f'{test_key} not found')
 
         else:
             # handle case when no test data is found
