@@ -299,50 +299,66 @@ void PWMCooler(int dutyCycle, unsigned long PeriodCooler) {
 }
 
 void parseTextFromJson(JsonDocument& doc) {
-    JsonObject test = doc["test_1"];
-    if (!test.containsKey("chamber_sequences")) {
-        Serial.println("Error: Missing 'chamber_sequences' in test data");
-        return;
-    }
 
-    // For future display of test info on LCD
-    // if (test.containsKey("sketch")) {
-    //     const char* sketch = test["sketch"];
-    //     Serial.print("Sketch to upload: ");
-    //     Serial.println(sketch);
-    // }
-    // if (test.containsKey("expected output")) {
-    //     const char* expected_output = test["expected_output"];
-    //     Serial.print("Expected output: ");
-    //     Serial.println(expected_output);
-    // }
-    
-
-    JsonArray sequences = test["chamber_sequences"];
-    int numSequences = sequences.size();
-    if (numSequences > 5) numSequences = 5;         // how many?
-
-    currentTest.numSequences = numSequences;
-
-    for (int i = 0; i < numSequences; i++) {
-        JsonObject sequence = sequences[i];
-
-        if (!sequence.containsKey("temp") || !sequence.containsKey("duration")) {
-            Serial.println("Error: Missing 'temp' or 'duration' in JSON sequence");
-            continue;   // skip this sequence if the keys are missing
+    // check if it's a test with "test_x keys
+    if (doc.containsKey("test_1")) {
+        JsonObject test = doc["test_1"];
+        if (!test.containsKey("chamber_sequences")) {
+            Serial.println("Error: Missing 'chamber_sequences' in test data");
+            return;
         }
-        currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
-        currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
+
+        // For future display of test info on LCD
+        // if (test.containsKey("sketch")) {
+        //     const char* sketch = test["sketch"];
+        //     Serial.print("Sketch to upload: ");
+        //     Serial.println(sketch);
+        // }
+        // if (test.containsKey("expected output")) {
+        //     const char* expected_output = test["expected_output"];
+        //     Serial.print("Expected output: ");
+        //     Serial.println(expected_output);
+        // }
+
+
+        JsonArray sequences = test["chamber_sequences"];
+        int numSequences = sequences.size();
+        if (numSequences > 5) numSequences = 5;         // how many?
+
+        currentTest.numSequences = numSequences;
+
+        for (int i = 0; i < numSequences; i++) {
+            JsonObject sequence = sequences[i];
+
+            if (!sequence.containsKey("temp") || !sequence.containsKey("duration")) {
+                Serial.println("Error: Missing 'temp' or 'duration' in JSON sequence");
+                continue;   // skip this sequence if the keys are missing
+            }
+            currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
+            currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
+        }
+        jsonBuffer.clear();
+
+        // start the test with the first sequence
+        currentSequenceIndex = 0;
+        isTestRunning = true;
+
+        // Ensure desired temperature is set and transition to the appropriate state
+        setTemperature(currentTest.sequences[0].targetTemp);
+        status =  REPORT;
+    } else if (doc.containsKey("temp") && doc.containsKey("duration")) {
+        float temp = doc["temp"];
+        unsigned long duration = doc["duration"];
+        setTemperature(temp);
+        Serial.print("Manual temp set to ");
+        Serial.println(temp);
+        Serial.print("Duration: ");
+        Serial.println(duration);
+
+        jsonBuffer.clear();
+    } else {
+        Serial.println("Error: Invalid JSON format");
     }
-    jsonBuffer.clear();
-
-    // start the test with the first sequence
-    currentSequenceIndex = 0;
-    isTestRunning = true;
-
-    // Ensure desired temperature is set and transition to the appropriate state
-    setTemperature(currentTest.sequences[0].targetTemp);
-    status =  REPORT;
 }
 
 bool printedWaiting = false;
