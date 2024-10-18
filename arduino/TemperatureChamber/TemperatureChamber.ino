@@ -336,6 +336,13 @@ void parseTextFromJson(JsonDocument& doc) {
             }
             currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
             currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
+
+            Serial.print("Parsed sequence ");
+            Serial.print(i);
+            Serial.print(": Temp = ");
+            Serial.print(currentTest.sequences[i].targetTemp);
+            Serial.print(", Duration = ");
+            Serial.print(currentTest.sequences[i].duration);
         }
         jsonBuffer.clear();
 
@@ -377,6 +384,13 @@ void runCurrentSequence() {
     Sequence currentSequence = currentTest.sequences[currentSequenceIndex];
     float targetTemp = currentSequence.targetTemp;
     unsigned long duration = currentSequence.duration;
+
+    Serial.print("Current sequence index: ");
+    Serial.println(currentSequenceIndex);
+    Serial.print("Target temp: ");
+    Serial.println(targetTemp);
+    Serial.print("Current room temp: ");
+    Serial.println(temperatureRoom);
 
     // store current duration for the SHOW RUNNING SEQUENCE command
     currentDuration = duration;
