@@ -37,6 +37,7 @@ class MainWindow(QMainWindow):
 
         self.serial_worker = None
         self.test_board = None
+        self.cli_worker = None
 
         # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
         self.input_dictionary = []
@@ -198,12 +199,9 @@ class MainWindow(QMainWindow):
 
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
-        self.test_board.pause_serial.connect(self.serial_worker.pause)
-        self.test_board.resume_serial.connect(self.serial_worker.resume)
         self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
-        self.test_board.pause_serial.connect(self.serial_worker.pause_capture)
-        self.test_board.resume_serial.connect(self.serial_worker.resume_capture)
+
 
     # the actual chamber_monitor QList updates
     def update_chamber_monitor_gui(self, message):
@@ -223,6 +221,12 @@ class MainWindow(QMainWindow):
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
 
+    def cli_update_upper_listbox_gui(self, message):
+        self.instruction_listbox.clear()
+        self.instruction_listbox.addItem(message)
+        self.instruction_listbox.scrollToBottom()
+
+
     # load test file and store it in the app
     def load_test_file(self):
         self.test_data = self.json_handler.open_file()
@@ -239,9 +243,35 @@ class MainWindow(QMainWindow):
             if not self.serial_worker.is_stopped:
                 self.serial_worker.run_all_tests(self.test_data)
             if not self.test_board.is_stopped:
-                self.test_board.run_all_tests(self.test_data, self.selected_t_port, self.filepath)
+                self.test_board.is_running = False
+                self.test_board.stop()
+                # self.test_board.quit()
+                self.test_board.deleteLater()
+                logging.info('test board worker temporarily deleted')
+                # initiate cli worker thread
+                self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
+                # connect pause and resume signals to serial capture
+                self.cli_worker.pause_serial.connect(self.serial_worker.pause_capture)
+                self.cli_worker.resume_serial.connect(self.serial_worker.resume_capture)
+                self.cli_worker.update_upper_listbox.connect(self.cli_update_upper_listbox_gui)
+                self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
+                self.cli_worker.start()  # start cli worker thread
+                self.cli_worker.run_all_tests(filepath=self.filepath, test_data=self.test_data)
+                # time.sleep(0.1)
         else:
             self.show_error_message('error', 'no test data loaded')
+
+    # clean up cli worker after it's done
+    def cleanup_cli_worker(self):
+        self.cli_worker.quit()
+        logging.info('cli worker quit')
+        self.cli_worker.wait()
+        self.cli_worker.deleteLater()
+        logging.info('cli worker deleted')
+
+        # restart test_board thread
+        self.test_board.start()
+        self.test_board.is_running = True
 
     # enter for temp & duration inputs
     def on_enter_key(self):

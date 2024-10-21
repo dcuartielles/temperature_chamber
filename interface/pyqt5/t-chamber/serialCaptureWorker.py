@@ -29,7 +29,7 @@ class SerialCaptureWorker(QThread):
             self.baudrate = baudrate
         try:
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
-            logging.info(f'connected to arduino port: {self.port}')
+            logging.info(f'serial capture worker connected to arduino port: {self.port}')
             print(f'connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
             return True
@@ -40,7 +40,7 @@ class SerialCaptureWorker(QThread):
     # method to run the thread
     def run(self):
         if not self.serial_setup():
-            logging.error(f'failed to connect to {self.port}')
+            logging.error(f'serial capture failed to connect to {self.port}')
             print(f'failed to connect to {self.port}')
             return
         logging.info('serial capture thread is running')
