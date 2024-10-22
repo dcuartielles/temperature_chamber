@@ -75,7 +75,7 @@ class CliWorker(QThread):
     # method to stop the serial communication
     def stop(self):
         self.is_running = False  # stop the worker thread loop
-        if self.ser and self.ser.is_open and self.serial_is_busy:
+        if self.ser and self.ser.is_open:
             self.ser.close()  # close the serial connection
             logging.info(f'connection to {self.port} closed now')
             print(f'connection to {self.port} closed now')
@@ -178,8 +178,6 @@ class CliWorker(QThread):
 
     def upload_sketch(self, fqbn, port, sketch_path):
 
-        logging.info(f'Serial is busy: {self.serial_is_busy}')
-
         if self.is_uploading:
             logging.warning('uploading already: skipping new upload request')
             return
@@ -187,21 +185,21 @@ class CliWorker(QThread):
         logging.info(f'uploading sketch to board with fqbn {fqbn} on port {port}...')
         uploading = 'uploading sketch on test board'
         self.wave(uploading)
-        logging.info(f'Serial is busy: {self.serial_is_busy}')
+
         command = [
             "arduino-cli", "upload",
             "-p", port,
             "--fqbn", fqbn,
             sketch_path
         ]
-
         try:
             if self.ser and not self.is_stopped:
-                logging.info(f'Serial is busy: {self.serial_is_busy}')
+                self.ser.close()
+
                 result = self.run_cli_command(command)
-                self.is_uploading = True
+
                 if result:
-                    logging.info(f'Serial is busy: {self.serial_is_busy}')
+                    self.is_uploading = True
                     logging.info('upload successful!')
                     print('upload successful!')
                     bye = 'upload successful!'
@@ -210,7 +208,6 @@ class CliWorker(QThread):
                     self.finished.emit()
                     return True
                 else:
-                    logging.info(f'Serial is busy: {self.serial_is_busy}')
                     logging.warning('upload failed!')
                     print('upload failed!')
                     bye = 'upload failed!'
@@ -219,7 +216,7 @@ class CliWorker(QThread):
                     self.finished.emit()
                     return False
             else:
-                logging.info(f'Serial is busy: {self.serial_is_busy}')
+
                 logging.warning(f'cli worker port connection to {port} seems to fail')
                 print(f'cli worker port connection to {port} seems to fail')
 

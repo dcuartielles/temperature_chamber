@@ -17246,3 +17246,419 @@ Failed uploading: uploading error: exit status 1
 2024-10-22 13:25:22,025 - INFO - sent command: SHOW DATA
 2024-10-22 13:25:22,052 - INFO - arduino says: Current sequence index: 0
 2024-10-22 13:25:22,617 - INFO - connection to COM15 closed
+2024-10-22 14:11:04,071 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-22 14:11:10,515 - INFO - selected port: COM15
+2024-10-22 14:11:10,515 - INFO - selected port: COM7
+2024-10-22 14:11:10,528 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 14:11:10,530 - INFO - serial capture worker connected to arduino port: COM15
+2024-10-22 14:11:11,530 - INFO - test board thread is running
+2024-10-22 14:11:11,532 - INFO - serial capture thread is running
+2024-10-22 14:11:15,530 - INFO - test worker thread is running
+2024-10-22 14:11:16,545 - INFO - sent command: SHOW DATA
+2024-10-22 14:11:16,659 - INFO - arduino says: Room_temp: 21.03 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:11:20,532 - INFO - test worker thread is running
+2024-10-22 14:11:21,622 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 14:11:21,770 - INFO - sent command: SHOW DATA
+2024-10-22 14:11:21,879 - INFO - arduino says: Room_temp: 21.03 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:11:23,348 - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-22 14:11:23,348 - INFO - sending full test test_1
+2024-10-22 14:11:23,360 - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-22 14:11:23,360 - INFO - sending full test test_2
+2024-10-22 14:11:23,361 - INFO - connection to COM7 closed now
+2024-10-22 14:11:23,462 - INFO - test board worker temporarily deleted
+2024-10-22 14:11:23,462 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 14:11:23,485 - INFO - cli worker connected to arduino port: COM7
+2024-10-22 14:11:23,718 - INFO - sent command: SHOW DATA
+2024-10-22 14:11:23,956 - INFO - arduino says: Error: Invalid JSON format
+2024-10-22 14:11:24,486 - INFO - cli worker thread is running
+2024-10-22 14:11:25,271 - INFO - sent command: SHOW DATA
+2024-10-22 14:11:25,444 - INFO - arduino says: Room_temp: 20.94 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:11:25,532 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-22 14:11:25,533 - INFO - detected fqbn: arduino:avr:uno
+2024-10-22 14:11:26,624 - INFO - command succeeded: arduino-cli core list
+2024-10-22 14:11:26,625 - INFO - core arduino is already installed.
+2024-10-22 14:11:26,625 - INFO - core arduino is already installed.
+2024-10-22 14:11:26,625 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-22 14:11:26,859 - INFO - sent command: SHOW DATA
+2024-10-22 14:11:26,937 - INFO - arduino says: Current sequence index: 0
+2024-10-22 14:11:28,455 - INFO - sent command: SHOW DATA
+2024-10-22 14:11:28,478 - INFO - arduino says: Current sequence index: 0
+2024-10-22 14:11:29,451 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 14:11:29,452 - INFO - compilation successful!
+2024-10-22 14:13:37,117 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-22 14:13:42,220 - INFO - selected port: COM15
+2024-10-22 14:13:42,220 - INFO - selected port: COM7
+2024-10-22 14:13:42,234 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 14:13:42,236 - INFO - serial capture worker connected to arduino port: COM15
+2024-10-22 14:13:43,235 - INFO - test board thread is running
+2024-10-22 14:13:43,237 - INFO - serial capture thread is running
+2024-10-22 14:13:43,742 - INFO - sent command: SHOW DATA
+2024-10-22 14:13:43,753 - INFO - arduino says: Current sequence index: 0
+2024-10-22 14:13:45,268 - INFO - sent command: SHOW DATA
+2024-10-22 14:13:45,293 - INFO - arduino says: Current sequence index: 0
+2024-10-22 14:13:46,810 - INFO - sent command: SHOW DATA
+2024-10-22 14:13:47,238 - INFO - test worker thread is running
+2024-10-22 14:13:58,947 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-22 14:14:04,387 - INFO - selected port: COM15
+2024-10-22 14:14:04,387 - INFO - selected port: COM7
+2024-10-22 14:14:04,406 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 14:14:04,406 - INFO - serial capture worker connected to arduino port: COM15
+2024-10-22 14:14:05,407 - INFO - test board thread is running
+2024-10-22 14:14:05,407 - INFO - serial capture thread is running
+2024-10-22 14:14:09,409 - INFO - test worker thread is running
+2024-10-22 14:14:10,411 - INFO - sent command: SHOW DATA
+2024-10-22 14:14:10,514 - INFO - arduino says: Room_temp: 21.19 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:14:13,862 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 14:14:14,507 - INFO - test worker thread is running
+2024-10-22 14:14:15,443 - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-22 14:14:15,443 - INFO - sending full test test_1
+2024-10-22 14:14:15,455 - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-22 14:14:15,455 - INFO - sending full test test_2
+2024-10-22 14:14:15,456 - INFO - connection to COM7 closed now
+2024-10-22 14:14:15,511 - INFO - test board worker temporarily deleted
+2024-10-22 14:14:15,511 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 14:14:15,533 - INFO - cli worker connected to arduino port: COM7
+2024-10-22 14:14:15,618 - INFO - sent command: SHOW DATA
+2024-10-22 14:14:15,813 - INFO - arduino says: Parsed sequence 0: Temp = 50.00, Duration = 60000Parsed sequence 1: Temp = 40.00, Duration = 60000Setting temperature to 50.00°
+2024-10-22 14:14:16,534 - INFO - cli worker thread is running
+2024-10-22 14:14:17,165 - INFO - sent command: SHOW DATA
+2024-10-22 14:14:17,357 - INFO - arduino says: Room_temp: 21.06 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:14:17,520 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-22 14:14:17,520 - INFO - detected fqbn: arduino:avr:uno
+2024-10-22 14:14:18,517 - INFO - command succeeded: arduino-cli core list
+2024-10-22 14:14:18,517 - INFO - core arduino is already installed.
+2024-10-22 14:14:18,517 - INFO - core arduino is already installed.
+2024-10-22 14:14:18,517 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-22 14:14:18,673 - INFO - sent command: SHOW DATA
+2024-10-22 14:14:18,898 - INFO - arduino says: Room_temp: 21.06 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:14:20,209 - INFO - sent command: SHOW DATA
+2024-10-22 14:14:20,439 - INFO - arduino says: Room_temp: 21.09 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:14:21,203 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 14:14:21,203 - INFO - compilation successful!
+2024-10-22 14:14:21,204 - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-10-22 14:14:21,752 - INFO - sent command: SHOW DATA
+2024-10-22 14:14:21,980 - INFO - arduino says: Room_temp: 21.12 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:14:22,351 - INFO - command failed: avrdude: ser_open(): can't open device "\\.\COM7": Access is denied.
+
+
+Failed uploading: uploading error: exit status 1
+
+2024-10-22 14:14:22,351 - WARNING - upload failed!
+2024-10-22 14:14:22,353 - INFO - connection to COM7 closed now
+2024-10-22 14:14:22,355 - INFO - cli worker quit
+2024-10-22 14:14:22,355 - INFO - cli worker deleted
+2024-10-22 14:14:22,356 - INFO - test board worker restarted
+2024-10-22 14:14:22,378 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 14:14:23,293 - INFO - sent command: SHOW DATA
+2024-10-22 14:14:23,378 - INFO - test board thread is running
+2024-10-22 14:14:23,523 - INFO - arduino says: Room_temp: 21.12 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:14:24,420 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-22 14:14:24,421 - INFO - detected fqbn: arduino:avr:uno
+2024-10-22 14:14:24,835 - INFO - sent command: SHOW DATA
+2024-10-22 14:14:25,063 - INFO - arduino says: Room_temp: 21.12 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:14:25,415 - INFO - command succeeded: arduino-cli core list
+2024-10-22 14:14:25,415 - INFO - core arduino is already installed.
+2024-10-22 14:14:25,415 - INFO - core arduino is already installed.
+2024-10-22 14:14:25,415 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-22 14:14:26,376 - INFO - sent command: SHOW DATA
+2024-10-22 14:14:26,604 - INFO - arduino says: Room_temp: 21.12 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:14:27,378 - INFO - test worker thread is running
+2024-10-22 14:14:27,916 - INFO - sent command: SHOW DATA
+2024-10-22 14:14:28,100 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 14:14:28,100 - INFO - compilation successful!
+2024-10-22 14:14:28,100 - WARNING - uploading already: skipping new upload request
+2024-10-22 14:14:28,144 - INFO - arduino says: Room_temp: 21.12 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:14:29,458 - INFO - sent command: SHOW DATA
+2024-10-22 14:14:29,686 - INFO - arduino says: Room_temp: 21.12 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:14:30,037 - INFO - connection to COM15 closed
+2024-10-22 14:14:30,091 - INFO - connection to COM7 closed now
+2024-10-22 14:16:34,549 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-22 14:16:39,189 - INFO - selected port: COM15
+2024-10-22 14:16:39,189 - INFO - selected port: COM7
+2024-10-22 14:16:39,203 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 14:16:39,207 - INFO - serial capture worker connected to arduino port: COM15
+2024-10-22 14:16:40,205 - INFO - test board thread is running
+2024-10-22 14:16:40,209 - INFO - serial capture thread is running
+2024-10-22 14:16:40,713 - INFO - sent command: SHOW DATA
+2024-10-22 14:16:40,724 - INFO - arduino says: Current sequence index: 0
+2024-10-22 14:16:42,239 - INFO - sent command: SHOW DATA
+2024-10-22 14:16:42,265 - INFO - arduino says: Current sequence index: 0
+2024-10-22 14:16:43,787 - INFO - sent command: SHOW DATA
+2024-10-22 14:16:43,806 - INFO - arduino says: Current sequence index: 0
+2024-10-22 14:16:44,206 - INFO - test worker thread is running
+2024-10-22 14:16:44,444 - INFO - connection to COM15 closed
+2024-10-22 14:16:44,516 - INFO - connection to COM7 closed now
+2024-10-22 14:17:46,689 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-22 14:17:51,325 - INFO - selected port: COM15
+2024-10-22 14:17:51,325 - INFO - selected port: COM7
+2024-10-22 14:17:51,342 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 14:17:51,344 - INFO - serial capture worker connected to arduino port: COM15
+2024-10-22 14:17:51,947 - INFO - selected port: COM15
+2024-10-22 14:17:51,948 - INFO - selected port: COM7
+2024-10-22 14:17:51,949 - ERROR - error: could not open port 'COM15': PermissionError(13, 'Access is denied.', None, 5)
+2024-10-22 14:17:51,949 - ERROR - error: could not open port 'COM7': PermissionError(13, 'Access is denied.', None, 5)
+2024-10-22 14:17:51,949 - ERROR - serial capture failed to connect to COM15
+2024-10-22 14:17:51,949 - ERROR - test board worker failed to connect to COM7
+2024-10-22 14:17:52,343 - INFO - test board thread is running
+2024-10-22 14:17:52,345 - INFO - serial capture thread is running
+2024-10-22 14:17:56,346 - INFO - test worker thread is running
+2024-10-22 14:17:57,355 - INFO - sent command: SHOW DATA
+2024-10-22 14:17:57,461 - INFO - arduino says: Room_temp: 21.09 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:18:01,444 - INFO - test worker thread is running
+2024-10-22 14:18:02,599 - INFO - sent command: SHOW DATA
+2024-10-22 14:18:02,908 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 14:18:02,930 - INFO - arduino says: Room_temp: 21.09 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:18:04,710 - WARNING - serial capture communication is not open
+2024-10-22 14:18:04,711 - INFO - sending full test test_1
+2024-10-22 14:18:04,711 - WARNING - serial capture communication is not open
+2024-10-22 14:18:04,711 - INFO - sending full test test_2
+2024-10-22 14:18:04,711 - INFO - test board worker temporarily deleted
+2024-10-22 14:18:04,711 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 14:18:04,713 - ERROR - error: could not open port 'COM7': PermissionError(13, 'Access is denied.', None, 5)
+2024-10-22 14:18:04,713 - ERROR - cli worker failed to connect to COM7
+2024-10-22 14:18:06,784 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-22 14:18:06,786 - INFO - detected fqbn: arduino:avr:uno
+2024-10-22 14:18:06,844 - INFO - test worker thread is running
+2024-10-22 14:18:07,792 - INFO - command succeeded: arduino-cli core list
+2024-10-22 14:18:07,792 - INFO - core arduino is already installed.
+2024-10-22 14:18:07,792 - INFO - core arduino is already installed.
+2024-10-22 14:18:07,792 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-22 14:18:08,051 - INFO - sent command: SHOW DATA
+2024-10-22 14:18:08,396 - INFO - arduino says: Room_temp: 21.09 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:18:10,746 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 14:18:10,746 - INFO - compilation successful!
+2024-10-22 14:18:10,747 - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-10-22 14:18:10,748 - WARNING - cli worker port connection to COM7 seems to fail
+2024-10-22 14:18:10,749 - INFO - cli worker quit
+2024-10-22 14:18:10,749 - INFO - cli worker deleted
+2024-10-22 14:18:10,749 - INFO - test board worker restarted
+2024-10-22 14:18:10,750 - ERROR - error: could not open port 'COM7': PermissionError(13, 'Access is denied.', None, 5)
+2024-10-22 14:18:10,750 - ERROR - test board worker failed to connect to COM7
+2024-10-22 14:18:11,846 - INFO - test worker thread is running
+2024-10-22 14:18:12,818 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-22 14:18:12,818 - INFO - detected fqbn: arduino:avr:uno
+2024-10-22 14:18:13,508 - INFO - sent command: SHOW DATA
+2024-10-22 14:18:13,863 - INFO - arduino says: Room_temp: 21.09 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:18:13,876 - INFO - command succeeded: arduino-cli core list
+2024-10-22 14:18:13,877 - INFO - core arduino is already installed.
+2024-10-22 14:18:13,877 - INFO - core arduino is already installed.
+2024-10-22 14:18:13,877 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-22 14:18:16,595 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 14:18:16,595 - INFO - compilation successful!
+2024-10-22 14:18:16,596 - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-10-22 14:18:16,596 - WARNING - cli worker port connection to COM7 seems to fail
+2024-10-22 14:18:16,596 - INFO - cli worker quit
+2024-10-22 14:18:16,597 - INFO - cli worker deleted
+2024-10-22 14:18:16,597 - INFO - test board worker restarted
+2024-10-22 14:18:16,597 - ERROR - error: could not open port 'COM7': PermissionError(13, 'Access is denied.', None, 5)
+2024-10-22 14:18:16,598 - ERROR - test board worker failed to connect to COM7
+2024-10-22 14:19:03,927 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-22 14:19:09,643 - INFO - selected port: COM15
+2024-10-22 14:19:09,643 - INFO - selected port: COM7
+2024-10-22 14:19:09,656 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 14:19:09,658 - INFO - serial capture worker connected to arduino port: COM15
+2024-10-22 14:19:10,658 - INFO - test board thread is running
+2024-10-22 14:19:10,660 - INFO - serial capture thread is running
+2024-10-22 14:19:14,660 - INFO - test worker thread is running
+2024-10-22 14:19:15,670 - INFO - sent command: SHOW DATA
+2024-10-22 14:19:15,939 - INFO - arduino says: Room_temp: 21.03 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:19:17,951 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 14:19:19,661 - INFO - test worker thread is running
+2024-10-22 14:19:21,040 - INFO - sent command: SHOW DATA
+2024-10-22 14:19:21,207 - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-22 14:19:21,207 - INFO - sending full test test_1
+2024-10-22 14:19:21,219 - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-22 14:19:21,219 - INFO - sending full test test_2
+2024-10-22 14:19:21,219 - INFO - connection to COM7 closed now
+2024-10-22 14:19:21,261 - INFO - test board worker temporarily deleted
+2024-10-22 14:19:21,262 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 14:19:21,284 - INFO - cli worker connected to arduino port: COM7
+2024-10-22 14:19:21,407 - INFO - arduino says: Room_temp: 21.03 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:19:22,285 - INFO - cli worker thread is running
+2024-10-22 14:19:22,592 - INFO - sent command: SHOW DATA
+2024-10-22 14:19:22,672 - INFO - arduino says: arget temp = 50.00 Duration = 60000
+2024-10-22 14:19:23,297 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-22 14:19:23,297 - INFO - detected fqbn: arduino:avr:uno
+2024-10-22 14:19:24,121 - INFO - sent command: SHOW DATA
+2024-10-22 14:19:24,370 - INFO - command succeeded: arduino-cli core list
+2024-10-22 14:19:24,370 - INFO - core arduino is already installed.
+2024-10-22 14:19:24,370 - INFO - core arduino is already installed.
+2024-10-22 14:19:24,370 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-22 14:19:24,548 - INFO - arduino says: Room_temp: 21.06 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:19:25,746 - INFO - sent command: SHOW DATA
+2024-10-22 14:19:26,375 - INFO - arduino says: Room_temp: 21.06 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:19:27,096 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 14:19:27,096 - INFO - compilation successful!
+2024-10-22 14:19:27,097 - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-10-22 14:19:27,572 - INFO - sent command: SHOW DATA
+2024-10-22 14:19:28,201 - INFO - arduino says: Room_temp: 21.06 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:19:28,224 - INFO - command failed: avrdude: ser_open(): can't open device "\\.\COM7": Access is denied.
+
+
+Failed uploading: uploading error: exit status 1
+
+2024-10-22 14:19:28,224 - WARNING - upload failed!
+2024-10-22 14:19:28,226 - INFO - connection to COM7 closed now
+2024-10-22 14:19:28,305 - INFO - cli worker quit
+2024-10-22 14:19:28,305 - INFO - cli worker deleted
+2024-10-22 14:19:28,306 - INFO - test board worker restarted
+2024-10-22 14:19:28,328 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 14:19:29,329 - INFO - test board thread is running
+2024-10-22 14:19:29,399 - INFO - sent command: SHOW DATA
+2024-10-22 14:19:30,028 - INFO - arduino says: Room_temp: 21.09 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:19:30,317 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-22 14:19:30,318 - INFO - detected fqbn: arduino:avr:uno
+2024-10-22 14:19:31,226 - INFO - sent command: SHOW DATA
+2024-10-22 14:19:31,372 - INFO - command succeeded: arduino-cli core list
+2024-10-22 14:19:31,372 - INFO - core arduino is already installed.
+2024-10-22 14:19:31,372 - INFO - core arduino is already installed.
+2024-10-22 14:19:31,372 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-22 14:19:31,855 - INFO - arduino says: Room_temp: 21.12 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:19:33,054 - INFO - sent command: SHOW DATA
+2024-10-22 14:19:33,329 - INFO - test worker thread is running
+2024-10-22 14:19:33,681 - INFO - arduino says: Room_temp: 21.12 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:19:34,173 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 14:19:34,173 - INFO - compilation successful!
+2024-10-22 14:19:34,173 - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-10-22 14:19:34,881 - INFO - sent command: SHOW DATA
+2024-10-22 14:19:35,303 - INFO - command failed: avrdude: ser_open(): can't open device "\\.\COM7": Access is denied.
+
+
+Failed uploading: uploading error: exit status 1
+
+2024-10-22 14:19:35,303 - WARNING - upload failed!
+2024-10-22 14:19:35,304 - INFO - cli worker quit
+2024-10-22 14:19:35,304 - INFO - cli worker deleted
+2024-10-22 14:19:35,305 - INFO - test board worker restarted
+2024-10-22 14:19:35,306 - ERROR - error: could not open port 'COM7': PermissionError(13, 'Access is denied.', None, 5)
+2024-10-22 14:19:35,306 - ERROR - test board worker failed to connect to COM7
+2024-10-22 14:19:35,455 - INFO - there was nothing worth saying here
+2024-10-22 14:19:35,455 - INFO - connection to COM15 closed
+2024-10-22 14:31:11,610 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-22 14:31:17,627 - INFO - selected port: COM15
+2024-10-22 14:31:17,627 - INFO - selected port: COM7
+2024-10-22 14:31:17,641 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 14:31:17,642 - INFO - serial capture worker connected to arduino port: COM15
+2024-10-22 14:31:18,642 - INFO - test board thread is running
+2024-10-22 14:31:18,643 - INFO - serial capture thread is running
+2024-10-22 14:31:19,149 - INFO - sent command: SHOW DATA
+2024-10-22 14:31:19,698 - INFO - arduino says: Room_temp: 21.25 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:31:20,896 - INFO - sent command: SHOW DATA
+2024-10-22 14:31:21,524 - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:31:21,677 - INFO - connection to COM15 closed
+2024-10-22 14:31:21,728 - INFO - connection to COM7 closed now
+2024-10-22 14:31:30,186 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-22 14:31:35,220 - INFO - selected port: COM15
+2024-10-22 14:31:35,221 - INFO - selected port: COM7
+2024-10-22 14:31:35,235 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 14:31:35,236 - INFO - serial capture worker connected to arduino port: COM15
+2024-10-22 14:31:36,237 - INFO - test board thread is running
+2024-10-22 14:31:36,238 - INFO - serial capture thread is running
+2024-10-22 14:31:40,241 - INFO - test worker thread is running
+2024-10-22 14:31:41,246 - INFO - sent command: SHOW DATA
+2024-10-22 14:31:41,454 - INFO - arduino says: Room_temp: 21.25 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:31:43,745 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 14:31:45,242 - INFO - test worker thread is running
+2024-10-22 14:31:46,555 - INFO - sent command: SHOW DATA
+2024-10-22 14:31:46,690 - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-22 14:31:46,690 - INFO - sending full test test_1
+2024-10-22 14:31:46,702 - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-22 14:31:46,702 - INFO - sending full test test_2
+2024-10-22 14:31:46,704 - INFO - connection to COM7 closed now
+2024-10-22 14:31:46,804 - INFO - test board worker temporarily deleted
+2024-10-22 14:31:46,804 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 14:31:46,828 - INFO - cli worker connected to arduino port: COM7
+2024-10-22 14:31:46,920 - INFO - arduino says: Room_temp: 21.25 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:31:47,829 - INFO - cli worker thread is running
+2024-10-22 14:31:48,105 - INFO - sent command: SHOW DATA
+2024-10-22 14:31:48,186 - INFO - arduino says: arget temp = 50.00 Duration = 60000
+2024-10-22 14:31:48,842 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-22 14:31:48,842 - INFO - detected fqbn: arduino:avr:uno
+2024-10-22 14:31:49,635 - INFO - sent command: SHOW DATA
+2024-10-22 14:31:49,867 - INFO - command succeeded: arduino-cli core list
+2024-10-22 14:31:49,867 - INFO - core arduino is already installed.
+2024-10-22 14:31:49,867 - INFO - core arduino is already installed.
+2024-10-22 14:31:49,867 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-22 14:31:50,061 - INFO - arduino says: Room_temp: 21.25 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:31:51,260 - INFO - sent command: SHOW DATA
+2024-10-22 14:31:51,888 - INFO - arduino says: Room_temp: 21.25 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:31:52,804 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 14:31:52,804 - INFO - compilation successful!
+2024-10-22 14:31:52,804 - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-10-22 14:31:53,086 - INFO - sent command: SHOW DATA
+2024-10-22 14:31:53,714 - INFO - arduino says: Room_temp: 21.25 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:31:54,913 - INFO - sent command: SHOW DATA
+2024-10-22 14:31:55,541 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:31:56,596 - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 14:31:56,597 - INFO - upload successful!
+2024-10-22 14:31:56,661 - INFO - cli worker quit
+2024-10-22 14:31:56,661 - INFO - cli worker deleted
+2024-10-22 14:31:56,661 - INFO - test board worker restarted
+2024-10-22 14:31:56,684 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 14:31:56,739 - INFO - sent command: SHOW DATA
+2024-10-22 14:31:57,368 - INFO - arduino says: Room_temp: 21.25 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:31:57,685 - INFO - test board thread is running
+2024-10-22 14:31:58,567 - INFO - sent command: SHOW DATA
+2024-10-22 14:31:58,747 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-22 14:31:58,747 - INFO - detected fqbn: arduino:avr:uno
+2024-10-22 14:31:59,195 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:31:59,817 - INFO - command succeeded: arduino-cli core list
+2024-10-22 14:31:59,817 - INFO - core arduino is already installed.
+2024-10-22 14:31:59,817 - INFO - core arduino is already installed.
+2024-10-22 14:31:59,817 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-22 14:32:00,394 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:01,022 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:02,219 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:02,698 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 14:32:02,698 - INFO - compilation successful!
+2024-10-22 14:32:02,698 - WARNING - uploading already: skipping new upload request
+2024-10-22 14:32:02,848 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:04,046 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:04,675 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:05,874 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:06,503 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:07,701 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:08,329 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:09,527 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:10,156 - INFO - arduino says: Room_temp: 21.25 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:11,185 - INFO - test worker thread is running
+2024-10-22 14:32:11,354 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:11,983 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:13,181 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:13,810 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:15,008 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:15,637 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:16,835 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:17,463 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:18,662 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:19,291 - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:20,488 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:21,116 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:22,315 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:22,943 - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:24,142 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:24,770 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:25,181 - INFO - test worker thread is running
+2024-10-22 14:32:25,969 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:26,596 - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:27,795 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:28,424 - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:29,622 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:30,251 - INFO - arduino says: Room_temp: 21.28 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:31,450 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:32,078 - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:33,275 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:33,903 - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:35,103 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:35,731 - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:36,930 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:37,557 - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:38,757 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:39,181 - INFO - test worker thread is running
+2024-10-22 14:32:39,385 - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:40,583 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:41,211 - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 14:32:42,410 - INFO - sent command: SHOW DATA
+2024-10-22 14:32:42,547 - INFO - there was nothing worth saying here
+2024-10-22 14:32:42,548 - INFO - connection to COM15 closed
+2024-10-22 14:32:42,649 - INFO - connection to COM7 closed now
