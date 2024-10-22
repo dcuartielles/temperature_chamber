@@ -180,14 +180,14 @@ class CliWorker(QThread):
                     logging.info('upload successful!')
                     print('upload successful!')
                     bye = 'upload successful!'
-                    self. wave(bye)
+                    self.wave(bye)
                     self.finished.emit()
                     return True
                 else:
                     logging.warning('upload failed!')
                     bye = 'upload failed!'
                     print('upload failed!')
-                    self. wave(bye)
+                    self.wave(bye)
                     self.finished.emit()
                     return False
             else:

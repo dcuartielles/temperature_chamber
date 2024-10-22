@@ -269,8 +269,10 @@ class MainWindow(QMainWindow):
         self.cli_worker.deleteLater()
         logging.info('cli worker deleted')
 
-        # restart test_board thread
-        self.test_board.start()
+        # restart test board worker thread
+        self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
+        self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
+        self.test_board.start()  # start test board thread
         self.test_board.is_running = True
 
     # enter for temp & duration inputs
