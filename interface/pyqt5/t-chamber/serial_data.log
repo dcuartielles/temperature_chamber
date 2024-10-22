@@ -17142,3 +17142,107 @@ Failed uploading: uploading error: exit status 1
 2024-10-22 12:54:38,008 - INFO - sent command: SHOW DATA
 2024-10-22 12:54:38,034 - INFO - arduino says: Current sequence index: 0
 2024-10-22 12:54:39,222 - INFO - connection to COM15 closed
+2024-10-22 13:24:42,074 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-22 13:24:47,242 - INFO - selected port: COM15
+2024-10-22 13:24:47,243 - INFO - selected port: COM7
+2024-10-22 13:24:47,256 - INFO - serial capture worker connected to arduino port: COM15
+2024-10-22 13:24:47,261 - INFO - test board worker connected to arduino port: COM7
+2024-10-22 13:24:48,257 - INFO - serial capture thread is running
+2024-10-22 13:24:48,262 - INFO - test board thread is running
+2024-10-22 13:24:52,259 - INFO - test worker thread is running
+2024-10-22 13:24:53,265 - INFO - sent command: SHOW DATA
+2024-10-22 13:24:53,366 - INFO - arduino says: Room_temp: 21.00 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 13:24:57,146 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 13:24:57,261 - INFO - test worker thread is running
+2024-10-22 13:24:58,481 - INFO - sent command: SHOW DATA
+2024-10-22 13:24:58,586 - INFO - arduino says: Room_temp: 21.00 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 13:25:01,510 - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-22 13:25:01,511 - INFO - sending full test test_1
+2024-10-22 13:25:01,523 - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-22 13:25:01,523 - INFO - sending full test test_2
+2024-10-22 13:25:01,524 - INFO - connection to COM7 closed now
+2024-10-22 13:25:01,624 - INFO - test board worker temporarily deleted
+2024-10-22 13:25:01,626 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-22 13:25:01,649 - INFO - cli worker connected to arduino port: COM7
+2024-10-22 13:25:01,882 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:02,120 - INFO - arduino says: Error: Invalid JSON format
+2024-10-22 13:25:02,650 - INFO - cli worker thread is running
+2024-10-22 13:25:03,466 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:03,608 - INFO - arduino says: Room_temp: 20.94 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-22 13:25:03,642 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-22 13:25:03,642 - INFO - detected fqbn: arduino:avr:uno
+2024-10-22 13:25:04,660 - INFO - command succeeded: arduino-cli core list
+2024-10-22 13:25:04,660 - INFO - core arduino is already installed.
+2024-10-22 13:25:04,661 - INFO - core arduino is already installed.
+2024-10-22 13:25:04,661 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-22 13:25:05,021 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:05,099 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:06,615 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:06,641 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:07,328 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 13:25:07,328 - INFO - compilation successful!
+2024-10-22 13:25:07,830 - INFO - arduino on COM7 reset successfully
+2024-10-22 13:25:07,830 - INFO - Serial is busy: False
+2024-10-22 13:25:07,831 - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-10-22 13:25:07,831 - INFO - Serial is busy: True
+2024-10-22 13:25:07,831 - INFO - Serial is busy: True
+2024-10-22 13:25:08,160 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:08,182 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:08,976 - INFO - command failed: avrdude: ser_open(): can't open device "\\.\COM7": Access is denied.
+
+
+Failed uploading: uploading error: exit status 1
+
+2024-10-22 13:25:08,980 - INFO - Serial is busy: True
+2024-10-22 13:25:08,981 - WARNING - upload failed!
+2024-10-22 13:25:09,075 - INFO - cli worker quit
+2024-10-22 13:25:09,075 - INFO - cli worker deleted
+2024-10-22 13:25:09,700 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:09,723 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:11,077 - INFO - test board worker restarted
+2024-10-22 13:25:11,078 - ERROR - upload failed
+2024-10-22 13:25:11,078 - ERROR - error: could not open port 'COM7': PermissionError(13, 'Access is denied.', None, 5)
+2024-10-22 13:25:11,078 - ERROR - test board worker failed to connect to COM7
+2024-10-22 13:25:11,240 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:11,264 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:12,780 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:12,805 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:13,138 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-22 13:25:13,139 - INFO - detected fqbn: arduino:avr:uno
+2024-10-22 13:25:14,148 - INFO - command succeeded: arduino-cli core list
+2024-10-22 13:25:14,149 - INFO - core arduino is already installed.
+2024-10-22 13:25:14,149 - INFO - core arduino is already installed.
+2024-10-22 13:25:14,149 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-22 13:25:14,322 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:14,346 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:15,863 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:15,888 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:16,784 - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-22 13:25:16,784 - INFO - compilation successful!
+2024-10-22 13:25:17,285 - INFO - arduino on COM7 reset successfully
+2024-10-22 13:25:17,286 - INFO - Serial is busy: False
+2024-10-22 13:25:17,286 - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-10-22 13:25:17,287 - INFO - Serial is busy: True
+2024-10-22 13:25:17,287 - INFO - Serial is busy: True
+2024-10-22 13:25:17,404 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:17,429 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:18,424 - INFO - command failed: avrdude: ser_open(): can't open device "\\.\COM7": Access is denied.
+
+
+Failed uploading: uploading error: exit status 1
+
+2024-10-22 13:25:18,424 - INFO - Serial is busy: True
+2024-10-22 13:25:18,424 - WARNING - upload failed!
+2024-10-22 13:25:18,424 - INFO - cli worker quit
+2024-10-22 13:25:18,426 - INFO - cli worker deleted
+2024-10-22 13:25:18,946 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:18,969 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:20,426 - INFO - test board worker restarted
+2024-10-22 13:25:20,426 - ERROR - upload failed
+2024-10-22 13:25:20,426 - ERROR - error: could not open port 'COM7': PermissionError(13, 'Access is denied.', None, 5)
+2024-10-22 13:25:20,426 - ERROR - test board worker failed to connect to COM7
+2024-10-22 13:25:20,486 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:20,511 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:22,025 - INFO - sent command: SHOW DATA
+2024-10-22 13:25:22,052 - INFO - arduino says: Current sequence index: 0
+2024-10-22 13:25:22,617 - INFO - connection to COM15 closed

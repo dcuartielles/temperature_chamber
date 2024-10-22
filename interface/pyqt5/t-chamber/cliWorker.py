@@ -22,8 +22,8 @@ class CliWorker(QThread):
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
         self.test_data = None
-        self.serial_is_busy = False
         self.last_command_time = time.time()
+        self.is_uploading = False
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -76,7 +76,6 @@ class CliWorker(QThread):
     def stop(self):
         self.is_running = False  # stop the worker thread loop
         if self.ser and self.ser.is_open and self.serial_is_busy:
-            self.serial_is_busy = False
             self.ser.close()  # close the serial connection
             logging.info(f'connection to {self.port} closed now')
             print(f'connection to {self.port} closed now')
@@ -84,7 +83,6 @@ class CliWorker(QThread):
         self.wait()
 
     def run_cli_command(self, command):
-
         try:
             result = subprocess.run(command, capture_output=True, text=True, check=True)
             logging.info(f'command succeeded: {" ".join(command)}')
@@ -96,7 +94,6 @@ class CliWorker(QThread):
 
     def get_arduino_boards(self):
         command = ["arduino-cli", "board", "list", "--format", "json"]
-        self.serial_is_busy = True
         output = self.run_cli_command(command)
 
         if output:
@@ -113,13 +110,11 @@ class CliWorker(QThread):
             except json.JSONDecodeError:
                 logging.info('error parsing arduino-cli board list output')
                 return []
-        self.serial_is_busy = False
         return []
 
 
     def detect_board(self, port):
         command = ["arduino-cli", "board", "list", "--format", "json"]
-        self.serial_is_busy = True
         output = self.run_cli_command(command)
 
         if output:
@@ -134,13 +129,11 @@ class CliWorker(QThread):
                         else:
                             logging.warning(f'no fqbn found for board on port {port}')
                             return None
-            self.serial_is_busy = False
         return None
 
     def is_core_installed(self, fqbn):
         core_name = fqbn.split(":")[0]
         command = ["arduino-cli", "core", "list"]
-        self.serial_is_busy = True
         output = self.run_cli_command(command)
 
         if output:
@@ -149,7 +142,6 @@ class CliWorker(QThread):
                 if core_name in core:
                     logging.info(f'core {core_name} is already installed.')
                     return True
-            self.serial_is_busy = False
         return False
 
     def install_core_if_needed(self, fqbn):
@@ -185,9 +177,13 @@ class CliWorker(QThread):
             return False
 
     def upload_sketch(self, fqbn, port, sketch_path):
-        self.reset_arduino()
+
         logging.info(f'Serial is busy: {self.serial_is_busy}')
-        self.serial_is_busy = True
+
+        if self.is_uploading:
+            logging.warning('uploading already: skipping new upload request')
+            return
+
         logging.info(f'uploading sketch to board with fqbn {fqbn} on port {port}...')
         uploading = 'uploading sketch on test board'
         self.wave(uploading)
@@ -203,13 +199,14 @@ class CliWorker(QThread):
             if self.ser and not self.is_stopped:
                 logging.info(f'Serial is busy: {self.serial_is_busy}')
                 result = self.run_cli_command(command)
+                self.is_uploading = True
                 if result:
                     logging.info(f'Serial is busy: {self.serial_is_busy}')
                     logging.info('upload successful!')
                     print('upload successful!')
                     bye = 'upload successful!'
                     self.wave(bye)
-                    self.serial_is_busy = False
+
                     self.finished.emit()
                     return True
                 else:
@@ -218,25 +215,24 @@ class CliWorker(QThread):
                     print('upload failed!')
                     bye = 'upload failed!'
                     self.wave(bye)
-                    self.serial_is_busy = False
+
                     self.finished.emit()
                     return False
             else:
                 logging.info(f'Serial is busy: {self.serial_is_busy}')
                 logging.warning(f'cli worker port connection to {port} seems to fail')
                 print(f'cli worker port connection to {port} seems to fail')
-                self.serial_is_busy = False
+
                 self.finished.emit()
         except serial.SerialException as e:
             logging.error(f'serial error on cli thread during upload: {e}')
             error = f'serial error on cli thread during upload: {str(e)}'
             self.wave(error)
-            self.serial_is_busy = False
+
             self.finished.emit()
 
     def reset_arduino(self):
         if self.ser:
-            self.serial_is_busy = True
             try:
                 self.ser.setDTR(False)  # reset arduino by setting str to False
                 time.sleep(0.5)  # time to reset
@@ -249,20 +245,13 @@ class CliWorker(QThread):
                 logging.error(f'failed to reset arduino on {self.port}: {e}')
                 print(f'arduino on {self.port} reset successfully')
 
-            finally:
-                self.serial_is_busy = False
-
     def handle_board_and_upload(self, port, sketch_path):
         fqbn = self.detect_board(port)
         if fqbn:
             self.install_core_if_needed(fqbn)
             if self.compile_sketch(fqbn, sketch_path):
-                if self.upload_sketch(fqbn, port, sketch_path):
-                    return True
-                else:
-                    logging.error('upload failed')
-                    print('upload failed')
-                    return False
+                self.upload_sketch(fqbn, port, sketch_path)
+                return True
             else:
                 logging.error('aborting upload due to compilation failure.')
         else:
