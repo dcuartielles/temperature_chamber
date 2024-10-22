@@ -2,8 +2,8 @@ import json
 from pathlib import Path
 
 class Config:
-    def __init__(self, config_file='config.json'):
-        self.config_file = Path(config_file).resolve()  # ensure the path is absolute
+    def __init__(self, config_filename='config.json'):
+        self.config_file = Path(__file__).parent / config_filename
         self.config = {}
         self.load_config()
 
@@ -20,6 +20,7 @@ class Config:
             }
 
     def save_config(self, config_data):
+        self.config.update(config_data)
         with self.config_file.open('w') as file:
             json.dump(self.config, file, indent=4)
 

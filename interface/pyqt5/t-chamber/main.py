@@ -347,7 +347,7 @@ class MainWindow(QMainWindow):
             "t_port": t_port,
             "test_directory": config_directory
         }
-        self.config.save_config(config_file)
+        self.config.save_config(self.config_file)
 
     # helper method to display error messages using QMessageBox
     @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data
@@ -366,6 +366,7 @@ class MainWindow(QMainWindow):
 
     # stop both workers
     def closeEvent(self, event):
+        self.update_config()
         self.serial_worker.stop()
         self.test_board.stop()
         event.accept()  # ensure the application closes
