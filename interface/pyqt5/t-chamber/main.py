@@ -12,6 +12,7 @@ from serialCaptureWorker import SerialCaptureWorker
 from portSelector import PortSelector
 from testBoardWorker import TestBoardWorker
 from cliWorker import CliWorker
+from config import Config
 
 
 # define global logging
@@ -35,14 +36,20 @@ class MainWindow(QMainWindow):
         self.selected_c_port = None
         self.selected_t_port = None
 
+        # create an instance of config
+        self.config = Config(self)
+
+        # prepare space for worker threads to appear later
         self.serial_worker = None
         self.test_board = None
         self.cli_worker = None
+
 
         # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
         self.input_dictionary = []
         self.test_data = None
         self.filepath = None
+        self.config_directory = None
 
         self.initUI()
 
@@ -323,6 +330,24 @@ class MainWindow(QMainWindow):
             self.input_dictionary.append(new_sequence)  # append valid input to the dictionary
             logging.info(self.input_dictionary)  # log temp & duration
         return is_valid
+
+    def get_config_directory(self):
+        filepath = self.filepath
+        test_data_filepath = filepath.rsplit('/', 1)[0]
+        self.config_directory = test_data_filepath.rsplit('/', 1)[0]
+        return self.config_directory
+
+    def update_config(self):
+        c_port = self.selected_c_port
+        t_port = self.selected_t_port
+        test_directory = self.get_config_directory()
+        config_directory = test_directory
+        config_file = {
+            "c_port": c_port,
+            "t_port": t_port,
+            "test_directory": config_directory
+        }
+        self.config.save_config(config_file)
 
     # helper method to display error messages using QMessageBox
     @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data

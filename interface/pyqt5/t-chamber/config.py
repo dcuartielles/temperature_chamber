@@ -19,7 +19,7 @@ class Config:
                 "test_directory": None
             }
 
-    def save_config(self):
+    def save_config(self, config_data):
         with self.config_file.open('w') as file:
             json.dump(self.config, file, indent=4)
 
