@@ -500,112 +500,130 @@ void parseCommand(String command) {
     //displayStatus();
 }
 
-void handleResetState() {
+int getSwitchStatus() {
+    int switchStatus;
+
     if (switchSystem.read() == LOW) {
-        displayLCD(temperatureRoom, temperatureDesired);
-        readAndParseSerial();
-    } else {
-        displayLCDOff();
+        switchStatus += 10;
+    }
+    if (switchStart.read() == LOW) {
+        switchStatus += 1;
+    }
+    return switchStatus;
+}
+
+
+// global variables to store switch states and flags
+bool systemSwitchState = false;
+bool startSwitchState = false;
+bool stopSwitchState = false;
+
+// centralized switch handling
+void updateSwitchStates() {
+    systemSwitchState = switchSystem.read() == LOW;
+    startSwitchState = switchSystem.read() == LOW;
+    stopSwitchState = switchSystem.released();  // stop condition from releasing the start switch
+}
+
+
+void handleResetState() {
+    displayLCD(temperatureRoom, temperatureDesired);
+
+    if (!systemSwitchState) {
+        status = EMERGENCY_STOP;
+        return;
     }
 
-    if (switchSystem.read() == HIGH) {
-        status = EMERGENCY_STOP; // shut everything down
-    } else if (switchStart.pressed() || switchStart.held()) {
-        status = REPORT; // check temperature and report result
+    if (startSwitchState) {
+        status = REPORT;
     }
+
+    // allow manual control of temperature from buttons
     changeTemperature();
 
+    // turn off all outputs
     heater.off();
     cooler.off();
     stateHeater = 0;
     stateCooler = 0;
     longheatingflag = 0;
+
+    readAndParseSerial();
 }
 
 void handleHeatingState() {
-    if (switchSystem.read() == HIGH || switchStart.read() == HIGH) {
+    if (!systemSwitchState || stopSwitchState) {
         status = RESET;
         return;
     }
     cooler.off();
-
-    if (switchSystem.released()) {
-        status = EMERGENCY_STOP;
-    }
-    if (switchSystem.read() == LOW && switchStart.released()) {
-        status = RESET; // go to reset if startswitch is off and system is on
-    }
 
     if(TemperatureThreshold > -0.1) {
         status = REPORT;
         longheatingflag = 0;
-    } else if(TemperatureThreshold < -4 && TemperatureThreshold > -8) {
+        stateHeater = 0;
+        return;
+    } else if(TemperatureThreshold < -4) {
         dutyCycleHeater = 100;
-        PeriodHeater = 60000;
+        PeriodHeater = (TemperatureThreshold < -8) ? 120000 : 60000;
         longheatingflag = 1;
-    } else if(TemperatureThreshold < -8) {
-        dutyCycleHeater = 100; PeriodHeater = 120000; longheatingflag = 1; // turn heater on for 2 mins
     } else if(TemperatureThreshold > -4 && longheatingflag == 0) {
-        dutyCycleHeater = 80; PeriodHeater = 25000; //on for 20 seconds and off for 5
-    } else if(TemperatureThreshold > -4 && longheatingflag == 1) {
-        dutyCycleHeater = 0;  
+        dutyCycleHeater = (longheatingflag == 0) ? 80 : 0;
+        PeriodHeater = 25000; //on for 20 seconds and off for 5
     }
 
     PWMHeater(dutyCycleHeater, PeriodHeater);
-    stateCooler = 0;
     stateHeater = 1;
+    stateCooler = 0;
 
-    // Serial.println("DutyCycleHeater: " + String(dutyCycleHeater));
-    // Serial.println("PeriodHeater: " + String(PeriodHeater));
-
+    readAndParseSerial();
 }
 
 void handleCoolingState() {
-    if (switchSystem.read() == HIGH || switchStart.read() == HIGH) {
+    if (!systemSwitchState || stopSwitchState) {
         status = RESET;
         return;
     }
 
     heater.off();
 
-    if (switchSystem.released()) {
-        status = EMERGENCY_STOP;
-    }
-    if (switchSystem.read() == LOW && switchStart.released()) {
-        status = RESET;
-    }
-
     if(TemperatureThreshold < 0.4) {
         status = REPORT;
+        stateCooler = 0;
+        return;
     } else if(TemperatureThreshold > 1) {
         dutyCycleCooler = 100;
         PeriodCooler=2000;
-    } else if(TemperatureThreshold < 1 && TemperatureThreshold > 0.4) {
+    } else if(TemperatureThreshold < 1) {
         dutyCycleCooler = 29;
         PeriodCooler=7000; // on for 2 seconds and off for 5
     } 
-    longheatingflag = 0;
 
     PWMCooler(dutyCycleCooler, PeriodCooler);
-    stateHeater = 0;
     stateCooler = 1;
+    stateHeater = 0;
 
-    // Serial.println("DutyCycleCooler: " + String(dutyCycleCooler));
-    // Serial.println("PeriodCooler: " + String(PeriodCooler));
+    readAndParseSerial();
 }
 
 void handleReportState() {
-    if (switchSystem.read() == HIGH) {
+    if (!systemSwitchState) {
         status = EMERGENCY_STOP;
-    } else if (switchStart.released()) {
-        status = RESET;
-    } else if (switchStart.read() == LOW) {
-        if(TemperatureThreshold > 0.4) {
-            status = COOLING;
-        } else if(TemperatureThreshold < -0.1) {
-            status = HEATING;
-        }
+        return;
     }
+
+    if (stopSwitchState) {
+        status = RESET;
+        return;
+    }
+
+    if(TemperatureThreshold > 0.4) {
+        status = COOLING;
+    } else if(TemperatureThreshold < -0.1) {
+        status = HEATING;
+    }
+
+    readAndParseSerial();
 }
 
 void handleEmergencyStopState() {
@@ -615,9 +633,12 @@ void handleEmergencyStopState() {
     stateCooler = 0;
     displayLCDOff();
     longheatingflag =0;
+
     if (switchSystem.held()) {
         status = RESET;
     }
+
+    readAndParseSerial();
 }
 
 void readAndParseSerial() {
@@ -645,14 +666,20 @@ void readAndParseSerial() {
     }
 }
 
+unsigned long currentMillis = 0;
 unsigned long lastUpdate = 0;
 unsigned long updateInterval = 500;
 
 bool printedLCDOff = false;
 
 void loop() {  
+    currentMillis = millis();
 
-    unsigned long currentMillis = millis();
+    // centralized switch and event handling
+    updateSwitchStates();       // read switch states
+    readAndParseSerial();       // check serial input for new tests or commands
+
+
     if (switchSystem.read() == LOW) {
         displayLCD(temperatureRoom, temperatureDesired);
         //displaySerial();
@@ -674,8 +701,6 @@ void loop() {
     temperatureRoom = getTemperature();
     TemperatureThreshold = temperatureRoom - temperatureDesired;
 
-    // Check if data is available on the serial port
-    readAndParseSerial();
 
     if (isTestRunning) {
         runCurrentSequence();
