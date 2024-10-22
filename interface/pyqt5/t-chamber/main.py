@@ -92,8 +92,8 @@ class MainWindow(QMainWindow):
         test_part_layout = QHBoxLayout()
         test_button_layout = QVBoxLayout()
         self.instruction_listbox = QListWidget(self)
-        self.instruction_listbox.addItems(['* start by loading a test file',
-                                           '* make sure the serial port numbers are correct',
+        self.instruction_listbox.addItems(['* start by choosing ports and boards',
+                                           '* upload test file',
                                            '* run full test sequence',
                                            '* sit back and watch the test outcomes'])
         self.instruction_listbox.setFixedSize(475, 135)
@@ -245,7 +245,6 @@ class MainWindow(QMainWindow):
             if not self.test_board.is_stopped:
                 self.test_board.is_running = False
                 self.test_board.stop()
-                # self.test_board.quit()
                 self.test_board.deleteLater()
                 logging.info('test board worker temporarily deleted')
                 # initiate cli worker thread
@@ -253,23 +252,25 @@ class MainWindow(QMainWindow):
                 # connect pause and resume signals to serial capture
                 self.cli_worker.pause_serial.connect(self.serial_worker.pause_capture)
                 self.cli_worker.resume_serial.connect(self.serial_worker.resume_capture)
-                self.cli_worker.update_upper_listbox.connect(self.cli_update_upper_listbox_gui)
                 self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
+                self.cli_worker.update_upper_listbox.connect(self.cli_update_upper_listbox_gui)
                 self.cli_worker.start()  # start cli worker thread
                 self.cli_worker.run_all_tests(filepath=self.filepath, test_data=self.test_data)
-                # time.sleep(0.1)
+                time.sleep(0.1)
         else:
             self.show_error_message('error', 'no test data loaded')
 
     # clean up cli worker after it's done
     def cleanup_cli_worker(self):
-        self.cli_worker.quit()
+        self.cli_worker.is_running = False
+        self.cli_worker.stop()
         logging.info('cli worker quit')
         print('cli worker quit')
-        self.cli_worker.wait()
         self.cli_worker.deleteLater()
         logging.info('cli worker deleted')
         print('cli worker deleted')
+
+        time.sleep(2)  # time for the port to fully close before restarting
 
         # restart test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)

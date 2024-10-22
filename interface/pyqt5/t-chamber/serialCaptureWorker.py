@@ -50,8 +50,6 @@ class SerialCaptureWorker(QThread):
             if not self.is_stopped:
                 try:
                     if self.ser and self.ser.is_open:
-                        logging.info('serial capture thread is running')
-                        print('serial capture thread is running')
                         # read incoming serial data
                         response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                         if response:
