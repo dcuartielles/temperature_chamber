@@ -74,6 +74,19 @@ class SerialCaptureWorker(QThread):
         self.quit()
         self.wait()
 
+    def reset_arduino(self):
+        if self.ser:
+            try:
+                self.ser.setDTR(False)  # reset arduino by setting str to False
+                time.sleep(0.5)  # time to reset
+                self.ser.setDTR(True)  # re-enable dtr
+                logging.info(f'arduino on {self.port} reset successfully')
+                print(f'arduino on {self.port} reset successfully')
+
+            except serial.SerialException as e:
+                logging.error(f'failed to reset arduino on {self.port}: {e}')
+                print(f'arduino on {self.port} reset successfully')
+
     # pause flag for stopping communication temporarily when test board thread is dealing with cli
     def pause(self):
         self.is_stopped = True
