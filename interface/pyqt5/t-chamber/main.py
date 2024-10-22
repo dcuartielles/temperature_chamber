@@ -265,15 +265,19 @@ class MainWindow(QMainWindow):
     def cleanup_cli_worker(self):
         self.cli_worker.quit()
         logging.info('cli worker quit')
+        print('cli worker quit')
         self.cli_worker.wait()
         self.cli_worker.deleteLater()
         logging.info('cli worker deleted')
+        print('cli worker deleted')
 
         # restart test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
+        print('test board worker restarted')
+        logging.info('test board worker restarted')
 
     # enter for temp & duration inputs
     def on_enter_key(self):

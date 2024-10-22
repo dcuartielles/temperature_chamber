@@ -3,7 +3,7 @@ import time
 import serial
 import json
 import logging
-from threading import Semaphore
+
 
 class SerialCaptureWorker(QThread):
     update_listbox = pyqtSignal(str)  # signal to update listbox

@@ -144,6 +144,8 @@ class CliWorker(QThread):
         core_name = fqbn.split(":")[0]
         if not self.is_core_installed(fqbn):
             logging.info(f'core {core_name} not installed. installing...')
+            update = 'installing core on test board'
+            self.wave(update)
             command = ["arduino-cli", "core", "install", core_name]
             self.run_cli_command(command)
         else:
@@ -151,6 +153,8 @@ class CliWorker(QThread):
 
     def compile_sketch(self, fqbn, sketch_path):
         logging.info(f'compiling sketch for the board with fqbn {fqbn}...')
+        headsup = 'compiling sketch for test board'
+        self.wave(headsup)
         command = [
             "arduino-cli", "compile",
             "--fqbn", fqbn,
@@ -159,20 +163,28 @@ class CliWorker(QThread):
         result = self.run_cli_command(command)
         if result:
             logging.info('compilation successful!')
+            yes = 'compilation successful!'
+            self.wave(yes)
             return True
         else:
             logging.warning('compilation failed')
+            no = 'compilation failed'
+            self.wave(no)
             return False
 
     def upload_sketch(self, fqbn, port, sketch_path):
         # self.reset_arduino()
         logging.info(f'uploading sketch to board with fqbn {fqbn} on port {port}...')
+        uploading = 'uploading sketch on test board'
+        self.wave(uploading)
+
         command = [
             "arduino-cli", "upload",
             "-p", port,
             "--fqbn", fqbn,
             sketch_path
         ]
+
         try:
             if self.ser and not self.ser.is_stopped:
                 result = self.run_cli_command(command)
@@ -185,8 +197,8 @@ class CliWorker(QThread):
                     return True
                 else:
                     logging.warning('upload failed!')
-                    bye = 'upload failed!'
                     print('upload failed!')
+                    bye = 'upload failed!'
                     self.wave(bye)
                     self.finished.emit()
                     return False
