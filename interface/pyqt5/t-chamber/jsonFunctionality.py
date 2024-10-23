@@ -16,10 +16,9 @@ class FileHandler:
     # open a file using a file dialog and return the file content
     def open_file(self):
 
-        if not self.config.config_file.exists():
-            self.config.create_default_config()
-
-        initial_dir = self.config.get("test_directory", str(Path.home()))
+        print('getting initial dir')
+        initial_dir = self.config.get_test_directory()
+        print('initial dir retrieved from config')
 
         # open file dialog to select a JSON file
         filepath, _ = QFileDialog.getOpenFileName(self.parent, "open test file", initial_dir,

@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
         self.config = Config('config.json')
 
         # create an instance of json file handler
-        self.json_handler = FileHandler(self, self.config)
+        self.json_handler = FileHandler(self.config)
 
         # create an instance of port selector
         self.port_selector = PortSelector(self.config)

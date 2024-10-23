@@ -17670,3 +17670,27 @@ Failed uploading: uploading error: exit status 1
 2024-10-23 14:56:33,477 - INFO - Command succeeded: arduino-cli board list --format json
 2024-10-23 15:08:22,716 - INFO - Command succeeded: arduino-cli board list --format json
 2024-10-23 15:08:52,637 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 15:17:51,895 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 15:21:40,377 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 15:22:45,039 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 15:34:02,726 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 15:36:55,637 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 15:42:52,457 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:12:40,861 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:17:06,540 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:17:17,230 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:23:04,992 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:26:58,582 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:31:35,031 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:32:09,879 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:36:04,202 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:37:04,896 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:44:24,645 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:45:10,851 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:47:40,688 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:48:02,334 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-23 16:48:02,336 - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests
+2024-10-23 16:52:34,425 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:53:03,129 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 16:53:19,621 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-23 16:53:19,624 - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests
