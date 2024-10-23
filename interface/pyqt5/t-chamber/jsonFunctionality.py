@@ -13,7 +13,6 @@ class FileHandler:
         self.test_data = None
         self.filepath = None
 
-
     # open a file using a file dialog and return the file content
     def open_file(self):
 
@@ -26,22 +25,25 @@ class FileHandler:
                                                   "arduino files (*.ino);;"
                                                   "All Files (*)")
 
-        if not filepath:  # if no file was selected
-            print("you need to select a file")
-            return None
+        if filepath:
+            try:
 
-        try:
+                with open(filepath, mode='r', encoding='utf-8') as input_file:
+                    logging.info(filepath)
+                    self.test_data = json.load(input_file)  # convert JSON file content to a py dictionary
+                    self.filepath = filepath
 
-            with open(filepath, mode='r', encoding='utf-8') as input_file:
-                logging.info(filepath)
-                self.test_data = json.load(input_file)  # convert JSON file content to a py dictionary
-                self.filepath = filepath
+                    # update test directory in config to the file's directory
+                    test_file_directory = Path(filepath).parent
+                    new_test_directory = test_file_directory.parent
+                    self.config.set_test_directory(new_test_directory)
+                    logging.info(f"test directory updated to: {new_test_directory}")
 
-                return self.test_data
+                    return self.test_data
 
-        except FileNotFoundError:
-            print(f'file {filepath} not found.')
-            return None
+            except FileNotFoundError:
+                print(f'file {filepath} not found.')
+                return None
 
     # return the file path
     def get_filepath(self):

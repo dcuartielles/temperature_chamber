@@ -49,7 +49,6 @@ class MainWindow(QMainWindow):
         self.input_dictionary = []
         self.test_data = None
         self.filepath = None
-        self.config_directory = None
 
         self.initUI()
 
@@ -330,18 +329,6 @@ class MainWindow(QMainWindow):
             self.input_dictionary.append(new_sequence)  # append valid input to the dictionary
             logging.info(self.input_dictionary)  # log temp & duration
         return is_valid
-
-    # fetch the test directory
-    def get_config_directory(self):
-        filepath = self.filepath
-        test_data_filepath = filepath.rsplit('/', 1)[0]
-        self.config_directory = test_data_filepath.rsplit('/', 1)[0]
-        return self.config_directory
-
-    # set ports and test directory from the current session as default in config
-    def update_config(self):
-        test_directory = self.get_config_directory()
-        self.config.set_test_directory(test_directory)
 
     # helper method to display error messages using QMessageBox
     @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data
