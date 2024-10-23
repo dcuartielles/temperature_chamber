@@ -17662,3 +17662,11 @@ Failed uploading: uploading error: exit status 1
 2024-10-22 14:32:42,547 - INFO - there was nothing worth saying here
 2024-10-22 14:32:42,548 - INFO - connection to COM15 closed
 2024-10-22 14:32:42,649 - INFO - connection to COM7 closed now
+2024-10-23 14:16:42,965 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 14:20:31,975 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 14:42:03,179 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 14:46:16,966 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 14:49:39,377 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 14:56:33,477 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 15:08:22,716 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-23 15:08:52,637 - INFO - Command succeeded: arduino-cli board list --format json

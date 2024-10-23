@@ -47,6 +47,10 @@ class PortSelector(QWidget):
 
         self.load_ports_from_config()
 
+        # connect signals to update config when port & board selection changes
+        self.t_port_dropdown.currentIndexChanged.connect(self.update_config_all)
+        self.c_port_dropdown.currentIndexChanged.connect(self.update_config_all)
+
     # load ports and boards from config
     def load_ports_from_config(self):
         saved_t_port = self.config.get('test_board', {}).get('port')
@@ -84,7 +88,7 @@ class PortSelector(QWidget):
             self.c_port_dropdown.setItemData(self.c_port_dropdown.count() - 1, port)
 
     # update config with ports and boards
-    def upload_config_all(self):
+    def update_config_all(self):
         # get selected ports and board names
         t_port, t_board_name = self.get_selected_t_port_and_board()
         c_port, c_board_name = self.get_selected_c_port_and_board()

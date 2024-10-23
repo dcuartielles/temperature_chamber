@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # create an instance of config
-        self.config = Config(self)
+        self.config = Config('config.json')
 
         # create an instance of json file handler
         self.json_handler = FileHandler(self, self.config)
@@ -233,7 +233,6 @@ class MainWindow(QMainWindow):
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
 
-
     # load test file and store it in the app
     def load_test_file(self):
         self.test_data = self.json_handler.open_file()
@@ -347,7 +346,6 @@ class MainWindow(QMainWindow):
 
     # stop both workers
     def closeEvent(self, event):
-        self.update_config()
         self.serial_worker.stop()
         self.test_board.stop()
         event.accept()  # ensure the application closes

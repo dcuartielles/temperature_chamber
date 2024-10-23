@@ -16,6 +16,9 @@ class FileHandler:
     # open a file using a file dialog and return the file content
     def open_file(self):
 
+        if not self.config.config_file.exists():
+            self.config.create_default_config()
+
         initial_dir = self.config.get("test_directory", str(Path.home()))
 
         # open file dialog to select a JSON file
@@ -24,7 +27,6 @@ class FileHandler:
                                                   "text tiles (*.txt);;"
                                                   "arduino files (*.ino);;"
                                                   "All Files (*)")
-
         if filepath:
             try:
 
@@ -43,6 +45,14 @@ class FileHandler:
 
             except FileNotFoundError:
                 print(f'file {filepath} not found.')
+                return None
+
+            except json.JSONDecodeError:
+                print(f'error decoding JSON from file: {filepath}')
+                return None
+
+            except Exception as e:
+                print(f'an error occurred: {str(e)}')
                 return None
 
     # return the file path
