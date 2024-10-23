@@ -331,23 +331,21 @@ class MainWindow(QMainWindow):
             logging.info(self.input_dictionary)  # log temp & duration
         return is_valid
 
+    # fetch the test directory
     def get_config_directory(self):
         filepath = self.filepath
         test_data_filepath = filepath.rsplit('/', 1)[0]
         self.config_directory = test_data_filepath.rsplit('/', 1)[0]
         return self.config_directory
 
+    # set ports and test directory from the current session as default in config
     def update_config(self):
         c_port = self.selected_c_port
         t_port = self.selected_t_port
         test_directory = self.get_config_directory()
-        config_directory = test_directory
-        config_file = {
-            "c_port": c_port,
-            "t_port": t_port,
-            "test_directory": config_directory
-        }
-        self.config.save_config(self.config_file)
+        self.config.set_c_port(c_port)
+        self.config.set_t_port(t_port)
+        self.config.set_test_directory(test_directory)
 
     # helper method to display error messages using QMessageBox
     @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data
