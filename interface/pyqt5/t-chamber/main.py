@@ -28,16 +28,16 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        # create an instance of json file handler
-        self.json_handler = FileHandler(self)
-
-        # create an instance of port selector
-        self.port_selector = PortSelector()
-        self.selected_c_port = None
-        self.selected_t_port = None
-
         # create an instance of config
         self.config = Config(self)
+
+        # create an instance of json file handler
+        self.json_handler = FileHandler(self, self.config)
+
+        # create an instance of port selector
+        self.port_selector = PortSelector(self.config)
+        self.selected_c_port = None
+        self.selected_t_port = None
 
         # prepare space for worker threads to appear later
         self.serial_worker = None
@@ -340,11 +340,7 @@ class MainWindow(QMainWindow):
 
     # set ports and test directory from the current session as default in config
     def update_config(self):
-        c_port = self.selected_c_port
-        t_port = self.selected_t_port
         test_directory = self.get_config_directory()
-        self.config.set_c_port(c_port)
-        self.config.set_t_port(t_port)
         self.config.set_test_directory(test_directory)
 
     # helper method to display error messages using QMessageBox

@@ -10,26 +10,20 @@ class Config:
     def load_config(self):
         if self.config_file.exists():
             with self.config_file.open('r') as file:
-                self.config = json.load(file)
-        else:
-            # set default values if the config file does not exist
-            self.config = {
-                "c_port": None,
-                "t_port": None,
-                "test_directory": None
-            }
+                return json.load(file)
+        return {}
 
     def save_config(self, config_data):
         self.config.update(config_data)
         with self.config_file.open('w') as file:
             json.dump(self.config, file, indent=4)
 
-    def set_c_port(self, port):
-        self.config['c_port'] = port
+    def set_c_board(self, port, board_name):
+        self.config['control_board'] = {"port": port, "board_name": board_name}
         self.save_config()
 
-    def set_t_port(self, port):
-        self.config['t_port'] = port
+    def set_t_board(self, port, board_name):
+        self.config['test_board'] = {"port": port, "board_name": board_name}
         self.save_config()
 
     def set_test_directory(self, directory):
@@ -44,3 +38,6 @@ class Config:
 
     def get_test_directory(self):
         return self.config.get('test_directory')
+
+    def get(self, key, default=None):
+        return self.config.get(key, default)

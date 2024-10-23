@@ -5,8 +5,10 @@ import arduinoUtils
 
 # class for the port selection ui
 class PortSelector(QWidget):
-    def __init__(self):
+    def __init__(self, config):
         super().__init__()
+
+        self.config = config  # config object to load/save ports & boards from and to
 
         self.t_b_name_label = QLabel('test board')
         self.c_b_name_label = QLabel('control board')
@@ -43,6 +45,30 @@ class PortSelector(QWidget):
         # initially populate the dropdown with available ports
         self.refresh_ports()
 
+        self.load_ports_from_config()
+
+    # load ports and boards from config
+    def load_ports_from_config(self):
+        saved_t_port = self.config.get('test_board', {}).get('port')
+        saved_c_port = self.config.get('control_board', {}).get('port')
+
+        if saved_t_port:
+            # find the index in the dropdown corresponding to the saved test board port and set it
+            for i in range(self.t_port_dropdown.count()):
+                port, _ = self.t_port_dropdown.itemData(i)
+                if port == saved_t_port:
+                    self.t_port_dropdown.setCurrentIndex(i)
+                    break
+
+        if saved_c_port:
+            # find the index in the dropdown corresponding to the saved control board port and set it
+            for i in range(self.c_port_dropdown.count()):
+                port, _ = self.c_port_dropdown.itemData(i)
+                if port == saved_c_port:
+                    self.c_port_dropdown.setCurrentIndex(i)
+                    break
+
+    # refresh ports (independent of config)
     def refresh_ports(self):
         ports_and_boards = arduinoUtils.get_arduino_boards()  # should be [(port, board_name), (port, board_name)]
         self.t_port_dropdown.clear()
@@ -57,16 +83,30 @@ class PortSelector(QWidget):
             self.t_port_dropdown.setItemData(self.t_port_dropdown.count() - 1, port)
             self.c_port_dropdown.setItemData(self.c_port_dropdown.count() - 1, port)
 
-    # get the selected port for the test board
-    def get_selected_t_port(self):
-        port = self.t_port_dropdown.itemData(self.t_port_dropdown.currentIndex())
-        t_port = str(port)
-        logging.info(f'selected port: {t_port}')
-        return t_port
+    # update config with ports and boards
+    def upload_config_all(self):
+        # get selected ports and board names
+        t_port, t_board_name = self.get_selected_t_port_and_board()
+        c_port, c_board_name = self.get_selected_c_port_and_board()
 
-    # get the selected port for the chamber board
+        # update the config
+        self.config.set_t_board(t_port, t_board_name)
+        self.config.set_c_board(c_port, c_board_name)
+
+    # get selected port ONLY for test board / cli worker threads
+    def get_selected_t_port(self):
+        port, _ = self.t_port_dropdown.itemData(self.t_port_dropdown.currentIndex())
+        return str(port)
+
+    # get selected port ONLY for control board worker
     def get_selected_c_port(self):
-        port = self.c_port_dropdown.itemData(self.c_port_dropdown.currentIndex())
-        c_port = str(port)
-        logging.info(f'selected port: {c_port}')
-        return c_port
+        port, _ = self.c_port_dropdown.itemData(self.c_port_dropdown.currentIndex())
+        return str(port)
+
+    # get both port and board name for test board (for saving in config)
+    def get_selected_t_port_and_board(self):
+        return self.t_port_dropdown.itemData(self.t_port_dropdown.currentIndex())
+
+    # get both port and board name for control board (for saving in config)
+    def get_selected_c_port_and_board(self):
+        return self.c_port_dropdown.itemData(self.c_port_dropdown.currentIndex())
