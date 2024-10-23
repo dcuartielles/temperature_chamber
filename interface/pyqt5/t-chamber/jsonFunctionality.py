@@ -18,13 +18,11 @@ class FileHandler:
 
         print('getting initial dir')
         initial_dir = self.config.get_test_directory()
-        print('initial dir retrieved from config')
+        print(initial_dir)
 
         # open file dialog to select a JSON file
         filepath, _ = QFileDialog.getOpenFileName(self.parent, "open test file", initial_dir,
                                                   "JSON files (*.json);;"
-                                                  "text tiles (*.txt);;"
-                                                  "arduino files (*.ino);;"
                                                   "All Files (*)")
         if filepath:
             try:

@@ -1,0 +1,11 @@
+{
+    "test_board": {
+        "port": null,
+        "board_name": null
+    },
+    "control_board": {
+        "port": null,
+        "board_name": null
+    },
+    "test_directory": "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests"
+}

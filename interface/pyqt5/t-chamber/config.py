@@ -10,7 +10,7 @@ class Config:
     def load_config(self):
         if self.config_file.exists():
             with self.config_file.open('r') as file:
-                return json.load(file)
+                self.config = json.load(file)
         else:
             self.create_default_config()
 
@@ -43,12 +43,6 @@ class Config:
     def set_test_directory(self, directory):
         self.config['test_directory'] = str(Path(directory).resolve().as_posix())  # store as absolute path
         self.save_config()
-
-    def get_c_port(self):
-        return self.config.get('c_port')
-
-    def get_t_port(self):
-        return self.config.get('t_port')
 
     def get_test_directory(self):
         print('going to find directory')
