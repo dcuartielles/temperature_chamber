@@ -50,10 +50,6 @@ class TestBoardWorker(QThread):
             if not self.is_stopped:
                 try:
                     if self.ser and self.ser.is_open:
-                        # read incoming serial data
-                        response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                        if response:
-                            self.show_response(response)
                         if time.time() - self.last_command_time > 5:
                             self.last_command_time = time.time()
                             logging.info('test worker thread is running')
@@ -76,6 +72,9 @@ class TestBoardWorker(QThread):
         self.wait()
 
     # show serial response
-    def show_response(self, response):
-        if response:
-            self.update_upper_listbox.emit(response)  # emit signal to update listbox
+    def show_response(self):
+        if self.ser and self.ser.is_open:
+            # read incoming serial data
+            response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+            if response:
+                self.update_upper_listbox.emit(response)  # emit signal to update listbox

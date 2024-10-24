@@ -176,18 +176,6 @@ class SerialCaptureWorker(QThread):
             # handle case when no test data is found
             logging.warning('no test data found on file')
 
-    # run custom only
-    def run_custom(self, test_data):
-        if test_data is not None:
-            custom_test = test_data.get('custom', [])
-            if custom_test:
-                self.send_json_to_arduino(custom_test)
-                logging.info(f'running {custom_test}')
-            else:
-                logging.info('no custom test found')
-        else:
-            logging.info('no such test on file')
-
     # set temp & duration from the gui
     def set_temp(self, input_dictionary):
         if input_dictionary is not None:

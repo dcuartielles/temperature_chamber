@@ -285,6 +285,7 @@ class MainWindow(QMainWindow):
         self.test_board.is_running = True
         print('test board worker restarted')
         logging.info('test board worker restarted')
+        self.test_board.show_response()
 
     # enter for temp & duration inputs
     def on_enter_key(self):
