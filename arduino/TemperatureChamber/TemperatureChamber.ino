@@ -521,8 +521,8 @@ bool stopSwitchState = false;
 // centralized switch handling
 void updateSwitchStates() {
     systemSwitchState = switchSystem.read() == LOW;
-    startSwitchState = switchSystem.read() == LOW;
-    stopSwitchState = switchSystem.released();  // stop condition from releasing the start switch
+    startSwitchState = switchStart.read() == LOW;
+    stopSwitchState = switchStart.released();  // stop condition from releasing the start switch
 }
 
 
