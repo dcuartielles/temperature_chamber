@@ -71,6 +71,7 @@ class CliWorker(QThread):
     def wave(self, hello):
         if hello:
             self.update_upper_listbox.emit(hello)
+            time.sleep(0.1)
 
     # method to stop the serial communication
     def stop(self):
@@ -149,7 +150,6 @@ class CliWorker(QThread):
             logging.info(f'core {core_name} not installed. installing...')
             update = 'installing core on test board'
             self.wave(update)
-            time.sleep(0.5)
             command = ["arduino-cli", "core", "install", core_name]
             self.run_cli_command(command)
         else:
@@ -169,13 +169,11 @@ class CliWorker(QThread):
             logging.info('compilation successful!')
             yes = 'compilation successful!'
             self.wave(yes)
-            time.sleep(0.5)
             return True
         else:
             logging.warning('compilation failed')
             no = 'compilation failed'
             self.wave(no)
-            time.sleep(0.5)
             return False
 
     def upload_sketch(self, fqbn, port, sketch_path):
@@ -187,7 +185,6 @@ class CliWorker(QThread):
         logging.info(f'uploading sketch to board with fqbn {fqbn} on port {port}...')
         uploading = 'uploading sketch on test board'
         self.wave(uploading)
-        time.sleep(0.5)
 
         command = [
             "arduino-cli", "upload",
@@ -207,7 +204,6 @@ class CliWorker(QThread):
                     print('upload successful!')
                     bye = 'upload successful!'
                     self.wave(bye)
-                    time.sleep(0.5)
 
                     self.finished.emit()
                     return True
@@ -216,7 +212,6 @@ class CliWorker(QThread):
                     print('upload failed!')
                     bye = 'upload failed!'
                     self.wave(bye)
-                    time.sleep(0.5)
 
                     self.finished.emit()
                     return False
@@ -243,7 +238,6 @@ class CliWorker(QThread):
                 print(f'arduino on {self.port} reset successfully')
                 reset = 'test board reset successfully'
                 self.wave(reset)
-                time.sleep(0.5)
             except serial.SerialException as e:
                 logging.error(f'failed to reset arduino on {self.port}: {e}')
                 print(f'arduino on {self.port} reset successfully')
