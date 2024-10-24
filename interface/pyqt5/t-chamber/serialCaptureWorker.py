@@ -91,16 +91,6 @@ class SerialCaptureWorker(QThread):
                 logging.error(f'failed to reset arduino on {self.port}: {e}')
                 print(f'failed to reset arduino on {self.port}: {e}')
 
-    # pause flag for stopping communication temporarily when test board thread is dealing with cli
-    def pause(self):
-        self.is_stopped = True
-        print('serial capture worker is paused')
-
-    def resume(self):
-        self.is_stopped = False
-        self.last_command_time = time.time()  # reset the timing
-        print('resuming serial capture worker')
-
     # sends a command to arduino via serial
     def send_command(self, command):
         try:
@@ -186,12 +176,6 @@ class SerialCaptureWorker(QThread):
             self.send_json_to_arduino(set_temp_data)
         else:
             logging.warning('nothing to set the t-chamber to')
-
-    def pause_capture(self):
-        self.is_stopped = True  # set a flag to pause processing but don't block the entire thread
-
-    def resume_capture(self):
-        self.is_stopped = False  # resume processing
 
     def trigger_read_data(self):
         response = self.read_data()  # read data using custom method

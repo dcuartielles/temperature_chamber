@@ -205,9 +205,7 @@ class MainWindow(QMainWindow):
 
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
-        self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
-
 
     # the actual chamber_monitor QList updates
     def update_chamber_monitor_gui(self, message):
@@ -242,7 +240,7 @@ class MainWindow(QMainWindow):
             print('failed to load test data')
 
     # button click handlers
-    #run all benchmark tests
+    # run all benchmark tests
     def on_run_button_clicked(self):
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
             if not self.serial_worker.is_stopped:
@@ -254,9 +252,6 @@ class MainWindow(QMainWindow):
                 logging.info('test board worker temporarily deleted')
                 # initiate cli worker thread
                 self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
-                # connect pause and resume signals to serial capture
-                self.cli_worker.pause_serial.connect(self.serial_worker.pause_capture)
-                self.cli_worker.resume_serial.connect(self.serial_worker.resume_capture)
                 self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
                 self.cli_worker.update_upper_listbox.connect(self.cli_update_upper_listbox_gui)
                 self.cli_worker.start()  # start cli worker thread
@@ -275,14 +270,13 @@ class MainWindow(QMainWindow):
         logging.info('cli worker deleted')
         print('cli worker deleted')
 
-        time.sleep(1)  # time for the port to fully close before restarting
+        time.sleep(1.5)  # time for the port to fully close before restarting
 
         # restart test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
-        self.test_board.cli_running = False
         print('test board worker restarted')
         logging.info('test board worker restarted')
 

@@ -17,7 +17,6 @@ class TestBoardWorker(QThread):
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
         self.test_data = None
-        self.cli_running = True
         self.last_command_time = time.time()
 
     # set up serial communication
@@ -49,11 +48,10 @@ class TestBoardWorker(QThread):
             if not self.is_stopped:
                 try:
                     if self.ser and self.ser.is_open:
-                        if not self.cli_running:
-                            # read incoming serial data
-                            response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                            if response:
-                                self.show_response(response)
+                        # continuous readout from serial
+                        response = self.ser.readline().decode('utf-8').strip()
+                        if response:
+                            self.show_response(response)
                         if time.time() - self.last_command_time > 5:
                             self.last_command_time = time.time()
                             logging.info('test worker thread is running')
