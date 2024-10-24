@@ -17,9 +17,8 @@ class TestBoardWorker(QThread):
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
         self.test_data = None
-        self.cli_running = False
+        self.cli_running = True
         self.last_command_time = time.time()
-
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -50,6 +49,11 @@ class TestBoardWorker(QThread):
             if not self.is_stopped:
                 try:
                     if self.ser and self.ser.is_open:
+                        if not self.cli_running:
+                            # read incoming serial data
+                            response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                            if response:
+                                self.show_response(response)
                         if time.time() - self.last_command_time > 5:
                             self.last_command_time = time.time()
                             logging.info('test worker thread is running')
@@ -72,25 +76,6 @@ class TestBoardWorker(QThread):
         self.wait()
 
     # show serial response
-    def read_response(self):
-        if not self.is_stopped and self.ser and self.ser.is_open:
-            try:
-                # read incoming serial data
-                response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                if response:
-                    logging.info(f'test board is saying: {response}')
-                    return response
-                else:
-                    logging.info('nothing coming from test board')
-                    return None
-            except serial.SerialException as e:
-                logging.error(f'error reading data from test board serial: {e}')
-                return None
-        else:
-            logging.warning('test board communication is closed or stopped')
-            print('test board communication is closed or stopped')
-
-    def show_response(self):
-        response = self.read_response()
+    def show_response(self, response):
         if response:
             self.update_upper_listbox.emit(response)  # emit signal to update listbox

@@ -282,9 +282,9 @@ class MainWindow(QMainWindow):
         self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
+        self.test_board.cli_running = False
         print('test board worker restarted')
         logging.info('test board worker restarted')
-        self.test_board.show_response()
 
     # enter for temp & duration inputs
     def on_enter_key(self):
