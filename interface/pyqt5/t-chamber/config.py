@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+
 class Config:
     def __init__(self, config_filename='config.json'):
         self.config_file = Path.cwd() / config_filename
