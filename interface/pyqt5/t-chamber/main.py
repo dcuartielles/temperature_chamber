@@ -205,7 +205,7 @@ class MainWindow(QMainWindow):
 
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
-        # self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
+        self.test_board.update_upper_listbox.connect(self.update_upper_listbox_gui)
         self.test_board.start()  # start test board thread
 
 

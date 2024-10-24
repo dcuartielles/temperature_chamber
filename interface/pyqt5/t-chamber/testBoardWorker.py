@@ -72,11 +72,25 @@ class TestBoardWorker(QThread):
         self.wait()
 
     # show serial response
+    def read_response(self):
+        if not self.is_stopped and self.ser and self.ser.is_open:
+            try:
+                # read incoming serial data
+                response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                if response:
+                    logging.info(f'test board is saying: {response}')
+                    return response
+                else:
+                    logging.info('nothing coming from test board')
+                    return None
+            except serial.SerialException as e:
+                logging.error(f'error reading data from test board serial: {e}')
+                return None
+        else:
+            logging.warning('test board communication is closed or stopped')
+            print('test board communication is closed or stopped')
+
     def show_response(self):
-        while self.ser.is_running:
-            if not self.is_stopped:
-                if self.ser and self.ser.is_open:
-                    # read incoming serial data
-                    response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                    if response:
-                        self.update_upper_listbox.emit(response)  # emit signal to update listbox
+        response = self.read_response()
+        if response:
+            self.update_upper_listbox.emit(response)  # emit signal to update listbox

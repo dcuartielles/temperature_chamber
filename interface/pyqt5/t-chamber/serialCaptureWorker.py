@@ -34,8 +34,7 @@ class SerialCaptureWorker(QThread):
             logging.info(f'serial capture worker connected to arduino port: {self.port}')
             print(f'connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
-            # self.reset_arduino()
-            time.sleep(0.5)
+
             return True
         except serial.SerialException as e:
             logging.error(f'error: {e}')
@@ -144,7 +143,6 @@ class SerialCaptureWorker(QThread):
             try:
                 self.send_command('SHOW DATA')
                 response = self.ser.readline().decode('utf-8').strip()
-
                 if response:
                     logging.info(f'arduino says: {response}')
                     return response
@@ -152,7 +150,7 @@ class SerialCaptureWorker(QThread):
                     logging.info('there was nothing worth saying here')
                     return None
             except serial.SerialException as e:
-                logging.error(f'error reading data: {e}')
+                logging.error(f'error reading data from control board serial: {e}')
                 return None
         else:
             logging.warning('serial capture communication is closed or stopped')

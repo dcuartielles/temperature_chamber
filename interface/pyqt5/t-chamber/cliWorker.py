@@ -240,7 +240,6 @@ class CliWorker(QThread):
                     print('upload successful!')
                     bye = 'upload successful!'
                     self.wave(bye)
-                    time.sleep(0.5)
 
                     self.finished.emit()
                     return True
@@ -249,7 +248,6 @@ class CliWorker(QThread):
                     print('upload failed!')
                     bye = 'upload failed!'
                     self.wave(bye)
-                    time.sleep(0.5)
 
                     self.finished.emit()
                     return False
@@ -257,13 +255,12 @@ class CliWorker(QThread):
 
                 logging.warning(f'cli worker port connection to {port} seems to fail')
                 print(f'cli worker port connection to {port} seems to fail')
-
                 self.finished.emit()
+
         except serial.SerialException as e:
             logging.error(f'serial error on cli thread during upload: {e}')
             error = f'serial error on cli thread during upload: {str(e)}'
             self.wave(error)
-            time.sleep(0.5)
 
             self.finished.emit()
 
