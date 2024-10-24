@@ -19,6 +19,7 @@ class SerialCaptureWorker(QThread):
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
         self.last_command_time = time.time()
+        self.last_readout = time.time()
         self.test_data = None
 
     # set up serial communication
@@ -54,8 +55,9 @@ class SerialCaptureWorker(QThread):
                         # read incoming serial data
                         response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                         if response:
-                            self.process_response(response)
-
+                            if time.time() - self.last_readout > 2:
+                                self.last_readout = time.time()
+                                self.process_response(response)
                         if time.time() - self.last_command_time > 1.5:
                             self.last_command_time = time.time()
                             self.trigger_read_data()

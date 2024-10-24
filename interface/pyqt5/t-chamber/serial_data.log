@@ -18311,3 +18311,4 @@ Error during build: exit status 1
 2024-10-24 08:59:41,509 - INFO - sending full test test_1
 2024-10-24 08:59:41,521 - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
 2024-10-24 08:59:41,521 - INFO - sending full test test_2
+2024-10-24 09:40:44,832 - INFO - Command succeeded: arduino-cli board list --format json
