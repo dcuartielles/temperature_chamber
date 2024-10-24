@@ -102,11 +102,6 @@ unsigned long timerCooler = 0;
 unsigned long PeriodHeater = 0;
 unsigned long PeriodCooler = 0;
 
-// Heater and cooler states
-int stateHeater = 0;
-int stateCooler = 0;
-
-
 // State machine variables
 int stateHeaterOld = 0;
 int stateCoolerOld = 0;
@@ -138,12 +133,18 @@ char incomingString[1024];
 StaticJsonDocument<2048> jsonBuffer;
 
 // Define Variables
-double temperatureRoom;
-double temperatureDesired = -41;  // Invalid value to start the chamber in RESET state
 float TemperatureThreshold = 0;
-// double temperatureRoomOld;
-// double temperatureDesiredOld;
-int longheatingflag = 0;
+
+// struct for state of the heating/cooling system
+struct ChamberState {
+    bool isHeating;
+    bool isCooling;
+    float temperatureRoom;
+    float temperatureDesired;
+    int longHeatingFlag;
+};
+
+ChamberState chamberState;
 
 // function for checking how much memory remains after parsing JSON of different sizes
 extern "C" {
@@ -165,7 +166,12 @@ void setup() {
 
     // Initialise LCD
     lcd.init();
-    temperatureRoom = getTemperature();
+    chamberState.temperatureRoom = getTemperature();
+    chamberState.temperatureDesired = -41;
+    chamberState.longHeatingFlag = 0;
+    chamberState.isHeating = false;
+    chamberState.isCooling = false;
+
     currentTest.numSequences = 0;
 }
 
@@ -181,11 +187,11 @@ float getTemperature() {
 }
 
 // void showData() {
-//     displayLCD(temperatureRoom, temperatureDesired);
+//     displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
 //     displaySerial();
-//     if(abs(temperatureRoomOld - temperatureRoom) > 0.1 || 
-//             (temperatureDesiredOld - temperatureDesired)!= 0 || 
-//             stateHeaterOld != stateHeater || stateCoolerOld != stateCooler) {
+//     if(abs(temperatureRoomOld - chamberState.temperatureRoom) > 0.1 || 
+//             (temperatureDesiredOld - chamberState.temperatureDesired)!= 0 || 
+//             stateHeaterOld != chamberState.isHeating || stateCoolerOld != chamberState.isCooling) {
 //         dataEvent = true;; // if the temp gradient is more than 0.1 deg
 //     } else {
 //         dataEvent = false;
@@ -238,19 +244,19 @@ void displayLCD(float tempRoom, int tempDesired) {
 
 void displaySerial() {
     Serial.print(F("Room_temp: "));
-    Serial.print(temperatureRoom);
+    Serial.print(chamberState.temperatureRoom);
     Serial.print(F(" | Desired_temp: "));
-    if (temperatureDesired == -41) {
+    if (chamberState.temperatureDesired == -41) {
         Serial.print("-");
     } else {
-        Serial.print(temperatureDesired);
+        Serial.print(chamberState.temperatureDesired);
     }
     Serial.print(F(" | Heater: "));
-    Serial.print(stateHeater);
+    Serial.print(chamberState.isHeating);
     Serial.print(F(" | Cooler: "));
-    Serial.print(stateCooler);
+    Serial.print(chamberState.isCooling);
     Serial.print(F(" | LH Indicator: "));
-    Serial.println(longheatingflag);
+    Serial.println(chamberState.longHeatingFlag);
 }
 
 void displayLCDOff() {
@@ -390,7 +396,7 @@ void runCurrentSequence() {
     // Serial.print("Target temp: ");
     // Serial.println(targetTemp);
     // Serial.print("Current room temp: ");
-    // Serial.println(temperatureRoom);
+    // Serial.println(chamberState.temperatureRoom);
 
     // store current duration for the SHOW RUNNING SEQUENCE command
     currentDuration = duration;
@@ -404,7 +410,7 @@ void runCurrentSequence() {
     // }
 
     // check if target temp is reached
-    if (!isTemperatureReached(targetTemp, temperatureRoom)) {
+    if (!isTemperatureReached(targetTemp, chamberState.temperatureRoom)) {
         if (!printedWaiting) {
             Serial.println("Waiting for target temp to be reached");
             printedWaiting = true;
@@ -428,12 +434,12 @@ void runCurrentSequence() {
 }
 
 void changeTemperature() {
-    if (buttonIncrease.read()== HIGH && buttonDecrease.read()== LOW) temperatureDesired += 5;
-    if (buttonDecrease.read()== HIGH && buttonIncrease.read()== LOW) temperatureDesired -= 5;
+    if (buttonIncrease.read()== HIGH && buttonDecrease.read()== LOW) chamberState.temperatureDesired += 5;
+    if (buttonDecrease.read()== HIGH && buttonIncrease.read()== LOW) chamberState.temperatureDesired -= 5;
 
-    if (temperatureDesired >= TEMPERATURE_MAX) temperatureDesired = TEMPERATURE_MAX;
-    if (temperatureDesired == -41) { handleResetState(); }
-    else if (temperatureDesired <= TEMPERATURE_MIN) temperatureDesired = TEMPERATURE_MIN;
+    if (chamberState.temperatureDesired >= TEMPERATURE_MAX) chamberState.temperatureDesired = TEMPERATURE_MAX;
+    if (chamberState.temperatureDesired == -41) { handleResetState(); }
+    else if (chamberState.temperatureDesired <= TEMPERATURE_MIN) chamberState.temperatureDesired = TEMPERATURE_MIN;
 }
 
 void displayStatus() {
@@ -447,15 +453,15 @@ unsigned long startTime = 0;    // Timing variable for test steps
 
 void setTemperature(float temp) {
     if (temp >= TEMPERATURE_MAX) {
-        temperatureDesired = TEMPERATURE_MAX;
+        chamberState.temperatureDesired = TEMPERATURE_MAX;
         Serial.println("Specified temperature exceeds maximum allowed temperature\n");
         Serial.println("Setting temperature to " + String(TEMPERATURE_MAX) + "°");
     } else if (temp <= TEMPERATURE_MIN) {
-        temperatureDesired = TEMPERATURE_MIN;
+        chamberState.temperatureDesired = TEMPERATURE_MIN;
         Serial.println("Specified temperature is lower than the minimum allowed temperature\n");
         Serial.println("Setting temperature to " + String(TEMPERATURE_MIN) + "°");
     } else {
-        temperatureDesired = temp;
+        chamberState.temperatureDesired = temp;
         Serial.println("Setting temperature to " + String(temp) + "°");
         Serial.print("Temperature desired set to: ");
         Serial.println(temp);  // debug to confirm the desired temp is set
@@ -464,8 +470,8 @@ void setTemperature(float temp) {
 
 void parseCommand(String command) {
     if (command.startsWith("SET TEMP ")) {
-        temperatureDesired = command.substring(9).toFloat();
-        Serial.println("Temp set to: " + String(temperatureDesired));
+        chamberState.temperatureDesired = command.substring(9).toFloat();
+        Serial.println("Temp set to: " + String(chamberState.temperatureDesired));
         displaySerial();
     }
     else if (command == "SYSTEM OFF") {
@@ -488,7 +494,7 @@ void parseCommand(String command) {
         if (isTestRunning) {
             //Serial.println("Processing SHOW RUNNING SEQUENCE...");
             Serial.print("Running sequence: Target temp = ");
-            Serial.print(temperatureDesired, 2);
+            Serial.print(chamberState.temperatureDesired, 2);
             Serial.print(" Duration = ");
             Serial.print(currentDuration / 60000);
             Serial.println(" minutes");
@@ -527,7 +533,7 @@ void updateSwitchStates() {
 
 
 void handleResetState() {
-    displayLCD(temperatureRoom, temperatureDesired);
+    displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
 
     if (!systemSwitchState) {
         status = EMERGENCY_STOP;
@@ -544,9 +550,9 @@ void handleResetState() {
     // turn off all outputs
     heater.off();
     cooler.off();
-    stateHeater = 0;
-    stateCooler = 0;
-    longheatingflag = 0;
+    chamberState.isHeating = false;
+    chamberState.isCooling = false;
+    chamberState.longHeatingFlag = 0;
 
     readAndParseSerial();
 }
@@ -560,21 +566,21 @@ void handleHeatingState() {
 
     if(TemperatureThreshold > -0.1) {
         status = REPORT;
-        longheatingflag = 0;
-        stateHeater = 0;
+        chamberState.longHeatingFlag = 0;
+        chamberState.isHeating = false;
         return;
     } else if(TemperatureThreshold < -4) {
         dutyCycleHeater = 100;
         PeriodHeater = (TemperatureThreshold < -8) ? 120000 : 60000;
-        longheatingflag = 1;
-    } else if(TemperatureThreshold > -4 && longheatingflag == 0) {
-        dutyCycleHeater = (longheatingflag == 0) ? 80 : 0;
+        chamberState.longHeatingFlag = 1;
+    } else if(TemperatureThreshold > -4 && chamberState.longHeatingFlag == 0) {
+        dutyCycleHeater = (chamberState.longHeatingFlag == 0) ? 80 : 0;
         PeriodHeater = 25000; //on for 20 seconds and off for 5
     }
 
     PWMHeater(dutyCycleHeater, PeriodHeater);
-    stateHeater = 1;
-    stateCooler = 0;
+    chamberState.isHeating = true;
+    chamberState.isCooling = false;
 
     readAndParseSerial();
 }
@@ -589,7 +595,7 @@ void handleCoolingState() {
 
     if(TemperatureThreshold < 0.4) {
         status = REPORT;
-        stateCooler = 0;
+        chamberState.isCooling = false;
         return;
     } else if(TemperatureThreshold > 1) {
         dutyCycleCooler = 100;
@@ -600,8 +606,8 @@ void handleCoolingState() {
     } 
 
     PWMCooler(dutyCycleCooler, PeriodCooler);
-    stateCooler = 1;
-    stateHeater = 0;
+    chamberState.isCooling = true;
+    chamberState.isHeating = false;
 
     readAndParseSerial();
 }
@@ -629,10 +635,10 @@ void handleReportState() {
 void handleEmergencyStopState() {
     heater.off();
     cooler.off();
-    stateHeater = 0;
-    stateCooler = 0;
+    chamberState.isHeating = false;
+    chamberState.isCooling = false;
     displayLCDOff();
-    longheatingflag =0;
+    chamberState.longHeatingFlag = 0;
 
     if (switchSystem.held()) {
         status = RESET;
@@ -681,7 +687,7 @@ void loop() {
 
 
     if (switchSystem.read() == LOW) {
-        displayLCD(temperatureRoom, temperatureDesired);
+        displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
         //displaySerial();
         if (currentMillis - lastUpdate >= updateInterval) {
             lastUpdate = currentMillis;
@@ -692,14 +698,14 @@ void loop() {
     }
 
     // Used in showData()
-    // temperatureRoomOld = temperatureRoom;
-    // stateHeaterOld = stateHeater;
-    // stateCoolerOld = stateCooler;
-    // temperatureDesiredOld = temperatureDesired;
+    // temperatureRoomOld = chamberState.temperatureRoom;
+    // stateHeaterOld = chamberState.isHeating;
+    // stateCoolerOld = chamberState.isCooling;
+    // temperatureDesiredOld = chamberState.temperatureDesired;
 
     // get latest room temp
-    temperatureRoom = getTemperature();
-    TemperatureThreshold = temperatureRoom - temperatureDesired;
+    chamberState.temperatureRoom = getTemperature();
+    TemperatureThreshold = chamberState.temperatureRoom - chamberState.temperatureDesired;
 
 
     if (isTestRunning) {
