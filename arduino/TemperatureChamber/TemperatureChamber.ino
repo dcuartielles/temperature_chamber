@@ -99,8 +99,8 @@ Led heater(RELAY_HEATER);
 // Timing variables
 unsigned long timerHeater = 0;
 unsigned long timerCooler = 0;
-unsigned long PeriodHeater = 0;
-unsigned long PeriodCooler = 0;
+unsigned long periodHeater = 0;
+unsigned long periodCooler = 0;
 
 // State machine variables
 int stateHeaterOld = 0;
@@ -276,31 +276,16 @@ bool holdForPeriod(unsigned long duration) {
     return millis() - sequenceStartTime >= duration;
 }
 
-void PWMHeater(int dutyCycle, unsigned long PeriodHeater) {
-    unsigned long elapsedTime = millis() - timerHeater;
-    if (elapsedTime > (dutyCycle * PeriodHeater) / 100) {
-        heater.off();
-    } else {
-        cooler.off();
-        heater.on();
-    }
-    if (elapsedTime > PeriodHeater) {
-        timerHeater = millis();
-    }
-}
-
 // dutyCycle has to be 0..100
-
-void PWMCooler(int dutyCycle, unsigned long PeriodCooler) {
-    unsigned long elapsedTime = millis() - timerCooler;
-    if (elapsedTime > (dutyCycle * PeriodCooler) / 100) {
-        cooler.off();
+void controlRelay(Led& relay, int dutyCycle, unsigned long period, unsigned long timer) {
+    unsigned long elapsedTime = millis() - timer;
+    if (elapsedTime > (dutyCycle * period) / 100) {
+        relay.off();
     } else {
-        heater.off();
-        cooler.on();
+        relay.on();
     }
-    if (elapsedTime > PeriodCooler) { 
-        timerCooler = millis();
+    if (elapsedTime > period) {
+        timer = millis();
     }
 }
 
@@ -313,19 +298,6 @@ void parseTextFromJson(JsonDocument& doc) {
             Serial.println("Error: Missing 'chamber_sequences' in test data");
             return;
         }
-
-        // For future display of test info on LCD
-        // if (test.containsKey("sketch")) {
-        //     const char* sketch = test["sketch"];
-        //     Serial.print("Sketch to upload: ");
-        //     Serial.println(sketch);
-        // }
-        // if (test.containsKey("expected output")) {
-        //     const char* expected_output = test["expected_output"];
-        //     Serial.print("Expected output: ");
-        //     Serial.println(expected_output);
-        // }
-
 
         JsonArray sequences = test["chamber_sequences"];
         int numSequences = sequences.size();
@@ -390,13 +362,6 @@ void runCurrentSequence() {
     Sequence currentSequence = currentTest.sequences[currentSequenceIndex];
     float targetTemp = currentSequence.targetTemp;
     unsigned long duration = currentSequence.duration;
-
-    // Serial.print("Current sequence index: ");
-    // Serial.println(currentSequenceIndex);
-    // Serial.print("Target temp: ");
-    // Serial.println(targetTemp);
-    // Serial.print("Current room temp: ");
-    // Serial.println(chamberState.temperatureRoom);
 
     // store current duration for the SHOW RUNNING SEQUENCE command
     currentDuration = duration;
@@ -571,14 +536,14 @@ void handleHeatingState() {
         return;
     } else if(TemperatureThreshold < -4) {
         dutyCycleHeater = 100;
-        PeriodHeater = (TemperatureThreshold < -8) ? 120000 : 60000;
+        periodHeater = (TemperatureThreshold < -8) ? 120000 : 60000;
         chamberState.longHeatingFlag = 1;
     } else if(TemperatureThreshold > -4 && chamberState.longHeatingFlag == 0) {
         dutyCycleHeater = (chamberState.longHeatingFlag == 0) ? 80 : 0;
-        PeriodHeater = 25000; //on for 20 seconds and off for 5
+        periodHeater = 25000; //on for 20 seconds and off for 5
     }
 
-    PWMHeater(dutyCycleHeater, PeriodHeater);
+    controlRelay(heater, dutyCycleHeater, periodHeater, timerHeater);
     chamberState.isHeating = true;
     chamberState.isCooling = false;
 
@@ -599,13 +564,13 @@ void handleCoolingState() {
         return;
     } else if(TemperatureThreshold > 1) {
         dutyCycleCooler = 100;
-        PeriodCooler=2000;
+        periodCooler=2000;
     } else if(TemperatureThreshold < 1) {
         dutyCycleCooler = 29;
-        PeriodCooler=7000; // on for 2 seconds and off for 5
+        periodCooler=7000; // on for 2 seconds and off for 5
     } 
 
-    PWMCooler(dutyCycleCooler, PeriodCooler);
+    controlRelay(cooler, dutyCycleCooler, periodCooler, timerCooler);
     chamberState.isCooling = true;
     chamberState.isHeating = false;
 
