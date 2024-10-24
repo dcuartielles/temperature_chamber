@@ -52,6 +52,9 @@ class PortSelector(QWidget):
         self.t_port_dropdown.currentIndexChanged.connect(self.update_config_t)
         self.c_port_dropdown.currentIndexChanged.connect(self.update_config_c)
 
+        self.update_config_t()
+        self.update_config_c()
+
     # load ports and boards from config
     def load_all_from_config(self):
         saved_t_board = self.config.get('test_board', {})

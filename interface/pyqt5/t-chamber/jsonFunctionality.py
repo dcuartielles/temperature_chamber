@@ -36,7 +36,7 @@ class FileHandler:
                     test_file_directory = Path(filepath).parent
                     new_test_directory = test_file_directory.parent
                     self.config.set_test_directory(new_test_directory)
-                    logging.info(f"test directory updated to: {new_test_directory}")
+                    logging.info(f"test directory updated to: {new_test_directory} but with correct forward slashes")
 
                     return self.test_data
 
