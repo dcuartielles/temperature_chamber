@@ -86,7 +86,7 @@ class SerialCaptureWorker(QThread):
 
             except serial.SerialException as e:
                 logging.error(f'failed to reset arduino on {self.port}: {e}')
-                print(f'arduino on {self.port} reset successfully')
+                print(f'failed to reset arduino on {self.port}: {e}')
 
     # pause flag for stopping communication temporarily when test board thread is dealing with cli
     def pause(self):
