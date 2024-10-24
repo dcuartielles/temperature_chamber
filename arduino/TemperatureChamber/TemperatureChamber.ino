@@ -97,8 +97,6 @@ Led cooler(RELAY_COOLER);
 Led heater(RELAY_HEATER);
 
 // Timing variables
-unsigned long timerHeater = 0;
-unsigned long timerCooler = 0;
 unsigned long periodHeater = 0;
 unsigned long periodCooler = 0;
 
@@ -140,8 +138,10 @@ struct ChamberState {
     bool isHeating;
     bool isCooling;
     float temperatureRoom;
-    float temperatureDesired;
+    int temperatureDesired;
     int longHeatingFlag;
+    unsigned long lastHeaterOnTime;
+    unsigned long lastCoolerOnTime;
 };
 
 ChamberState chamberState;
@@ -171,6 +171,8 @@ void setup() {
     chamberState.longHeatingFlag = 0;
     chamberState.isHeating = false;
     chamberState.isCooling = false;
+    chamberState.lastHeaterOnTime = millis();
+    chamberState.lastCoolerOnTime = millis();
 
     currentTest.numSequences = 0;
 }
@@ -252,9 +254,9 @@ void displaySerial() {
         Serial.print(chamberState.temperatureDesired);
     }
     Serial.print(F(" | Heater: "));
-    Serial.print(chamberState.isHeating);
+    Serial.print(chamberState.isHeating ? 1 : 0);
     Serial.print(F(" | Cooler: "));
-    Serial.print(chamberState.isCooling);
+    Serial.print(chamberState.isCooling ? 1 : 0);
     Serial.print(F(" | LH Indicator: "));
     Serial.println(chamberState.longHeatingFlag);
 }
@@ -277,15 +279,15 @@ bool holdForPeriod(unsigned long duration) {
 }
 
 // dutyCycle has to be 0..100
-void controlRelay(Led& relay, int dutyCycle, unsigned long period, unsigned long timer) {
-    unsigned long elapsedTime = millis() - timer;
+void controlRelay(Led& relay, int dutyCycle, unsigned long period, unsigned long lastOnTimer) {
+    unsigned long elapsedTime = millis() - lastOnTimer;
     if (elapsedTime > (dutyCycle * period) / 100) {
         relay.off();
     } else {
         relay.on();
     }
     if (elapsedTime > period) {
-        timer = millis();
+        lastOnTimer = millis();
     }
 }
 
@@ -519,7 +521,6 @@ void handleResetState() {
     chamberState.isCooling = false;
     chamberState.longHeatingFlag = 0;
 
-    readAndParseSerial();
 }
 
 void handleHeatingState() {
@@ -543,11 +544,10 @@ void handleHeatingState() {
         periodHeater = 25000; //on for 20 seconds and off for 5
     }
 
-    controlRelay(heater, dutyCycleHeater, periodHeater, timerHeater);
+    controlRelay(heater, dutyCycleHeater, periodHeater, chamberState.lastHeaterOnTime);
     chamberState.isHeating = true;
     chamberState.isCooling = false;
 
-    readAndParseSerial();
 }
 
 void handleCoolingState() {
@@ -570,11 +570,10 @@ void handleCoolingState() {
         periodCooler=7000; // on for 2 seconds and off for 5
     } 
 
-    controlRelay(cooler, dutyCycleCooler, periodCooler, timerCooler);
+    controlRelay(cooler, dutyCycleCooler, periodCooler, chamberState.lastCoolerOnTime);
     chamberState.isCooling = true;
     chamberState.isHeating = false;
 
-    readAndParseSerial();
 }
 
 void handleReportState() {
@@ -609,11 +608,16 @@ void handleEmergencyStopState() {
         status = RESET;
     }
 
-    readAndParseSerial();
+}
+
+void runTestSequence() {
+    if (isTestRunning) {
+        runCurrentSequence();
+    }
 }
 
 void readAndParseSerial() {
-    if (switchSystem.read() == LOW) {
+    if (systemSwitchState) {
         if (Serial.available() > 0) {
             // Read the incoming data in chunks instead of one character at a time
             int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
@@ -646,12 +650,13 @@ bool printedLCDOff = false;
 void loop() {  
     currentMillis = millis();
 
-    // centralized switch and event handling
-    updateSwitchStates();       // read switch states
-    readAndParseSerial();       // check serial input for new tests or commands
+    // Update switch states and temperature readings
+    updateSwitchStates();
+    chamberState.temperatureRoom = getTemperature();
+    TemperatureThreshold = chamberState.temperatureRoom - chamberState.temperatureDesired;
 
 
-    if (switchSystem.read() == LOW) {
+    if (systemSwitchState) {
         displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
         //displaySerial();
         if (currentMillis - lastUpdate >= updateInterval) {
@@ -662,20 +667,16 @@ void loop() {
         //Serial.println("LCD turning off");
     }
 
+    runTestSequence();
+    readAndParseSerial();       // check serial input for new tests or commands
+
     // Used in showData()
     // temperatureRoomOld = chamberState.temperatureRoom;
     // stateHeaterOld = chamberState.isHeating;
     // stateCoolerOld = chamberState.isCooling;
     // temperatureDesiredOld = chamberState.temperatureDesired;
 
-    // get latest room temp
-    chamberState.temperatureRoom = getTemperature();
-    TemperatureThreshold = chamberState.temperatureRoom - chamberState.temperatureDesired;
 
-
-    if (isTestRunning) {
-        runCurrentSequence();
-    }
 
     switch (status) {
         case RESET:
