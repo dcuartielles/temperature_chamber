@@ -728,6 +728,8 @@ void loop() {
         case EMERGENCY_STOP:
             handleEmergencyStopState();
             break;
+        default:
+            Serial.println("Invalid state detected!");
     }
 }
 
