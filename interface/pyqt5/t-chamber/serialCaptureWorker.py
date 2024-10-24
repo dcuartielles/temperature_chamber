@@ -32,6 +32,7 @@ class SerialCaptureWorker(QThread):
             logging.info(f'serial capture worker connected to arduino port: {self.port}')
             print(f'connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
+            self.reset_arduino()
             return True
         except serial.SerialException as e:
             logging.error(f'error: {e}')

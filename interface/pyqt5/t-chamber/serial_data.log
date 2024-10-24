@@ -17973,3 +17973,341 @@ Error during build: exit status 1
 2024-10-24 08:39:08,847 - INFO - arduino says: Room_temp: 21.16 | Desired_temp: 50.00 | Heater: 0 | Cooler: 0 | LH Indicator: 0
 2024-10-24 08:39:13,572 - ERROR - error sending command: WriteFile failed (OSError(9, 'The handle is invalid.', None, 6))
 2024-10-24 08:39:13,573 - INFO - connection to COM15 closed
+2024-10-24 08:48:20,943 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-24 08:48:31,593 - INFO - test board worker connected to arduino port: COM7
+2024-10-24 08:48:31,594 - INFO - serial capture worker connected to arduino port: COM15
+2024-10-24 08:48:32,594 - INFO - test board thread is running
+2024-10-24 08:48:32,595 - INFO - serial capture thread is running
+2024-10-24 08:48:36,597 - INFO - test worker thread is running
+2024-10-24 08:48:37,612 - INFO - sent command: SHOW DATA
+2024-10-24 08:48:41,599 - INFO - test worker thread is running
+2024-10-24 08:48:42,639 - INFO - there was nothing worth saying here
+2024-10-24 08:48:47,100 - INFO - test worker thread is running
+2024-10-24 08:48:47,742 - INFO - sent command: SHOW DATA
+2024-10-24 08:48:52,595 - INFO - test worker thread is running
+2024-10-24 08:48:52,753 - INFO - there was nothing worth saying here
+2024-10-24 08:48:57,596 - INFO - test worker thread is running
+2024-10-24 08:48:57,864 - INFO - sent command: SHOW DATA
+2024-10-24 08:49:02,885 - INFO - there was nothing worth saying here
+2024-10-24 08:49:03,093 - INFO - test worker thread is running
+2024-10-24 08:49:05,741 - INFO - [{'temp': 23.0, 'duration': 60000}]
+2024-10-24 08:49:05,741 - INFO - [{'temp': 23.0, 'duration': 60000}]
+2024-10-24 08:49:05,753 - INFO - sent to arduino: {"temp": 23.0, "duration": 60000}
+2024-10-24 08:49:08,000 - INFO - sent command: SHOW DATA
+2024-10-24 08:49:08,094 - INFO - test worker thread is running
+2024-10-24 08:49:13,022 - INFO - there was nothing worth saying here
+2024-10-24 08:49:13,096 - INFO - test worker thread is running
+2024-10-24 08:49:18,136 - INFO - sent command: SHOW DATA
+2024-10-24 08:49:18,592 - INFO - test worker thread is running
+2024-10-24 08:49:23,153 - INFO - there was nothing worth saying here
+2024-10-24 08:49:23,594 - INFO - test worker thread is running
+2024-10-24 08:49:28,267 - INFO - sent command: SHOW DATA
+2024-10-24 08:49:29,094 - INFO - test worker thread is running
+2024-10-24 08:49:32,284 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-24 08:49:32,290 - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-10-24 08:49:33,287 - INFO - there was nothing worth saying here
+2024-10-24 08:49:34,574 - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-24 08:49:34,574 - INFO - sending full test test_1
+2024-10-24 08:49:34,585 - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-24 08:49:34,585 - INFO - sending full test test_2
+2024-10-24 08:49:34,585 - INFO - test worker thread is running
+2024-10-24 08:49:34,586 - INFO - connection to COM7 closed now
+2024-10-24 08:49:34,686 - INFO - test board worker temporarily deleted
+2024-10-24 08:49:34,687 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-24 08:49:34,709 - INFO - cli worker connected to arduino port: COM7
+2024-10-24 08:49:35,710 - INFO - cli worker thread is running
+2024-10-24 08:49:36,826 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-24 08:49:36,826 - INFO - detected fqbn: arduino:avr:uno
+2024-10-24 08:49:37,944 - INFO - command succeeded: arduino-cli core list
+2024-10-24 08:49:37,945 - INFO - core arduino is already installed.
+2024-10-24 08:49:37,945 - INFO - core arduino is already installed.
+2024-10-24 08:49:37,945 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-24 08:49:38,391 - INFO - sent command: SHOW DATA
+2024-10-24 08:49:40,102 - INFO - command failed: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests\alphabet\alphabet.ino: In function 'void loop()':
+C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests\alphabet\alphabet.ino:14:18: error: no matching function for call to 'HardwareSerial::print()'
+     Serial.print();
+                  ^
+In file included from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Stream.h:26:0,
+                 from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/HardwareSerial.h:29,
+                 from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Arduino.h:233,
+                 from C:\Users\owenk\AppData\Local\Temp\arduino\sketches\E545B909EF1A6C7F4EC7D667BE0682A3\sketch\alphabet.ino.cpp:1:
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:65:12: note: candidate: size_t Print::print(const __FlashStringHelper*)
+     size_t print(const __FlashStringHelper *);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:65:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:66:12: note: candidate: size_t Print::print(const String&)
+     size_t print(const String &);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:66:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:67:12: note: candidate: size_t Print::print(const char*)
+     size_t print(const char[]);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:67:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:68:12: note: candidate: size_t Print::print(char)
+     size_t print(char);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:68:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:69:12: note: candidate: size_t Print::print(unsigned char, int)
+     size_t print(unsigned char, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:69:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:70:12: note: candidate: size_t Print::print(int, int)
+     size_t print(int, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:70:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:71:12: note: candidate: size_t Print::print(unsigned int, int)
+     size_t print(unsigned int, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:71:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:72:12: note: candidate: size_t Print::print(long int, int)
+     size_t print(long, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:72:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:73:12: note: candidate: size_t Print::print(long unsigned int, int)
+     size_t print(unsigned long, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:73:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:74:12: note: candidate: size_t Print::print(double, int)
+     size_t print(double, int = 2);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:74:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:75:12: note: candidate: size_t Print::print(const Printable&)
+     size_t print(const Printable&);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:75:12: note:   candidate expects 1 argument, 0 provided
+
+Error during build: exit status 1
+
+2024-10-24 08:49:40,102 - WARNING - compilation failed
+2024-10-24 08:49:40,103 - ERROR - aborting upload due to compilation failure.
+2024-10-24 08:49:42,258 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-24 08:49:42,258 - INFO - detected fqbn: arduino:avr:uno
+2024-10-24 08:49:43,351 - INFO - command succeeded: arduino-cli core list
+2024-10-24 08:49:43,351 - INFO - core arduino is already installed.
+2024-10-24 08:49:43,351 - INFO - core arduino is already installed.
+2024-10-24 08:49:43,351 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-24 08:49:43,411 - INFO - there was nothing worth saying here
+2024-10-24 08:49:45,504 - INFO - command failed: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests\alphabet\alphabet.ino: In function 'void loop()':
+C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests\alphabet\alphabet.ino:14:18: error: no matching function for call to 'HardwareSerial::print()'
+     Serial.print();
+                  ^
+In file included from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Stream.h:26:0,
+                 from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/HardwareSerial.h:29,
+                 from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Arduino.h:233,
+                 from C:\Users\owenk\AppData\Local\Temp\arduino\sketches\E545B909EF1A6C7F4EC7D667BE0682A3\sketch\alphabet.ino.cpp:1:
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:65:12: note: candidate: size_t Print::print(const __FlashStringHelper*)
+     size_t print(const __FlashStringHelper *);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:65:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:66:12: note: candidate: size_t Print::print(const String&)
+     size_t print(const String &);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:66:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:67:12: note: candidate: size_t Print::print(const char*)
+     size_t print(const char[]);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:67:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:68:12: note: candidate: size_t Print::print(char)
+     size_t print(char);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:68:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:69:12: note: candidate: size_t Print::print(unsigned char, int)
+     size_t print(unsigned char, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:69:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:70:12: note: candidate: size_t Print::print(int, int)
+     size_t print(int, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:70:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:71:12: note: candidate: size_t Print::print(unsigned int, int)
+     size_t print(unsigned int, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:71:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:72:12: note: candidate: size_t Print::print(long int, int)
+     size_t print(long, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:72:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:73:12: note: candidate: size_t Print::print(long unsigned int, int)
+     size_t print(unsigned long, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:73:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:74:12: note: candidate: size_t Print::print(double, int)
+     size_t print(double, int = 2);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:74:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:75:12: note: candidate: size_t Print::print(const Printable&)
+     size_t print(const Printable&);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:75:12: note:   candidate expects 1 argument, 0 provided
+
+Error during build: exit status 1
+
+2024-10-24 08:49:45,504 - WARNING - compilation failed
+2024-10-24 08:49:45,505 - ERROR - aborting upload due to compilation failure.
+2024-10-24 08:49:48,512 - INFO - sent command: SHOW DATA
+2024-10-24 08:49:50,397 - INFO - there was nothing worth saying here
+2024-10-24 08:49:50,397 - INFO - connection to COM15 closed
+2024-10-24 08:58:25,830 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-24 08:58:49,531 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-24 08:58:59,268 - INFO - test board worker connected to arduino port: COM7
+2024-10-24 08:58:59,270 - INFO - serial capture worker connected to arduino port: COM15
+2024-10-24 08:59:00,269 - INFO - test board thread is running
+2024-10-24 08:59:00,271 - INFO - serial capture thread is running
+2024-10-24 08:59:04,274 - INFO - test worker thread is running
+2024-10-24 08:59:05,280 - INFO - sent command: SHOW DATA
+2024-10-24 08:59:05,399 - INFO - arduino says: Room_temp: 23.47 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-24 08:59:09,275 - INFO - test worker thread is running
+2024-10-24 08:59:10,505 - INFO - sent command: SHOW DATA
+2024-10-24 08:59:10,619 - INFO - arduino says: Room_temp: 23.47 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-24 08:59:14,775 - INFO - test worker thread is running
+2024-10-24 08:59:15,726 - INFO - sent command: SHOW DATA
+2024-10-24 08:59:15,841 - INFO - arduino says: Room_temp: 23.47 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-24 08:59:20,272 - INFO - test worker thread is running
+2024-10-24 08:59:20,957 - INFO - sent command: SHOW DATA
+2024-10-24 08:59:21,063 - INFO - arduino says: Room_temp: 23.47 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-24 08:59:23,196 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-24 08:59:23,198 - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-10-24 08:59:25,273 - INFO - test worker thread is running
+2024-10-24 08:59:26,166 - INFO - sent command: SHOW DATA
+2024-10-24 08:59:26,374 - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-24 08:59:26,374 - INFO - sending full test test_1
+2024-10-24 08:59:26,385 - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-24 08:59:26,385 - INFO - sending full test test_2
+2024-10-24 08:59:26,386 - INFO - connection to COM7 closed now
+2024-10-24 08:59:26,487 - INFO - test board worker temporarily deleted
+2024-10-24 08:59:26,487 - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-24 08:59:26,511 - INFO - cli worker connected to arduino port: COM7
+2024-10-24 08:59:27,513 - INFO - cli worker thread is running
+2024-10-24 08:59:28,901 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-24 08:59:28,901 - INFO - detected fqbn: arduino:avr:uno
+2024-10-24 08:59:30,332 - INFO - command succeeded: arduino-cli core list
+2024-10-24 08:59:30,332 - INFO - core arduino is already installed.
+2024-10-24 08:59:30,332 - INFO - core arduino is already installed.
+2024-10-24 08:59:30,332 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-24 08:59:31,182 - INFO - there was nothing worth saying here
+2024-10-24 08:59:32,433 - INFO - command failed: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests\alphabet\alphabet.ino: In function 'void loop()':
+C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests\alphabet\alphabet.ino:14:18: error: no matching function for call to 'HardwareSerial::print()'
+     Serial.print();
+                  ^
+In file included from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Stream.h:26:0,
+                 from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/HardwareSerial.h:29,
+                 from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Arduino.h:233,
+                 from C:\Users\owenk\AppData\Local\Temp\arduino\sketches\E545B909EF1A6C7F4EC7D667BE0682A3\sketch\alphabet.ino.cpp:1:
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:65:12: note: candidate: size_t Print::print(const __FlashStringHelper*)
+     size_t print(const __FlashStringHelper *);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:65:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:66:12: note: candidate: size_t Print::print(const String&)
+     size_t print(const String &);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:66:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:67:12: note: candidate: size_t Print::print(const char*)
+     size_t print(const char[]);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:67:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:68:12: note: candidate: size_t Print::print(char)
+     size_t print(char);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:68:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:69:12: note: candidate: size_t Print::print(unsigned char, int)
+     size_t print(unsigned char, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:69:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:70:12: note: candidate: size_t Print::print(int, int)
+     size_t print(int, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:70:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:71:12: note: candidate: size_t Print::print(unsigned int, int)
+     size_t print(unsigned int, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:71:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:72:12: note: candidate: size_t Print::print(long int, int)
+     size_t print(long, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:72:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:73:12: note: candidate: size_t Print::print(long unsigned int, int)
+     size_t print(unsigned long, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:73:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:74:12: note: candidate: size_t Print::print(double, int)
+     size_t print(double, int = 2);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:74:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:75:12: note: candidate: size_t Print::print(const Printable&)
+     size_t print(const Printable&);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:75:12: note:   candidate expects 1 argument, 0 provided
+
+Error during build: exit status 1
+
+2024-10-24 08:59:32,434 - WARNING - compilation failed
+2024-10-24 08:59:32,434 - ERROR - aborting upload due to compilation failure.
+2024-10-24 08:59:34,492 - INFO - command succeeded: arduino-cli board list --format json
+2024-10-24 08:59:34,492 - INFO - detected fqbn: arduino:avr:uno
+2024-10-24 08:59:35,522 - INFO - command succeeded: arduino-cli core list
+2024-10-24 08:59:35,522 - INFO - core arduino is already installed.
+2024-10-24 08:59:35,522 - INFO - core arduino is already installed.
+2024-10-24 08:59:35,522 - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-24 08:59:36,292 - INFO - sent command: SHOW DATA
+2024-10-24 08:59:37,545 - INFO - command failed: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests\alphabet\alphabet.ino: In function 'void loop()':
+C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests\alphabet\alphabet.ino:14:18: error: no matching function for call to 'HardwareSerial::print()'
+     Serial.print();
+                  ^
+In file included from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Stream.h:26:0,
+                 from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/HardwareSerial.h:29,
+                 from C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Arduino.h:233,
+                 from C:\Users\owenk\AppData\Local\Temp\arduino\sketches\E545B909EF1A6C7F4EC7D667BE0682A3\sketch\alphabet.ino.cpp:1:
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:65:12: note: candidate: size_t Print::print(const __FlashStringHelper*)
+     size_t print(const __FlashStringHelper *);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:65:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:66:12: note: candidate: size_t Print::print(const String&)
+     size_t print(const String &);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:66:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:67:12: note: candidate: size_t Print::print(const char*)
+     size_t print(const char[]);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:67:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:68:12: note: candidate: size_t Print::print(char)
+     size_t print(char);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:68:12: note:   candidate expects 1 argument, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:69:12: note: candidate: size_t Print::print(unsigned char, int)
+     size_t print(unsigned char, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:69:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:70:12: note: candidate: size_t Print::print(int, int)
+     size_t print(int, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:70:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:71:12: note: candidate: size_t Print::print(unsigned int, int)
+     size_t print(unsigned int, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:71:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:72:12: note: candidate: size_t Print::print(long int, int)
+     size_t print(long, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:72:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:73:12: note: candidate: size_t Print::print(long unsigned int, int)
+     size_t print(unsigned long, int = DEC);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:73:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:74:12: note: candidate: size_t Print::print(double, int)
+     size_t print(double, int = 2);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:74:12: note:   candidate expects 2 arguments, 0 provided
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:75:12: note: candidate: size_t Print::print(const Printable&)
+     size_t print(const Printable&);
+            ^~~~~
+C:\Users\owenk\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.6\cores\arduino/Print.h:75:12: note:   candidate expects 1 argument, 0 provided
+
+Error during build: exit status 1
+
+2024-10-24 08:59:37,546 - WARNING - compilation failed
+2024-10-24 08:59:37,546 - ERROR - aborting upload due to compilation failure.
+2024-10-24 08:59:41,308 - INFO - there was nothing worth saying here
+2024-10-24 08:59:41,509 - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-24 08:59:41,509 - INFO - sending full test test_1
+2024-10-24 08:59:41,521 - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "Expected to consistently print the alphabet."}}
+2024-10-24 08:59:41,521 - INFO - sending full test test_2

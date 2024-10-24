@@ -201,7 +201,6 @@ class MainWindow(QMainWindow):
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.start()  # start the worker thread
-        self.serial_worker.reset_arduino()
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
 
         # create test board worker thread
