@@ -194,3 +194,13 @@ class SerialCaptureWorker(QThread):
         self.is_stopped = True  # set flag to stop the read_data loop
         self.send_command('EMERGENCY STOP')
         logging.info('emergency stop issued')
+
+    # pause flag for stopping communication temporarily when test board thread is dealing with cli
+    def pause(self):
+        self.is_stopped = True
+        print('serial capture worker is paused')
+        
+    def resume(self):
+        self.is_stopped = False
+        self.last_command_time = time.time()  # reset the timing
+        print('resuming serial capture worker')
