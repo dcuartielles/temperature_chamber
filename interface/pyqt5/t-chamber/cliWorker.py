@@ -24,6 +24,11 @@ class CliWorker(QThread):
         self.test_data = None
         self.last_command_time = time.time()
         self.is_uploading = False
+        self.is_compiling = False
+        self.is_detecting = False
+        self.checking_core = False
+        self.core_installed = False
+        self.boards_are_there = False
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -71,7 +76,6 @@ class CliWorker(QThread):
     def wave(self, hello):
         if hello:
             self.update_upper_listbox.emit(hello)
-            time.sleep(0.1)
 
     # method to stop the serial communication
     def stop(self):
@@ -94,10 +98,16 @@ class CliWorker(QThread):
             return None
 
     def get_arduino_boards(self):
+
+        if self.boards_are_there:
+            logging.warning('boards are already detected, moving on')
+            return
+
         command = ["arduino-cli", "board", "list", "--format", "json"]
         output = self.run_cli_command(command)
 
         if output:
+            self.boards_are_there = True
             try:
                 boards_info = json.loads(output)
                 arduino_ports = []
@@ -114,6 +124,11 @@ class CliWorker(QThread):
         return []
 
     def detect_board(self, port):
+
+        if self.is_detecting:
+            logging.warning('boards already detected: skipping new detect request')
+            return
+
         command = ["arduino-cli", "board", "list", "--format", "json"]
         output = self.run_cli_command(command)
 
@@ -124,6 +139,7 @@ class CliWorker(QThread):
                     if "matching_boards" in board and board["matching_boards"]:
                         fqbn = board["matching_boards"][0].get("fqbn", None)
                         if fqbn:
+                            self.is_detecting = True
                             logging.info(f'detected fqbn: {fqbn}')
                             return fqbn
                         else:
@@ -132,11 +148,17 @@ class CliWorker(QThread):
         return None
 
     def is_core_installed(self, fqbn):
+
+        if self.checking_core:
+            logging.warning('checking core already: skipping new check core request')
+            return
+
         core_name = fqbn.split(":")[0]
         command = ["arduino-cli", "core", "list"]
         output = self.run_cli_command(command)
 
         if output:
+            self.checking_core = True
             installed_cores = output.splitlines()
             for core in installed_cores:
                 if core_name in core:
@@ -145,17 +167,27 @@ class CliWorker(QThread):
         return False
 
     def install_core_if_needed(self, fqbn):
+
+        if self.core_installed:
+            logging.warning('core already installed: skipping new core install request')
+            return
+
         core_name = fqbn.split(":")[0]
+
         if not self.is_core_installed(fqbn):
+            self.core_installed = True
             logging.info(f'core {core_name} not installed. installing...')
             update = 'installing core on test board'
             self.wave(update)
             command = ["arduino-cli", "core", "install", core_name]
             self.run_cli_command(command)
-        else:
-            logging.info(f'core {core_name} is already installed.')
 
     def compile_sketch(self, fqbn, sketch_path):
+
+        if self.is_compiling:
+            logging.warning('compiling already: skipping new compile request')
+            return
+
         logging.info(f'compiling sketch for the board with fqbn {fqbn}...')
         headsup = 'compiling sketch for test board'
         self.wave(headsup)
@@ -166,14 +198,17 @@ class CliWorker(QThread):
         ]
         result = self.run_cli_command(command)
         if result:
+            self.is_compiling = True
             logging.info('compilation successful!')
             yes = 'compilation successful!'
             self.wave(yes)
+            time.sleep(0.5)
             return True
         else:
             logging.warning('compilation failed')
             no = 'compilation failed'
             self.wave(no)
+            time.sleep(0.5)
             return False
 
     def upload_sketch(self, fqbn, port, sketch_path):
@@ -185,6 +220,7 @@ class CliWorker(QThread):
         logging.info(f'uploading sketch to board with fqbn {fqbn} on port {port}...')
         uploading = 'uploading sketch on test board'
         self.wave(uploading)
+        time.sleep(0.5)
 
         command = [
             "arduino-cli", "upload",
@@ -204,6 +240,7 @@ class CliWorker(QThread):
                     print('upload successful!')
                     bye = 'upload successful!'
                     self.wave(bye)
+                    time.sleep(0.5)
 
                     self.finished.emit()
                     return True
@@ -212,6 +249,7 @@ class CliWorker(QThread):
                     print('upload failed!')
                     bye = 'upload failed!'
                     self.wave(bye)
+                    time.sleep(0.5)
 
                     self.finished.emit()
                     return False
@@ -225,6 +263,7 @@ class CliWorker(QThread):
             logging.error(f'serial error on cli thread during upload: {e}')
             error = f'serial error on cli thread during upload: {str(e)}'
             self.wave(error)
+            time.sleep(0.5)
 
             self.finished.emit()
 
@@ -238,6 +277,8 @@ class CliWorker(QThread):
                 print(f'arduino on {self.port} reset successfully')
                 reset = 'test board reset successfully'
                 self.wave(reset)
+                time.sleep(0.5)
+
             except serial.SerialException as e:
                 logging.error(f'failed to reset arduino on {self.port}: {e}')
                 print(f'arduino on {self.port} reset successfully')

@@ -73,8 +73,10 @@ class TestBoardWorker(QThread):
 
     # show serial response
     def show_response(self):
-        if self.ser and self.ser.is_open:
-            # read incoming serial data
-            response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-            if response:
-                self.update_upper_listbox.emit(response)  # emit signal to update listbox
+        while self.ser.is_running:
+            if not self.is_stopped:
+                if self.ser and self.ser.is_open:
+                    # read incoming serial data
+                    response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                    if response:
+                        self.update_upper_listbox.emit(response)  # emit signal to update listbox

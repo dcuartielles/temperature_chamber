@@ -29,11 +29,13 @@ class SerialCaptureWorker(QThread):
         if baudrate:
             self.baudrate = baudrate
         try:
+            time.sleep(0.1)
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
             logging.info(f'serial capture worker connected to arduino port: {self.port}')
             print(f'connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
-            self.reset_arduino()
+            # self.reset_arduino()
+            time.sleep(0.5)
             return True
         except serial.SerialException as e:
             logging.error(f'error: {e}')

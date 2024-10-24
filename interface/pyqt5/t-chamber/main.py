@@ -267,7 +267,6 @@ class MainWindow(QMainWindow):
 
     # clean up cli worker after it's done
     def cleanup_cli_worker(self):
-
         self.cli_worker.is_running = False
         self.cli_worker.stop()
         logging.info('cli worker quit')
@@ -276,7 +275,7 @@ class MainWindow(QMainWindow):
         logging.info('cli worker deleted')
         print('cli worker deleted')
 
-        # time.sleep(2)  # time for the port to fully close before restarting
+        time.sleep(1)  # time for the port to fully close before restarting
 
         # restart test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
