@@ -20,7 +20,7 @@ logger = setup_logger(__name__)
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        
+
         logger.info('app started')
 
         # create an instance of config
