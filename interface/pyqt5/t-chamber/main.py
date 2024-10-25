@@ -243,7 +243,6 @@ class MainWindow(QMainWindow):
 
     # the actual upper listbox updates
     def cli_update_upper_listbox_gui(self, message):
-        # self.instruction_listbox.clear()
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
 
@@ -259,6 +258,8 @@ class MainWindow(QMainWindow):
     # button click handlers
     # run all benchmark tests
     def on_run_button_clicked(self):
+        self.instruction_listbox.clear()
+        QApplication.processEvents()
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
             if not self.serial_worker.is_stopped:
                 self.serial_worker.run_all_tests(self.test_data)
@@ -269,14 +270,14 @@ class MainWindow(QMainWindow):
                 logging.info('test board worker temporarily deleted')
                 # initiate cli worker thread
                 self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
+                self.cli_worker.set_test_data(self.test_data, self.filepath)
                 # connect pause and resume signals to serial capture
                 self.cli_worker.pause_serial.connect(self.serial_worker.pause)
                 self.cli_worker.resume_serial.connect(self.serial_worker.resume)
                 self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
                 self.cli_worker.update_upper_listbox.connect(self.cli_update_upper_listbox_gui)
                 self.cli_worker.start()  # start cli worker thread
-                self.instruction_listbox.clear()
-                self.cli_worker.run_all_tests(filepath=self.filepath, test_data=self.test_data)
+                # self.cli_worker.run_all_tests(filepath=self.filepath, test_data=self.test_data)
                 time.sleep(0.1)
         else:
             self.show_error_message('error', 'no test data loaded')

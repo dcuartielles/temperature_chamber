@@ -22,7 +22,6 @@ class CliWorker(QThread):
         self.is_open = True
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
-        self.test_data = None
         self.last_command_time = time.time()
         self.is_uploading = False
         self.is_compiling = False
@@ -30,6 +29,8 @@ class CliWorker(QThread):
         self.checking_core = False
         self.core_installed = False
         self.boards_are_there = False
+        self.test_data = None
+        self.filepath = None
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -57,6 +58,7 @@ class CliWorker(QThread):
 
         while self.is_running:
             if not self.is_stopped:
+                self.run_all_tests(self.test_data, self.filepath)
                 try:
                     if not self.is_stopped and self.ser and self.ser.is_open:
                         if time.time() - self.last_command_time > 5:
@@ -73,6 +75,10 @@ class CliWorker(QThread):
 
             time.sleep(0.1)
         self.stop()
+
+    def set_test_data(self, test_data, filepath):
+        self.test_data = test_data
+        self.filepath = filepath
 
     def wave(self, hello):
         if hello:
@@ -241,7 +247,7 @@ class CliWorker(QThread):
                     print('upload successful!')
                     bye = 'upload successful!'
                     self.wave(bye)
-
+                    time.sleep(2.5)
                     self.finished.emit()
                     return True
                 else:
@@ -294,7 +300,7 @@ class CliWorker(QThread):
             logging.warning(f'failed to detect board on port {port}.')
         return False
 
-# run the entire test file
+    # run the entire test file
     def run_all_tests(self, test_data, filepath):
         if test_data and filepath:  # take test_data & port number from main
             logging.info(f'running test with testdata filepath: {filepath}')
