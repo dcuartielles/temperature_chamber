@@ -121,13 +121,16 @@ class MainWindow(QMainWindow):
 
         # create the alternative test part listboxes for later activation
         self.test_output_listbox = QListWidget(self)
-        self.test_output_listbox.setFixedSize(475, 60)
-        self.test_output_layout.addWidget(self.test_output_listbox)
+
+        self.test_output_listbox.setFixedSize(475, 30)
         self.test_output_listbox.hide()
+        test_output_layout.addWidget(self.test_output_listbox)
+
         self.expected_outcome_listbox = QListWidget(self)
-        self.expected_outcome_listbox.setFixedSize(475, 60)
-        self.test_output_layout.addWidget(self.expected_outcome_listbox)
+        self.expected_outcome_listbox.setFixedSize(475, 100)
         self.expected_outcome_listbox.hide()
+        test_output_layout.addWidget(self.expected_outcome_listbox)
+
 
         # add space btw sections: vertical 20px
         layout.addSpacerItem(QSpacerItem(0, 20))
@@ -240,7 +243,7 @@ class MainWindow(QMainWindow):
 
     # the actual upper listbox updates
     def cli_update_upper_listbox_gui(self, message):
-        self.test_output_listbox.clear()
+        # self.instruction_listbox.clear()
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
 
@@ -272,6 +275,7 @@ class MainWindow(QMainWindow):
                 self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
                 self.cli_worker.update_upper_listbox.connect(self.cli_update_upper_listbox_gui)
                 self.cli_worker.start()  # start cli worker thread
+                self.instruction_listbox.clear()
                 self.cli_worker.run_all_tests(filepath=self.filepath, test_data=self.test_data)
                 time.sleep(0.1)
         else:
@@ -322,12 +326,13 @@ class MainWindow(QMainWindow):
         self.expected_outcome_listbox.clear()
 
         for i, output in enumerate(exp_outputs):
-            self.expected_outcome_listbox.addItem(f'expected output, test {i + 1}: {output}')
+            self.expected_outcome_listbox.addItem(f'test {i + 1}, expected output: {output}')
 
         self.expected_outcome_listbox.scrollToBottom()
 
     def change_test_part_gui(self):
         self.instruction_listbox.hide()
+
         print('remove old widget')
         self.test_output_listbox.show()
         self.expected_outcome_listbox.show()
