@@ -21528,3 +21528,8 @@ Traceback (most recent call last):
     raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
 serial.serialutil.SerialException: could not open port 'COM15': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
 2024-10-25 13:15:17 - ERROR - serial capture failed to connect to COM15
+2024-10-25 13:46:30 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-25 13:49:13 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-25 13:49:13 - INFO - just testing the logger
+2024-10-25 13:49:26 - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-25 13:49:26 - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes

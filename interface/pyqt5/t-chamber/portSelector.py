@@ -1,4 +1,3 @@
-import logging
 from PyQt5.QtWidgets import QComboBox, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QSpacerItem
 import arduinoUtils
 

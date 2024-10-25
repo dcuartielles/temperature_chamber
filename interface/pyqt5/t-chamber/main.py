@@ -1,6 +1,5 @@
 # system and PyQt5 imports
 import sys
-import logging
 import time
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
@@ -13,18 +12,9 @@ from portSelector import PortSelector
 from testBoardWorker import TestBoardWorker
 from cliWorker import CliWorker
 from config import Config
+from logger_config import setup_logger
 
-
-# define global logging
-logging.basicConfig(
-    filename='serial_data.log',  # log file name
-    encoding="utf-8",
-    filemode="a",
-    level=logging.INFO,  # log level
-    format='%(asctime)s - %(levelname)s - %(message)s',  # log format
-    datefmt='%Y-%m-%d %H:%M:%S',
-)
-
+logger = setup_logger(__name__)
 
 # create window class
 class MainWindow(QMainWindow):
@@ -209,12 +199,9 @@ class MainWindow(QMainWindow):
 
     # method to start running threads after ports have been selected
     def on_start_button_clicked(self):
-        print('start button clicked')
         # retrieve selected ports after user has had a chance to pick them
         self.selected_c_port = self.port_selector.get_selected_c_port()
         self.selected_t_port = self.port_selector.get_selected_t_port()
-        print(self.selected_c_port)  # should return the port string
-        print(self.selected_t_port)  # should return the port string
 
         # only now create the worker threads with the selected ports
         self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
@@ -253,10 +240,6 @@ class MainWindow(QMainWindow):
     def load_test_file(self):
         self.test_data = self.json_handler.open_file()
         self.filepath = self.json_handler.get_filepath()
-        if self.test_data:
-            print('test data loaded successfully')
-        else:
-            print('failed to load test data')
 
     # button click handlers
     # run all benchmark tests
@@ -270,7 +253,7 @@ class MainWindow(QMainWindow):
                 self.test_board.is_running = False
                 self.test_board.stop()
                 self.test_board.deleteLater()
-                logging.info('test board worker temporarily deleted')
+                logger.info('test board worker temporarily deleted')
                 # initiate cli worker thread
                 self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
                 self.cli_worker.set_test_data(self.test_data, self.filepath)
@@ -289,11 +272,9 @@ class MainWindow(QMainWindow):
     def cleanup_cli_worker(self):
         self.cli_worker.is_running = False
         self.cli_worker.stop()
-        logging.info('cli worker quit')
-        print('cli worker quit')
+        logger.info('cli worker quit')
         self.cli_worker.deleteLater()
-        logging.info('cli worker deleted')
-        print('cli worker deleted')
+        logger.info('cli worker deleted')
 
         time.sleep(1.5)  # time for the port to fully close before restarting
 
@@ -302,8 +283,7 @@ class MainWindow(QMainWindow):
         self.test_board.update_upper_listbox.connect(self.update_test_output_listbox_gui)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
-        print('test board worker restarted')
-        logging.info('test board worker restarted')
+        logger.info('test board worker restarted')
 
         # update the gui
         self.change_test_part_gui()
@@ -311,16 +291,13 @@ class MainWindow(QMainWindow):
     # extract expected test outcome from test file
     def expected_output(self, test_data):
         if test_data is not None:
-            print('getting exp output from file')
             all_expected_outputs = []
-
             # iterate through each test and run it
             for test_key in test_data.keys():
                 test = test_data.get(test_key, {})
                 expected_output = test.get('expected output', '')  # get the expected output string
                 if expected_output:
                     all_expected_outputs.append(expected_output)
-            print('returning all expected outputs')
             return all_expected_outputs
         return []
 
@@ -336,12 +313,9 @@ class MainWindow(QMainWindow):
 
     def change_test_part_gui(self):
         self.instruction_listbox.hide()
-
-        print('remove old widget')
         self.test_output_listbox.show()
         self.expected_outcome_listbox.show()
-        print('add both new listboxes')
-        logging.info('gui updated')
+        logger.info('gui updated')
         self.expected_output_listbox()
 
     # enter for temp & duration inputs
@@ -355,7 +329,7 @@ class MainWindow(QMainWindow):
 
             if is_valid and self.input_dictionary:  # if valid inputs
                 self.serial_worker.set_temp(self.input_dictionary)  # set temp in arduino
-                print(f'sent to arduino: {self.input_dictionary}')
+                logger.info(f'sent to arduino: {self.input_dictionary}')
 
     # make sure both temp & duration are submitted by user
     def check_inputs(self, temp_string, duration_string):
@@ -383,7 +357,7 @@ class MainWindow(QMainWindow):
             self.input_dictionary.clear()  # clear previous input
             new_sequence = {'temp': temp, 'duration': duration * 60000}  # convert duration to milliseconds
             self.input_dictionary.append(new_sequence)  # append valid input to the dictionary
-            logging.info(self.input_dictionary)  # log temp & duration
+            logger.info(self.input_dictionary)  # log temp & duration
         return is_valid
 
     # helper method to display error messages using QMessageBox
