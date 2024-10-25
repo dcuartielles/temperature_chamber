@@ -175,6 +175,8 @@ void setup() {
     chamberState.lastCoolerOnTime = millis();
 
     currentTest.numSequences = 0;
+
+    readAndParseSerial();
 }
 
 float getTemperature() {
@@ -404,9 +406,13 @@ void changeTemperature() {
     if (buttonIncrease.read()== HIGH && buttonDecrease.read()== LOW) chamberState.temperatureDesired += 5;
     if (buttonDecrease.read()== HIGH && buttonIncrease.read()== LOW) chamberState.temperatureDesired -= 5;
 
-    if (chamberState.temperatureDesired >= TEMPERATURE_MAX) chamberState.temperatureDesired = TEMPERATURE_MAX;
-    if (chamberState.temperatureDesired == -41) { handleResetState(); }
-    else if (chamberState.temperatureDesired <= TEMPERATURE_MIN) chamberState.temperatureDesired = TEMPERATURE_MIN;
+    if (chamberState.temperatureDesired >= TEMPERATURE_MAX) {
+        chamberState.temperatureDesired = TEMPERATURE_MAX;
+    }
+    // if (chamberState.temperatureDesired == -41) { handleResetState(); }
+    else if (chamberState.temperatureDesired <= TEMPERATURE_MIN && chamberState.temperatureDesired != -41)  {
+        chamberState.temperatureDesired = TEMPERATURE_MIN;
+    }
 }
 
 void displayStatus() {
@@ -648,12 +654,18 @@ unsigned long updateInterval = 500;
 bool printedLCDOff = false;
 
 void loop() {  
+    // Serial.println("System switch: " + String(systemSwitchState));
+    // Serial.println("Start switch: " + String(startSwitchState));
+    // Serial.println("Stop switch: " + String(stopSwitchState));
+
     currentMillis = millis();
 
     // Update switch states and temperature readings
     updateSwitchStates();
     chamberState.temperatureRoom = getTemperature();
-    TemperatureThreshold = chamberState.temperatureRoom - chamberState.temperatureDesired;
+    if (chamberState.temperatureDesired != -41) {
+        TemperatureThreshold = chamberState.temperatureRoom - chamberState.temperatureDesired;
+    }
 
 
     if (systemSwitchState) {
