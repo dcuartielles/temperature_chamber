@@ -59,10 +59,6 @@ Authors:
 #define REPORT              3
 #define EMERGENCY_STOP      4
 
-// Modes for the state machine
-#define AUTOMATIC           0
-#define MANUAL              1
-
 // Define temperature limits
 #define TEMPERATURE_MAX     100
 #define TEMPERATURE_MIN     0
@@ -108,6 +104,11 @@ int dutyCycleCooler = 0;
 int status = EMERGENCY_STOP;
 bool dataEvent = false;
 
+// global variables to store switch states and flags
+bool systemSwitchState = false;
+bool startSwitchState = false;
+bool stopSwitchState = false;
+
 struct Sequence {
     float targetTemp;
     unsigned long duration;
@@ -123,7 +124,6 @@ bool isTestRunning = false;
 Test currentTest;
 int currentSequenceIndex = 0;
 unsigned long sequenceStartTime = 0;
-float currentTargetTemp = 0;
 unsigned long currentDuration = 0;
 
 // JSON Buffer for parsing
@@ -415,15 +415,6 @@ void changeTemperature() {
     }
 }
 
-void displayStatus() {
-    Serial.print("status: ");
-    Serial.println(status);
-}
-
-enum TestState { IDLE, RUNNING_TEST };
-TestState currentTestState = IDLE;
-unsigned long startTime = 0;    // Timing variable for test steps
-
 void setTemperature(float temp) {
     if (temp >= TEMPERATURE_MAX) {
         chamberState.temperatureDesired = TEMPERATURE_MAX;
@@ -466,7 +457,6 @@ void parseCommand(String command) {
     }
     else if (command == "SHOW RUNNING SEQUENCE") {
         if (isTestRunning) {
-            //Serial.println("Processing SHOW RUNNING SEQUENCE...");
             Serial.print("Running sequence: Target temp = ");
             Serial.print(chamberState.temperatureDesired, 2);
             Serial.print(" Duration = ");
@@ -477,12 +467,10 @@ void parseCommand(String command) {
             Serial.println("No sequence is currently running.");
         }
     }
-    //displayStatus();
 }
 
 int getSwitchStatus() {
     int switchStatus;
-
     if (switchSystem.read() == LOW) {
         switchStatus += 10;
     }
@@ -491,12 +479,6 @@ int getSwitchStatus() {
     }
     return switchStatus;
 }
-
-
-// global variables to store switch states and flags
-bool systemSwitchState = false;
-bool startSwitchState = false;
-bool stopSwitchState = false;
 
 // centralized switch handling
 void updateSwitchStates() {
