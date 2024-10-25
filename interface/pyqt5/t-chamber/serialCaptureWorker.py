@@ -199,7 +199,7 @@ class SerialCaptureWorker(QThread):
     def pause(self):
         self.is_stopped = True
         print('serial capture worker is paused')
-        
+
     def resume(self):
         self.is_stopped = False
         self.last_command_time = time.time()  # reset the timing
