@@ -370,13 +370,13 @@ void runCurrentSequence() {
     // store current duration for the SHOW RUNNING SEQUENCE command
     currentDuration = duration;
 
-    // if (!printedRunning) {
-    //     Serial.print("Running sequence: Target temp = ");
-    //     Serial.print(targetTemp);
-    //     Serial.print(" Duration = ");
-    //     Serial.println(duration);
-    //     printedRunning = true;
-    // }
+    if (!printedRunning) {
+        Serial.print("Running sequence: Target temp = ");
+        Serial.print(targetTemp);
+        Serial.print(" Duration = ");
+        Serial.println(duration);
+        printedRunning = true;
+    }
 
     // check if target temp is reached
     if (!isTemperatureReached(targetTemp, chamberState.temperatureRoom)) {
@@ -388,7 +388,7 @@ void runCurrentSequence() {
     }
     if (sequenceStartTime == 0) {
         sequenceStartTime = millis();
-        Serial.println("Target temp reached! Starting timer.");
+        Serial.println("Target temperature reached! Starting timer.");
     }
 
     if (holdForPeriod(duration)) {
@@ -435,9 +435,10 @@ void setTemperature(float temp) {
         Serial.println("Setting temperature to " + String(TEMPERATURE_MIN) + "°");
     } else {
         chamberState.temperatureDesired = temp;
-        Serial.println("Setting temperature to " + String(temp) + "°");
-        Serial.print("Temperature desired set to: ");
-        Serial.println(temp);  // debug to confirm the desired temp is set
+        Serial.print("Setting temperature to ");
+        Serial.println("°");
+        // Serial.print("Temperature desired set to: ");
+        // Serial.println(temp);  // debug to confirm the desired temp is set
     }
 }
 
