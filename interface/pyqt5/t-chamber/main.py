@@ -18,8 +18,11 @@ from config import Config
 # define global logging
 logging.basicConfig(
     filename='serial_data.log',  # log file name
+    encoding="utf-8",
+    filemode="a",
     level=logging.INFO,  # log level
-    format='%(asctime)s - %(levelname)s - %(message)s'  # log format
+    format='%(asctime)s - %(levelname)s - %(message)s',  # log format
+    datefmt='%Y-%m-%d %H:%M:%S',
 )
 
 

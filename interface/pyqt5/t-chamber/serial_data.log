@@ -21474,3 +21474,57 @@ Error during build: exit status 1
 2024-10-25 11:30:06,329 - INFO - arduino says: Room_temp: 47.53 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 0
 2024-10-25 11:30:10,000 - ERROR - error sending command: WriteFile failed (OSError(9, 'The handle is invalid.', None, 6))
 2024-10-25 11:30:10,001 - INFO - connection to COM15 closed
+2024-10-25 12:22:14,752 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-25 13:15:02 - INFO - Command succeeded: arduino-cli board list --format json
+2024-10-25 13:15:07 - ERROR - error
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\testBoardWorker.py", line 30, in serial_setup
+    self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2024-10-25 13:15:07 - ERROR - test board worker failed to connect to COM7
+2024-10-25 13:15:07 - ERROR - error
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 33, in serial_setup
+    self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM15': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2024-10-25 13:15:07 - ERROR - serial capture failed to connect to COM15
+2024-10-25 13:15:17 - ERROR - error
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\testBoardWorker.py", line 30, in serial_setup
+    self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2024-10-25 13:15:17 - ERROR - test board worker failed to connect to COM7
+2024-10-25 13:15:17 - ERROR - error
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 33, in serial_setup
+    self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM15': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2024-10-25 13:15:17 - ERROR - serial capture failed to connect to COM15

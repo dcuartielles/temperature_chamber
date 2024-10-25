@@ -32,8 +32,8 @@ class TestBoardWorker(QThread):
             print(f'connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
             return True
-        except serial.SerialException as e:
-            logging.error(f'error: {e}')
+        except serial.SerialException:
+            logging.exception('error')
             return False
 
     # serial response readout
