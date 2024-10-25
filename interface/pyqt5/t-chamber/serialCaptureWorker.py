@@ -2,21 +2,24 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import serial
 import json
-# from jsonFunctionality import FileHandler
+import logging
+
 
 class SerialCaptureWorker(QThread):
-    update_listbox = pyqtSignal(str)  # signal to update instruction listbox
+    update_listbox = pyqtSignal(str)  # signal to update listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
 
-    def __init__(self, port='COM15', baudrate=9600, timeout=5):
+    def __init__(self, port, baudrate, timeout=5):
         super().__init__()
         self.port = port
         self.baudrate = baudrate
         self.timeout = timeout
         self.ser = None  # future serial connection object
+        self.is_open = True
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
         self.last_command_time = time.time()
+        self.last_readout = time.time()
         self.test_data = None
 
     # set up serial communication
@@ -26,13 +29,67 @@ class SerialCaptureWorker(QThread):
         if baudrate:
             self.baudrate = baudrate
         try:
+            time.sleep(0.1)
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+            logging.info(f'serial capture worker connected to arduino port: {self.port}')
             print(f'connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
+
             return True
-        except serial.SerialException as e:
-            print(f'error: {e}')
+        except serial.SerialException:
+            logging.exception('error')
             return False
+
+    # method to run the thread
+    def run(self):
+        if not self.serial_setup():
+            logging.error(f'serial capture failed to connect to {self.port}')
+            print(f'failed to connect to {self.port}')
+            return
+        logging.info('serial capture thread is running')
+        print('serial capture thread is running')
+
+        while self.is_running:
+            if not self.is_stopped:
+                try:
+                    if self.ser and self.ser.is_open:
+                        # read incoming serial data
+                        response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                        if response:
+                            if time.time() - self.last_readout > 2:
+                                self.last_readout = time.time()
+                                self.process_response(response)
+                        if time.time() - self.last_command_time > 1.5:
+                            self.last_command_time = time.time()
+                            self.trigger_read_data()
+                except serial.SerialException as e:
+                    logging.error(f'serial error: {e}')
+                    print(f'serial error: {e}')
+                    self.is_running = False
+            time.sleep(0.1)  # avoid excessive cpu usage
+        self.stop()
+
+    # method to stop the serial communication
+    def stop(self):
+        self.is_running = False  # stop the worker thread loop
+        if self.ser and self.ser.is_open:
+            self.ser.close()  # close the serial connection
+            logging.info(f'connection to {self.port} closed')
+        self.quit()
+        self.wait()
+
+    def reset_arduino(self):
+        if self.ser:
+            try:
+                self.ser.setDTR(False)  # reset arduino by setting str to False
+                time.sleep(0.5)  # time to reset
+                self.ser.setDTR(True)  # re-enable dtr
+                logging.info(f'arduino on {self.port} reset successfully')
+                print(f'arduino on {self.port} reset successfully')
+
+            except serial.SerialException as e:
+                logging.error(f'failed to reset arduino on {self.port}: {e}')
+                print(f'failed to reset arduino on {self.port}: {e}')
 
     # sends a command to arduino via serial
     def send_command(self, command):
@@ -40,15 +97,16 @@ class SerialCaptureWorker(QThread):
             if self.ser and self.ser.is_open:
                 self.ser.reset_input_buffer()  # clear the gates
                 self.ser.write((command + '\n').encode('utf-8'))  # encode command in serial
-                print(f'sent command: {command}')  # debug line
-                time.sleep(0.02)  # small delay for command processing
+                logging.info(f'sent command: {command}')
+                time.sleep(0.01)  # small delay for command processing
             else:
-                print('serial connection is not open')
+                logging.warning('serial capture connection is not open')
+                print('serial capture connection is not open')
 
         except serial.SerialException as e:
-            print(f'error sending command: {e}')
+            logging.error(f'error sending command: {e}')
         except Exception as e:
-            print(f'unexpected error: {e}')
+            logging.warning(f'unexpected error: {e}')
 
     # senf json to arduino
     def send_json_to_arduino(self, test_data):
@@ -56,26 +114,18 @@ class SerialCaptureWorker(QThread):
         try:
             if self.ser and self.ser.is_open:
                 self.ser.write((json_data + '\n').encode('utf-8'))
-                time.sleep(0.02)
-                print(f'sent to arduino: {json_data}')
+                time.sleep(0.01)
+                logging.info(f'sent to arduino: {json_data}')
 
                 # continuously read arduino output (blocking method, runs inside the thread)
                 while self.ser.in_waiting > 0:
                     response = self.ser.readline().decode('utf-8').strip()
-                    print(f'arduino says: {response}')
+                    logging.info(f'arduino says: {response}')
             else:
-                print('serial communication is not open')
+                logging.warning('serial capture communication is not open')
+                print('serial capture communication is not open')
         except serial.SerialException as e:
-            print(f'error sending JSON: {e}')
-
-    # method to stop the serial communication
-    def stop(self):
-        self.is_running = False  # stop the worker thread loop
-        if self.ser and self.ser.is_open:
-            self.ser.close()  # close the serial connection
-            print(f'connection to {self.port} closed')
-        self.quit()
-        self.wait()
+            logging.error(f'error sending JSON: {e}')
 
     # read data
     def read_data(self):
@@ -83,18 +133,18 @@ class SerialCaptureWorker(QThread):
             try:
                 self.send_command('SHOW DATA')
                 response = self.ser.readline().decode('utf-8').strip()
-
                 if response:
-                    print(f'arduino says: {response}')
+                    logging.info(f'arduino says: {response}')
                     return response
                 else:
-                    print('there was nothing worth saying here')
+                    logging.info('there was nothing worth saying here')
                     return None
             except serial.SerialException as e:
-                print(f'error reading data: {e}')
+                logging.error(f'error reading data from control board serial: {e}')
                 return None
         else:
-            print('serial communication is closed or stopped')
+            logging.warning('serial capture communication is closed or stopped')
+            print('serial capture communication is closed or stopped')
             return None
 
     # run the entire test file
@@ -104,52 +154,28 @@ class SerialCaptureWorker(QThread):
 
             # iterate through each test and run it
             for test_key in all_tests:
-                test = test_data.get(test_key, [])
 
-                if test:  # if the test data is available
-                    self.send_json_to_arduino(test)  # send the data to arduino
+                test = test_data.get(test_key, {})
+
+                if 'chamber_sequences' in test:  # if the test data is available
+                    self.send_json_to_arduino({test_key: test})  # send the data to arduino
                     # print status and update the listbox
-                    print(f'running {test_key}')
+                    logging.info(f'sending full test {test_key}')
                 else:
-                    print(f'{test_key} not found')
+                    logging.warning(f'{test_key} not found')
 
         else:
             # handle case when no test data is found
-            print('no test data found on file')
-
-    # run custom only
-    def run_custom(self, test_data):
-        if test_data is not None:
-            custom_test = test_data.get('custom', [])
-            if custom_test:
-                self.send_json_to_arduino(custom_test)
-                print(f'running {custom_test}')
-            else:
-                print('no custom test found')
-        else:
-            print('no such test on file')
+            logging.warning('no test data found on file')
 
     # set temp & duration from the gui
     def set_temp(self, input_dictionary):
         if input_dictionary is not None:
-            print(input_dictionary)
-            self.send_json_to_arduino(input_dictionary)
+            logging.info(input_dictionary)
+            set_temp_data = input_dictionary[0]
+            self.send_json_to_arduino(set_temp_data)
         else:
-            print('nothing to set the t-chamber to')
-
-    def run(self):
-        print('thread is running')
-        while self.is_running:
-            if self.ser and self.ser.is_open:
-                # read incoming serial data
-                response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                if response:
-                    self.process_response(response)
-
-                if time.time() - self.last_command_time > 1.5:
-                    self.last_command_time = time.time()
-                    self.trigger_read_data()
-            time.sleep(0.1)  # avoid excessive cpu usage
+            logging.warning('nothing to set the t-chamber to')
 
     def trigger_read_data(self):
         response = self.read_data()  # read data using custom method
@@ -167,4 +193,14 @@ class SerialCaptureWorker(QThread):
     def emergency_stop(self):
         self.is_stopped = True  # set flag to stop the read_data loop
         self.send_command('EMERGENCY STOP')
-        print('emergency stop issued')
+        logging.info('emergency stop issued')
+
+    # pause flag for stopping communication temporarily when test board thread is dealing with cli
+    def pause(self):
+        self.is_stopped = True
+        print('serial capture worker is paused')
+
+    def resume(self):
+        self.is_stopped = False
+        self.last_command_time = time.time()  # reset the timing
+        print('resuming serial capture worker')
