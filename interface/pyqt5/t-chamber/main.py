@@ -252,8 +252,11 @@ class MainWindow(QMainWindow):
 
     # run all benchmark tests
     def on_run_button_clicked(self):
+
+        self.on_run_test_gui()  # if running tests for nth time, come back to original gui layout to start with
         self.instruction_listbox.clear()
         QApplication.processEvents()
+
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
             if not self.serial_worker.is_stopped:
                 self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
@@ -321,6 +324,12 @@ class MainWindow(QMainWindow):
         self.expected_outcome_listbox.show()
         logger.info('gui updated')
         self.expected_output_listbox()
+
+    def on_run_test_gui(self):
+        if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible():
+            self.instruction_listbox.show()
+            self.test_output_listbox.hide()
+            self.expected_outcome_listbox.hide()
 
     # enter for temp & duration inputs
     def on_enter_key(self):

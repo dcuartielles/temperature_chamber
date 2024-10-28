@@ -128,13 +128,16 @@ class SerialCaptureWorker(QThread):
                 self.send_command('SHOW DATA')
                 response = self.ser.readline().decode('utf-8').strip()
                 if response:
+                    if response.lower().startswith('error'):
+                        logger.info(response)
+                        return
                     logger.info(f'arduino says: {response}')
                     return response
                 else:
                     logger.info('there was nothing worth saying here')
                     return None
             except serial.SerialException as e:
-                logger.error(f'error reading data from control board serial: {e}')
+                logger.exception(f'error reading data from control board serial: {e}')
                 return None
         else:
             logger.warning('serial closed or stopped')
@@ -155,7 +158,6 @@ class SerialCaptureWorker(QThread):
                     logger.info(f'sending full test {test_key}')
                 else:
                     logger.warning(f'{test_key} not found')
-
         else:
             # handle case when no test data is found
             logger.warning('no test data found on file')
@@ -177,27 +179,16 @@ class SerialCaptureWorker(QThread):
     # process serial response
     def process_response(self, response):
         # list of responses to be picked up
-        trigger_responses = ['Setting', 'Running', 'Test complete', 'Target temp', 'Sequence complete']
+        trigger_responses = ['Setting', 'Running', 'Waiting', 'Test complete', 'Target temp', 'Sequence complete']
         if any(response.strip().startswith(trigger) for trigger in trigger_responses):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
         else:
-            message = 'no printable response here'
-            self.update_listbox.emit(message)
-            logger.info(message)
+            logger.info(response)
 
     # emergency stop
     def emergency_stop(self):
-        self.is_stopped = True  # set flag to stop the read_data loop
         self.send_command('EMERGENCY STOP')
         logger.info('emergency stop issued')
-
-    # pause flag for stopping communication temporarily when test board thread is dealing with cli
-    def pause(self):
-        self.is_stopped = True
-        logger.info('serial capture worker is paused')
-
-    def resume(self):
-        self.is_stopped = False
-        self.last_command_time = time.time()  # reset the timing
-        logger.info('resuming serial capture worker')
+        message = 'EMERGENCY STOP'
+        self.update_listbox.emit(message)
