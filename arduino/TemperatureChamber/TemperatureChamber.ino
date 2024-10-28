@@ -530,7 +530,7 @@ void handleHeatingState() {
         dutyCycleHeater = 100;
         periodHeater = (TemperatureThreshold < -8) ? 120000 : 60000;
         chamberState.longHeatingFlag = 1;
-    } else if(TemperatureThreshold > -4 && chamberState.longHeatingFlag == 0) {
+    } else if(TemperatureThreshold > -4) {
         dutyCycleHeater = 80;
         periodHeater = 25000; //on for 20 seconds and off for 5
     }
