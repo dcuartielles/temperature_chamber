@@ -1,10 +1,9 @@
 import json
 from pathlib import Path
 from logger_config import setup_logger
+from PyQt5.QtWidgets import QFileDialog
 
 logger = setup_logger(__name__)
-
-from PyQt5.QtWidgets import QFileDialog
 
 
 # create file handler class

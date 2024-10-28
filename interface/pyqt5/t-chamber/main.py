@@ -256,7 +256,7 @@ class MainWindow(QMainWindow):
         QApplication.processEvents()
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
             if not self.serial_worker.is_stopped:
-                self.trigger_run_t()
+                self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
             if not self.test_board.is_stopped:
                 self.test_board.is_running = False
                 self.test_board.stop()

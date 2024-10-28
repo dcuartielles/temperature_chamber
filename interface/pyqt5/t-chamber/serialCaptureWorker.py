@@ -6,7 +6,6 @@ from logger_config import setup_logger
 
 logger = setup_logger(__name__)
 
-
 class SerialCaptureWorker(QThread):
     update_listbox = pyqtSignal(str)  # signal to update listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
