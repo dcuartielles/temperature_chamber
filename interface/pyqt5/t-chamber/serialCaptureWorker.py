@@ -182,6 +182,10 @@ class SerialCaptureWorker(QThread):
         if any(response.strip().startswith(trigger) for trigger in trigger_responses):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
+        else:
+            message = 'no printable response here'
+            self.update_listbox.emit(message)
+            logger.info(message)
 
     # emergency stop
     def emergency_stop(self):

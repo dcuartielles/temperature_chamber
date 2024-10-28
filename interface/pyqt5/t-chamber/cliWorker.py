@@ -12,8 +12,6 @@ class CliWorker(QThread):
 
     finished = pyqtSignal()
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
-    # pause_serial = pyqtSignal()  # signal to pause serial worker thread
-    # resume_serial = pyqtSignal(dict)  # signal to resume it
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -297,10 +295,6 @@ class CliWorker(QThread):
             test_data_filepath = filepath.rsplit('/', 1)[0]
             all_tests = [key for key in test_data.keys()]
 
-            # if self.ser and self.ser.is_open:
-                # self.serial_is_busy = True
-                # self.pause_serial.emit()  # emit pause signal to serial capture worker thread to avoid conflicts
-
             # iterate through each test and run it
             for test_key in all_tests:
                 test = test_data.get(test_key, {})
@@ -310,7 +304,7 @@ class CliWorker(QThread):
                     sketch_filename = sketch_path.split('/')[-1]  # get ino file name
                     sketch_full_path = test_data_filepath + '/' + sketch_filename
                     self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
-                    # self.resume_serial.emit()  # let serial capture thread resume
+
                 else:
                     logger.warning('sketch path not found')
         else:
