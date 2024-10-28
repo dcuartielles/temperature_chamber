@@ -40,6 +40,11 @@ class ManualTab(QWidget):
         # add space btw sections: vertical 20px
         layout.addSpacerItem(QSpacerItem(0, 20))
 
+        self.set_temp_input.returnPressed.connect(self.on_enter_key)
+        self.set_duration_input.returnPressed.connect(self.on_enter_key)
+
+        self.setLayout(layout)
+
     # enter for temp & duration inputs
     def on_enter_key(self):
         # check both inputs only when the user presses enter

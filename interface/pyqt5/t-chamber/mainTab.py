@@ -82,6 +82,7 @@ class MainTab(QWidget):
 
         # add space btw sections: vertical 20px
         layout.addSpacerItem(QSpacerItem(0, 20))
+        self.setLayout(layout)
 
     # functionality
     # the actual chamber_monitor QList updates

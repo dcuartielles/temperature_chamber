@@ -1,7 +1,7 @@
 # system and PyQt5 imports
 import sys
 import time
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox, QTabWidget
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 
@@ -13,6 +13,8 @@ from testBoardWorker import TestBoardWorker
 from cliWorker import CliWorker
 from config import Config
 from logger_config import setup_logger
+from mainTab import MainTab
+from manualTab import ManualTab
 
 logger = setup_logger(__name__)
 
@@ -65,7 +67,7 @@ class MainWindow(QMainWindow):
 
         # create a vertical layout
         layout = QVBoxLayout()
-        layout.setContentsMargins(15, 15, 15, 15)  # add padding around the entire layout
+        layout.setContentsMargins(10, 10, 10, 10)  # add padding around the entire layout
 
         # logo
         self.im_label = QLabel(self)
@@ -89,90 +91,18 @@ class MainWindow(QMainWindow):
                                         'font-weight: bold;')
         layout.addWidget(self.start_button)
 
-        # add space btw sections: vertical 30px
-        layout.addSpacerItem(QSpacerItem(0, 30))
+        # add space btw sections: vertical 10px
+        layout.addSpacerItem(QSpacerItem(0, 10))
 
-        # test handling & layout
-        test_part_layout = QHBoxLayout()
-        test_button_layout = QVBoxLayout()
-        test_output_layout = QVBoxLayout()
-        self.instruction_listbox = QListWidget(self)
-        self.instruction_listbox.addItems(['* start by choosing ports and boards',
-                                           '* upload test file',
-                                           '* run full test sequence',
-                                           '* sit back and watch the test outcomes'])
-        self.instruction_listbox.setFixedSize(475, 135)
-        test_part_layout.addLayout(test_output_layout)
+        # QTab widget to hold both tabs
+        self.tab_widget = QTabWidget()
+        self.main_tab = MainTab()
+        self.manual_tab = ManualTab()
 
-        self.load_button = QPushButton('load test file', self)
-        self.load_button.setFixedSize(195, 27)
-        self.run_button = QPushButton('run benchmark tests', self)
-        self.run_button.setFixedSize(195, 27)
-        test_output_layout.addWidget(self.instruction_listbox)
-        test_part_layout.addLayout(test_button_layout)
-
-        # test selection buttons
-        test_button_layout.addWidget(self.load_button, alignment=Qt.AlignRight)
-        test_button_layout.addWidget(self.run_button, alignment=Qt.AlignRight)
-
-        # place them in the main layout
-        layout.addLayout(test_part_layout)
-
-        # create the alternative test part listboxes for later activation
-        self.test_output_listbox = QListWidget(self)
-
-        self.test_output_listbox.setFixedSize(475, 30)
-        self.test_output_listbox.hide()
-        test_output_layout.addWidget(self.test_output_listbox)
-
-        self.expected_outcome_listbox = QListWidget(self)
-        self.expected_outcome_listbox.setFixedSize(475, 100)
-        self.expected_outcome_listbox.hide()
-        test_output_layout.addWidget(self.expected_outcome_listbox)
-
-        # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
-
-        # set temperature and duration in their own layout part
-        input_layout = QHBoxLayout()
-        self.set_temp_input = QLineEdit(self)
-        self.set_temp_input.setPlaceholderText('temperature in °C :')
-        self.set_temp_input.setStyleSheet('color: #009FAF;')
-        self.set_duration_input = QLineEdit(self)
-        self.set_duration_input.setPlaceholderText('duration in minutes: ')
-        self.set_duration_input.setStyleSheet('color: #009FAF;')
-
-        # place elements
-        input_layout.addWidget(self.set_temp_input)
-        input_layout.addWidget(self.set_duration_input)
-
-        # add input layout part to main layout
-        layout.addLayout(input_layout)
-
-        # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
-
-        # listbox for test updates
-        self.serial_label = QLabel('running test info', self)
-        self.listbox = QListWidget(self)
-        self.listbox.setFixedHeight(145)
-        layout.addWidget(self.serial_label)
-        layout.addWidget(self.listbox)
-
-        # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
-
-        # listbox for temperature chamber monitoring
-        self.chamber_label = QLabel('temperature chamber situation', self)
-        self.chamber_monitor = QListWidget(self)
-        self.chamber_monitor.setFixedHeight(40)
-        self.chamber_monitor.setStyleSheet('color: #009FAF;')
-        # create a QListWidgetItem with centered text
-        item = QListWidgetItem('arduino will keep you posted on current temperature and such')
-        item.setTextAlignment(Qt.AlignCenter)  # center text
-        self.chamber_monitor.addItem(item)
-        layout.addWidget(self.chamber_label)
-        layout.addWidget(self.chamber_monitor)
+        # add tabs to tab widget
+        self.tab_widget.addTab(self.main_tab, 'test control')
+        self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
+        layout.addWidget(self.tab_widget)
 
         # add space btw sections: vertical 20px
         layout.addSpacerItem(QSpacerItem(0, 20))
@@ -190,11 +120,10 @@ class MainWindow(QMainWindow):
 
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
-        self.load_button.clicked.connect(self.load_test_file)
+        self.main_tab.load_button.clicked.connect(self.load_test_file)
         self.emergency_stop_button.clicked.connect(self.clear_entries)
-        self.run_button.clicked.connect(self.on_run_button_clicked)
-        self.set_temp_input.returnPressed.connect(self.on_enter_key)
-        self.set_duration_input.returnPressed.connect(self.on_enter_key)
+        self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
+
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
