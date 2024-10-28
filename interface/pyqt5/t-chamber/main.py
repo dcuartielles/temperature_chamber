@@ -45,6 +45,9 @@ class MainWindow(QMainWindow):
         self.test_data = None
         self.filepath = None
 
+        # flag for spacers in the gui
+        self.spacer_added = False
+
         self.initUI()
 
     # method responsible for all gui elements
@@ -76,7 +79,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.port_selector)
 
         # add space btw sections: vertical 15px
-        layout.addSpacerItem(QSpacerItem(0, 15))
+        self.add_spacer_once(layout, 15)
 
         # start button
         self.start_button = QPushButton('start')
@@ -87,7 +90,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.start_button)
 
         # add space btw sections: vertical 30px
-        layout.addSpacerItem(QSpacerItem(0, 30))
+        self.add_spacer_once(layout, 30)
 
         # test handling & layout
         test_part_layout = QHBoxLayout()
@@ -127,9 +130,8 @@ class MainWindow(QMainWindow):
         self.expected_outcome_listbox.hide()
         test_output_layout.addWidget(self.expected_outcome_listbox)
 
-
         # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
+        self.add_spacer_once(layout, 20)
 
         # set temperature and duration in their own layout part
         input_layout = QHBoxLayout()
@@ -148,17 +150,17 @@ class MainWindow(QMainWindow):
         layout.addLayout(input_layout)
 
         # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
+        self.add_spacer_once(layout, 20)
 
         # listbox for test updates
         self.serial_label = QLabel('running test info', self)
         self.listbox = QListWidget(self)
-        self.listbox.setFixedSize(475, 135)
+        self.listbox.setFixedHeight(145)
         layout.addWidget(self.serial_label)
         layout.addWidget(self.listbox)
 
         # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
+        self.add_spacer_once(layout, 20)
 
         # listbox for temperature chamber monitoring
         self.chamber_label = QLabel('temperature chamber situation', self)
@@ -173,7 +175,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.chamber_monitor)
 
         # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
+        self.add_spacer_once(layout, 20)
 
         # emergency stop button
         self.emergency_stop_button = QPushButton('emergency stop', self)
@@ -184,7 +186,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.emergency_stop_button)
 
         # add space btw sections: vertical 11px
-        layout.addSpacerItem(QSpacerItem(0, 11))
+        self.add_spacer_once(layout, 11)
 
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
@@ -198,6 +200,12 @@ class MainWindow(QMainWindow):
         self.central_widget.setLayout(layout)
         # automatically adjust window size
         self.adjustSize()
+
+    # spacer making method
+    def add_spacer_once(self, layout, height):
+        if not hasattr(self, 'spacer_added') or not self.spacer_added:
+            layout.addSpacerItem(QSpacerItem(0, height))  # add the spacer item only once
+            self.spacer_added = True  # set the flag so no more spacers get added
 
     # GUI FUNCTIONALITY-RELATED METHODS
 
@@ -253,10 +261,7 @@ class MainWindow(QMainWindow):
 
     # run all benchmark tests
     def on_run_button_clicked(self):
-
         self.on_run_test_gui()  # if running tests for nth time, come back to original gui layout to start with
-        self.instruction_listbox.clear()
-        QApplication.processEvents()
 
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
             if not self.serial_worker.is_stopped:
@@ -329,8 +334,12 @@ class MainWindow(QMainWindow):
     def on_run_test_gui(self):
         if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible():
             self.instruction_listbox.show()
+            self.instruction_listbox.clear()
             self.test_output_listbox.hide()
             self.expected_outcome_listbox.hide()
+        else:
+            self.instruction_listbox.clear()
+            QApplication.processEvents()
 
     # enter for temp & duration inputs
     def on_enter_key(self):
