@@ -57,10 +57,9 @@ class SerialCaptureWorker(QThread):
                         # read incoming serial data
                         response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                         if response:
-                            if time.time() - self.last_readout > 2:
-                                self.last_readout = time.time()
-                                self.process_response(response)
-                        if time.time() - self.last_command_time > 1.5:
+                            self.process_response(response)
+
+                        if time.time() - self.last_command_time > 1:
                             self.last_command_time = time.time()
                             self.trigger_read_data()
                 except serial.SerialException as e:
@@ -149,7 +148,6 @@ class SerialCaptureWorker(QThread):
 
             # iterate through each test and run it
             for test_key in all_tests:
-
                 test = test_data.get(test_key, {})
 
                 if 'chamber_sequences' in test:  # if the test data is available
@@ -183,6 +181,7 @@ class SerialCaptureWorker(QThread):
         trigger_responses = ['Setting', 'Running', 'Test complete', 'Target temp', 'Sequence complete']
         if any(response.strip().startswith(trigger) for trigger in trigger_responses):
             self.update_listbox.emit(response)  # emit signal to update listbox
+            logger.info(f'{response}')
 
     # emergency stop
     def emergency_stop(self):

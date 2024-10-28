@@ -266,8 +266,8 @@ class MainWindow(QMainWindow):
                 self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
                 self.cli_worker.set_test_data(self.test_data, self.filepath)
                 # connect pause and resume signals to serial capture
-                self.cli_worker.pause_serial.connect(self.serial_worker.pause)
-                self.cli_worker.resume_serial.connect(self.serial_worker.resume)
+                # self.cli_worker.pause_serial.connect(self.serial_worker.pause)
+                # self.cli_worker.resume_serial.connect(self.serial_worker.resume)
                 self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
                 self.cli_worker.update_upper_listbox.connect(self.cli_update_upper_listbox_gui)
                 self.cli_worker.start()  # start cli worker thread
