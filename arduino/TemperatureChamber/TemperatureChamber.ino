@@ -427,6 +427,7 @@ void setTemperature(float temp) {
     } else {
         chamberState.temperatureDesired = temp;
         Serial.print("Setting temperature to ");
+        Serial.print(temp);
         Serial.println("°");
         // Serial.print("Temperature desired set to: ");
         // Serial.println(temp);  // debug to confirm the desired temp is set
