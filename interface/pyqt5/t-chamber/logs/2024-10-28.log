@@ -3024,3 +3024,5 @@ serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
 2024-10-28 15:16:59 - __main__ - INFO - app started
 2024-10-28 15:17:28 - __main__ - INFO - app started
 2024-10-28 15:22:16 - __main__ - INFO - app started
+2024-10-28 15:25:10 - __main__ - INFO - app started
+2024-10-28 15:26:09 - __main__ - INFO - app started

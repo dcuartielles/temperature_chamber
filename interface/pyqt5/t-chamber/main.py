@@ -121,9 +121,8 @@ class MainWindow(QMainWindow):
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
         self.main_tab.load_button.clicked.connect(self.load_test_file)
-        self.emergency_stop_button.clicked.connect(self.clear_entries)
+        self.emergency_stop_button.clicked.connect(self.manual_tab.clear_entries)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
-
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
@@ -149,28 +148,6 @@ class MainWindow(QMainWindow):
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.start()  # start test board thread
 
-    # the actual chamber_monitor QList updates
-    def update_chamber_monitor_gui(self, message):
-        self.chamber_monitor.clear()  # clear old data
-        item = QListWidgetItem(message)
-        item.setTextAlignment(Qt.AlignCenter)
-        self.chamber_monitor.addItem(item)
-
-    # the actual listbox updates
-    def update_listbox_gui(self, message):
-        self.listbox.addItem(message)
-        self.listbox.scrollToBottom()
-
-    def update_test_output_listbox_gui(self, message):
-        self.test_output_listbox.clear()
-        self.test_output_listbox.addItem(message)
-        self.test_output_listbox.scrollToBottom()
-
-    # the actual upper listbox updates
-    def cli_update_upper_listbox_gui(self, message):
-        self.instruction_listbox.addItem(message)
-        self.instruction_listbox.scrollToBottom()
-
     # load test file and store it in the app
     def load_test_file(self):
         self.test_data = self.json_handler.open_file()
@@ -184,7 +161,7 @@ class MainWindow(QMainWindow):
 
     # run all benchmark tests
     def on_run_button_clicked(self):
-        self.on_run_test_gui()  # if running tests for nth time, come back to original gui layout to start with
+        self.main_tab.on_run_test_gui()  # if running tests for nth time, come back to original gui layout to start with
 
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
             if not self.serial_worker.is_stopped:
@@ -198,7 +175,7 @@ class MainWindow(QMainWindow):
                 self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
                 self.cli_worker.set_test_data(self.test_data, self.filepath)
                 self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
-                self.cli_worker.update_upper_listbox.connect(self.cli_update_upper_listbox_gui)
+                self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
                 self.cli_worker.start()  # start cli worker thread
                 time.sleep(0.1)
         else:
@@ -216,95 +193,13 @@ class MainWindow(QMainWindow):
 
         # restart test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
-        self.test_board.update_upper_listbox.connect(self.update_test_output_listbox_gui)
+        self.test_board.update_upper_listbox.connect(self.main_tab.update_test_output_listbox_gui)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
         logger.info('test board worker restarted')
 
         # update the gui
-        self.change_test_part_gui()
-
-    # extract expected test outcome from test file
-    def expected_output(self, test_data):
-        if test_data is not None:
-            all_expected_outputs = []
-            # iterate through each test and run it
-            for test_key in test_data.keys():
-                test = test_data.get(test_key, {})
-                expected_output = test.get('expected output', '')  # get the expected output string
-                if expected_output:
-                    all_expected_outputs.append(expected_output)
-            return all_expected_outputs
-        return []
-
-    # update exp output listbox
-    def expected_output_listbox(self):
-        exp_outputs = self.expected_output(self.test_data)
-        self.expected_outcome_listbox.clear()
-
-        for i, output in enumerate(exp_outputs):
-            self.expected_outcome_listbox.addItem(f'test {i + 1}, expected output: {output}')
-
-        self.expected_outcome_listbox.scrollToBottom()
-
-    def change_test_part_gui(self):
-        self.instruction_listbox.hide()
-        self.test_output_listbox.show()
-        self.expected_outcome_listbox.show()
-        logger.info('gui updated')
-        self.expected_output_listbox()
-
-    def on_run_test_gui(self):
-        if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible():
-            self.instruction_listbox.show()
-            self.instruction_listbox.clear()
-            self.test_output_listbox.hide()
-            self.expected_outcome_listbox.hide()
-        else:
-            self.instruction_listbox.clear()
-            QApplication.processEvents()
-
-    # enter for temp & duration inputs
-    def on_enter_key(self):
-        # check both inputs only when the user presses enter
-        temp_string = self.set_temp_input.text().strip()
-        duration_string = self.set_duration_input.text().strip()
-
-        if temp_string and duration_string:  # make sure both fields are filled
-            is_valid = self.check_inputs(temp_string, duration_string)  # validate inputs
-
-            if is_valid and self.input_dictionary:  # if valid inputs
-                self.serial_worker.set_temp(self.input_dictionary)  # set temp in arduino
-                logger.info(f'sent to arduino: {self.input_dictionary}')
-
-    # make sure both temp & duration are submitted by user
-    def check_inputs(self, temp_string, duration_string):
-        is_valid = True  # track overall validity
-
-        try:
-            temp = float(temp_string)
-            if temp >= 100:
-                self.show_error_message('error', 'max temperature = 100°C')
-                is_valid = False
-        except ValueError:
-            self.show_error_message('error', 'numbers only')
-            is_valid = False
-
-        try:
-            duration = int(duration_string)
-            if duration < 1:  # check for minimum duration
-                self.show_error_message('error', 'minimum duration is 1 minute')
-                is_valid = False
-        except ValueError:
-            self.show_error_message('error', 'numbers only')  #
-            is_valid = False
-
-        if is_valid:
-            self.input_dictionary.clear()  # clear previous input
-            new_sequence = {'temp': temp, 'duration': duration * 60000}  # convert duration to milliseconds
-            self.input_dictionary.append(new_sequence)  # append valid input to the dictionary
-            logger.info(self.input_dictionary)  # log temp & duration
-        return is_valid
+        self.main_tab.change_test_part_gui()
 
     # helper method to display error messages using QMessageBox
     @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data
@@ -315,11 +210,6 @@ class MainWindow(QMainWindow):
         msg_box.setText(message)
         msg_box.setStandardButtons(QMessageBox.Ok)
         msg_box.exec_()  # this will display the message box
-
-    # auxiliary method for emergency stop
-    def clear_entries(self):
-        self.set_temp_input.clear()
-        self.set_duration_input.clear()
 
     # stop both workers
     def closeEvent(self, event):

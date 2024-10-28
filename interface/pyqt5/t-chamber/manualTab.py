@@ -87,6 +87,11 @@ class ManualTab(QWidget):
             logger.info(self.input_dictionary)  # log temp & duration
         return is_valid
 
+    # auxiliary method for emergency stop
+    def clear_entries(self):
+        self.set_temp_input.clear()
+        self.set_duration_input.clear()
+
     # helper method to display error messages using QMessageBox
     @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data
     def show_error_message(title, message):
@@ -96,8 +101,3 @@ class ManualTab(QWidget):
         msg_box.setText(message)
         msg_box.setStandardButtons(QMessageBox.Ok)
         msg_box.exec_()  # this will display the message box
-
-    # auxiliary method for emergency stop
-    def clear_entries(self):
-        self.set_temp_input.clear()
-        self.set_duration_input.clear()

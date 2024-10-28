@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QListWidget, QPushButton,
-                             QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, QSpacerItem)
+                             QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, QSpacerItem, QApplication)
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -39,6 +39,9 @@ class MainTab(QWidget):
         # test selection buttons
         test_button_layout.addWidget(self.load_button, alignment=Qt.AlignRight)
         test_button_layout.addWidget(self.run_button, alignment=Qt.AlignRight)
+
+        # add space btw sections: vertical 20px
+        layout.addSpacerItem(QSpacerItem(0, 30))
 
         # place them in the main layout
         layout.addLayout(test_part_layout)
@@ -135,3 +138,23 @@ class MainTab(QWidget):
         self.test_output_listbox.show()
         self.expected_outcome_listbox.show()
         self.expected_output_listbox()
+
+    def on_run_test_gui(self):
+        if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible():
+            self.instruction_listbox.show()
+            self.instruction_listbox.clear()
+            self.test_output_listbox.hide()
+            self.expected_outcome_listbox.hide()
+        else:
+            self.instruction_listbox.clear()
+            QApplication.processEvents()
+
+    # helper method to display error messages using QMessageBox
+    @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data
+    def show_error_message(title, message):
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Warning)
+        msg_box.setWindowTitle(title)
+        msg_box.setText(message)
+        msg_box.setStandardButtons(QMessageBox.Ok)
+        msg_box.exec_()  # this will display the message box
