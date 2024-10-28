@@ -18,6 +18,7 @@ logger = setup_logger(__name__)
 
 # create window class
 class MainWindow(QMainWindow):
+
     def __init__(self):
         super().__init__()
 
@@ -244,13 +245,18 @@ class MainWindow(QMainWindow):
         self.filepath = self.json_handler.get_filepath()
 
     # button click handlers
+
+    # connect run_tests signal from main to serial worker thread
+    def trigger_run_t(self):
+        self.serial_worker.trigger_run_tests.emit(self.test_data)
+
     # run all benchmark tests
     def on_run_button_clicked(self):
         self.instruction_listbox.clear()
         QApplication.processEvents()
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
             if not self.serial_worker.is_stopped:
-                self.serial_worker.run_all_tests(self.test_data)
+                self.trigger_run_t()
             if not self.test_board.is_stopped:
                 self.test_board.is_running = False
                 self.test_board.stop()

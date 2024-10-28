@@ -10,6 +10,7 @@ logger = setup_logger(__name__)
 class SerialCaptureWorker(QThread):
     update_listbox = pyqtSignal(str)  # signal to update listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
+    trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -23,6 +24,7 @@ class SerialCaptureWorker(QThread):
         self.last_command_time = time.time()
         self.last_readout = time.time()
         self.test_data = None
+        self.trigger_run_tests.connect(self.run_all_tests)
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):

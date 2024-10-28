@@ -13,7 +13,7 @@ class CliWorker(QThread):
     finished = pyqtSignal()
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
     pause_serial = pyqtSignal()  # signal to pause serial worker thread
-    resume_serial = pyqtSignal()  # signal to resume it
+    resume_serial = pyqtSignal(dict)  # signal to resume it
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
