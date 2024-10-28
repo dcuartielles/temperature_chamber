@@ -153,6 +153,7 @@ class MainWindow(QMainWindow):
         # listbox for test updates
         self.serial_label = QLabel('running test info', self)
         self.listbox = QListWidget(self)
+        self.listbox.setFixedSize(475, 135)
         layout.addWidget(self.serial_label)
         layout.addWidget(self.listbox)
 
