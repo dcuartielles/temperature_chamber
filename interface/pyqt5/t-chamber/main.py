@@ -96,7 +96,7 @@ class MainWindow(QMainWindow):
 
         # QTab widget to hold both tabs
         self.tab_widget = QTabWidget()
-        self.main_tab = MainTab()
+        self.main_tab = MainTab(test_data=self.test_data)
         self.manual_tab = ManualTab()
 
         # add tabs to tab widget
@@ -106,6 +106,22 @@ class MainWindow(QMainWindow):
 
         # add space btw sections: vertical 20px
         layout.addSpacerItem(QSpacerItem(0, 20))
+
+        # listbox for temperature chamber monitoring
+        self.chamber_label = QLabel('temperature chamber situation', self)
+        self.chamber_monitor = QListWidget(self)
+        self.chamber_monitor.setFixedHeight(40)
+        self.chamber_monitor.setStyleSheet('color: #009FAF;')
+        # create a QListWidgetItem with centered text
+        item = QListWidgetItem('arduino will keep you posted on current temperature and such')
+        item.setTextAlignment(Qt.AlignCenter)  # center text
+        self.chamber_monitor.addItem(item)
+        layout.addWidget(self.chamber_label)
+        layout.addWidget(self.chamber_monitor)
+
+
+        # add space btw sections: vertical 20px
+        layout.addSpacerItem(QSpacerItem(0, 30))
 
         # emergency stop button
         self.emergency_stop_button = QPushButton('emergency stop', self)
@@ -139,14 +155,22 @@ class MainWindow(QMainWindow):
 
         # only now create the worker threads with the selected ports
         self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
-        self.serial_worker.update_listbox.connect(self.update_listbox_gui)
+        self.serial_worker.update_listbox.connect(self.main_tab.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.start()  # start the worker thread
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
+        self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
 
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.start()  # start test board thread
+
+    # the actual chamber_monitor QList updates
+    def update_chamber_monitor_gui(self, message):
+        self.chamber_monitor.clear()  # clear old data
+        item = QListWidgetItem(message)
+        item.setTextAlignment(Qt.AlignCenter)
+        self.chamber_monitor.addItem(item)
 
     # load test file and store it in the app
     def load_test_file(self):

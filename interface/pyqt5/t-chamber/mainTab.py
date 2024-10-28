@@ -7,8 +7,9 @@ logger = setup_logger(__name__)
 
 
 class MainTab(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, test_data=None, parent=None):
         super().__init__(parent)
+        self.test_data = test_data
         self.initUI()
 
     def initUI(self):
@@ -71,30 +72,9 @@ class MainTab(QWidget):
         # add space btw sections: vertical 20px
         layout.addSpacerItem(QSpacerItem(0, 20))
 
-        # listbox for temperature chamber monitoring
-        self.chamber_label = QLabel('temperature chamber situation', self)
-        self.chamber_monitor = QListWidget(self)
-        self.chamber_monitor.setFixedHeight(40)
-        self.chamber_monitor.setStyleSheet('color: #009FAF;')
-        # create a QListWidgetItem with centered text
-        item = QListWidgetItem('arduino will keep you posted on current temperature and such')
-        item.setTextAlignment(Qt.AlignCenter)  # center text
-        self.chamber_monitor.addItem(item)
-        layout.addWidget(self.chamber_label)
-        layout.addWidget(self.chamber_monitor)
-
-        # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
         self.setLayout(layout)
 
     # functionality
-    # the actual chamber_monitor QList updates
-    def update_chamber_monitor_gui(self, message):
-        self.chamber_monitor.clear()  # clear old data
-        item = QListWidgetItem(message)
-        item.setTextAlignment(Qt.AlignCenter)
-        self.chamber_monitor.addItem(item)
-
     # the actual listbox updates
     def update_listbox_gui(self, message):
         self.listbox.addItem(message)

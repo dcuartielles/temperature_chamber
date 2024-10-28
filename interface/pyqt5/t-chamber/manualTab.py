@@ -7,7 +7,9 @@ logger = setup_logger(__name__)
 
 
 class ManualTab(QWidget):
+    send_temp_data = pyqtSignal(list)
     def __init__(self, parent=None):
+        self.input_dictionary = []
         super().__init__(parent)
         self.initUI()
 
@@ -55,7 +57,7 @@ class ManualTab(QWidget):
             is_valid = self.check_inputs(temp_string, duration_string)  # validate inputs
 
             if is_valid and self.input_dictionary:  # if valid inputs
-                self.serial_worker.set_temp(self.input_dictionary)  # set temp in arduino
+                self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
                 logger.info(f'sent to arduino: {self.input_dictionary}')
 
     # make sure both temp & duration are submitted by user

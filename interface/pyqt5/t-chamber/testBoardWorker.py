@@ -7,6 +7,7 @@ logger = setup_logger(__name__)
 
 
 class TestBoardWorker(QThread):
+
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
     expected_outcome_listbox = pyqtSignal(str)  # signal to show expected test outcome
 
