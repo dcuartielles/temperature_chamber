@@ -319,12 +319,13 @@ void parseTextFromJson(JsonDocument& doc) {
             currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
             currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
 
-            Serial.print("Parsed sequence ");
-            Serial.print(i);
-            Serial.print(": Temp = ");
-            Serial.print(currentTest.sequences[i].targetTemp);
-            Serial.print(", Duration = ");
-            Serial.print(currentTest.sequences[i].duration);
+            // Serial.print("Parsed sequence ");
+            // Serial.print(i);
+            // Serial.print(": Temp = ");
+            // Serial.print(currentTest.sequences[i].targetTemp);
+            // Serial.print(", Duration = ");
+            // Serial.println(currentTest.sequences[i].duration);
+
         }
         jsonBuffer.clear();
 
@@ -530,7 +531,7 @@ void handleHeatingState() {
         periodHeater = (TemperatureThreshold < -8) ? 120000 : 60000;
         chamberState.longHeatingFlag = 1;
     } else if(TemperatureThreshold > -4 && chamberState.longHeatingFlag == 0) {
-        dutyCycleHeater = (chamberState.longHeatingFlag == 0) ? 80 : 0;
+        dutyCycleHeater = 80;
         periodHeater = 25000; //on for 20 seconds and off for 5
     }
 
