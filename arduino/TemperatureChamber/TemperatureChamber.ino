@@ -319,12 +319,13 @@ void parseTextFromJson(JsonDocument& doc) {
             currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
             currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
 
-            Serial.print("Parsed sequence ");
-            Serial.print(i);
-            Serial.print(": Temp = ");
-            Serial.print(currentTest.sequences[i].targetTemp);
-            Serial.print(", Duration = ");
-            Serial.print(currentTest.sequences[i].duration);
+            // Serial.print("Parsed sequence ");
+            // Serial.print(i);
+            // Serial.print(": Temp = ");
+            // Serial.print(currentTest.sequences[i].targetTemp);
+            // Serial.print(", Duration = ");
+            // Serial.print(currentTest.sequences[i].duration);
+
         }
         jsonBuffer.clear();
 
@@ -427,6 +428,7 @@ void setTemperature(float temp) {
     } else {
         chamberState.temperatureDesired = temp;
         Serial.print("Setting temperature to ");
+        Serial.print(temp);
         Serial.println("°");
         // Serial.print("Temperature desired set to: ");
         // Serial.println(temp);  // debug to confirm the desired temp is set
