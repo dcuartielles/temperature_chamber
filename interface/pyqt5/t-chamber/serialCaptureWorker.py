@@ -137,7 +137,6 @@ class SerialCaptureWorker(QThread):
     def run_all_tests(self, test_data):
         if test_data is not None:
             all_tests = [key for key in test_data.keys()]
-
             # iterate through each test and run it
             for test_key in all_tests:
                 test = test_data.get(test_key, {})

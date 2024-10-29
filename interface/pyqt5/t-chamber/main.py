@@ -215,12 +215,13 @@ class MainWindow(QMainWindow):
                 if response == QMessageBox.Yes:
                     self.test_is_running = False
                     self.manual_tab.test_is_running = False
+                    message = 'test interrupted'
+                    self.test_interrupted_gui(message)
                 elif response == QMessageBox.No:
                     return
 
             self.test_is_running = True
             self.manual_tab.test_is_running = True
-            self.serial_worker.test_is_running = True
 
             # if running tests for nth time, come back to original gui layout to start with
             self.main_tab.on_run_test_gui()
