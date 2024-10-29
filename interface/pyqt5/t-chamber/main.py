@@ -195,7 +195,6 @@ class MainWindow(QMainWindow):
         self.filepath = self.json_handler.get_filepath()
 
     # button click handlers
-
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
         self.serial_worker.trigger_run_tests.emit(self.test_data)
@@ -207,10 +206,14 @@ class MainWindow(QMainWindow):
                 'a test is running: are you sure you want to interrupt it and proceed?')
             if response == QMessageBox.Yes:
                 self.test_is_running = False
+                self.manual_tab.test_is_running = False
+                self.serial_worker.test_is_running = False
             elif response == QMessageBox.No:
                 return
+
         self.test_is_running = True
-        self.main_tab.test_is_running = True
+        self.manual_tab.test_is_running = True
+        self.serial_worker.test_is_running = True
 
         self.main_tab.on_run_test_gui()  # if running tests for nth time, come back to original gui layout to start with
 
@@ -270,3 +273,6 @@ def main():
     sys.exit(app.exec_())
 
 main()
+
+
+# self.manual_tab.test_interrupted.connect(self.update_listbox_gui)

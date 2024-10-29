@@ -9,6 +9,7 @@ logger = setup_logger(__name__)
 
 class ManualTab(QWidget):
     send_temp_data = pyqtSignal(list)
+    test_interrupted = pyqtSignal(str)
 
     def __init__(self, parent=None):
         self.input_dictionary = []
@@ -59,6 +60,7 @@ class ManualTab(QWidget):
 
     # enter for temp & duration inputs
     def on_enter_key(self):
+
         # check both inputs only when the user presses enter
         temp_string = self.set_temp_input.text().strip()
         duration_string = self.set_duration_input.text().strip()
@@ -71,6 +73,8 @@ class ManualTab(QWidget):
                     response = popups.show_dialog(
                         'a test is running: are you sure you want to interrupt it and proceed?')
                     if response == QMessageBox.Yes:
+                        message = 'test interrupted'
+                        self.test_interrupted.emit(message)
                         self.test_is_running = False
                     elif response == QMessageBox.No:
                         return
