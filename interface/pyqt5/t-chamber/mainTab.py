@@ -91,7 +91,6 @@ class MainTab(QWidget):
             self.expected_outcome_listbox.clear()
             self.expected_outcome_listbox.addItem('waiting for test board output')
 
-
     # the actual upper listbox updates
     def cli_update_upper_listbox_gui(self, message):
         self.instruction_listbox.addItem(message)
@@ -118,6 +117,7 @@ class MainTab(QWidget):
             self.expected_outcome_listbox.addItem(f'{output}')
         self.expected_outcome_listbox.scrollToBottom()
 
+    # change test part gui when test is running
     def change_test_part_gui(self, test_data):
         self.test_data = test_data
         self.instruction_listbox.hide()
@@ -127,6 +127,7 @@ class MainTab(QWidget):
         self.expected_outcome_listbox.show()
         self.expected_output_listbox()
 
+    # change test part gui to show sketch upload progress before test runs
     def on_run_test_gui(self):
         if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
             self.instruction_listbox.show()

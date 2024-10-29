@@ -8,6 +8,7 @@ logger = setup_logger(__name__)
 
 class ManualTab(QWidget):
     send_temp_data = pyqtSignal(list)
+
     def __init__(self, parent=None):
         self.input_dictionary = []
         super().__init__(parent)
@@ -118,3 +119,22 @@ class ManualTab(QWidget):
         msg_box.setText(message)
         msg_box.setStandardButtons(QMessageBox.Ok)
         msg_box.exec_()  # this will display the message box
+
+    # proceed or not pop-up dialogue window
+    def show_dialog(self, message):
+        # create a QMessageBox
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Question)
+        msg_box.setText(message)
+        msg_box.setWindowTitle("are you sure?")
+        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+
+        # show the dialog and capture the response
+        response = msg_box.exec_()
+
+        # check user response
+        if response == QMessageBox.Yes:
+            print("yes")
+
+        else:
+            print("no")

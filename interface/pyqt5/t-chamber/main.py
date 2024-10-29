@@ -18,6 +18,7 @@ from manualTab import ManualTab
 
 logger = setup_logger(__name__)
 
+
 # create window class
 class MainWindow(QMainWindow):
 
@@ -46,9 +47,6 @@ class MainWindow(QMainWindow):
         self.input_dictionary = []
         self.test_data = None
         self.filepath = None
-
-        # flag for spacers in the gui
-        self.spacer_added = False
 
         self.initUI()
 

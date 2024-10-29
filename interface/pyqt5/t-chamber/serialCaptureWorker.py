@@ -7,6 +7,7 @@ from logger_config import setup_logger
 logger = setup_logger(__name__)
 
 class SerialCaptureWorker(QThread):
+
     update_listbox = pyqtSignal(str)  # signal to update listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
     trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
@@ -75,17 +76,6 @@ class SerialCaptureWorker(QThread):
             logger.info(f'connection to {self.port} closed')
         self.quit()
         self.wait()
-
-    def reset_arduino(self):
-        if self.ser:
-            try:
-                self.ser.setDTR(False)  # reset arduino by setting str to False
-                time.sleep(0.5)  # time to reset
-                self.ser.setDTR(True)  # re-enable dtr
-                logger.info(f'arduino on {self.port} reset successfully')
-
-            except serial.SerialException as e:
-                logger.exception(f'failed to reset arduino on {self.port}: {e}')
 
     # sends a command to arduino via serial
     def send_command(self, command):

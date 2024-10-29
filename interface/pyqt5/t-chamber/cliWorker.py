@@ -88,7 +88,8 @@ class CliWorker(QThread):
         self.quit()
         self.wait()
 
-    def run_cli_command(self, command):
+    @staticmethod
+    def run_cli_command(command):
         try:
             result = subprocess.run(command, capture_output=True, text=True, check=True)
             logger.info(f'command succeeded: {" ".join(command)}')
@@ -99,7 +100,6 @@ class CliWorker(QThread):
             return None
 
     def get_arduino_boards(self):
-
         if self.boards_are_there:
             logger.warning('boards are already detected, moving on')
             return
@@ -125,7 +125,6 @@ class CliWorker(QThread):
         return []
 
     def detect_board(self, port):
-
         if self.is_detecting:
             logger.warning('boards already detected: skipping new detect request')
             return
@@ -134,6 +133,8 @@ class CliWorker(QThread):
         output = self.run_cli_command(command)
 
         if output:
+            headsup = 'detecting test board'
+            self.wave(headsup)
             boards_info = json.loads(output)
             for board in boards_info.get("detected_ports", []):
                 if board["port"]["address"] == port:
@@ -149,7 +150,6 @@ class CliWorker(QThread):
         return None
 
     def is_core_installed(self, fqbn):
-
         if self.checking_core:
             logger.warning('checking core already: skipping new check core request')
             return
@@ -168,7 +168,6 @@ class CliWorker(QThread):
         return False
 
     def install_core_if_needed(self, fqbn):
-
         if self.core_installed:
             logger.warning('core already installed: skipping new core install request')
             return
@@ -184,7 +183,6 @@ class CliWorker(QThread):
             self.run_cli_command(command)
 
     def compile_sketch(self, fqbn, sketch_path):
-
         if self.is_compiling:
             logger.warning('compiling already: skipping new compile request')
             return
@@ -213,7 +211,6 @@ class CliWorker(QThread):
             return False
 
     def upload_sketch(self, fqbn, port, sketch_path):
-
         if self.is_uploading:
             logger.warning('uploading already: skipping new upload request')
             return
@@ -258,22 +255,7 @@ class CliWorker(QThread):
             logger.error(f'serial error on cli thread during upload: {e}')
             error = f'serial error on cli thread during upload: {str(e)}'
             self.wave(error)
-
             self.finished.emit()
-
-    def reset_arduino(self):
-        if self.ser:
-            try:
-                self.ser.setDTR(False)  # reset arduino by setting str to False
-                time.sleep(0.5)  # time to reset
-                self.ser.setDTR(True)  # re-enable dtr
-                logger.info(f'arduino on {self.port} reset successfully')
-                reset = 'test board reset successfully'
-                self.wave(reset)
-                time.sleep(0.5)
-
-            except serial.SerialException as e:
-                logger.exception(f'failed to reset arduino on {self.port}: {e}')
 
     def handle_board_and_upload(self, port, sketch_path):
         fqbn = self.detect_board(port)
@@ -311,3 +293,17 @@ class CliWorker(QThread):
             # handle case when no test data is found
             logger.info('can\'t do it')
 
+'''
+    def reset_arduino(self):
+        if self.ser:
+            try:
+                self.ser.setDTR(False)  # reset arduino by setting str to False
+                time.sleep(0.5)  # time to reset
+                self.ser.setDTR(True)  # re-enable dtr
+                logger.info(f'arduino on {self.port} reset successfully')
+                reset = 'test board reset successfully'
+                self.wave(reset)
+                time.sleep(0.5)
+
+            except serial.SerialException as e:
+                logger.exception(f'failed to reset arduino on {self.port}: {e}')'''
