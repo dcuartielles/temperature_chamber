@@ -21,15 +21,19 @@ class ManualTab(QWidget):
         # add space btw sections: vertical 20px
         layout.addSpacerItem(QSpacerItem(0, 20))
 
+        # info label
+        self.info_label = QLabel('type in desired temperature & duration, then press enter to set', self)
+        layout.addWidget(self.info_label)
+
         # set temperature and duration in their own layout part
         input_layout = QHBoxLayout()
 
         # add input widgets for setting temp & duration
         self.set_temp_input = QLineEdit(self)
-        self.set_temp_input.setPlaceholderText('temperature in °C :')
+        self.set_temp_input.setPlaceholderText('temperature in °C')
         self.set_temp_input.setStyleSheet('color: #009FAF;')
         self.set_duration_input = QLineEdit(self)
-        self.set_duration_input.setPlaceholderText('duration in minutes: ')
+        self.set_duration_input.setPlaceholderText('duration in minutes')
         self.set_duration_input.setStyleSheet('color: #009FAF;')
 
         # place elements
@@ -38,6 +42,9 @@ class ManualTab(QWidget):
 
         # add input layout part to main layout
         layout.addLayout(input_layout)
+
+        self.current_setting = QLabel('', self)
+        layout.addWidget(self.current_setting)
 
         # add space btw sections: vertical 20px
         layout.addSpacerItem(QSpacerItem(0, 20))
@@ -58,6 +65,8 @@ class ManualTab(QWidget):
 
             if is_valid and self.input_dictionary:  # if valid inputs
                 self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
+                current_string = f'temperature set to {temp_string} for the duration of {duration_string} minutes'
+                self.current_setting.setText(current_string)
                 logger.info(f'sent to arduino: {self.input_dictionary}')
 
     # make sure both temp & duration are submitted by user
