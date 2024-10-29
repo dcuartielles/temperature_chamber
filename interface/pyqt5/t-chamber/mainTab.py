@@ -1,7 +1,7 @@
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QListWidget, QPushButton,
                              QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, QSpacerItem, QApplication)
-from PyQt5 import QtGui
+from PyQt5.QtGui import QColor, QFont
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -42,33 +42,32 @@ class MainTab(QWidget):
         test_button_layout.addWidget(self.load_button, alignment=Qt.AlignRight)
         test_button_layout.addWidget(self.run_button, alignment=Qt.AlignRight)
 
-        # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 30))
-
         # place them in the main layout
         layout.addLayout(test_part_layout)
 
         # create the alternative test part listboxes for later activation
+        self.test_output_label = QLabel('test board output', self)
+        self.test_output_label.hide()
         self.test_output_listbox = QListWidget(self)
-
         self.test_output_listbox.setFixedSize(475, 30)
         self.test_output_listbox.hide()
+        test_output_layout.addWidget(self.test_output_label)
         test_output_layout.addWidget(self.test_output_listbox)
 
+        self.expected_outcome_label = QLabel('expected output', self)
+        self.expected_outcome_label.hide()
         self.expected_outcome_listbox = QListWidget(self)
-        self.expected_outcome_listbox.setFixedSize(475, 100)
+        self.expected_outcome_listbox.setFixedSize(475, 70)
         self.expected_outcome_listbox.hide()
+        test_output_layout.addWidget(self.expected_outcome_label)
         test_output_layout.addWidget(self.expected_outcome_listbox)
-
-        # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
 
         self.setLayout(layout)
 
     # functionality
     def update_test_output_listbox_gui(self, message):
         self.test_output_listbox.clear()
-        self.test_output_listbox.addItem(message)
+        self.test_output_listbox.addItem(f'{message}')
         self.test_output_listbox.scrollToBottom()
 
     # check if output is as expected
@@ -79,11 +78,19 @@ class MainTab(QWidget):
             for output in exp_outputs:
                 output = str(output)
                 if output == message:
-                    self.expected_outcome_listbox.setStyleSheet('color: green;'
-                                                                'font-weight: bold;')
+                    self.test_output_listbox.setStyleSheet('color: #009FAF;'
+                                                           'font-weight: bold;')
+                    self.expected_outcome_listbox.setStyleSheet('color: black;'
+                                                                'font-weight: normal;')
                 else:
                     self.expected_outcome_listbox.setStyleSheet('color: red;'
                                                                 'font-weight: bold;')
+                    self.test_output_listbox.setStyleSheet('color: red;'
+                                                           'font-weight: bold;')
+        else:
+            self.expected_outcome_listbox.clear()
+            self.expected_outcome_listbox.addItem('waiting for test board output')
+
 
     # the actual upper listbox updates
     def cli_update_upper_listbox_gui(self, message):
@@ -108,21 +115,25 @@ class MainTab(QWidget):
         exp_outputs = self.expected_output(self.test_data)
         self.expected_outcome_listbox.clear()
         for i, output in enumerate(exp_outputs):
-            self.expected_outcome_listbox.addItem(f'test {i + 1}: {output}')
+            self.expected_outcome_listbox.addItem(f'{output}')
         self.expected_outcome_listbox.scrollToBottom()
 
     def change_test_part_gui(self, test_data):
         self.test_data = test_data
         self.instruction_listbox.hide()
+        self.test_output_label.show()
         self.test_output_listbox.show()
+        self.expected_outcome_label.show()
         self.expected_outcome_listbox.show()
         self.expected_output_listbox()
 
     def on_run_test_gui(self):
-        if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible():
+        if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
             self.instruction_listbox.show()
             self.instruction_listbox.clear()
+            self.test_output_label.hide()
             self.test_output_listbox.hide()
+            self.expected_outcome_label.hide()
             self.expected_outcome_listbox.hide()
         else:
             self.instruction_listbox.clear()
