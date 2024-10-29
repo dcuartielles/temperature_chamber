@@ -1,6 +1,7 @@
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QListWidget, QPushButton,
                              QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, QSpacerItem, QApplication)
+from PyQt5 import QtGui
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -70,6 +71,20 @@ class MainTab(QWidget):
         self.test_output_listbox.addItem(message)
         self.test_output_listbox.scrollToBottom()
 
+    # check if output is as expected
+    def check_output(self, message):
+        message = str(message)
+        exp_outputs = self.expected_output(self.test_data)
+        if message is not None:
+            for output in exp_outputs:
+                output = str(output)
+                if output == message:
+                    self.expected_outcome_listbox.setStyleSheet('color: green;'
+                                                                'font-weight: bold;')
+                else:
+                    self.expected_outcome_listbox.setStyleSheet('color: red;'
+                                                                'font-weight: bold;')
+
     # the actual upper listbox updates
     def cli_update_upper_listbox_gui(self, message):
         self.instruction_listbox.addItem(message)
@@ -93,7 +108,7 @@ class MainTab(QWidget):
         exp_outputs = self.expected_output(self.test_data)
         self.expected_outcome_listbox.clear()
         for i, output in enumerate(exp_outputs):
-            self.expected_outcome_listbox.addItem(f'test {i + 1}, expected output: {output}')
+            self.expected_outcome_listbox.addItem(f'test {i + 1}: {output}')
         self.expected_outcome_listbox.scrollToBottom()
 
     def change_test_part_gui(self, test_data):

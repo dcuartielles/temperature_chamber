@@ -147,7 +147,7 @@ class MainWindow(QMainWindow):
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
         self.main_tab.load_button.clicked.connect(self.load_test_file)
-        self.emergency_stop_button.clicked.connect(self.manual_tab.clear_entries)
+        self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
 
         # set layout to the central widget
@@ -240,6 +240,7 @@ class MainWindow(QMainWindow):
 
         # update the gui
         self.main_tab.change_test_part_gui(self.test_data)
+        self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
 
     # helper method to display error messages using QMessageBox
     @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data

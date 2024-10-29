@@ -74,5 +74,6 @@ class TestBoardWorker(QThread):
     # show serial response
     def show_response(self, response):
         if response:
-            printout = f'test board output:   {response}'
+            printout = f'{response}'
             self.update_upper_listbox.emit(printout)  # emit signal to update listbox
+            self.expected_outcome_listbox.emit(printout)  # emit signal to update expected outcome
