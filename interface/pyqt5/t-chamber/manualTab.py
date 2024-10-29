@@ -13,6 +13,7 @@ class ManualTab(QWidget):
     def __init__(self, parent=None):
         self.input_dictionary = []
         super().__init__(parent)
+        self.test_is_running = False
         self.initUI()
 
     def initUI(self):
@@ -66,6 +67,13 @@ class ManualTab(QWidget):
             is_valid = self.check_inputs(temp_string, duration_string)  # validate inputs
 
             if is_valid and self.input_dictionary:  # if valid inputs
+                if self.test_is_running:
+                    response = popups.show_dialog(
+                        'a test is running: are you sure you want to interrupt it and proceed?')
+                    if response == QMessageBox.Yes:
+                        self.test_is_running = False
+                    elif response == QMessageBox.No:
+                        return
                 self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
                 current_string = f'temperature set to {temp_string}°C for the duration of {duration_string} minutes'
                 self.current_setting.setText(current_string)
@@ -78,19 +86,19 @@ class ManualTab(QWidget):
         try:
             temp = float(temp_string)
             if temp >= 100:
-                self.show_error_message('error', 'max temperature = 100°C')
+                popups.show_error_message('error', 'max temperature = 100°C')
                 is_valid = False
         except ValueError:
-            self.show_error_message('error', 'numbers only')
+            popups.show_error_message('error', 'numbers only')
             is_valid = False
 
         try:
             duration = int(duration_string)
             if duration < 1:  # check for minimum duration
-                self.show_error_message('error', 'minimum duration is 1 minute')
+                popups.show_error_message('error', 'minimum duration is 1 minute')
                 is_valid = False
         except ValueError:
-            self.show_error_message('error', 'numbers only')  #
+            popups.show_error_message('error', 'numbers only')  #
             is_valid = False
 
         if is_valid:
@@ -110,14 +118,4 @@ class ManualTab(QWidget):
     def clear_current_setting_label(self):
         self.current_setting.setText('')
         self.clear_entries()
-
-    # helper method to display error messages using QMessageBox
-    @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data
-    def show_error_message(title, message):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Warning)
-        msg_box.setWindowTitle(title)
-        msg_box.setText(message)
-        msg_box.setStandardButtons(QMessageBox.Ok)
-        msg_box.exec_()  # this will display the message box
 

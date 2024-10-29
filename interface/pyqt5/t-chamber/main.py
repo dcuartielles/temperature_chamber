@@ -49,6 +49,9 @@ class MainWindow(QMainWindow):
         self.test_data = None
         self.filepath = None
 
+        # flag for preventing user from interrupting a test
+        self.test_is_running = False
+
         self.initUI()
 
     # method responsible for all gui elements
@@ -199,6 +202,16 @@ class MainWindow(QMainWindow):
 
     # run all benchmark tests
     def on_run_button_clicked(self):
+        if self.test_is_running:
+            response = popups.show_dialog(
+                'a test is running: are you sure you want to interrupt it and proceed?')
+            if response == QMessageBox.Yes:
+                self.test_is_running = False
+            elif response == QMessageBox.No:
+                return
+        self.test_is_running = True
+        self.main_tab.test_is_running = True
+
         self.main_tab.on_run_test_gui()  # if running tests for nth time, come back to original gui layout to start with
 
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
@@ -218,7 +231,7 @@ class MainWindow(QMainWindow):
                 self.cli_worker.start()  # start cli worker thread
                 time.sleep(0.1)
         else:
-            self.show_error_message('error', 'no test data loaded')
+            popups.show_error_message('error', 'no test data loaded')
 
     # clean up cli worker after it's done
     def cleanup_cli_worker(self):
@@ -241,15 +254,6 @@ class MainWindow(QMainWindow):
         self.main_tab.change_test_part_gui(self.test_data)
         self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
 
-    # helper method to display error messages using QMessageBox
-    @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data
-    def show_error_message(title, message):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Warning)
-        msg_box.setWindowTitle(title)
-        msg_box.setText(message)
-        msg_box.setStandardButtons(QMessageBox.Ok)
-        msg_box.exec_()  # this will display the message box
 
     # stop both workers
     def closeEvent(self, event):

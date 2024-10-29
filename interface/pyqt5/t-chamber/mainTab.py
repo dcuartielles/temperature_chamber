@@ -140,13 +140,3 @@ class MainTab(QWidget):
         else:
             self.instruction_listbox.clear()
             QApplication.processEvents()
-
-    # helper method to display error messages using QMessageBox
-    @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data
-    def show_error_message(title, message):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Warning)
-        msg_box.setWindowTitle(title)
-        msg_box.setText(message)
-        msg_box.setStandardButtons(QMessageBox.Ok)
-        msg_box.exec_()  # this will display the message box

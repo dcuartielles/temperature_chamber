@@ -26,9 +26,4 @@ def show_dialog(message):
     # show the dialog and capture the response
     response = msg_box.exec_()
 
-    # check user response
-    if response == QMessageBox.Yes:
-        print("yes")
-
-    else:
-        print("no")
+    return response
