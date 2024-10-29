@@ -96,13 +96,23 @@ class MainWindow(QMainWindow):
 
         # QTab widget to hold both tabs
         self.tab_widget = QTabWidget()
-        self.main_tab = MainTab(test_data=self.test_data)
+        self.main_tab = MainTab(self.test_data)
         self.manual_tab = ManualTab()
 
         # add tabs to tab widget
         self.tab_widget.addTab(self.main_tab, 'test control')
         self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
         layout.addWidget(self.tab_widget)
+
+        # add space btw sections: vertical 20px
+        layout.addSpacerItem(QSpacerItem(0, 20))
+
+        # listbox for test updates
+        self.serial_label = QLabel('running test info', self)
+        self.listbox = QListWidget(self)
+        self.listbox.setFixedHeight(135)
+        layout.addWidget(self.serial_label)
+        layout.addWidget(self.listbox)
 
         # add space btw sections: vertical 20px
         layout.addSpacerItem(QSpacerItem(0, 20))
@@ -155,7 +165,7 @@ class MainWindow(QMainWindow):
 
         # only now create the worker threads with the selected ports
         self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
-        self.serial_worker.update_listbox.connect(self.main_tab.update_listbox_gui)
+        self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.start()  # start the worker thread
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
@@ -164,6 +174,11 @@ class MainWindow(QMainWindow):
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.start()  # start test board thread
+
+    # the actual listbox updates
+    def update_listbox_gui(self, message):
+        self.listbox.addItem(message)
+        self.listbox.scrollToBottom()
 
     # the actual chamber_monitor QList updates
     def update_chamber_monitor_gui(self, message):
@@ -190,6 +205,7 @@ class MainWindow(QMainWindow):
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
             if not self.serial_worker.is_stopped:
                 self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
+                self.manual_tab.clear_current_setting_label()
             if not self.test_board.is_stopped:
                 self.test_board.is_running = False
                 self.test_board.stop()
@@ -223,7 +239,7 @@ class MainWindow(QMainWindow):
         logger.info('test board worker restarted')
 
         # update the gui
-        self.main_tab.change_test_part_gui()
+        self.main_tab.change_test_part_gui(self.test_data)
 
     # helper method to display error messages using QMessageBox
     @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data

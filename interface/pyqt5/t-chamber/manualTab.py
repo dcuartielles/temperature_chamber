@@ -65,7 +65,7 @@ class ManualTab(QWidget):
 
             if is_valid and self.input_dictionary:  # if valid inputs
                 self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
-                current_string = f'temperature set to {temp_string} for the duration of {duration_string} minutes'
+                current_string = f'temperature set to {temp_string}°C for the duration of {duration_string} minutes'
                 self.current_setting.setText(current_string)
                 logger.info(f'sent to arduino: {self.input_dictionary}')
 
@@ -101,7 +101,13 @@ class ManualTab(QWidget):
     # auxiliary method for emergency stop
     def clear_entries(self):
         self.set_temp_input.clear()
+        self.set_temp_input.setPlaceholderText('temperature in °C')
         self.set_duration_input.clear()
+        self.set_duration_input.setPlaceholderText('duration in minutes')
+
+    def clear_current_setting_label(self):
+        self.current_setting.setText('')
+        self.clear_entries()
 
     # helper method to display error messages using QMessageBox
     @staticmethod  # makes it smoother in use, as it doesn't require access to any instance-specific data

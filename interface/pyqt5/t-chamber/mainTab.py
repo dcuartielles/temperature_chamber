@@ -7,7 +7,7 @@ logger = setup_logger(__name__)
 
 
 class MainTab(QWidget):
-    def __init__(self, test_data=None, parent=None):
+    def __init__(self, test_data, parent=None):
         super().__init__(parent)
         self.test_data = test_data
         self.initUI()
@@ -62,24 +62,9 @@ class MainTab(QWidget):
         # add space btw sections: vertical 20px
         layout.addSpacerItem(QSpacerItem(0, 20))
 
-        # listbox for test updates
-        self.serial_label = QLabel('running test info', self)
-        self.listbox = QListWidget(self)
-        self.listbox.setFixedHeight(145)
-        layout.addWidget(self.serial_label)
-        layout.addWidget(self.listbox)
-
-        # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
-
         self.setLayout(layout)
 
     # functionality
-    # the actual listbox updates
-    def update_listbox_gui(self, message):
-        self.listbox.addItem(message)
-        self.listbox.scrollToBottom()
-
     def update_test_output_listbox_gui(self, message):
         self.test_output_listbox.clear()
         self.test_output_listbox.addItem(message)
@@ -94,14 +79,12 @@ class MainTab(QWidget):
     def expected_output(self, test_data):
         if test_data is not None:
             all_expected_outputs = []
-            logger.info('test data in place to update exp output listbox')
             # iterate through each test and run it
             for test_key in test_data.keys():
                 test = test_data.get(test_key, {})
                 expected_output = test.get('expected output', '')  # get the expected output string
                 if expected_output:
                     all_expected_outputs.append(expected_output)
-            logger.info('all expected outputs should be returned now')
             return all_expected_outputs
         return []
 
@@ -109,12 +92,12 @@ class MainTab(QWidget):
     def expected_output_listbox(self):
         exp_outputs = self.expected_output(self.test_data)
         self.expected_outcome_listbox.clear()
-        logger.info('about fo fill the expected outcome listbox')
         for i, output in enumerate(exp_outputs):
             self.expected_outcome_listbox.addItem(f'test {i + 1}, expected output: {output}')
         self.expected_outcome_listbox.scrollToBottom()
 
-    def change_test_part_gui(self):
+    def change_test_part_gui(self, test_data):
+        self.test_data = test_data
         self.instruction_listbox.hide()
         self.test_output_listbox.show()
         self.expected_outcome_listbox.show()
