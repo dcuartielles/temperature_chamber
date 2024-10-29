@@ -60,7 +60,6 @@ class ManualTab(QWidget):
 
     # enter for temp & duration inputs
     def on_enter_key(self):
-
         # check both inputs only when the user presses enter
         temp_string = self.set_temp_input.text().strip()
         duration_string = self.set_duration_input.text().strip()

@@ -172,6 +172,7 @@ class MainWindow(QMainWindow):
         self.serial_worker.start()  # start the worker thread
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
+        self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
 
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
@@ -179,6 +180,11 @@ class MainWindow(QMainWindow):
 
     # the actual listbox updates
     def update_listbox_gui(self, message):
+        self.listbox.addItem(message)
+        self.listbox.scrollToBottom()
+
+    # the same method to be triggered separately when a test is interrupted
+    def test_interrupted_gui(self, message):
         self.listbox.addItem(message)
         self.listbox.scrollToBottom()
 
@@ -202,13 +208,13 @@ class MainWindow(QMainWindow):
     # run all benchmark tests
     def on_run_button_clicked(self):
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
+            # check if test is running
             if self.test_is_running:
                 response = popups.show_dialog(
                     'a test is running: are you sure you want to interrupt it and proceed?')
                 if response == QMessageBox.Yes:
                     self.test_is_running = False
                     self.manual_tab.test_is_running = False
-                    self.serial_worker.test_is_running = False
                 elif response == QMessageBox.No:
                     return
 
@@ -216,7 +222,8 @@ class MainWindow(QMainWindow):
             self.manual_tab.test_is_running = True
             self.serial_worker.test_is_running = True
 
-            self.main_tab.on_run_test_gui()  # if running tests for nth time, come back to original gui layout to start with
+            # if running tests for nth time, come back to original gui layout to start with
+            self.main_tab.on_run_test_gui()
 
             if not self.serial_worker.is_stopped:
                 self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
@@ -256,7 +263,6 @@ class MainWindow(QMainWindow):
         # update the gui
         self.main_tab.change_test_part_gui(self.test_data)
         self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
-
 
     # stop both workers
     def closeEvent(self, event):

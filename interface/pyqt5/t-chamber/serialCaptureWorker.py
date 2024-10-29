@@ -21,7 +21,6 @@ class SerialCaptureWorker(QThread):
         self.is_open = True
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
-        self.test_is_running = False
         self.last_command_time = time.time()
         self.last_readout = time.time()
         self.test_data = None
@@ -136,10 +135,6 @@ class SerialCaptureWorker(QThread):
 
     # run the entire test file
     def run_all_tests(self, test_data):
-        if self.test_is_running:
-            message = 'test interrupted'
-            self.update_listbox.emit(message)
-
         if test_data is not None:
             all_tests = [key for key in test_data.keys()]
 
