@@ -5087,3 +5087,55 @@ Traceback (most recent call last):
 serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
 2024-10-29 15:20:37 - testBoardWorker - INFO - test worker thread is running
 2024-10-29 15:20:37 - testBoardWorker - INFO - connection to COM7 closed now
+2024-10-29 15:22:28 - __main__ - INFO - app started
+2024-10-29 15:22:33 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-10-29 15:22:33 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-10-29 15:22:34 - testBoardWorker - INFO - test board thread is running
+2024-10-29 15:22:34 - serialCaptureWorker - INFO - thread is running
+2024-10-29 15:22:39 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-29 15:22:39 - serialCaptureWorker - INFO - arduino says: Room_temp: 47.81 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-29 15:22:44 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-29 15:22:44 - serialCaptureWorker - INFO - arduino says: Room_temp: 47.81 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-29 15:22:48 - testBoardWorker - INFO - test worker thread is running
+2024-10-29 15:22:50 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-29 15:22:50 - serialCaptureWorker - INFO - arduino says: Room_temp: 47.84 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-29 15:22:55 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-29 15:22:55 - serialCaptureWorker - INFO - arduino says: Room_temp: 47.88 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-29 15:23:00 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-29 15:23:00 - serialCaptureWorker - INFO - arduino says: Room_temp: 47.88 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-29 15:23:02 - testBoardWorker - INFO - test worker thread is running
+2024-10-29 15:23:05 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-29 15:23:05 - serialCaptureWorker - INFO - arduino says: Room_temp: 47.91 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-29 15:23:11 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-29 15:23:11 - serialCaptureWorker - INFO - arduino says: Room_temp: 47.91 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-29 15:23:15 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-29 15:23:15 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-10-29 15:23:16 - testBoardWorker - INFO - test worker thread is running
+2024-10-29 15:23:16 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-29 15:23:16 - serialCaptureWorker - INFO - arduino says: Room_temp: 47.91 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-29 15:23:21 - serialCaptureWorker - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}
+2024-10-29 15:23:21 - serialCaptureWorker - INFO - sending full test test_1
+2024-10-29 15:23:21 - serialCaptureWorker - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 60, "duration": 60000}, {"temp": 70, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}
+2024-10-29 15:23:21 - serialCaptureWorker - INFO - sending full test test_2
+2024-10-29 15:23:21 - testBoardWorker - INFO - test worker thread is running
+2024-10-29 15:23:21 - testBoardWorker - INFO - connection to COM7 closed now
+2024-10-29 15:23:21 - __main__ - INFO - test board worker temporarily deleted
+2024-10-29 15:23:21 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-10-29 15:23:21 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-29 15:23:21 - serialCaptureWorker - INFO - arduino says: Setting temperature to 50.00°
+2024-10-29 15:23:21 - serialCaptureWorker - INFO - Error: Invalid JSON format
+2024-10-29 15:23:22 - serialCaptureWorker - INFO - Running sequence: Target temp = 50.00 Duration = 60000
+2024-10-29 15:23:22 - serialCaptureWorker - INFO - Waiting for target temp to be reached
+2024-10-29 15:23:22 - serialCaptureWorker - INFO - Room_temp: 47.97 | Desired_temp: 50 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-29 15:23:22 - cliWorker - INFO - cli worker thread is running
+2024-10-29 15:23:22 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-29 15:23:24 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-29 15:23:24 - serialCaptureWorker - INFO - connection to COM15 closed
+2024-10-29 15:23:24 - serialCaptureWorker - ERROR - error reading data from control board serial: Attempting to use a port that is not open
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 120, in read_data
+    response = self.ser.readline().decode('utf-8').strip()
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 269, in read
+    raise PortNotOpenError()
+serial.serialutil.PortNotOpenError: Attempting to use a port that is not open

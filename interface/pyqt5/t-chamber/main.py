@@ -201,23 +201,23 @@ class MainWindow(QMainWindow):
 
     # run all benchmark tests
     def on_run_button_clicked(self):
-        if self.test_is_running:
-            response = popups.show_dialog(
-                'a test is running: are you sure you want to interrupt it and proceed?')
-            if response == QMessageBox.Yes:
-                self.test_is_running = False
-                self.manual_tab.test_is_running = False
-                self.serial_worker.test_is_running = False
-            elif response == QMessageBox.No:
-                return
-
-        self.test_is_running = True
-        self.manual_tab.test_is_running = True
-        self.serial_worker.test_is_running = True
-
-        self.main_tab.on_run_test_gui()  # if running tests for nth time, come back to original gui layout to start with
-
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
+            if self.test_is_running:
+                response = popups.show_dialog(
+                    'a test is running: are you sure you want to interrupt it and proceed?')
+                if response == QMessageBox.Yes:
+                    self.test_is_running = False
+                    self.manual_tab.test_is_running = False
+                    self.serial_worker.test_is_running = False
+                elif response == QMessageBox.No:
+                    return
+
+            self.test_is_running = True
+            self.manual_tab.test_is_running = True
+            self.serial_worker.test_is_running = True
+
+            self.main_tab.on_run_test_gui()  # if running tests for nth time, come back to original gui layout to start with
+
             if not self.serial_worker.is_stopped:
                 self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
                 self.manual_tab.clear_current_setting_label()
