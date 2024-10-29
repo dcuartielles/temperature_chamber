@@ -15,6 +15,7 @@ from config import Config
 from logger_config import setup_logger
 from mainTab import MainTab
 from manualTab import ManualTab
+import popups
 
 logger = setup_logger(__name__)
 

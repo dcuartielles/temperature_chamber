@@ -2,6 +2,7 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QListWidget, QPushButton,
                              QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, QSpacerItem)
 from logger_config import setup_logger
+import popups
 
 logger = setup_logger(__name__)
 
@@ -120,21 +121,3 @@ class ManualTab(QWidget):
         msg_box.setStandardButtons(QMessageBox.Ok)
         msg_box.exec_()  # this will display the message box
 
-    # proceed or not pop-up dialogue window
-    def show_dialog(self, message):
-        # create a QMessageBox
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Question)
-        msg_box.setText(message)
-        msg_box.setWindowTitle("are you sure?")
-        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-
-        # show the dialog and capture the response
-        response = msg_box.exec_()
-
-        # check user response
-        if response == QMessageBox.Yes:
-            print("yes")
-
-        else:
-            print("no")

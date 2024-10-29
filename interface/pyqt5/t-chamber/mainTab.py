@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QListWidget, QPushBut
                              QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, QSpacerItem, QApplication)
 from PyQt5.QtGui import QColor, QFont
 from logger_config import setup_logger
+import popups
 
 logger = setup_logger(__name__)
 
