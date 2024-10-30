@@ -92,8 +92,8 @@ class MainTab(QWidget):
                                                                 'font-weight: bold;')
                     self.test_output_listbox.setStyleSheet('color: red;'
                                                            'font-weight: bold;')
-                    date_str = datetime.now().strftime("%m-%d %H:%M:%S")
-                    message = f'{date_str}  incorrect test board output'
+                    date_str = datetime.now().strftime("%m/%d %H:%M:%S")
+                    message = f'incorrect test board output ({date_str})'
                     logger.error('incorrect test board output')
                     self.incorrect_output.emit(message)
         else:

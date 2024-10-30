@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('temperature chamber')
         self.setGeometry(600, 110, 0, 0)  # decide where on the screen the window will appear
         self.setWindowIcon(QIcon('arduino_logo.png'))
-        self.setStyleSheet('background-color: white;'
+        self.setStyleSheet('background-color: #EEF1F1;'
                            'color: black;')
 
         # central widget to hold layout
@@ -77,7 +77,8 @@ class MainWindow(QMainWindow):
 
         # a dynamic frame, shows when start button clicked
         self.frame = QFrame(self.central_widget)
-        self.frame.setStyleSheet('border: 2px solid white; border-radius: 5px;')  # initially white
+        self.frame.setStyleSheet('border: 2px solid red; border-radius: 5px;')
+        layout.addWidget(self.frame)
 
         # logo
         self.im_label = QLabel(self)
@@ -152,8 +153,6 @@ class MainWindow(QMainWindow):
         # add space btw sections: vertical 11px
         layout.addSpacerItem(QSpacerItem(0, 11))
 
-        layout.addWidget(self.frame)
-
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
         self.main_tab.load_button.clicked.connect(self.load_test_file)
@@ -169,7 +168,7 @@ class MainWindow(QMainWindow):
 
     # method to start running threads after ports have been selected
     def on_start_button_clicked(self):
-        self.frame.setStyleSheet('border: 3px solid #009FAF; border-radius: 5px;')
+        self.light_up()
         # disable the start button to prevent double-clicks
         self.start_button.setDisabled(True)
 
@@ -217,6 +216,15 @@ class MainWindow(QMainWindow):
         self.listbox.addItem(item)
         self.listbox.scrollToBottom()
 
+    # similar method for new test
+    def new_test(self, message):
+        item = QListWidgetItem(message)
+        font = QFont()
+        font.setBold(True)
+        item.setFont(font)
+        self.listbox.addItem(item)
+        self.listbox.scrollToBottom()
+
     # the actual chamber_monitor QList updates
     def update_chamber_monitor_gui(self, message):
         self.chamber_monitor.clear()  # clear old data
@@ -249,7 +257,9 @@ class MainWindow(QMainWindow):
                     logger.warning(message)
                 elif response == QMessageBox.No:
                     return
-
+            message = 'test starting'
+            self.new_test(message)
+            logger.info(message)
             self.test_is_running = True
             self.manual_tab.test_is_running = True
 
@@ -301,8 +311,10 @@ class MainWindow(QMainWindow):
 
     # re-enable start button after refreshing ports
     def re_enable_start(self):
-        self.frame.setStyleSheet('border: 3px solid white; border-radius: 5px;')
         self.start_button.setEnabled(True)
+
+    def light_up(self):
+        self.setStyleSheet('background-color: white;')
 
     # stop both workers
     def closeEvent(self, event):
