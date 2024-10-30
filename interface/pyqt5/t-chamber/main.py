@@ -2,7 +2,7 @@
 import sys
 import time
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox, QTabWidget
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap, QColor, QFont
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 
 # functionality imports
@@ -49,6 +49,10 @@ class MainWindow(QMainWindow):
         self.test_data = None
         self.filepath = None
 
+        # tabs
+        self.main_tab = MainTab(self.test_data)
+        self.manual_tab = ManualTab()
+
         # flag for preventing user from interrupting a test
         self.test_is_running = False
 
@@ -58,7 +62,7 @@ class MainWindow(QMainWindow):
     def initUI(self):
         # main window and window logo
         self.setWindowTitle('temperature chamber')
-        self.setGeometry(600, 110, 0, 0) # decide where on the screen the window will appear
+        self.setGeometry(600, 110, 0, 0)  # decide where on the screen the window will appear
         self.setWindowIcon(QIcon('arduino_logo.png'))
         self.setStyleSheet('background-color: white;'
                            'color: black;')
@@ -68,8 +72,13 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.central_widget)
 
         # create a vertical layout
-        layout = QVBoxLayout()
+        layout = QVBoxLayout(self.central_widget)
         layout.setContentsMargins(10, 10, 10, 10)  # add padding around the entire layout
+
+        # a dynamic frame, shows when start button clicked
+        self.frame = QFrame(self.central_widget)
+        self.frame.setStyleSheet('border: 2px solid white; border-radius: 5px;')  # initially white
+        self.frame_layout = QVBoxLayout(self.frame)
 
         # logo
         self.im_label = QLabel(self)
@@ -77,13 +86,13 @@ class MainWindow(QMainWindow):
         self.im_label.setPixmap(pixmap)
         self.im_label.setScaledContents(True)
         self.im_label.setFixedSize(100, 100)  # define logo dimensions
-        layout.addWidget(self.im_label, alignment=Qt.AlignLeft)  # add logo to the layout
+        self.frame_layout.addWidget(self.im_label, alignment=Qt.AlignLeft)  # add logo to the layout
 
         # port selector
-        layout.addWidget(self.port_selector)
+        self.frame_layout.addWidget(self.port_selector)
 
         # add space btw sections: vertical 15px
-        layout.addSpacerItem(QSpacerItem(0, 15))
+        self.frame_layout.addSpacerItem(QSpacerItem(0, 15))
 
         # start button
         self.start_button = QPushButton('start')
@@ -91,33 +100,31 @@ class MainWindow(QMainWindow):
                                         'color: white;'
                                         'font-size: 20px;'
                                         'font-weight: bold;')
-        layout.addWidget(self.start_button)
+        self.frame_layout.addWidget(self.start_button)
 
         # add space btw sections: vertical 10px
-        layout.addSpacerItem(QSpacerItem(0, 10))
+        self.frame_layout.addSpacerItem(QSpacerItem(0, 10))
 
         # QTab widget to hold both tabs
         self.tab_widget = QTabWidget()
-        self.main_tab = MainTab(self.test_data)
-        self.manual_tab = ManualTab()
 
         # add tabs to tab widget
         self.tab_widget.addTab(self.main_tab, 'test control')
         self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
-        layout.addWidget(self.tab_widget)
+        self.frame_layout.addWidget(self.tab_widget)
 
         # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
+        self.frame_layout.addSpacerItem(QSpacerItem(0, 20))
 
         # listbox for test updates
         self.serial_label = QLabel('running test info', self)
         self.listbox = QListWidget(self)
         self.listbox.setFixedHeight(135)
-        layout.addWidget(self.serial_label)
-        layout.addWidget(self.listbox)
+        self.frame_layout.addWidget(self.serial_label)
+        self.frame_layout.addWidget(self.listbox)
 
         # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
+        self.frame_layout.addSpacerItem(QSpacerItem(0, 20))
 
         # listbox for temperature chamber monitoring
         self.chamber_label = QLabel('temperature chamber situation', self)
@@ -128,12 +135,12 @@ class MainWindow(QMainWindow):
         item = QListWidgetItem('arduino will keep you posted on current temperature and such')
         item.setTextAlignment(Qt.AlignCenter)  # center text
         self.chamber_monitor.addItem(item)
-        layout.addWidget(self.chamber_label)
-        layout.addWidget(self.chamber_monitor)
+        self.frame_layout.addWidget(self.chamber_label)
+        self.frame_layout.addWidget(self.chamber_monitor)
 
 
         # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 30))
+        self.frame_layout.addSpacerItem(QSpacerItem(0, 30))
 
         # emergency stop button
         self.emergency_stop_button = QPushButton('emergency stop', self)
@@ -141,10 +148,12 @@ class MainWindow(QMainWindow):
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
-        layout.addWidget(self.emergency_stop_button)
+        self.frame_layout.addWidget(self.emergency_stop_button)
 
         # add space btw sections: vertical 11px
-        layout.addSpacerItem(QSpacerItem(0, 11))
+        self.frame_layout.addSpacerItem(QSpacerItem(0, 11))
+
+        layout.addWidget(self.frame)
 
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
@@ -161,6 +170,10 @@ class MainWindow(QMainWindow):
 
     # method to start running threads after ports have been selected
     def on_start_button_clicked(self):
+        self.frame.setStyleSheet('border: 3px solid #009FAF; border-radius: 5px;')
+        # disable the start button to prevent double-clicks
+        self.start_button.setDisabled(True)
+
         # retrieve selected ports after user has had a chance to pick them
         self.selected_c_port = self.port_selector.get_selected_c_port()
         self.selected_t_port = self.port_selector.get_selected_t_port()
@@ -173,6 +186,9 @@ class MainWindow(QMainWindow):
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
         self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
+        self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
+        self.main_tab.incorrect_output.connect(self.incorrect_output_gui)
+        self.port_selector.ports_refreshed.connect(self.re_enable_start)
 
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
@@ -183,9 +199,23 @@ class MainWindow(QMainWindow):
         self.listbox.addItem(message)
         self.listbox.scrollToBottom()
 
-    # the same method to be triggered separately when a test is interrupted
+    # similar method for incorrect test board output notice
+    def incorrect_output_gui(self, message):
+        item = QListWidgetItem(message)
+        font = QFont()
+        font.setBold(True)
+        item.setFont(font)
+        item.setForeground(QColor('red'))
+        self.listbox.addItem(item)
+        self.listbox.scrollToBottom()
+
+    # similar method to be triggered separately when a test is interrupted
     def test_interrupted_gui(self, message):
-        self.listbox.addItem(message)
+        item = QListWidgetItem(message)
+        font = QFont()
+        font.setBold(True)
+        item.setFont(font)
+        self.listbox.addItem(item)
         self.listbox.scrollToBottom()
 
     # the actual chamber_monitor QList updates
@@ -217,6 +247,7 @@ class MainWindow(QMainWindow):
                     self.manual_tab.test_is_running = False
                     message = 'test interrupted'
                     self.test_interrupted_gui(message)
+                    logger.warning(message)
                 elif response == QMessageBox.No:
                     return
 
@@ -264,6 +295,15 @@ class MainWindow(QMainWindow):
         # update the gui
         self.main_tab.change_test_part_gui(self.test_data)
         self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
+
+    # method to set test_is_runing to False when test_interrupted from manual
+    def set_flag_to_false(self):
+        self.test_is_running = False
+
+    # re-enable start button after refreshing ports
+    def re_enable_start(self):
+        self.frame.setStyleSheet('border: 3px solid white; border-radius: 5px;')
+        self.start_button.setEnabled(True)
 
     # stop both workers
     def closeEvent(self, event):

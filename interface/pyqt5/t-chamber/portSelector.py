@@ -1,9 +1,15 @@
 from PyQt5.QtWidgets import QComboBox, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QSpacerItem
 import arduinoUtils
+from PyQt5.QtCore import pyqtSignal
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 
 # class for the port selection ui
 class PortSelector(QWidget):
+    ports_refreshed = pyqtSignal()  # signal to re-enable start button
+
     def __init__(self, config):
         super().__init__()
 
@@ -82,6 +88,8 @@ class PortSelector(QWidget):
 
     # refresh ports (independent of config)
     def refresh_ports(self):
+        self.ports_refreshed.emit()
+        logger.info('ports refreshed')
         ports_and_boards = arduinoUtils.get_arduino_boards()  # should be [(port, board_name), (port, board_name)]
         self.t_port_dropdown.clear()
         self.c_port_dropdown.clear()

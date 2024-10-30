@@ -2,6 +2,7 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QListWidget, QPushButton,
                              QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, QSpacerItem, QApplication)
 from PyQt5.QtGui import QColor, QFont
+from datetime import datetime
 from logger_config import setup_logger
 import popups
 
@@ -9,6 +10,7 @@ logger = setup_logger(__name__)
 
 
 class MainTab(QWidget):
+    incorrect_output = pyqtSignal(str)  # signal to main: print in running test info when test board output incorrect
 
     def __init__(self, test_data, parent=None):
         super().__init__(parent)
@@ -80,6 +82,7 @@ class MainTab(QWidget):
             for output in exp_outputs:
                 output = str(output)
                 if output == message:
+                    logger.info('correct test output')
                     self.test_output_listbox.setStyleSheet('color: #009FAF;'
                                                            'font-weight: bold;')
                     self.expected_outcome_listbox.setStyleSheet('color: black;'
@@ -89,6 +92,10 @@ class MainTab(QWidget):
                                                                 'font-weight: bold;')
                     self.test_output_listbox.setStyleSheet('color: red;'
                                                            'font-weight: bold;')
+                    date_str = datetime.now().strftime("%m-%d %H:%M:%S")
+                    message = f'{date_str}  incorrect test board output'
+                    logger.error('incorrect test board output')
+                    self.incorrect_output.emit(message)
         else:
             self.expected_outcome_listbox.clear()
             self.expected_outcome_listbox.addItem('waiting for test board output')
