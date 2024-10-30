@@ -549,7 +549,7 @@ void handleHeatingState() {
         Serial.println();
 
     } else if(TemperatureThreshold > -4) {
-        dutyCycleHeater = 80;
+        dutyCycleHeater = (chamberState.longHeatingFlag) ? 0 : 80;
         periodHeater = 25000; //on for 20 seconds and off for 5
 
         Serial.println("\ncond: threshold > -4");
