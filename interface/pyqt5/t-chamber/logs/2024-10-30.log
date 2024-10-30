@@ -2261,3 +2261,13 @@ serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
 2024-10-30 14:42:15 - testBoardWorker - INFO - connection to COM7 closed now
 2024-10-30 14:42:15 - mainTab - ERROR - incorrect test board output
 2024-10-30 14:42:15 - mainTab - ERROR - incorrect test board output
+2024-10-30 14:48:30 - __main__ - INFO - app started
+2024-10-30 14:48:30 - portSelector - INFO - ports refreshed
+2024-10-30 14:49:12 - __main__ - INFO - app started
+2024-10-30 14:49:12 - portSelector - INFO - ports refreshed
+2024-10-30 14:50:17 - __main__ - INFO - app started
+2024-10-30 14:50:17 - portSelector - INFO - ports refreshed
+2024-10-30 14:52:31 - __main__ - INFO - app started
+2024-10-30 14:52:31 - portSelector - INFO - ports refreshed
+2024-10-30 14:53:19 - __main__ - INFO - app started
+2024-10-30 14:53:19 - portSelector - INFO - ports refreshed

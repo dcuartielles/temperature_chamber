@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('temperature chamber')
         self.setGeometry(600, 110, 0, 0)  # decide where on the screen the window will appear
         self.setWindowIcon(QIcon('arduino_logo.png'))
-        self.setStyleSheet('background-color: #EEF1F1;'
+        self.setStyleSheet('background-color: #F0F1F1;'
                            'color: black;')
 
         # central widget to hold layout
@@ -74,11 +74,6 @@ class MainWindow(QMainWindow):
         # create a vertical layout
         layout = QVBoxLayout(self.central_widget)
         layout.setContentsMargins(10, 10, 10, 10)  # add padding around the entire layout
-
-        # a dynamic frame, shows when start button clicked
-        self.frame = QFrame(self.central_widget)
-        self.frame.setStyleSheet('border: 2px solid red; border-radius: 5px;')
-        layout.addWidget(self.frame)
 
         # logo
         self.im_label = QLabel(self)
