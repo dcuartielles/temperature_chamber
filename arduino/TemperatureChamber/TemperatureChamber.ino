@@ -523,55 +523,54 @@ void handleHeatingState() {
 
     if(TemperatureThreshold > -0.1) {
 
-        Serial.println("\ncond: threshold > -0.1");
-        Serial.println("Actual:");
-        Serial.println("Threshold: " + String(TemperatureThreshold));
-        Serial.println("Going to report\n");
+        // Serial.println("\ncond: threshold > -0.1");
+        // Serial.println("Actual:");
+        // Serial.println("Threshold: " + String(TemperatureThreshold));
+        // Serial.println("Going to report\n");
 
-        status = REPORT;
         chamberState.longHeatingFlag = 0;
         chamberState.isHeating = false;
+        status = REPORT;
         return;
     } else if(TemperatureThreshold < -4) {
         dutyCycleHeater = 100;
         periodHeater = (TemperatureThreshold < -8) ? 120000 : 60000;
         chamberState.longHeatingFlag = 1;
 
-        Serial.println("\ncond: threshold < -4");
-        Serial.println("Actual:");
-        Serial.println("Threshold: " + String(TemperatureThreshold));
-        Serial.println("Setting dutycycle to 100");
-        Serial.println("Dutycycle: " + String(dutyCycleHeater));
-        Serial.println("Setting periodHeater to 120000 if threshold < -8, otherwise 60000");
-        Serial.println("PeriodHeater: " + String(periodHeater));
-        Serial.println("Setting lh flag to 1");
-        Serial.println("lh flag: " + String(chamberState.longHeatingFlag));
-        Serial.println();
+        // Serial.println("\ncond: threshold < -4");
+        // Serial.println("Actual:");
+        // Serial.println("Threshold: " + String(TemperatureThreshold));
+        // Serial.println("Setting dutycycle to 100");
+        // Serial.println("Dutycycle: " + String(dutyCycleHeater));
+        // Serial.println("Setting periodHeater to 120000 if threshold < -8, otherwise 60000");
+        // Serial.println("PeriodHeater: " + String(periodHeater));
+        // Serial.println("Setting lh flag to 1");
+        // Serial.println("lh flag: " + String(chamberState.longHeatingFlag));
+        // Serial.println();
 
     } else if(TemperatureThreshold > -4) {
         dutyCycleHeater = (chamberState.longHeatingFlag) ? 0 : 80;
         periodHeater = 25000; //on for 20 seconds and off for 5
 
-        Serial.println("\ncond: threshold > -4");
-        Serial.println("Actual:");
-        Serial.println("Threshold: " + String(TemperatureThreshold));
-        Serial.println("Setting dutycycle to 80");
-        Serial.println("Dutycycle: " + String(dutyCycleHeater));
-        Serial.println("Setting periodHeater to 25000");
-        Serial.println("PeriodHeater: " + String(periodHeater));
-        Serial.println();
+        // Serial.println("\ncond: threshold > -4");
+        // Serial.println("Actual:");
+        // Serial.println("Threshold: " + String(TemperatureThreshold));
+        // Serial.println("Setting dutycycle to 80");
+        // Serial.println("Dutycycle: " + String(dutyCycleHeater));
+        // Serial.println("Setting periodHeater to 25000");
+        // Serial.println("PeriodHeater: " + String(periodHeater));
+        // Serial.println();
 
     }
 
     controlRelay(heater, dutyCycleHeater, periodHeater, chamberState.lastHeaterOnTime);
 
-    Serial.println("control relay function values:");
-    Serial.println("Duty cycle: " + String(dutyCycleHeater));
-    Serial.println("Period: " + String(periodHeater));
-    Serial.println("Timer: " + String(chamberState.lastHeaterOnTime));
+    // Serial.println("control relay function values:");
+    // Serial.println("Duty cycle: " + String(dutyCycleHeater));
+    // Serial.println("Period: " + String(periodHeater));
+    // Serial.println("Timer: " + String(chamberState.lastHeaterOnTime));
 
     chamberState.isHeating = true;
-    chamberState.isCooling = false;
 
 }
 
@@ -584,8 +583,8 @@ void handleCoolingState() {
     heater.off();
 
     if(TemperatureThreshold < 0.4) {
-        status = REPORT;
         chamberState.isCooling = false;
+        status = REPORT;
         return;
     } else if(TemperatureThreshold > 1) {
         dutyCycleCooler = 100;
@@ -597,7 +596,6 @@ void handleCoolingState() {
 
     controlRelay(cooler, dutyCycleCooler, periodCooler, chamberState.lastCoolerOnTime);
     chamberState.isCooling = true;
-    chamberState.isHeating = false;
 
 }
 
