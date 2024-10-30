@@ -226,3 +226,1099 @@
 2024-10-30 11:43:30 - portSelector - INFO - ports refreshed
 2024-10-30 11:44:13 - __main__ - INFO - app started
 2024-10-30 11:44:13 - portSelector - INFO - ports refreshed
+2024-10-30 11:48:20 - __main__ - INFO - app started
+2024-10-30 11:48:20 - portSelector - INFO - ports refreshed
+2024-10-30 11:48:46 - __main__ - INFO - app started
+2024-10-30 11:48:46 - portSelector - INFO - ports refreshed
+2024-10-30 11:53:09 - __main__ - INFO - app started
+2024-10-30 11:53:09 - portSelector - INFO - ports refreshed
+2024-10-30 11:53:19 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-10-30 11:53:19 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-10-30 11:53:20 - testBoardWorker - INFO - test board thread is running
+2024-10-30 11:53:20 - serialCaptureWorker - INFO - thread is running
+2024-10-30 11:53:25 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:25 - serialCaptureWorker - INFO - arduino says: Room_temp: 45.19 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-30 11:53:30 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:30 - serialCaptureWorker - INFO - arduino says: Room_temp: 45.16 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-30 11:53:33 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-30 11:53:33 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-10-30 11:53:33 - testBoardWorker - INFO - test worker thread is running
+2024-10-30 11:53:35 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:36 - serialCaptureWorker - INFO - arduino says: Room_temp: 45.16 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-30 11:53:40 - serialCaptureWorker - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}
+2024-10-30 11:53:40 - serialCaptureWorker - INFO - sending full test test_1
+2024-10-30 11:53:40 - serialCaptureWorker - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 60, "duration": 60000}, {"temp": 70, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}
+2024-10-30 11:53:40 - serialCaptureWorker - INFO - sending full test test_2
+2024-10-30 11:53:40 - testBoardWorker - INFO - test worker thread is running
+2024-10-30 11:53:40 - testBoardWorker - INFO - connection to COM7 closed now
+2024-10-30 11:53:40 - __main__ - INFO - test board worker temporarily deleted
+2024-10-30 11:53:40 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-10-30 11:53:40 - serialCaptureWorker - INFO - Setting temperature to 50.00°
+2024-10-30 11:53:40 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:41 - serialCaptureWorker - INFO - Error: Invalid JSON format
+2024-10-30 11:53:41 - serialCaptureWorker - INFO - Running sequence: Target temp = 50.00 Duration = 60000
+2024-10-30 11:53:41 - serialCaptureWorker - INFO - Waiting for target temp to be reached
+2024-10-30 11:53:41 - serialCaptureWorker - INFO - Room_temp: 45.13 | Desired_temp: 50 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-10-30 11:53:41 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:41 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:41 - cliWorker - INFO - cli worker thread is running
+2024-10-30 11:53:41 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-30 11:53:41 - serialCaptureWorker - INFO - Threshold: -4.88
+2024-10-30 11:53:41 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:42 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:53:42 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:42 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:42 - serialCaptureWorker - INFO - Threshold: -4.88
+2024-10-30 11:53:42 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:53:42 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:53:42 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:53:42 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:42 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:42 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:53:43 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:43 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:53:43 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:43 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:43 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:53:43 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:53:43 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:53:43 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:53:43 - serialCaptureWorker - INFO - Timer: 1310
+2024-10-30 11:53:43 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-10-30 11:53:43 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-10-30 11:53:43 - serialCaptureWorker - INFO - Room_temp: 45.16 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:44 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:44 - serialCaptureWorker - INFO - arduino says: Room_temp: 45.09 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:44 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:44 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:44 - serialCaptureWorker - INFO - Threshold: -4.91
+2024-10-30 11:53:44 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:53:44 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:53:44 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:53:44 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-10-30 11:53:44 - cliWorker - INFO - core arduino is already installed.
+2024-10-30 11:53:44 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-30 11:53:45 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:45 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:45 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:45 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:53:45 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:45 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:45 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:53:45 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:53:45 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:53:45 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:53:46 - serialCaptureWorker - INFO - Timer: 1310
+2024-10-30 11:53:46 - serialCaptureWorker - INFO - Room_temp: 45.09 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:46 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:46 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:53:46 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:53:46 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:53:46 - serialCaptureWorker - INFO - Timer: 1310
+2024-10-30 11:53:46 - serialCaptureWorker - INFO - Room_temp: 45.09 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:46 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:46 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:47 - serialCaptureWorker - INFO - Threshold: -4.91
+2024-10-30 11:53:47 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:53:47 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:53:47 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:47 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:53:47 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:47 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:47 - serialCaptureWorker - INFO - Threshold: -4.91
+2024-10-30 11:53:47 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:53:47 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:53:47 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:53:48 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:48 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:48 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:53:48 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:48 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:53:48 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:48 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:48 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:53:48 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:53:49 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:53:49 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:53:49 - serialCaptureWorker - INFO - Timer: 1310
+2024-10-30 11:53:49 - serialCaptureWorker - INFO - Room_temp: 45.09 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:49 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-30 11:53:49 - cliWorker - INFO - compilation successful!
+2024-10-30 11:53:49 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:49 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:53:49 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:53:49 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:53:49 - serialCaptureWorker - INFO - Timer: 1310
+2024-10-30 11:53:49 - serialCaptureWorker - INFO - Room_temp: 45.09 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:49 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-10-30 11:53:50 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:50 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:50 - serialCaptureWorker - INFO - Threshold: -4.91
+2024-10-30 11:53:50 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:53:50 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:53:50 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:50 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:53:50 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:50 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:50 - serialCaptureWorker - INFO - Threshold: -4.94
+2024-10-30 11:53:50 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:53:51 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:53:51 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:53:51 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:51 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:51 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:53:51 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:51 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:53:51 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:51 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:51 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:53:52 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:53:52 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:53:52 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:53:52 - serialCaptureWorker - INFO - Timer: 1310
+2024-10-30 11:53:52 - serialCaptureWorker - INFO - Room_temp: 45.06 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:52 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:52 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:53:52 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:53:52 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:53:52 - serialCaptureWorker - INFO - Timer: 1310
+2024-10-30 11:53:52 - serialCaptureWorker - INFO - Room_temp: 45.06 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:53 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:53 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:53 - serialCaptureWorker - INFO - Threshold: -4.94
+2024-10-30 11:53:53 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:53:53 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:53:53 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:53 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:53:53 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:53 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:53 - serialCaptureWorker - INFO - Threshold: -4.94
+2024-10-30 11:53:54 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:53:54 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:53:54 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:53:54 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-30 11:53:54 - cliWorker - INFO - upload successful!
+2024-10-30 11:53:54 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:54 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:54 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:53:54 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:54 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:53:54 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:54 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:54 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:53:55 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:53:55 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:53:55 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:53:55 - serialCaptureWorker - INFO - Timer: 1310
+2024-10-30 11:53:55 - serialCaptureWorker - INFO - Room_temp: 45.06 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:55 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:55 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:53:55 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:53:55 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:53:55 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:53:56 - serialCaptureWorker - INFO - Room_temp: 45.03 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:56 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:56 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:56 - serialCaptureWorker - INFO - Threshold: -4.97
+2024-10-30 11:53:56 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:53:56 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:53:56 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:56 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:53:56 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-10-30 11:53:56 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-10-30 11:53:56 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:56 - __main__ - INFO - cli worker quit
+2024-10-30 11:53:56 - __main__ - INFO - cli worker deleted
+2024-10-30 11:53:56 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:57 - serialCaptureWorker - INFO - Threshold: -4.94
+2024-10-30 11:53:57 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:53:57 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:53:57 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:53:57 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:57 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:57 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:53:57 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:57 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:53:57 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:53:58 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:53:58 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:53:58 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:53:58 - __main__ - INFO - test board worker restarted
+2024-10-30 11:53:58 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:53:58 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-10-30 11:53:58 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:53:58 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:53:58 - serialCaptureWorker - INFO - Room_temp: 45.03 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:58 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:58 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:53:58 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:53:58 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:53:59 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:53:59 - serialCaptureWorker - INFO - Room_temp: 45.06 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:53:59 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:53:59 - testBoardWorker - INFO - test board thread is running
+2024-10-30 11:53:59 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:53:59 - serialCaptureWorker - INFO - Threshold: -4.94
+2024-10-30 11:53:59 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:53:59 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:53:59 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:53:59 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:00 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:00 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:00 - serialCaptureWorker - INFO - Threshold: -4.97
+2024-10-30 11:54:00 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:00 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:00 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:00 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:00 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:00 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:00 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:00 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:01 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:01 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:01 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:01 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:01 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:01 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:01 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:01 - serialCaptureWorker - INFO - Room_temp: 45.03 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:01 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:01 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:01 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:02 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:02 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:02 - serialCaptureWorker - INFO - Room_temp: 45.03 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:02 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:02 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:02 - serialCaptureWorker - INFO - Threshold: -4.97
+2024-10-30 11:54:02 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:02 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:02 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:03 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:03 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:03 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:03 - serialCaptureWorker - INFO - Threshold: -4.94
+2024-10-30 11:54:03 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:03 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:03 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:03 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:03 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:03 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:03 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:04 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:04 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:04 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:04 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:04 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:04 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:04 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:04 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:04 - serialCaptureWorker - INFO - Room_temp: 45.06 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:04 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:05 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:05 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:05 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:05 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:05 - serialCaptureWorker - INFO - Room_temp: 45.06 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:05 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:05 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:05 - serialCaptureWorker - INFO - Threshold: -4.94
+2024-10-30 11:54:05 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:06 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:06 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:06 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:06 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:06 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:06 - serialCaptureWorker - INFO - Threshold: -4.94
+2024-10-30 11:54:06 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:06 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:06 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:06 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:06 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:07 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:07 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:07 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:07 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:07 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:07 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:07 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:07 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:07 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:08 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:08 - serialCaptureWorker - INFO - Room_temp: 45.06 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:08 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:08 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:08 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:08 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:08 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:08 - serialCaptureWorker - INFO - Room_temp: 45.09 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:08 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:08 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:09 - serialCaptureWorker - INFO - Threshold: -4.91
+2024-10-30 11:54:09 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:09 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:09 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:09 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:09 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:09 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:09 - serialCaptureWorker - INFO - Threshold: -4.91
+2024-10-30 11:54:09 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:09 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:09 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:10 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:10 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:10 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:10 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:10 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:10 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:10 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:10 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:10 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:10 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:11 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:11 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:11 - serialCaptureWorker - INFO - Room_temp: 45.13 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:11 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:11 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:11 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:11 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:11 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:11 - serialCaptureWorker - INFO - Room_temp: 45.13 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:11 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:12 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:12 - serialCaptureWorker - INFO - Threshold: -4.88
+2024-10-30 11:54:12 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:12 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:12 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:12 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:12 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:12 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:12 - serialCaptureWorker - INFO - Threshold: -4.88
+2024-10-30 11:54:12 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:12 - testBoardWorker - INFO - test worker thread is running
+2024-10-30 11:54:12 - mainTab - INFO - correct test output
+2024-10-30 11:54:12 - mainTab - INFO - correct test output
+2024-10-30 11:54:12 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:13 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:13 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:13 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:13 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:13 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:13 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:13 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:13 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:13 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:13 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:14 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:14 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:14 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:14 - serialCaptureWorker - INFO - Room_temp: 45.13 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:14 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:14 - serialCaptureWorker - INFO - arduino says: Room_temp: 45.13 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:14 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:14 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:15 - serialCaptureWorker - INFO - Threshold: -4.88
+2024-10-30 11:54:15 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:15 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:15 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:15 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:15 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:15 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:15 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:15 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:15 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:16 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:16 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:16 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:16 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:16 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:16 - serialCaptureWorker - INFO - Room_temp: 45.19 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:16 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:16 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:16 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:16 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:16 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - Room_temp: 45.19 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:17 - __main__ - WARNING - test interrupted
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: Actual:
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: Threshold: -4.81
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: Setting dutycycle to 100
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: Dutycycle: 100
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: PeriodHeater: 60000
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: Setting lh flag to 1
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: lh flag: 1
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: 
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: control relay function values:
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: Duty cycle: 100
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: Period: 60000
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: Timer: 61419
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - sending full test test_1
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 60, "duration": 60000}, {"temp": 70, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - sending full test test_2
+2024-10-30 11:54:17 - testBoardWorker - INFO - connection to COM7 closed now
+2024-10-30 11:54:17 - __main__ - INFO - test board worker temporarily deleted
+2024-10-30 11:54:17 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:17 - mainTab - ERROR - incorrect test board output
+2024-10-30 11:54:17 - mainTab - ERROR - incorrect test board output
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - Threshold: -4.81
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - arduino says: Setting temperature to 50.00°
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - Error: Invalid JSON format
+2024-10-30 11:54:17 - serialCaptureWorker - INFO - Room_temp: 45.19 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:18 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:18 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:18 - serialCaptureWorker - INFO - Threshold: -4.81
+2024-10-30 11:54:18 - cliWorker - INFO - cli worker thread is running
+2024-10-30 11:54:18 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-30 11:54:18 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:18 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:18 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:18 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:18 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:18 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:18 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:19 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:19 - serialCaptureWorker - INFO - Threshold: -4.78
+2024-10-30 11:54:19 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:19 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:19 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:19 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:19 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:19 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:19 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:19 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:20 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:20 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:20 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:20 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:20 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:20 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-10-30 11:54:20 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-10-30 11:54:20 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:20 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:20 - serialCaptureWorker - INFO - Room_temp: 45.25 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:20 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:20 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:21 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:21 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:21 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:21 - serialCaptureWorker - INFO - Room_temp: 45.25 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:21 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:21 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:21 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-10-30 11:54:21 - cliWorker - INFO - core arduino is already installed.
+2024-10-30 11:54:21 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-30 11:54:21 - serialCaptureWorker - INFO - Threshold: -4.75
+2024-10-30 11:54:21 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:21 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:22 - serialCaptureWorker - INFO - arduino says: Room_temp: 45.28 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:22 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:22 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:22 - serialCaptureWorker - INFO - Threshold: -4.72
+2024-10-30 11:54:22 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:22 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:22 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:22 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:22 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:22 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:23 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:23 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:23 - serialCaptureWorker - INFO - Threshold: -4.69
+2024-10-30 11:54:23 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:23 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:23 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:23 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:23 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:23 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:23 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:23 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:24 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:24 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:24 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:24 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:24 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-30 11:54:24 - cliWorker - INFO - compilation successful!
+2024-10-30 11:54:24 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:24 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:24 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:24 - serialCaptureWorker - INFO - Room_temp: 45.28 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:24 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:25 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-10-30 11:54:25 - serialCaptureWorker - INFO - arduino says: Room_temp: 45.31 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:25 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:25 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:25 - serialCaptureWorker - INFO - Threshold: -4.69
+2024-10-30 11:54:25 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:25 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:25 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:25 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:26 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:26 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:26 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:26 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:26 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:26 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:26 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:26 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:26 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:26 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:27 - serialCaptureWorker - INFO - Room_temp: 45.38 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:27 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:27 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:27 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:27 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:27 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:27 - serialCaptureWorker - INFO - Room_temp: 45.38 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:27 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:27 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:27 - serialCaptureWorker - INFO - Threshold: -4.62
+2024-10-30 11:54:28 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:28 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:28 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:28 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:28 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:28 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:28 - serialCaptureWorker - INFO - Threshold: -4.62
+2024-10-30 11:54:28 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:28 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:28 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:28 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:29 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:29 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:29 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:29 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:29 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-30 11:54:29 - cliWorker - INFO - upload successful!
+2024-10-30 11:54:29 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:29 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:29 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:29 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:29 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:30 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:30 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:30 - serialCaptureWorker - INFO - Room_temp: 45.41 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:30 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:30 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:30 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:30 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:30 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:30 - serialCaptureWorker - INFO - Room_temp: 45.44 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:30 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:31 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:31 - serialCaptureWorker - INFO - Threshold: -4.56
+2024-10-30 11:54:31 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:31 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:31 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:31 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:31 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:31 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:31 - serialCaptureWorker - INFO - Threshold: -4.53
+2024-10-30 11:54:31 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:31 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-10-30 11:54:31 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-10-30 11:54:31 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:31 - __main__ - INFO - cli worker quit
+2024-10-30 11:54:31 - __main__ - INFO - cli worker deleted
+2024-10-30 11:54:32 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:32 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:32 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:32 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:32 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:32 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:32 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:32 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:32 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:32 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:33 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:33 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:33 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:33 - serialCaptureWorker - INFO - Room_temp: 45.50 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:33 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:33 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:33 - __main__ - INFO - test board worker restarted
+2024-10-30 11:54:33 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-10-30 11:54:33 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:33 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:33 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:33 - serialCaptureWorker - INFO - Room_temp: 45.56 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:34 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:34 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:34 - serialCaptureWorker - INFO - Threshold: -4.44
+2024-10-30 11:54:34 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:34 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:34 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:34 - testBoardWorker - INFO - test board thread is running
+2024-10-30 11:54:34 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:34 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:34 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:34 - serialCaptureWorker - INFO - Threshold: -4.44
+2024-10-30 11:54:34 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:35 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:35 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:35 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:35 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:35 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:35 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:35 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:35 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:35 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:35 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:36 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:36 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:36 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:36 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:36 - serialCaptureWorker - INFO - Room_temp: 45.59 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:36 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:36 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:36 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:36 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:36 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:36 - serialCaptureWorker - INFO - Room_temp: 45.59 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:37 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:37 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:37 - serialCaptureWorker - INFO - Threshold: -4.41
+2024-10-30 11:54:37 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:37 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:37 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:37 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:37 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:37 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:37 - serialCaptureWorker - INFO - Threshold: -4.34
+2024-10-30 11:54:38 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:38 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:38 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:38 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:38 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:38 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:38 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:38 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:38 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:38 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:39 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:39 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:39 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:39 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:39 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:39 - serialCaptureWorker - INFO - Room_temp: 45.69 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:39 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:39 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:39 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:39 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:39 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:40 - serialCaptureWorker - INFO - Room_temp: 45.69 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:40 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:40 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:40 - serialCaptureWorker - INFO - Threshold: -4.31
+2024-10-30 11:54:40 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:40 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:40 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:40 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:40 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:41 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:41 - serialCaptureWorker - INFO - Threshold: -4.28
+2024-10-30 11:54:41 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:41 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:41 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:41 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:41 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:41 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:41 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:41 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:41 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:42 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:42 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:42 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:42 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:42 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:42 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:42 - serialCaptureWorker - INFO - Room_temp: 45.72 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:42 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:42 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:42 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:43 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:43 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:43 - serialCaptureWorker - INFO - Room_temp: 45.78 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:43 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:43 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:43 - serialCaptureWorker - INFO - Threshold: -4.22
+2024-10-30 11:54:43 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:43 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:43 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:43 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:44 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:44 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:44 - serialCaptureWorker - INFO - Threshold: -4.19
+2024-10-30 11:54:44 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:44 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:44 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:44 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:44 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:44 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:44 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:44 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:45 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:45 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:45 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:45 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:45 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:45 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:45 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:45 - serialCaptureWorker - INFO - Room_temp: 45.84 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:45 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:45 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:46 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:46 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:46 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:46 - serialCaptureWorker - INFO - Room_temp: 45.91 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:46 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:46 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:46 - serialCaptureWorker - INFO - Threshold: -4.09
+2024-10-30 11:54:46 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:46 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:46 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:47 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:54:47 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:47 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:47 - serialCaptureWorker - INFO - Threshold: -4.09
+2024-10-30 11:54:47 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:47 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:47 - serialCaptureWorker - INFO - Setting periodHeater to 120000 if threshold < -8, otherwise 60000
+2024-10-30 11:54:47 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:47 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:47 - testBoardWorker - INFO - test worker thread is running
+2024-10-30 11:54:47 - mainTab - INFO - correct test output
+2024-10-30 11:54:47 - mainTab - INFO - correct test output
+2024-10-30 11:54:47 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:47 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:48 - serialCaptureWorker - INFO - arduino says: 00 if threshold < -8, otherwise 60000
+2024-10-30 11:54:48 - serialCaptureWorker - INFO - PeriodHeater: 60000
+2024-10-30 11:54:48 - serialCaptureWorker - INFO - Setting lh flag to 1
+2024-10-30 11:54:48 - serialCaptureWorker - INFO - lh flag: 1
+2024-10-30 11:54:48 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:48 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:48 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:48 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:49 - serialCaptureWorker - INFO - Room_temp: 45.94 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:49 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:49 - serialCaptureWorker - INFO - arduino says: alues:
+2024-10-30 11:54:49 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:49 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:49 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:49 - serialCaptureWorker - INFO - Room_temp: 45.97 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:49 - serialCaptureWorker - INFO - cond: threshold < -4
+2024-10-30 11:54:49 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:49 - serialCaptureWorker - INFO - Threshold: -4.03
+2024-10-30 11:54:49 - serialCaptureWorker - INFO - Setting dutycycle to 100
+2024-10-30 11:54:50 - serialCaptureWorker - INFO - Dutycycle: 100
+2024-10-30 11:54:50 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:50 - serialCaptureWorker - INFO - arduino says: control relay function values:
+2024-10-30 11:54:50 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:50 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:50 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:50 - serialCaptureWorker - INFO - Room_temp: 46.00 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:50 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:54:50 - serialCaptureWorker - INFO - Duty cycle: 100
+2024-10-30 11:54:50 - serialCaptureWorker - INFO - Period: 60000
+2024-10-30 11:54:50 - serialCaptureWorker - INFO - Timer: 61419
+2024-10-30 11:54:51 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:54:51 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:51 - serialCaptureWorker - INFO - arduino says: Room_temp: 46.06 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:51 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:54:51 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:51 - serialCaptureWorker - INFO - Threshold: -3.94
+2024-10-30 11:54:51 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:54:51 - serialCaptureWorker - INFO - Dutycycle: 0
+2024-10-30 11:54:52 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:54:52 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:54:52 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:52 - serialCaptureWorker - INFO - arduino says: Room_temp: 46.09 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:52 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:54:52 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:52 - serialCaptureWorker - INFO - Threshold: -3.91
+2024-10-30 11:54:52 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:54:52 - serialCaptureWorker - INFO - Dutycycle: 0
+2024-10-30 11:54:53 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:54:53 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:54:53 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:53 - serialCaptureWorker - INFO - arduino says: Room_temp: 46.13 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:53 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:54:53 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:53 - serialCaptureWorker - INFO - Threshold: -3.88
+2024-10-30 11:54:53 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:54:54 - serialCaptureWorker - INFO - Dutycycle: 0
+2024-10-30 11:54:54 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:54:54 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:54:54 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:54 - serialCaptureWorker - INFO - arduino says: Room_temp: 46.16 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:54 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:54:54 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:54 - serialCaptureWorker - INFO - Threshold: -3.84
+2024-10-30 11:54:55 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:54:55 - serialCaptureWorker - INFO - Dutycycle: 0
+2024-10-30 11:54:55 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:54:55 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:54:55 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:55 - serialCaptureWorker - INFO - arduino says: Room_temp: 46.19 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:55 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:54:55 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:56 - serialCaptureWorker - INFO - Threshold: -3.81
+2024-10-30 11:54:56 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:54:56 - serialCaptureWorker - INFO - Dutycycle: 0
+2024-10-30 11:54:56 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:54:56 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:54:56 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:56 - serialCaptureWorker - INFO - arduino says: Room_temp: 46.19 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:56 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:54:57 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:57 - serialCaptureWorker - INFO - Threshold: -3.81
+2024-10-30 11:54:57 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:54:57 - serialCaptureWorker - INFO - Dutycycle: 0
+2024-10-30 11:54:57 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:54:57 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:54:57 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:57 - serialCaptureWorker - INFO - arduino says: Room_temp: 46.28 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:58 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:54:58 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:58 - serialCaptureWorker - INFO - Threshold: -3.72
+2024-10-30 11:54:58 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:54:58 - serialCaptureWorker - INFO - Dutycycle: 0
+2024-10-30 11:54:58 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:54:58 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:54:58 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:58 - manualTab - INFO - [{'temp': 22.0, 'duration': 120000}]
+2024-10-30 11:54:58 - serialCaptureWorker - INFO - arduino says: Room_temp: 46.28 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:54:59 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:54:59 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:54:59 - serialCaptureWorker - INFO - Threshold: -3.72
+2024-10-30 11:54:59 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:54:59 - serialCaptureWorker - INFO - Dutycycle: 0
+2024-10-30 11:54:59 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:54:59 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:54:59 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:54:59 - serialCaptureWorker - INFO - arduino says: Room_temp: 46.34 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - Threshold: -3.66
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - Dutycycle: 0
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:55:00 - manualTab - WARNING - test interrupted
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - [{'duration': 120000, 'temp': 22.0}]
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - sent to arduino: {"duration": 120000, "temp": 22.0}
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: PeriodHeater: 25000
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: 
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: control relay function values:
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Duty cycle: 0
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Period: 25000
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Timer: 116462
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: 
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: cond: threshold > -4
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Actual:
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Threshold: -3.66
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Setting dutycycle to 80
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Dutycycle: 0
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Setting periodHeater to 25000
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: PeriodHeater: 25000
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: 
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: control relay function values:
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Duty cycle: 0
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Period: 25000
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Timer: 116462
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: 
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: cond: threshold > -4
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Actual:
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Threshold: -3.62
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Setting dutycycle to 80
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Dutycycle: 0
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - arduino says: Setting periodHeater to 25000
+2024-10-30 11:55:00 - manualTab - INFO - sent to arduino: [{'temp': 22.0, 'duration': 120000}]
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:55:00 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:01 - serialCaptureWorker - INFO - arduino says: Setting temperature to 22.00°
+2024-10-30 11:55:01 - serialCaptureWorker - INFO - Manual temp set to 22.00
+2024-10-30 11:55:01 - serialCaptureWorker - INFO - Duration: 120000
+2024-10-30 11:55:01 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:01 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:01 - serialCaptureWorker - INFO - Threshold: -3.62
+2024-10-30 11:55:01 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:01 - serialCaptureWorker - INFO - Dutycycle: 0
+2024-10-30 11:55:01 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:01 - testBoardWorker - INFO - test worker thread is running
+2024-10-30 11:55:01 - mainTab - INFO - correct test output
+2024-10-30 11:55:01 - mainTab - INFO - correct test output
+2024-10-30 11:55:02 - serialCaptureWorker - INFO - arduino says: Room_temp: 46.44 | Desired_temp: 22 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+2024-10-30 11:55:05 - serialCaptureWorker - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}
+2024-10-30 11:55:05 - serialCaptureWorker - INFO - sending full test test_1
+2024-10-30 11:55:05 - serialCaptureWorker - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 60, "duration": 60000}, {"temp": 70, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}
+2024-10-30 11:55:05 - serialCaptureWorker - INFO - sending full test test_2
+2024-10-30 11:55:05 - testBoardWorker - INFO - connection to COM7 closed now
+2024-10-30 11:55:05 - __main__ - INFO - test board worker temporarily deleted
+2024-10-30 11:55:05 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-10-30 11:55:06 - serialCaptureWorker - INFO - Setting temperature to 50.00°
+2024-10-30 11:55:06 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:06 - mainTab - ERROR - incorrect test board output
+2024-10-30 11:55:06 - mainTab - ERROR - incorrect test board output
+2024-10-30 11:55:06 - serialCaptureWorker - INFO - Error: Invalid JSON format
+2024-10-30 11:55:06 - serialCaptureWorker - INFO - Room_temp: 46.63 | Desired_temp: 50 | Heater: 0 | Cooler: 1 | LH Indicator: 0
+2024-10-30 11:55:06 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:06 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:06 - cliWorker - INFO - cli worker thread is running
+2024-10-30 11:55:06 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-10-30 11:55:07 - serialCaptureWorker - INFO - Threshold: -3.38
+2024-10-30 11:55:07 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:07 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:55:07 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:07 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:07 - serialCaptureWorker - INFO - Threshold: -3.31
+2024-10-30 11:55:07 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:07 - serialCaptureWorker - INFO - Dutycycle: 80
+2024-10-30 11:55:07 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:55:07 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:55:08 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:55:08 - serialCaptureWorker - INFO - Duty cycle: 80
+2024-10-30 11:55:08 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:08 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:55:08 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:08 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:08 - serialCaptureWorker - INFO - Threshold: -3.28
+2024-10-30 11:55:08 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:08 - serialCaptureWorker - INFO - Dutycycle: 80
+2024-10-30 11:55:08 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:55:08 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:55:09 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:55:09 - serialCaptureWorker - INFO - Duty cycle: 80
+2024-10-30 11:55:09 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:09 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:55:09 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-10-30 11:55:09 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-10-30 11:55:09 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:09 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:09 - serialCaptureWorker - INFO - Threshold: -3.22
+2024-10-30 11:55:09 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:09 - serialCaptureWorker - INFO - Dutycycle: 80
+2024-10-30 11:55:09 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:55:10 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:55:10 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:55:10 - serialCaptureWorker - INFO - Duty cycle: 80
+2024-10-30 11:55:10 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:10 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:55:10 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:10 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:10 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-10-30 11:55:10 - cliWorker - INFO - core arduino is already installed.
+2024-10-30 11:55:10 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-10-30 11:55:10 - serialCaptureWorker - INFO - Threshold: -3.22
+2024-10-30 11:55:10 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:10 - serialCaptureWorker - INFO - Dutycycle: 80
+2024-10-30 11:55:11 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:55:11 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:55:11 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:55:11 - serialCaptureWorker - INFO - Duty cycle: 80
+2024-10-30 11:55:11 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:11 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:55:11 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:11 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:11 - serialCaptureWorker - INFO - Threshold: -3.19
+2024-10-30 11:55:11 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:11 - serialCaptureWorker - INFO - Dutycycle: 80
+2024-10-30 11:55:12 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:55:12 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:55:12 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:55:12 - serialCaptureWorker - INFO - Duty cycle: 80
+2024-10-30 11:55:12 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:12 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:55:12 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:12 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:12 - serialCaptureWorker - INFO - Threshold: -3.16
+2024-10-30 11:55:12 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:13 - serialCaptureWorker - INFO - Dutycycle: 80
+2024-10-30 11:55:13 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:55:13 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:55:13 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:55:13 - serialCaptureWorker - INFO - Duty cycle: 80
+2024-10-30 11:55:13 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:13 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:55:13 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:13 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-10-30 11:55:13 - cliWorker - INFO - compilation successful!
+2024-10-30 11:55:13 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:13 - serialCaptureWorker - INFO - Threshold: -3.16
+2024-10-30 11:55:14 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:14 - serialCaptureWorker - INFO - Dutycycle: 80
+2024-10-30 11:55:14 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:55:14 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-10-30 11:55:14 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:55:14 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:55:14 - serialCaptureWorker - INFO - Duty cycle: 80
+2024-10-30 11:55:14 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:14 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:55:14 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:14 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:15 - serialCaptureWorker - INFO - Threshold: -3.19
+2024-10-30 11:55:15 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:15 - serialCaptureWorker - INFO - Dutycycle: 80
+2024-10-30 11:55:15 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:55:15 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:55:15 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:55:15 - serialCaptureWorker - INFO - Duty cycle: 80
+2024-10-30 11:55:15 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:15 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:55:15 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:16 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:16 - serialCaptureWorker - INFO - Threshold: -3.16
+2024-10-30 11:55:16 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:16 - serialCaptureWorker - INFO - Dutycycle: 80
+2024-10-30 11:55:16 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:55:16 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:55:16 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:55:16 - serialCaptureWorker - INFO - Duty cycle: 80
+2024-10-30 11:55:16 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-10-30 11:55:16 - serialCaptureWorker - INFO - there was nothing worth saying here
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - cond: threshold > -4
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - Actual:
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - Threshold: -3.16
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - Setting dutycycle to 80
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - Dutycycle: 80
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - Setting periodHeater to 25000
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - PeriodHeater: 25000
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - control relay function values:
+2024-10-30 11:55:17 - __main__ - WARNING - test interrupted
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - sent to arduino: {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Duty cycle: 80
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Period: 25000
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Timer: 141670
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Room_temp: 46.88 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 0
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: 
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: cond: threshold > -4
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Actual:
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Threshold: -3.12
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Setting dutycycle to 80
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Dutycycle: 80
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Setting periodHeater to 25000
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: PeriodHeater: 25000
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: 
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: control relay function values:
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Duty cycle: 80
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Period: 25000
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Timer: 141670
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: 
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: cond: threshold > -4
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Actual:
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Threshold: -3.12
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Setting dutycycle to 80
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Dutycycle: 80
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Setting periodHeater to 25000
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: PeriodHeater: 25000
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: 
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: control relay function values:
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Duty cycle: 80
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Period: 25000
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - arduino says: Timer: 141670
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - sending full test test_1
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - sent to arduino: {"test_2": {"chamber_sequences": [{"temp": 60, "duration": 60000}, {"temp": 70, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}
+2024-10-30 11:55:17 - serialCaptureWorker - INFO - sending full test test_2
