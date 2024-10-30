@@ -374,8 +374,8 @@ void runCurrentSequence() {
     if (!printedRunning) {
         Serial.print("Running sequence: Target temp = ");
         Serial.print(targetTemp);
-        Serial.print(" Duration = ");
-        Serial.println(duration);
+        Serial.print("°C Duration = ");
+        Serial.println(String(duration / 60000) + " minutes");
         printedRunning = true;
     }
 
