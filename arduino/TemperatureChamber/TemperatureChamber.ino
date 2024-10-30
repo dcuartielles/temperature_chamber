@@ -324,11 +324,7 @@ void parseTextFromJson(JsonDocument& doc) {
             // Serial.print(": Temp = ");
             // Serial.print(currentTest.sequences[i].targetTemp);
             // Serial.print(", Duration = ");
-<<<<<<< HEAD
-            // Serial.print(currentTest.sequences[i].duration);
-=======
             // Serial.println(currentTest.sequences[i].duration);
->>>>>>> state-machine-refactor
 
         }
         jsonBuffer.clear();
