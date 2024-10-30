@@ -62,7 +62,7 @@ class MainWindow(QMainWindow):
     def initUI(self):
         # main window and window logo
         self.setWindowTitle('temperature chamber')
-        # self.setGeometry(600, 110, 0, 0)  # decide where on the screen the window will appear
+        self.setGeometry(600, 110, 0, 0)  # decide where on the screen the window will appear
         self.setWindowIcon(QIcon('arduino_logo.png'))
         self.setStyleSheet('background-color: white;'
                            'color: black;')
@@ -78,7 +78,6 @@ class MainWindow(QMainWindow):
         # a dynamic frame, shows when start button clicked
         self.frame = QFrame(self.central_widget)
         self.frame.setStyleSheet('border: 2px solid white; border-radius: 5px;')  # initially white
-        self.frame_layout = QVBoxLayout(self.frame)
 
         # logo
         self.im_label = QLabel(self)
@@ -86,13 +85,13 @@ class MainWindow(QMainWindow):
         self.im_label.setPixmap(pixmap)
         self.im_label.setScaledContents(True)
         self.im_label.setFixedSize(100, 100)  # define logo dimensions
-        self.frame_layout.addWidget(self.im_label, alignment=Qt.AlignLeft)  # add logo to the layout
+        layout.addWidget(self.im_label, alignment=Qt.AlignLeft)  # add logo to the layout
 
         # port selector
-        self.frame_layout.addWidget(self.port_selector)
+        layout.addWidget(self.port_selector)
 
         # add space btw sections: vertical 15px
-        self.frame_layout.addSpacerItem(QSpacerItem(0, 15))
+        layout.addSpacerItem(QSpacerItem(0, 15))
 
         # start button
         self.start_button = QPushButton('start')
@@ -100,10 +99,10 @@ class MainWindow(QMainWindow):
                                         'color: white;'
                                         'font-size: 20px;'
                                         'font-weight: bold;')
-        self.frame_layout.addWidget(self.start_button)
+        layout.addWidget(self.start_button)
 
         # add space btw sections: vertical 10px
-        self.frame_layout.addSpacerItem(QSpacerItem(0, 10))
+        layout.addSpacerItem(QSpacerItem(0, 10))
 
         # QTab widget to hold both tabs
         self.tab_widget = QTabWidget()
@@ -111,20 +110,20 @@ class MainWindow(QMainWindow):
         # add tabs to tab widget
         self.tab_widget.addTab(self.main_tab, 'test control')
         self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
-        self.frame_layout.addWidget(self.tab_widget)
+        layout.addWidget(self.tab_widget)
 
         # add space btw sections: vertical 20px
-        self.frame_layout.addSpacerItem(QSpacerItem(0, 20))
+        layout.addSpacerItem(QSpacerItem(0, 20))
 
         # listbox for test updates
         self.serial_label = QLabel('running test info', self)
         self.listbox = QListWidget(self)
         self.listbox.setFixedHeight(135)
-        self.frame_layout.addWidget(self.serial_label)
-        self.frame_layout.addWidget(self.listbox)
+        layout.addWidget(self.serial_label)
+        layout.addWidget(self.listbox)
 
         # add space btw sections: vertical 20px
-        self.frame_layout.addSpacerItem(QSpacerItem(0, 20))
+        layout.addSpacerItem(QSpacerItem(0, 20))
 
         # listbox for temperature chamber monitoring
         self.chamber_label = QLabel('temperature chamber situation', self)
@@ -135,12 +134,12 @@ class MainWindow(QMainWindow):
         item = QListWidgetItem('arduino will keep you posted on current temperature and such')
         item.setTextAlignment(Qt.AlignCenter)  # center text
         self.chamber_monitor.addItem(item)
-        self.frame_layout.addWidget(self.chamber_label)
-        self.frame_layout.addWidget(self.chamber_monitor)
+        layout.addWidget(self.chamber_label)
+        layout.addWidget(self.chamber_monitor)
 
 
         # add space btw sections: vertical 20px
-        self.frame_layout.addSpacerItem(QSpacerItem(0, 30))
+        layout.addSpacerItem(QSpacerItem(0, 30))
 
         # emergency stop button
         self.emergency_stop_button = QPushButton('emergency stop', self)
@@ -148,10 +147,10 @@ class MainWindow(QMainWindow):
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
-        self.frame_layout.addWidget(self.emergency_stop_button)
+        layout.addWidget(self.emergency_stop_button)
 
         # add space btw sections: vertical 11px
-        self.frame_layout.addSpacerItem(QSpacerItem(0, 11))
+        layout.addSpacerItem(QSpacerItem(0, 11))
 
         layout.addWidget(self.frame)
 
