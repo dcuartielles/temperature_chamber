@@ -61,7 +61,7 @@ class MainWindow(QMainWindow):
     # method responsible for all gui elements
     def initUI(self):
         # main window and window logo
-        self.setWindowTitle('temperature chamber')
+        self.setWindowTitle('t-chamber')
         self.setGeometry(600, 110, 0, 0)  # decide where on the screen the window will appear
         self.setWindowIcon(QIcon('arduino_logo.png'))
         self.setStyleSheet('background-color: #F0F1F1;'
@@ -252,11 +252,12 @@ class MainWindow(QMainWindow):
                     logger.warning(message)
                 elif response == QMessageBox.No:
                     return
+
+            self.test_is_running = True
+            self.manual_tab.test_is_running = True
             message = 'test starting'
             self.new_test(message)
             logger.info(message)
-            self.test_is_running = True
-            self.manual_tab.test_is_running = True
 
             # if running tests for nth time, come back to original gui layout to start with
             self.main_tab.on_run_test_gui()
@@ -275,6 +276,7 @@ class MainWindow(QMainWindow):
                 self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
                 self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
                 self.cli_worker.start()  # start cli worker thread
+                logger.info('cli worker started')
                 time.sleep(0.1)
         else:
             popups.show_error_message('error', 'no test data loaded')
@@ -310,6 +312,7 @@ class MainWindow(QMainWindow):
 
     def light_up(self):
         self.setStyleSheet('background-color: white;')
+        self.setWindowTitle('temperature chamber app is running')
 
     # stop both workers
     def closeEvent(self, event):
