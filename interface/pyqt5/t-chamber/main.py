@@ -247,6 +247,7 @@ class MainWindow(QMainWindow):
                 if response == QMessageBox.Yes:
                     self.test_is_running = False
                     self.manual_tab.test_is_running = False
+                    self.cli_worker.test_is_running = False
                     message = 'test interrupted'
                     self.test_interrupted_gui(message)
                     logger.warning(message)
@@ -255,6 +256,7 @@ class MainWindow(QMainWindow):
 
             self.test_is_running = True
             self.manual_tab.test_is_running = True
+            self.cli_worker.test_is_running = True
             message = 'test starting'
             self.new_test(message)
             logger.info(message)
