@@ -9,13 +9,15 @@ timeout_duration = 5  # Timeout for serial
 
 # Sample JSON test (3 sequences in this case)
 test_data = {
-    "test_1": {
-        "chamber_sequences": [
-            { "temp": 40, "duration": 60000 },
-            { "temp": 50, "duration": 60000 }
-            ]
+        "tests": {
+            "test_1": {
+                "chamber_sequences": [
+                    { "temp": 60, "duration": 60000 },
+                    { "temp": 65, "duration": 60000 }
+                ]
+            }
+        }
     }
-}
 
 # Convert the test data to a JSON string
 json_test_string = json.dumps(test_data)
