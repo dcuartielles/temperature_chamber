@@ -201,21 +201,6 @@ float getTemperature() {
     return roomTemperature;
 }
 
-// void showData() {
-//     displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
-//     displaySerial();
-//     if(abs(temperatureRoomOld - chamberState.temperatureRoom) > 0.1 || 
-//             (temperatureDesiredOld - chamberState.temperatureDesired)!= 0 || 
-//             stateHeaterOld != chamberState.isHeating || stateCoolerOld != chamberState.isCooling) {
-//         dataEvent = true;; // if the temp gradient is more than 0.1 deg
-//     } else {
-//         dataEvent = false;
-//     }
-//     if (dataEvent) {
-//         displaySerial();
-//     }
-// }
-
 void displayLCD(float tempRoom, int tempDesired) {
     lcd.backlight();  // turn off backlight
     lcd.display();
@@ -224,29 +209,6 @@ void displayLCD(float tempRoom, int tempDesired) {
     lcd.print("Room: ");
     lcd.print(tempRoom);
     lcd.print(" C");
-
-    //// Attempt at showing test updates on LCD, but LCD too smol
-    // if (isTestRunning) {
-    //     unsigned long elapsedTime = (millis() - sequenceStartTime) / 60000;
-    //     unsigned long remainingTime = (currentDuration / 60000) - elapsedTime;
-    //     lcd.setCursor(13, 0);
-    //     lcd.print(remainingTime);
-    //     lcd.print("m");
-    //     lcd.setCursor(0, 1);  // 2nd argument represent the number of the line we're writing on
-    //     lcd.print("Goal:");
-    //     lcd.print(tempDesired);
-    //     lcd.print("C");
-    //     float percentComplete = (float)(millis() - sequenceStartTime) / currentDuration * 100;
-    //     if (percentComplete > 100) percentComplete = 100;
-    //     lcd.setCursor(12, 1);
-    //     lcd.print((int)percentComplete);
-    //     lcd.print("%");
-    // } else if (currentSequenceIndex >= currentTest.numSequences && currentTest.numSequences != 0) {
-    //     lcd.setCursor(0, 1);  // 2nd argument represent the number of the line we're writing on
-    //     lcd.print("Test complete");
-    // } else {
-    // }
-
     lcd.setCursor(0, 1);
     lcd.print("Goal: ");
     if (tempDesired == -41) {
@@ -343,7 +305,6 @@ void parseAndQueueTests(JsonObject& tests) {
                 Serial.println("Error: Missing 'temp' or 'duration' in JSON sequence");
                 continue;
             }
-
             newTest.sequences[i].targetTemp = sequence["temp"].as<float>();
             newTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
         }
@@ -539,11 +500,9 @@ void handleResetState() {
         status = EMERGENCY_STOP;
         return;
     }
-
     if (startSwitchState) {
         status = REPORT;
     }
-
     // allow manual control of temperature from buttons
     changeTemperature();
 
@@ -621,7 +580,6 @@ void handleCoolingState() {
         status = RESET;
         return;
     }
-
     heater.off();
 
     if(TemperatureThreshold < 0.4) {
@@ -672,7 +630,6 @@ void handleEmergencyStopState() {
     if (switchSystem.held()) {
         status = RESET;
     }
-
 }
 
 void runTestSequence() {
@@ -696,9 +653,6 @@ void readAndParseSerial() {
             // Read the incoming data in chunks instead of one character at a time
             int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
             incomingString[len] = '\0'; // null-terminate the string
-
-            // Serial.print("Received string: ");
-            // Serial.println(incomingString);
 
             DeserializationError error = deserializeJson(jsonBuffer, incomingString);
             // Handle the input string (either a command or JSON)
