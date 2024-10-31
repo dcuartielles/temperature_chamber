@@ -77,29 +77,42 @@ class MainTab(QWidget):
 
     # check if output is as expected
     def check_output(self, message):
-        message = str(message)
+        message = str(message) if message else None
         exp_outputs = self.expected_output(self.test_data)
-        if message is not None:
-            for output in exp_outputs:
-                output = str(output)
-                if output == message:
-                    logger.info('correct test output')
-                    self.test_output_listbox.setStyleSheet('color: #009FAF;'
-                                                           'font-weight: bold;')
-                    self.expected_outcome_listbox.setStyleSheet('color: black;'
-                                                                'font-weight: normal;')
-                else:
-                    logger.error(message)
-                    self.expected_outcome_listbox.setStyleSheet('color: red;'
-                                                                'font-weight: bold;')
-                    self.test_output_listbox.setStyleSheet('color: red;'
-                                                           'font-weight: bold;')
-                    date_str = datetime.now().strftime("%m/%d %H:%M:%S")
-                    message = f'incorrect test board output ({date_str})'
-                    self.incorrect_output.emit(message)
-        else:
-            self.expected_outcome_listbox.clear()
-            self.test_output_listbox.addItem('waiting for test board output')
+
+        # check for missing output
+        if not message:
+            self.reset_gui_for_waiting()
+            return
+
+        # compare t-board output with expected test outcome
+        for expected in exp_outputs:
+            if str(expected) == message:
+                self.update_gui_correct()
+                logger.info("correct test output")
+            else:
+                date_str = datetime.now().strftime("%m/%d %H:%M:%S")
+                error_message = f"incorrect test board output ({date_str})"
+                logger.error(message)
+                # emit incorrect output signal with the error message
+                self.incorrect_output.emit(error_message)
+                # if no matches, handle as incorrect output
+                self.update_gui_incorrect()
+
+    def update_gui_correct(self):
+        self.test_output_listbox.setStyleSheet("color: #009FAF; font-weight: bold;")
+        self.expected_outcome_listbox.setStyleSheet("color: black; font-weight: normal;")
+
+    def update_gui_incorrect(self):
+        self.expected_outcome_listbox.setStyleSheet("color: red; font-weight: bold;")
+        self.test_output_listbox.setStyleSheet("color: red; font-weight: bold;")
+
+
+    # waiting for t-board output
+    def reset_gui_for_waiting(self):
+        self.expected_outcome_listbox.clear()
+        self.test_output_listbox.addItem("waiting for test board output")
+        logger.info("waiting for test board output...")
 
     # the actual upper listbox updates
     def cli_update_upper_listbox_gui(self, message):
