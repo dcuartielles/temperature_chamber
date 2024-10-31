@@ -293,14 +293,19 @@ void controlRelay(Led& relay, int dutyCycle, unsigned long period, unsigned long
     }
 }
 
-void parseTextFromJson(JsonDocument& doc) {
+void parseAndRunTests(JsonObject& tests) {
+    currentTest.numSequences = 0;
+    isTestRunning = false;
+    currentSequenceIndex = 0;
 
-    // check if it's a test with "test_x keys
-    if (doc.containsKey("test_1")) {
-        JsonObject test = doc["test_1"];
+    // iterate over each test in the tests object
+    for (JsonPair testPair : tests) {
+        JsonObject test = testPair.value().as<JsonObject>();
+
+        // check for required fields
         if (!test.containsKey("chamber_sequences")) {
             Serial.println("Error: Missing 'chamber_sequences' in test data");
-            return;
+            continue;
         }
 
         JsonArray sequences = test["chamber_sequences"];
@@ -309,34 +314,36 @@ void parseTextFromJson(JsonDocument& doc) {
 
         currentTest.numSequences = numSequences;
 
+        // iterate through each sequence in the chamber_sequences array
         for (int i = 0; i < numSequences; i++) {
             JsonObject sequence = sequences[i];
 
             if (!sequence.containsKey("temp") || !sequence.containsKey("duration")) {
                 Serial.println("Error: Missing 'temp' or 'duration' in JSON sequence");
-                continue;   // skip this sequence if the keys are missing
+                continue;
             }
+
             currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
             currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
-
-            // Serial.print("Parsed sequence ");
-            // Serial.print(i);
-            // Serial.print(": Temp = ");
-            // Serial.print(currentTest.sequences[i].targetTemp);
-            // Serial.print(", Duration = ");
-            // Serial.println(currentTest.sequences[i].duration);
-
         }
-        jsonBuffer.clear();
 
-        // start the test with the first sequence
-        currentSequenceIndex = 0;
         isTestRunning = true;
-
-        // Ensure desired temperature is set and transition to the appropriate state
+        currentSequenceIndex = 0;
         setTemperature(currentTest.sequences[0].targetTemp);
         status =  REPORT;
-    } else if (doc.containsKey("temp") && doc.containsKey("duration")) {
+
+        // future use: parse test_name
+        if (test.containsKey("test_name")) {
+            Serial.print("Test Name: ");
+            Serial.println(test["test_name"].as<const char*>());
+        }
+    }
+
+    jsonBuffer.clear();
+}
+
+void parseAndRunManualSet(JsonDocument& doc) {
+
         float temp = doc["temp"];
         unsigned long duration = doc["duration"];
         setTemperature(temp);
@@ -346,6 +353,17 @@ void parseTextFromJson(JsonDocument& doc) {
         Serial.println(duration);
 
         jsonBuffer.clear();
+}
+
+void parseTextFromJson(JsonDocument& doc) {
+
+    if (doc.containsKey("tests")) {             // if json consists of tests
+        JsonObject test = doc["tests"];
+        parseAndRunTests(test);
+    } else if (doc.containsKey("commands")) {   // if json consists of commands
+
+    } else if (doc.containsKey("temp") && doc.containsKey("duration")) {
+        parseAndRunManualSet(doc);
     } else {
         Serial.println("Error: Invalid JSON format");
     }
