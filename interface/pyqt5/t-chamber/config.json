@@ -1,0 +1,11 @@
+{
+    "test_board": {
+        "port": "COM7",
+        "board_name": "Arduino Uno"
+    },
+    "control_board": {
+        "port": "COM15",
+        "board_name": "Arduino UNO R4 WiFi"
+    },
+    "test_directory": "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests"
+}
