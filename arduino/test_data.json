@@ -1,0 +1,45 @@
+{
+    "test_1": [
+        {
+            "temp": 50,
+            "duration": 3000
+        },
+        {
+            "temp": 40,
+            "duration": 10000
+        },
+        {
+            "temp": 50,
+            "duration": 12000
+        }
+    ],
+    "test_2": [
+        {
+            "temp": 50,
+            "duration": 3000
+        },
+        {
+            "temp": 40,
+            "duration": 10000
+        }
+    ],
+    "test_3": [
+        {
+            "temp": 50,
+            "duration": 3000
+        },
+        {
+            "temp": 40,
+            "duration": 10000
+        },
+        {
+            "temp": 50,
+            "duration": 12000
+        },
+        {
+            "temp": 50,
+            "duration": 12000
+        }
+    ],
+    "custom": []
+}
