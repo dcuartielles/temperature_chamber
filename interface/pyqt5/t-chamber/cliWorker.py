@@ -17,7 +17,6 @@ class CliWorker(QThread):
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
-        self._stop_flag = threading.Event()
         self.port = port
         self.baudrate = baudrate
         self.timeout = timeout
@@ -32,7 +31,7 @@ class CliWorker(QThread):
         self.checking_core = False
         self.core_installed = False
         self.boards_are_there = False
-        self.test_is_running = False
+        self.test_is_running = True
         self.test_data = None
         self.filepath = None
 
@@ -57,13 +56,9 @@ class CliWorker(QThread):
             return
         logger.info('cli worker thread is running')
 
-        while self.is_running and not self._stop_flag.is_set():
-            self.run_all_tests(self.test_data, self.filepath)
+        while self.is_running and not self.is_stopped:
             try:
-                if not self._stop_flag.is_set() and self.ser and self.ser.is_open:
-                    if time.time() - self.last_command_time > 5:
-                        self.last_command_time = time.time()
-
+                self.run_all_tests(self.test_data, self.filepath)
             except serial.SerialException as e:
                 logger.exception(f'serial error in cli: {e}')
                 bye = f'serial error in cli worker: {str(e)}'
@@ -85,7 +80,6 @@ class CliWorker(QThread):
     # method to stop the serial communication
     def stop(self):
         self.test_is_running = False
-        self._stop_flag.set()
         self.is_running = False  # stop the worker thread loop
         if self.ser and self.ser.is_open:
             self.ser.close()  # close the serial connection
@@ -243,12 +237,14 @@ class CliWorker(QThread):
                     bye = 'upload successful!'
                     self.wave(bye)
                     time.sleep(2.5)
+                    self.test_is_running = False
                     self.finished.emit()
                     return True
                 else:
                     logger.warning('upload failed!')
                     bye = 'upload failed!'
                     self.wave(bye)
+                    self.test_is_running = False
                     self.finished.emit()
                     return False
             else:
@@ -259,6 +255,7 @@ class CliWorker(QThread):
             logger.error(f'serial error on cli thread during upload: {e}')
             error = f'serial error on cli thread during upload: {str(e)}'
             self.wave(error)
+            self.test_is_running = False
             self.finished.emit()
 
     def handle_board_and_upload(self, port, sketch_path):

@@ -244,11 +244,19 @@ class MainWindow(QMainWindow):
                 response = popups.show_dialog(
                     'a test is running: are you sure you want to interrupt it and proceed?')
                 if response == QMessageBox.Yes:
-                    self.test_is_running = False
-                    self.manual_tab.test_is_running = False
-                    message = 'test interrupted'
-                    self.test_interrupted_gui(message)
-                    logger.warning(message)
+                    if self.cli_worker:
+                        self.test_is_running = False
+                        self.manual_tab.test_is_running = False
+                        self.on_cli_test_interrupted()
+                        message = 'test interrupted'
+                        self.test_interrupted_gui(message)
+                        logger.warning(message)
+                    else:
+                        self.test_is_running = False
+                        self.manual_tab.test_is_running = False
+                        message = 'test interrupted'
+                        self.test_interrupted_gui(message)
+                        logger.warning(message)
                 elif response == QMessageBox.No:
                     return
 
@@ -283,24 +291,21 @@ class MainWindow(QMainWindow):
     # on cli test interrupted
     def on_cli_test_interrupted(self):
         if self.cli_worker:
+            logger.info('cli being interrupted')
             self.cli_worker.is_running = False
-            self.cli_worker._stop_flag.set()
             self.cli_worker.stop()
-            self.cli_worker.quit()
-            self.cli_worker.wait()
             logger.info('cli worker quit')
             self.cli_worker.deleteLater()
             logger.info('cli worker deleted')
 
-            time.sleep(1.5)  # time for the port to fully close before restarting
+            time.sleep(1)  # time for the port to fully close before restarting
 
             if not self.test_board:
                 # restart test board worker thread
                 self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
                 self.test_board.start()  # start test board thread
                 self.test_board.is_running = True
-                logger.info('test board worker restarted')
-
+                logger.info('test board worker restarted through cli interrupted')
 
     # clean up cli worker after it's done
     def cleanup_cli_worker(self):
