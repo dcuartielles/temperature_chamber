@@ -722,10 +722,6 @@ unsigned long updateInterval = 500;
 bool printedLCDOff = false;
 
 void loop() {  
-    // Serial.println("System switch: " + String(systemSwitchState));
-    // Serial.println("Start switch: " + String(startSwitchState));
-    // Serial.println("Stop switch: " + String(stopSwitchState));
-
     currentMillis = millis();
 
     // Update switch states and temperature readings
@@ -749,14 +745,6 @@ void loop() {
 
     runTestSequence();
     readAndParseSerial();       // check serial input for new tests or commands
-
-    // Used in showData()
-    // temperatureRoomOld = chamberState.temperatureRoom;
-    // stateHeaterOld = chamberState.isHeating;
-    // stateCoolerOld = chamberState.isCooling;
-    // temperatureDesiredOld = chamberState.temperatureDesired;
-
-
 
     switch (status) {
         case RESET:
