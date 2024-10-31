@@ -4,9 +4,10 @@
         "machine_state": "HEATING",
         "test_status": {
             "is_test_running": true,
+            "current_test": "test_1",
+            "current_sequence": 1,
             "desired_temp": 50,
             "current_duration": 60000,
-            "current_sequence": 1,
             "sketch": "./alphabet.ino"
         },
         "timestamp": "2024-10-28T10:53:00Z"

@@ -15,6 +15,12 @@ test_data = {
                     { "temp": 60, "duration": 60000 },
                     { "temp": 65, "duration": 60000 }
                 ]
+            },
+            "test_2": {
+                "chamber_sequences": [
+                    { "temp": 70, "duration": 60000 },
+                    { "temp": 75, "duration": 60000 }
+                ]
             }
         }
     }
