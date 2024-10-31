@@ -313,6 +313,8 @@ void parseAndQueueTests(JsonObject& tests) {
     }
 
     jsonBuffer.clear();
+
+    runNextTest();
 }
 
 void runNextTest() {
@@ -399,6 +401,8 @@ void runCurrentSequence() {
         Serial.println("Sequence complete");
         currentSequenceIndex++;
         sequenceStartTime = 0;
+        printedWaiting = false;
+        printedRunning = false;
 
         if (currentSequenceIndex < currentTest.numSequences) {
             setTemperature(currentTest.sequences[currentSequenceIndex].targetTemp);
@@ -672,8 +676,6 @@ void readAndParseSerial() {
 unsigned long currentMillis = 0;
 unsigned long lastUpdate = 0;
 unsigned long updateInterval = 500;
-
-bool printedLCDOff = false;
 
 void loop() {  
     currentMillis = millis();
