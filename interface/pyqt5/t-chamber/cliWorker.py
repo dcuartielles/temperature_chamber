@@ -1,8 +1,10 @@
 from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtWidgets import QMessageBox
 import subprocess
 import json
 import time
 import serial
+import threading
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -15,6 +17,7 @@ class CliWorker(QThread):
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
+        self._stop_flag = threading.Event()
         self.port = port
         self.baudrate = baudrate
         self.timeout = timeout
@@ -29,7 +32,6 @@ class CliWorker(QThread):
         self.checking_core = False
         self.core_installed = False
         self.boards_are_there = False
-        self.test_is_running = False
         self.test_data = None
         self.filepath = None
 
@@ -54,20 +56,19 @@ class CliWorker(QThread):
             return
         logger.info('cli worker thread is running')
 
-        while self.is_running:
-            if not self.is_stopped:
-                self.run_all_tests(self.test_data, self.filepath)
-                try:
-                    if not self.is_stopped and self.ser and self.ser.is_open:
-                        if time.time() - self.last_command_time > 5:
-                            self.last_command_time = time.time()
+        while self.is_running and not self._stop_flag.is_set():
+            self.run_all_tests(self.test_data, self.filepath)
+            try:
+                if not self._stop_flag.is_set() and self.ser and self.ser.is_open:
+                    if time.time() - self.last_command_time > 5:
+                        self.last_command_time = time.time()
 
-                except serial.SerialException as e:
-                    logger.exception(f'serial error in cli: {e}')
-                    bye = f'serial error in cli worker: {str(e)}'
-                    self.wave(bye)
-                    self.is_running = False
-                    break
+            except serial.SerialException as e:
+                logger.exception(f'serial error in cli: {e}')
+                bye = f'serial error in cli worker: {str(e)}'
+                self.wave(bye)
+                self.is_running = False
+                break
 
             time.sleep(0.1)
         self.stop()
@@ -82,6 +83,8 @@ class CliWorker(QThread):
 
     # method to stop the serial communication
     def stop(self):
+        self.test_is_running = False
+        self._stop_flag.set()
         self.is_running = False  # stop the worker thread loop
         if self.ser and self.ser.is_open:
             self.ser.close()  # close the serial connection
@@ -245,12 +248,11 @@ class CliWorker(QThread):
                     logger.warning('upload failed!')
                     bye = 'upload failed!'
                     self.wave(bye)
-
                     self.finished.emit()
                     return False
             else:
                 logger.warning(f'cli worker port connection to {port} seems to fail')
-                self.finished.emit()
+
 
         except serial.SerialException as e:
             logger.error(f'serial error on cli thread during upload: {e}')
@@ -293,18 +295,3 @@ class CliWorker(QThread):
         else:
             # handle case when no test data is found
             logger.info('can\'t do it')
-
-'''
-    def reset_arduino(self):
-        if self.ser:
-            try:
-                self.ser.setDTR(False)  # reset arduino by setting str to False
-                time.sleep(0.5)  # time to reset
-                self.ser.setDTR(True)  # re-enable dtr
-                logger.info(f'arduino on {self.port} reset successfully')
-                reset = 'test board reset successfully'
-                self.wave(reset)
-                time.sleep(0.5)
-
-            except serial.SerialException as e:
-                logger.exception(f'failed to reset arduino on {self.port}: {e}')'''

@@ -247,7 +247,7 @@ class MainWindow(QMainWindow):
                 if response == QMessageBox.Yes:
                     self.test_is_running = False
                     self.manual_tab.test_is_running = False
-                    self.cli_worker.test_is_running = False
+                    self.on_cli_test_interrupted()
                     message = 'test interrupted'
                     self.test_interrupted_gui(message)
                     logger.warning(message)
@@ -256,7 +256,6 @@ class MainWindow(QMainWindow):
 
             self.test_is_running = True
             self.manual_tab.test_is_running = True
-            self.cli_worker.test_is_running = True
             message = 'test starting'
             self.new_test(message)
             logger.info(message)
@@ -283,10 +282,34 @@ class MainWindow(QMainWindow):
         else:
             popups.show_error_message('error', 'no test data loaded')
 
+    # on cli test interrupted
+    def on_cli_test_interrupted(self):
+        if self.cli_worker:
+            self.cli_worker.is_running = False
+            self.cli_worker._stop_flag.set()
+            self.cli_worker.stop()
+            self.cli_worker.quit()
+            self.cli_worker.wait()
+            logger.info('cli worker quit')
+            self.cli_worker.deleteLater()
+            logger.info('cli worker deleted')
+
+            time.sleep(1.5)  # time for the port to fully close before restarting
+
+            if not self.test_board:
+                # restart test board worker thread
+                self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
+                self.test_board.start()  # start test board thread
+                self.test_board.is_running = True
+                logger.info('test board worker restarted')
+
+
     # clean up cli worker after it's done
     def cleanup_cli_worker(self):
         self.cli_worker.is_running = False
         self.cli_worker.stop()
+        self.cli_worker.quit()
+        self.cli_worker.wait()
         logger.info('cli worker quit')
         self.cli_worker.deleteLater()
         logger.info('cli worker deleted')
