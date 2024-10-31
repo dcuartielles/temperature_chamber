@@ -278,7 +278,6 @@ void queueTest(const Test& test, const String& testName) {
     }
 }
 
-<<<<<<< HEAD
 // parse tests and add to queue by name
 void parseAndQueueTests(JsonObject& tests) {
     for (JsonPair testPair : tests) {
@@ -288,46 +287,15 @@ void parseAndQueueTests(JsonObject& tests) {
 
         // check for required fields
         if (!testJson.containsKey("chamber_sequences")) {
-=======
-void parseTextFromJson(JsonDocument& doc) {
-    // check if it's a test with "test_x keys
-    if (doc.containsKey("test_1")) {
-        JsonObject test = doc["test_1"];
-        if (!test.containsKey("chamber_sequences")) {
->>>>>>> main
             Serial.println("Error: Missing 'chamber_sequences' in test data");
             continue;
         }
 
-<<<<<<< HEAD
         JsonArray sequences = testJson["chamber_sequences"];
         newTest.numSequences = sequences.size();
         if (newTest.numSequences > 5) {
             newTest.numSequences = 5;         // how many?
         }
-=======
-    JsonArray sequences = doc.as<JsonArray>();
-    int numSequences = sequences.size();
-    if (numSequences > 5) numSequences = 5;         // how many?
-        // For future display of test info on LCD
-        // if (test.containsKey("sketch")) {
-        //     const char* sketch = test["sketch"];
-        //     Serial.print("Sketch to upload: ");
-        //     Serial.println(sketch);
-        // }
-        // if (test.containsKey("expected output")) {
-        //     const char* expected_output = test["expected_output"];
-        //     Serial.print("Expected output: ");
-        //     Serial.println(expected_output);
-        // }
-
-
-        JsonArray sequences = test["chamber_sequences"];
-        int numSequences = sequences.size();
-        if (numSequences > 5) numSequences = 5;         // how many?
-
-        currentTest.numSequences = numSequences;
->>>>>>> main
 
         // iterate through each sequence in the chamber_sequences array
         for (int i = 0; i < newTest.numSequences; i++) {
@@ -616,15 +584,6 @@ void handleCoolingState() {
         return;
     }
     heater.off();
-<<<<<<< HEAD
-=======
-    if (switchSystem.released()) {
-        status = EMERGENCY_STOP;
-    }
-    if (switchSystem.read() == LOW && switchStart.released()) {
-        status = RESET;
-    }
->>>>>>> main
 
     if(TemperatureThreshold < 0.4) {
         chamberState.isCooling = false;
