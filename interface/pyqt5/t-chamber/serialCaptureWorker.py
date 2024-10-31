@@ -135,8 +135,8 @@ class SerialCaptureWorker(QThread):
 
     # run the entire test file
     def run_all_tests(self, test_data):
-        if test_data is not None:
-            all_tests = [key for key in test_data.keys()]
+        if test_data is not None and 'tests' in test_data:
+            all_tests = [key for key in test_data['tests'].keys()]
             # iterate through each test and run it
             for test_key in all_tests:
                 test = test_data.get(test_key, {})
