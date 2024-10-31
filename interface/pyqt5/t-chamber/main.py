@@ -246,7 +246,6 @@ class MainWindow(QMainWindow):
                 if response == QMessageBox.Yes:
                     self.test_is_running = False
                     self.manual_tab.test_is_running = False
-                    self.on_cli_test_interrupted()
                     message = 'test interrupted'
                     self.test_interrupted_gui(message)
                     logger.warning(message)
@@ -336,8 +335,10 @@ class MainWindow(QMainWindow):
 
     def light_up(self):
         self.setWindowTitle('temperature chamber app is running')
-        self.chamber_monitor.setStyleSheet('color: #009FAF;')
+        self.chamber_monitor.setStyleSheet('color: #009FAF;'
+                                           'font-weight: bold;')
         self.emergency_stop_button.setStyleSheet('background-color: red;')
+        self.port_selector.setStyleSheet('color: #009FAF;')
 
     # stop both workers
     def closeEvent(self, event):

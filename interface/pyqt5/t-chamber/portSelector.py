@@ -20,7 +20,7 @@ class PortSelector(QWidget):
         self.t_port_dropdown = QComboBox()
         self.c_port_dropdown = QComboBox()
         self.setStyleSheet('background-color: white;'
-                           'color: #009FAF;'
+                           'color: grey;'
                            'alignment: right;'
                            'font-weight: bold;')
 

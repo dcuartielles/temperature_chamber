@@ -32,6 +32,7 @@ class CliWorker(QThread):
         self.checking_core = False
         self.core_installed = False
         self.boards_are_there = False
+        self.test_is_running = False
         self.test_data = None
         self.filepath = None
 

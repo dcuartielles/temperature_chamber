@@ -1,0 +1,11 @@
+{
+      "commands": {
+          "RESET":  {},
+          "SET_TEMP": {"temp": 50,
+            "duration": 60000},
+          "EMERGENCY_STOP":  {},
+          "SHOW DATA": {},
+          "PING":  {},
+          "HANDSHAKE": {}
+      }
+}
