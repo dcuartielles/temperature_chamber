@@ -137,15 +137,18 @@ class SerialCaptureWorker(QThread):
     def run_all_tests(self, test_data):
         if test_data is not None and 'tests' in test_data:
             all_tests = [key for key in test_data['tests'].keys()]
+            logger.info(f'all tests: {all_tests}')
             # iterate through each test and run it
             for test_key in all_tests:
-                test = test_data.get(test_key, {})
+                test = test_data['tests'].get(test_key, {})
+                logger.info(f'test data for {test_key}: {test}')
                 if 'chamber_sequences' in test:  # if the test data is available
-                    self.send_json_to_arduino({test_key: test})  # send the data to arduino
-                    # print status and update the listbox
-                    logger.info(f'sending full test {test_key}')
+                    for sequence in test['chamber_sequences']:
+                        self.send_json_to_arduino(sequence)  # send the data to arduino
+                        # print status and update the listbox
+                        logger.info(f'sending sequence {sequence} for test {test_key}')
                 else:
-                    logger.warning(f'{test_key} not found')
+                    logger.warning(f'{test_key} has no chamber_sequences')
         else:
             # handle case when no test data is found
             logger.warning('no test data found on file')

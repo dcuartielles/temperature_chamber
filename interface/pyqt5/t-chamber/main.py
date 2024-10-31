@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('t-chamber')
         self.setGeometry(600, 110, 0, 0)  # decide where on the screen the window will appear
         self.setWindowIcon(QIcon('arduino_logo.png'))
-        self.setStyleSheet('background-color: #F0F1F1;'
+        self.setStyleSheet('background-color: white;'
                            'color: black;')
 
         # central widget to hold layout
@@ -125,7 +125,6 @@ class MainWindow(QMainWindow):
         self.chamber_label = QLabel('temperature chamber situation', self)
         self.chamber_monitor = QListWidget(self)
         self.chamber_monitor.setFixedHeight(40)
-        self.chamber_monitor.setStyleSheet('color: #009FAF;')
         # create a QListWidgetItem with centered text
         item = QListWidgetItem('arduino will keep you posted on current temperature and such')
         item.setTextAlignment(Qt.AlignCenter)  # center text
@@ -139,7 +138,7 @@ class MainWindow(QMainWindow):
 
         # emergency stop button
         self.emergency_stop_button = QPushButton('emergency stop', self)
-        self.emergency_stop_button.setStyleSheet('background-color: red;'
+        self.emergency_stop_button.setStyleSheet('background-color: grey;'
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
@@ -336,8 +335,9 @@ class MainWindow(QMainWindow):
         self.start_button.setEnabled(True)
 
     def light_up(self):
-        self.setStyleSheet('background-color: white;')
         self.setWindowTitle('temperature chamber app is running')
+        self.chamber_monitor.setStyleSheet('color: #009FAF;')
+        self.emergency_stop_button.setStyleSheet('background-color: red;')
 
     # stop both workers
     def closeEvent(self, event):

@@ -278,20 +278,20 @@ class CliWorker(QThread):
         if test_data and filepath:  # take test_data & port number from main
             logger.info(f'running test with testdata filepath: {filepath}')
             test_data_filepath = filepath.rsplit('/', 1)[0]
-            all_tests = [key for key in test_data.keys()]
+            if 'tests' in test_data:
+                all_tests = [key for key in test_data['tests'].keys()]
+                # iterate through each test and run it
+                for test_key in all_tests:
+                    test = test_data['tests'].get(test_key, {})
+                    sketch_path = test.get('sketch', '')  # get .ino file path
 
-            # iterate through each test and run it
-            for test_key in all_tests:
-                test = test_data.get(test_key, {})
-                sketch_path = test.get('sketch', '')  # get .ino file path
+                    if sketch_path:  # if the sketch is available
+                        sketch_filename = sketch_path.split('/')[-1]  # get ino file name
+                        sketch_full_path = test_data_filepath + '/' + sketch_filename
+                        self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
 
-                if sketch_path:  # if the sketch is available
-                    sketch_filename = sketch_path.split('/')[-1]  # get ino file name
-                    sketch_full_path = test_data_filepath + '/' + sketch_filename
-                    self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
-
-                else:
-                    logger.warning('sketch path not found')
+                    else:
+                        logger.warning('sketch path not found')
         else:
             # handle case when no test data is found
             logger.info('can\'t do it')
