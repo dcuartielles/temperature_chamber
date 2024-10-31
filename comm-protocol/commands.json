@@ -1,10 +1,9 @@
 {
-    "commands": [
-        {"action": "RESET"},
-        {"action": "SET_TEMP", "value": 50},
-        {"action": "SET_DURATION", "value": 60000},
-        {"action": "EMERGENCY_STOP"},
-        {"action": "SHOW DATA"}
-    ]
+    "commands": {
+        "SHOW DATA": {},
+        "RESET": {},
+        "EMERGENCY STOP": {},
+        "SHOW RUNNING SEQUENCE": {}
+    }
 }
 

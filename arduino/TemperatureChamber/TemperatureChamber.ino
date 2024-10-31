@@ -343,12 +343,45 @@ void parseAndRunManualSet(JsonDocument& doc) {
         jsonBuffer.clear();
 }
 
+void parseAndRunCommands(JsonObject& commands) {
+    for (JsonPair commandPair : commands) {
+        String command = commandPair.key().c_str();
+        JsonObject commandParams = commandPair.value().as<JsonObject>();
+
+        if (command == "SHOW DATA") {
+            displaySerial();
+        } else if (command == "RESET") {
+            status = RESET;
+            Serial.println("System reset via command.");
+        } else if (command == "EMERGENCY STOP") {
+            status = EMERGENCY_STOP;
+            Serial.println("Emergency Stop initiated via command.");
+        } else if (command == "SHOW RUNNING SEQUENCE") {
+            if (isTestRunning) {
+                Serial.print("Running sequence: Target temp = ");
+                Serial.print(chamberState.temperatureDesired, 2);
+                Serial.print("°C Duration = ");
+                Serial.print(currentDuration / 60000);
+                Serial.println(" minutes");
+
+            } else {
+                Serial.println("No sequence is currently running.");
+            }
+        } else {
+            Serial.print("Error: Unknown command '");
+            Serial.print(command);
+            Serial.println("'.");
+        }
+    }
+}
+
 void parseTextFromJson(JsonDocument& doc) {
     if (doc.containsKey("tests")) {             // if json consists of tests
         JsonObject test = doc["tests"];
         parseAndQueueTests(test);
     } else if (doc.containsKey("commands")) {   // if json consists of commands
-
+        JsonObject commands = doc["commands"];
+        parseAndRunCommands(commands);
     } else if (doc.containsKey("temp") && doc.containsKey("duration")) {
         parseAndRunManualSet(doc);
     } else {
@@ -436,8 +469,6 @@ void setTemperature(float temp) {
         Serial.print("Setting temperature to ");
         Serial.print(temp);
         Serial.println("°");
-        // Serial.print("Temperature desired set to: ");
-        // Serial.println(temp);  // debug to confirm the desired temp is set
     }
 }
 
