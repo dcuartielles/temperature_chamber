@@ -126,6 +126,17 @@ int currentSequenceIndex = 0;
 unsigned long sequenceStartTime = 0;
 unsigned long currentDuration = 0;
 
+const int MAX_QUEUED_TESTS = 5;
+
+// queue for tests
+Test testQueue[MAX_QUEUED_TESTS];
+String testNames[MAX_QUEUED_TESTS];
+int queuedTestCount = 0;
+int currentTestIndex = 0;
+
+// track current test and sequence
+String currentTestName = "";
+
 // JSON Buffer for parsing
 char incomingString[1024];
 StaticJsonDocument<2048> jsonBuffer;
@@ -293,29 +304,39 @@ void controlRelay(Led& relay, int dutyCycle, unsigned long period, unsigned long
     }
 }
 
-void parseAndRunTests(JsonObject& tests) {
-    currentTest.numSequences = 0;
-    isTestRunning = false;
-    currentSequenceIndex = 0;
+void queueTest(const Test& test, const String& testName) {
+    if (queuedTestCount < MAX_QUEUED_TESTS) {
+        testQueue[queuedTestCount] = test;
+        testNames[queuedTestCount] = testName;
+        queuedTestCount++;
+        Serial.print("Queued test: ");
+        Serial.println(testName);
+    } else {
+        Serial.println("Test queue is full. Cannot add more tests.");
+    }
+}
 
-    // iterate over each test in the tests object
+// parse tests and add to queue by name
+void parseAndQueueTests(JsonObject& tests) {
     for (JsonPair testPair : tests) {
-        JsonObject test = testPair.value().as<JsonObject>();
+        JsonObject testJson = testPair.value().as<JsonObject>();
+        Test newTest;
+        String testName = testPair.key().c_str();
 
         // check for required fields
-        if (!test.containsKey("chamber_sequences")) {
+        if (!testJson.containsKey("chamber_sequences")) {
             Serial.println("Error: Missing 'chamber_sequences' in test data");
             continue;
         }
 
-        JsonArray sequences = test["chamber_sequences"];
-        int numSequences = sequences.size();
-        if (numSequences > 5) numSequences = 5;         // how many?
-
-        currentTest.numSequences = numSequences;
+        JsonArray sequences = testJson["chamber_sequences"];
+        newTest.numSequences = sequences.size();
+        if (newTest.numSequences > 5) {
+            newTest.numSequences = 5;         // how many?
+        }
 
         // iterate through each sequence in the chamber_sequences array
-        for (int i = 0; i < numSequences; i++) {
+        for (int i = 0; i < newTest.numSequences; i++) {
             JsonObject sequence = sequences[i];
 
             if (!sequence.containsKey("temp") || !sequence.containsKey("duration")) {
@@ -323,23 +344,27 @@ void parseAndRunTests(JsonObject& tests) {
                 continue;
             }
 
-            currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
-            currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
+            newTest.sequences[i].targetTemp = sequence["temp"].as<float>();
+            newTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
         }
 
-        isTestRunning = true;
-        currentSequenceIndex = 0;
-        setTemperature(currentTest.sequences[0].targetTemp);
-        status =  REPORT;
-
-        // future use: parse test_name
-        if (test.containsKey("test_name")) {
-            Serial.print("Test Name: ");
-            Serial.println(test["test_name"].as<const char*>());
-        }
+        queueTest(newTest, testName);
     }
 
     jsonBuffer.clear();
+}
+
+void runNextTest() {
+    if (currentTestIndex < queuedTestCount) {
+        currentTest = testQueue[currentTestIndex];
+        isTestRunning = true;
+        currentSequenceIndex = 0;
+        currentTestName = testNames[currentTestIndex];
+        setTemperature(currentTest.sequences[currentSequenceIndex].targetTemp);
+        status = REPORT;
+        Serial.print("Running test: ");
+        Serial.println(currentTestName);
+    }
 }
 
 void parseAndRunManualSet(JsonDocument& doc) {
@@ -356,10 +381,9 @@ void parseAndRunManualSet(JsonDocument& doc) {
 }
 
 void parseTextFromJson(JsonDocument& doc) {
-
     if (doc.containsKey("tests")) {             // if json consists of tests
         JsonObject test = doc["tests"];
-        parseAndRunTests(test);
+        parseAndQueueTests(test);
     } else if (doc.containsKey("commands")) {   // if json consists of commands
 
     } else if (doc.containsKey("temp") && doc.containsKey("duration")) {
@@ -654,6 +678,15 @@ void handleEmergencyStopState() {
 void runTestSequence() {
     if (isTestRunning) {
         runCurrentSequence();
+        if (currentSequenceIndex >= currentTest.numSequences) {
+            Serial.print("Test complete: ");
+            Serial.println(currentTestName);
+            isTestRunning = false;
+            currentTestIndex++;
+            if (currentTestIndex < queuedTestCount) {
+                runNextTest();
+            }
+        }
     }
 }
 
