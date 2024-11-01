@@ -142,7 +142,7 @@ char incomingString[1024];
 StaticJsonDocument<2048> jsonBuffer;
 
 // Define Variables
-float TemperatureThreshold = 0;
+float temperatureThreshold = 0;
 
 // struct for state of the heating/cooling system
 struct ChamberState {
@@ -348,7 +348,9 @@ void parseAndRunCommands(JsonObject& commands) {
         String command = commandPair.key().c_str();
         JsonObject commandParams = commandPair.value().as<JsonObject>();
 
-        if (command == "SHOW DATA") {
+        if (command == "PING") {
+            sendPingResponse();
+        } else if (command == "SHOW DATA") {
             displaySerial();
         } else if (command == "RESET") {
             status = RESET;
@@ -372,6 +374,44 @@ void parseAndRunCommands(JsonObject& commands) {
             Serial.print(command);
             Serial.println("'.");
         }
+    }
+}
+
+void sendPingResponse() {
+    StaticJsonDocument<512> responseDoc;
+
+    responseDoc["ping_response"]["alive"] = true;
+    responseDoc["ping_response"]["machine_state"] = getMachineState();
+
+    JsonObject testStatus = responseDoc["ping_response"].createNestedObject("test_status");
+    testStatus["is_test_running"] = isTestRunning;
+    testStatus["current_test"] = currentTestName;
+    testStatus["current_sequence"] = currentSequenceIndex + 1;
+    testStatus["desired_temp"] = chamberState.temperatureDesired;
+    testStatus["current_duration"] = currentDuration;
+
+    // add timestamp
+    //responseDoc["ping_response"]["time
+
+    serializeJson(responseDoc, Serial);
+    Serial.println();
+}
+
+String getMachineState() {
+    switch (status) {
+        case RESET:
+            return "RESET";
+        case HEATING:
+            return "HEATING";
+        case COOLING:
+            return "COOLING";
+        case REPORT:
+            return "REPORT";
+        case EMERGENCY_STOP:
+            return "EMERGENCY_STOP";
+        default:
+            return "UNKNOWN";
+    
     }
 }
 
@@ -556,25 +596,25 @@ void handleHeatingState() {
     }
     cooler.off();
 
-    if(TemperatureThreshold > -0.1) {
+    if(temperatureThreshold > -0.1) {
 
         // Serial.println("\ncond: threshold > -0.1");
         // Serial.println("Actual:");
-        // Serial.println("Threshold: " + String(TemperatureThreshold));
+        // Serial.println("Threshold: " + String(temperatureThreshold));
         // Serial.println("Going to report\n");
 
         chamberState.longHeatingFlag = 0;
         chamberState.isHeating = false;
         status = REPORT;
         return;
-    } else if(TemperatureThreshold < -4) {
+    } else if(temperatureThreshold < -4) {
         dutyCycleHeater = 100;
-        periodHeater = (TemperatureThreshold < -8) ? 120000 : 60000;
+        periodHeater = (temperatureThreshold < -8) ? 120000 : 60000;
         chamberState.longHeatingFlag = 1;
 
         // Serial.println("\ncond: threshold < -4");
         // Serial.println("Actual:");
-        // Serial.println("Threshold: " + String(TemperatureThreshold));
+        // Serial.println("Threshold: " + String(temperatureThreshold));
         // Serial.println("Setting dutycycle to 100");
         // Serial.println("Dutycycle: " + String(dutyCycleHeater));
         // Serial.println("Setting periodHeater to 120000 if threshold < -8, otherwise 60000");
@@ -583,13 +623,13 @@ void handleHeatingState() {
         // Serial.println("lh flag: " + String(chamberState.longHeatingFlag));
         // Serial.println();
 
-    } else if(TemperatureThreshold > -4) {
+    } else if(temperatureThreshold > -4) {
         dutyCycleHeater = (chamberState.longHeatingFlag) ? 0 : 80;
         periodHeater = 25000; //on for 20 seconds and off for 5
 
         // Serial.println("\ncond: threshold > -4");
         // Serial.println("Actual:");
-        // Serial.println("Threshold: " + String(TemperatureThreshold));
+        // Serial.println("Threshold: " + String(temperatureThreshold));
         // Serial.println("Setting dutycycle to 80");
         // Serial.println("Dutycycle: " + String(dutyCycleHeater));
         // Serial.println("Setting periodHeater to 25000");
@@ -616,14 +656,14 @@ void handleCoolingState() {
     }
     heater.off();
 
-    if(TemperatureThreshold < 0.4) {
+    if(temperatureThreshold < 0.4) {
         chamberState.isCooling = false;
         status = REPORT;
         return;
-    } else if(TemperatureThreshold > 1) {
+    } else if(temperatureThreshold > 1) {
         dutyCycleCooler = 100;
         periodCooler=2000;
-    } else if(TemperatureThreshold < 1) {
+    } else if(temperatureThreshold < 1) {
         dutyCycleCooler = 29;
         periodCooler=7000; // on for 2 seconds and off for 5
     } 
@@ -644,9 +684,9 @@ void handleReportState() {
         return;
     }
 
-    if(TemperatureThreshold > 0.4) {
+    if(temperatureThreshold > 0.4) {
         status = COOLING;
-    } else if(TemperatureThreshold < -0.1) {
+    } else if(temperatureThreshold < -0.1) {
         status = HEATING;
     }
 
@@ -714,7 +754,7 @@ void loop() {
     updateSwitchStates();
     chamberState.temperatureRoom = getTemperature();
     if (chamberState.temperatureDesired != -41) {
-        TemperatureThreshold = chamberState.temperatureRoom - chamberState.temperatureDesired;
+        temperatureThreshold = chamberState.temperatureRoom - chamberState.temperatureDesired;
     }
 
 

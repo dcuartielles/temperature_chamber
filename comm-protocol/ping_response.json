@@ -1,5 +1,5 @@
 {
-    "ping": {
+    "ping_response": {
         "alive": true,
         "machine_state": "HEATING",
         "test_status": {
@@ -7,8 +7,7 @@
             "current_test": "test_1",
             "current_sequence": 1,
             "desired_temp": 50,
-            "current_duration": 60000,
-            "sketch": "./alphabet.ino"
+            "current_duration": 60000
         },
         "timestamp": "2024-10-28T10:53:00Z"
     }
