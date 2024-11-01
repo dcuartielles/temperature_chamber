@@ -781,3 +781,494 @@ serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
 2024-11-01 11:24:09 - testBoardWorker - INFO - connection to COM7 closed now
 2024-11-01 11:49:20 - __main__ - INFO - app started
 2024-11-01 11:49:20 - portSelector - INFO - ports refreshed
+2024-11-01 11:56:47 - __main__ - INFO - app started
+2024-11-01 11:56:47 - portSelector - INFO - ports refreshed
+2024-11-01 11:56:53 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 11:56:53 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 11:56:54 - testBoardWorker - INFO - test board thread is running
+2024-11-01 11:56:54 - serialCaptureWorker - INFO - thread is running
+2024-11-01 11:56:59 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 11:56:59 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 11:56:59 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 11:56:59 - serialCaptureWorker - INFO - arduino says: Room_temp: 26.59 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 11:57:01 - __main__ - INFO - test starting
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - all tests: ['test_1', 'test_2']
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - test data for test_1: {'chamber_sequences': [{'temp': 50, 'duration': 60000}, {'temp': 40, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected_output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - sending sequence {'temp': 50, 'duration': 60000} for test test_1
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - sending sequence {'temp': 40, 'duration': 60000} for test test_1
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - test data for test_2: {'chamber_sequences': [{'temp': 60, 'duration': 60000}, {'temp': 70, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - sent to arduino: {"temp": 60, "duration": 60000}
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - sending sequence {'temp': 60, 'duration': 60000} for test test_2
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - sent to arduino: {"temp": 70, "duration": 60000}
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - sending sequence {'temp': 70, 'duration': 60000} for test test_2
+2024-11-01 11:57:01 - testBoardWorker - INFO - test worker thread is running
+2024-11-01 11:57:01 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - Setting temperature to 50.00°
+2024-11-01 11:57:01 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 11:57:01 - __main__ - INFO - test board worker temporarily deleted
+2024-11-01 11:57:01 - __main__ - INFO - cli worker started
+2024-11-01 11:57:01 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-11-01 11:57:02 - serialCaptureWorker - INFO - arduino says: Setting temperature to 40.00°
+2024-11-01 11:57:02 - serialCaptureWorker - INFO - Manual temp set to 40.00
+2024-11-01 11:57:02 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 11:57:02 - serialCaptureWorker - INFO - Setting temperature to 60.00°
+2024-11-01 11:57:02 - serialCaptureWorker - INFO - Manual temp set to 60.00
+2024-11-01 11:57:02 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 11:57:02 - serialCaptureWorker - INFO - Setting temperature to 70.00°
+2024-11-01 11:57:02 - serialCaptureWorker - INFO - Manual temp set to 70.00
+2024-11-01 11:57:02 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 11:57:02 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 11:57:02 - cliWorker - INFO - cli worker thread is running
+2024-11-01 11:57:02 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 11:57:03 - serialCaptureWorker - INFO - arduino says: Room_temp: 26.59 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 11:57:05 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-11-01 11:57:05 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-11-01 11:57:06 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-11-01 11:57:06 - cliWorker - INFO - core arduino is already installed.
+2024-11-01 11:57:06 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-11-01 11:57:08 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 11:57:08 - serialCaptureWorker - INFO - arduino says: Room_temp: 26.59 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 11:57:10 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 11:57:10 - cliWorker - INFO - compilation successful!
+2024-11-01 11:57:11 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-11-01 11:57:13 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 11:57:13 - serialCaptureWorker - INFO - arduino says: Room_temp: 26.59 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 11:57:15 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 11:57:15 - cliWorker - INFO - upload successful!
+2024-11-01 11:57:18 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-11-01 11:57:18 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-11-01 11:57:18 - __main__ - INFO - cli worker quit
+2024-11-01 11:57:18 - __main__ - INFO - cli worker deleted
+2024-11-01 11:57:18 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 11:57:18 - serialCaptureWorker - INFO - arduino says: Room_temp: 26.59 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 12:01:53 - __main__ - INFO - app started
+2024-11-01 12:01:53 - portSelector - INFO - ports refreshed
+2024-11-01 12:02:07 - __main__ - INFO - app started
+2024-11-01 12:02:07 - portSelector - INFO - ports refreshed
+2024-11-01 12:02:12 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 12:02:12 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 12:02:13 - testBoardWorker - INFO - test board thread is running
+2024-11-01 12:02:13 - serialCaptureWorker - INFO - thread is running
+2024-11-01 12:02:17 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 12:02:17 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 12:02:27 - __main__ - INFO - app started
+2024-11-01 12:02:27 - portSelector - INFO - ports refreshed
+2024-11-01 12:02:34 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 12:02:34 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 12:02:35 - testBoardWorker - INFO - test board thread is running
+2024-11-01 12:02:35 - serialCaptureWorker - INFO - thread is running
+2024-11-01 12:02:40 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 12:02:40 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 12:06:15 - __main__ - INFO - app started
+2024-11-01 12:06:15 - portSelector - INFO - ports refreshed
+2024-11-01 12:06:19 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 12:06:19 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 12:06:20 - testBoardWorker - INFO - test board thread is running
+2024-11-01 12:06:20 - serialCaptureWorker - INFO - thread is running
+2024-11-01 12:06:24 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 12:06:24 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 12:07:49 - __main__ - INFO - app started
+2024-11-01 12:07:49 - portSelector - INFO - ports refreshed
+2024-11-01 12:07:54 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 12:07:54 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 12:07:55 - testBoardWorker - INFO - test board thread is running
+2024-11-01 12:07:55 - serialCaptureWorker - INFO - thread is running
+2024-11-01 12:07:58 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 12:07:58 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 13:15:16 - __main__ - INFO - app started
+2024-11-01 13:15:16 - portSelector - INFO - ports refreshed
+2024-11-01 13:15:28 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 13:15:28 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 13:19:21 - __main__ - INFO - app started
+2024-11-01 13:19:21 - portSelector - INFO - ports refreshed
+2024-11-01 13:19:27 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 13:19:28 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 13:19:28 - testBoardWorker - INFO - test board thread is running
+2024-11-01 13:19:29 - serialCaptureWorker - INFO - thread is running
+2024-11-01 13:19:32 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 13:19:32 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 13:19:34 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:19:34 - serialCaptureWorker - INFO - arduino says: Room_temp: 24.03 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:21:11 - __main__ - INFO - app started
+2024-11-01 13:21:11 - portSelector - INFO - ports refreshed
+2024-11-01 13:21:15 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 13:21:15 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 13:21:16 - testBoardWorker - INFO - test board thread is running
+2024-11-01 13:21:16 - serialCaptureWorker - INFO - thread is running
+2024-11-01 13:21:19 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 13:21:19 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 13:21:21 - __main__ - INFO - test starting
+2024-11-01 13:21:43 - __main__ - INFO - app started
+2024-11-01 13:21:43 - portSelector - INFO - ports refreshed
+2024-11-01 13:21:48 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 13:21:48 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 13:21:49 - testBoardWorker - INFO - test board thread is running
+2024-11-01 13:21:49 - serialCaptureWorker - INFO - thread is running
+2024-11-01 13:21:52 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 13:21:52 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 13:21:53 - __main__ - INFO - test starting
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - all tests: ['test_1', 'test_2']
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - test data for test_1: {'chamber_sequences': [{'temp': 50, 'duration': 60000}, {'temp': 40, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected_output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - sending sequence {'temp': 50, 'duration': 60000} for test test_1
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - sending sequence {'temp': 40, 'duration': 60000} for test test_1
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - test data for test_2: {'chamber_sequences': [{'temp': 60, 'duration': 60000}, {'temp': 70, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - sent to arduino: {"temp": 60, "duration": 60000}
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - sending sequence {'temp': 60, 'duration': 60000} for test test_2
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - sent to arduino: {"temp": 70, "duration": 60000}
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - sending sequence {'temp': 70, 'duration': 60000} for test test_2
+2024-11-01 13:21:53 - testBoardWorker - INFO - ABCDEFGH
+2024-11-01 13:21:53 - testBoardWorker - INFO - test worker thread is running
+2024-11-01 13:21:53 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-01 13:21:53 - __main__ - INFO - test board worker temporarily deleted
+2024-11-01 13:21:53 - __main__ - INFO - cli worker started
+2024-11-01 13:21:53 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - Setting temperature to 50.00°
+2024-11-01 13:21:53 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:21:54 - serialCaptureWorker - INFO - arduino says: Setting temperature to 40.00°
+2024-11-01 13:21:54 - serialCaptureWorker - INFO - Manual temp set to 40.00
+2024-11-01 13:21:54 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 13:21:54 - serialCaptureWorker - INFO - Setting temperature to 60.00°
+2024-11-01 13:21:54 - serialCaptureWorker - INFO - Manual temp set to 60.00
+2024-11-01 13:21:54 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 13:21:54 - serialCaptureWorker - INFO - Setting temperature to 70.00°
+2024-11-01 13:21:54 - serialCaptureWorker - INFO - Manual temp set to 70.00
+2024-11-01 13:21:54 - cliWorker - INFO - cli worker thread is running
+2024-11-01 13:21:54 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 13:21:54 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 13:21:54 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:21:55 - serialCaptureWorker - INFO - arduino says: Room_temp: 24.03 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:21:56 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-11-01 13:21:56 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-11-01 13:21:57 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-11-01 13:21:57 - cliWorker - INFO - core arduino is already installed.
+2024-11-01 13:21:57 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-11-01 13:22:00 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:22:00 - serialCaptureWorker - INFO - arduino says: Room_temp: 24.00 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:22:01 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 13:22:01 - cliWorker - INFO - compilation successful!
+2024-11-01 13:22:01 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-11-01 13:22:05 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:22:05 - serialCaptureWorker - INFO - arduino says: Room_temp: 24.03 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:22:06 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 13:22:06 - cliWorker - INFO - upload successful!
+2024-11-01 13:22:08 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-11-01 13:22:08 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-11-01 13:22:08 - __main__ - INFO - cli worker quit
+2024-11-01 13:22:08 - __main__ - INFO - cli worker deleted
+2024-11-01 13:29:19 - __main__ - INFO - app started
+2024-11-01 13:29:19 - portSelector - INFO - ports refreshed
+2024-11-01 13:29:24 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 13:29:24 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 13:29:25 - testBoardWorker - INFO - test board thread is running
+2024-11-01 13:29:25 - serialCaptureWorker - INFO - thread is running
+2024-11-01 13:29:28 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 13:29:28 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 13:29:28 - __main__ - INFO - ABCDEFGHIJKLMNOPQRSTUVWXYZ
+2024-11-01 13:29:30 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:29:30 - serialCaptureWorker - INFO - arduino says: Room_temp: 23.87 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:29:32 - __main__ - INFO - test starting
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - all tests: ['test_1', 'test_2']
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - test data for test_1: {'chamber_sequences': [{'temp': 50, 'duration': 60000}, {'temp': 40, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected_output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - sending sequence {'temp': 50, 'duration': 60000} for test test_1
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - sending sequence {'temp': 40, 'duration': 60000} for test test_1
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - test data for test_2: {'chamber_sequences': [{'temp': 60, 'duration': 60000}, {'temp': 70, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - sent to arduino: {"temp": 60, "duration": 60000}
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - sending sequence {'temp': 60, 'duration': 60000} for test test_2
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - sent to arduino: {"temp": 70, "duration": 60000}
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - sending sequence {'temp': 70, 'duration': 60000} for test test_2
+2024-11-01 13:29:32 - testBoardWorker - INFO - ABCDEFGHIJKLMN
+2024-11-01 13:29:32 - testBoardWorker - INFO - test worker thread is running
+2024-11-01 13:29:32 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-01 13:29:32 - __main__ - INFO - test board worker temporarily deleted
+2024-11-01 13:29:32 - __main__ - INFO - cli worker started
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - Setting temperature to 50.00°
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:29:32 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-11-01 13:29:32 - serialCaptureWorker - INFO - arduino says: Setting temperature to 40.00°
+2024-11-01 13:29:33 - serialCaptureWorker - INFO - Manual temp set to 40.00
+2024-11-01 13:29:33 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 13:29:33 - serialCaptureWorker - INFO - Setting temperature to 60.00°
+2024-11-01 13:29:33 - serialCaptureWorker - INFO - Manual temp set to 60.00
+2024-11-01 13:29:33 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 13:29:33 - serialCaptureWorker - INFO - Setting temperature to 70.00°
+2024-11-01 13:29:33 - serialCaptureWorker - INFO - Manual temp set to 70.00
+2024-11-01 13:29:33 - cliWorker - INFO - cli worker thread is running
+2024-11-01 13:29:33 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 13:29:33 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 13:29:33 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:29:33 - serialCaptureWorker - INFO - arduino says: Room_temp: 23.87 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:29:35 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-11-01 13:29:35 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-11-01 13:29:36 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-11-01 13:29:36 - cliWorker - INFO - core arduino is already installed.
+2024-11-01 13:29:36 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-11-01 13:29:39 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:29:39 - serialCaptureWorker - INFO - arduino says: Room_temp: 23.87 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:29:39 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 13:29:39 - cliWorker - INFO - compilation successful!
+2024-11-01 13:29:40 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-11-01 13:29:44 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 13:29:44 - cliWorker - INFO - upload successful!
+2024-11-01 13:29:44 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:29:44 - serialCaptureWorker - INFO - arduino says: Room_temp: 23.87 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:29:46 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-11-01 13:29:46 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-11-01 13:29:46 - __main__ - INFO - cli worker quit
+2024-11-01 13:29:46 - __main__ - INFO - cli worker deleted
+2024-11-01 13:29:48 - __main__ - INFO - connect signals
+2024-11-01 13:29:48 - __main__ - INFO - test board worker restarted
+2024-11-01 13:29:48 - testBoardWorker - INFO - emit exp output to gui
+2024-11-01 13:33:06 - __main__ - INFO - app started
+2024-11-01 13:33:06 - portSelector - INFO - ports refreshed
+2024-11-01 13:33:10 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 13:33:10 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 13:33:11 - testBoardWorker - INFO - test board thread is running
+2024-11-01 13:33:11 - serialCaptureWorker - INFO - thread is running
+2024-11-01 13:33:14 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 13:33:14 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 13:33:14 - __main__ - INFO - ABCDEFGHIJKLMNOPQRSTUVWXYZ
+2024-11-01 13:33:16 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - arduino says: Room_temp: 23.81 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:33:17 - __main__ - INFO - test starting
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - all tests: ['test_1', 'test_2']
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - test data for test_1: {'chamber_sequences': [{'temp': 50, 'duration': 60000}, {'temp': 40, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected_output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - sending sequence {'temp': 50, 'duration': 60000} for test test_1
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - sending sequence {'temp': 40, 'duration': 60000} for test test_1
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - test data for test_2: {'chamber_sequences': [{'temp': 60, 'duration': 60000}, {'temp': 70, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - sent to arduino: {"temp": 60, "duration": 60000}
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - sending sequence {'temp': 60, 'duration': 60000} for test test_2
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - sent to arduino: {"temp": 70, "duration": 60000}
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - sending sequence {'temp': 70, 'duration': 60000} for test test_2
+2024-11-01 13:33:17 - testBoardWorker - INFO - ABCDEFGHIJKL
+2024-11-01 13:33:17 - testBoardWorker - INFO - test worker thread is running
+2024-11-01 13:33:17 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - Setting temperature to 50.00°
+2024-11-01 13:33:17 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:33:17 - __main__ - INFO - test board worker temporarily deleted
+2024-11-01 13:33:17 - __main__ - INFO - cli worker started
+2024-11-01 13:33:17 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-11-01 13:33:18 - serialCaptureWorker - INFO - arduino says: Setting temperature to 40.00°
+2024-11-01 13:33:18 - serialCaptureWorker - INFO - Manual temp set to 40.00
+2024-11-01 13:33:18 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 13:33:18 - serialCaptureWorker - INFO - Setting temperature to 60.00°
+2024-11-01 13:33:18 - serialCaptureWorker - INFO - Manual temp set to 60.00
+2024-11-01 13:33:18 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 13:33:18 - serialCaptureWorker - INFO - Setting temperature to 70.00°
+2024-11-01 13:33:18 - serialCaptureWorker - INFO - Manual temp set to 70.00
+2024-11-01 13:33:18 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 13:33:18 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:33:18 - cliWorker - INFO - cli worker thread is running
+2024-11-01 13:33:18 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 13:33:19 - serialCaptureWorker - INFO - arduino says: Room_temp: 23.81 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:33:21 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-11-01 13:33:21 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-11-01 13:33:22 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-11-01 13:33:22 - cliWorker - INFO - core arduino is already installed.
+2024-11-01 13:33:22 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-11-01 13:33:24 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:33:24 - serialCaptureWorker - INFO - arduino says: Room_temp: 23.81 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:33:24 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 13:33:24 - cliWorker - INFO - compilation successful!
+2024-11-01 13:33:25 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-11-01 13:33:29 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 13:33:29 - serialCaptureWorker - INFO - arduino says: Room_temp: 23.81 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 13:33:29 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 13:33:29 - cliWorker - INFO - upload successful!
+2024-11-01 13:33:32 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-11-01 13:33:32 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-11-01 13:33:32 - __main__ - INFO - cli worker quit
+2024-11-01 13:33:32 - __main__ - INFO - cli worker deleted
+2024-11-01 13:33:33 - __main__ - INFO - connect signals
+2024-11-01 13:33:33 - __main__ - INFO - test board worker restarted
+2024-11-01 13:33:33 - testBoardWorker - INFO - emit exp output to gui
+2024-11-01 14:01:05 - __main__ - INFO - app started
+2024-11-01 14:01:05 - portSelector - INFO - ports refreshed
+2024-11-01 14:03:03 - __main__ - INFO - app started
+2024-11-01 14:03:03 - portSelector - INFO - ports refreshed
+2024-11-01 14:03:08 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 14:03:08 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 14:03:09 - testBoardWorker - INFO - test board thread is running
+2024-11-01 14:03:09 - serialCaptureWorker - INFO - thread is running
+2024-11-01 14:03:13 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 14:03:13 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 14:03:13 - __main__ - INFO - ABCDEFGHIJKLMNOPQRSTUVWXYZ
+2024-11-01 14:03:14 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:03:14 - serialCaptureWorker - INFO - arduino says: Room_temp: 40.59 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 14:03:17 - __main__ - INFO - test starting
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - all tests: ['test_1', 'test_2']
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - test data for test_1: {'chamber_sequences': [{'temp': 50, 'duration': 60000}, {'temp': 40, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected_output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - sending sequence {'temp': 50, 'duration': 60000} for test test_1
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - sending sequence {'temp': 40, 'duration': 60000} for test test_1
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - test data for test_2: {'chamber_sequences': [{'temp': 60, 'duration': 60000}, {'temp': 70, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - sent to arduino: {"temp": 60, "duration": 60000}
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - sending sequence {'temp': 60, 'duration': 60000} for test test_2
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - sent to arduino: {"temp": 70, "duration": 60000}
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - sending sequence {'temp': 70, 'duration': 60000} for test test_2
+2024-11-01 14:03:17 - testBoardWorker - INFO - ABCDEFGHIJKLMNOP
+2024-11-01 14:03:17 - testBoardWorker - INFO - test worker thread is running
+2024-11-01 14:03:17 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-01 14:03:17 - __main__ - INFO - test board worker temporarily deleted
+2024-11-01 14:03:17 - __main__ - INFO - cli worker started
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - Setting temperature to 50.00°
+2024-11-01 14:03:17 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:03:17 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-11-01 14:03:18 - serialCaptureWorker - INFO - arduino says: Setting temperature to 40.00°
+2024-11-01 14:03:18 - serialCaptureWorker - INFO - Manual temp set to 40.00
+2024-11-01 14:03:18 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 14:03:18 - serialCaptureWorker - INFO - Setting temperature to 60.00°
+2024-11-01 14:03:18 - serialCaptureWorker - INFO - Manual temp set to 60.00
+2024-11-01 14:03:18 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 14:03:18 - serialCaptureWorker - INFO - Setting temperature to 70.00°
+2024-11-01 14:03:18 - serialCaptureWorker - INFO - Manual temp set to 70.00
+2024-11-01 14:03:18 - cliWorker - INFO - cli worker thread is running
+2024-11-01 14:03:18 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 14:03:18 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 14:03:18 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:03:19 - serialCaptureWorker - INFO - arduino says: Room_temp: 40.88 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 14:03:21 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-11-01 14:03:21 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-11-01 14:03:22 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-11-01 14:03:22 - cliWorker - INFO - core arduino is already installed.
+2024-11-01 14:03:22 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-11-01 14:03:24 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:03:24 - serialCaptureWorker - INFO - arduino says: Room_temp: 41.16 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 14:03:25 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 14:03:25 - cliWorker - INFO - compilation successful!
+2024-11-01 14:03:25 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-11-01 14:03:29 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:03:29 - serialCaptureWorker - INFO - arduino says: Room_temp: 41.44 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 14:03:29 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 14:03:29 - cliWorker - INFO - upload successful!
+2024-11-01 14:03:32 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-11-01 14:03:32 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-11-01 14:03:32 - __main__ - INFO - cli worker quit
+2024-11-01 14:03:32 - __main__ - INFO - cli worker deleted
+2024-11-01 14:03:33 - __main__ - INFO - connect signals
+2024-11-01 14:03:33 - __main__ - INFO - test board worker restarted
+2024-11-01 14:03:33 - mainTab - INFO - ABCDEFGHIJKLMNOPQRSTUVWXYZ
+2024-11-01 14:03:33 - __main__ - INFO - trigger compare
+2024-11-01 14:04:38 - __main__ - INFO - app started
+2024-11-01 14:04:38 - portSelector - INFO - ports refreshed
+2024-11-01 14:04:43 - __main__ - INFO - app started
+2024-11-01 14:04:43 - portSelector - INFO - ports refreshed
+2024-11-01 14:04:48 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 14:04:48 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 14:04:49 - testBoardWorker - INFO - test board thread is running
+2024-11-01 14:04:49 - serialCaptureWorker - INFO - thread is running
+2024-11-01 14:04:53 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 14:04:53 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 14:04:53 - __main__ - INFO - ABCDEFGHIJKLMNOPQRSTUVWXYZ
+2024-11-01 14:04:54 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:04:54 - serialCaptureWorker - INFO - arduino says: Room_temp: 43.88 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 14:04:55 - __main__ - INFO - test starting
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - all tests: ['test_1', 'test_2']
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - test data for test_1: {'chamber_sequences': [{'temp': 50, 'duration': 60000}, {'temp': 40, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected_output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - sending sequence {'temp': 50, 'duration': 60000} for test test_1
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - sending sequence {'temp': 40, 'duration': 60000} for test test_1
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - test data for test_2: {'chamber_sequences': [{'temp': 60, 'duration': 60000}, {'temp': 70, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - sent to arduino: {"temp": 60, "duration": 60000}
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - sending sequence {'temp': 60, 'duration': 60000} for test test_2
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - sent to arduino: {"temp": 70, "duration": 60000}
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - sending sequence {'temp': 70, 'duration': 60000} for test test_2
+2024-11-01 14:04:55 - testBoardWorker - INFO - ABCDEFGHIJK
+2024-11-01 14:04:55 - testBoardWorker - INFO - test worker thread is running
+2024-11-01 14:04:55 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - Setting temperature to 50.00°
+2024-11-01 14:04:55 - __main__ - INFO - test board worker temporarily deleted
+2024-11-01 14:04:55 - __main__ - INFO - cli worker started
+2024-11-01 14:04:55 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - Manual temp set to 50.00
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - Setting temperature to 40.00°
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - Manual temp set to 40.00
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - arduino says: Setting temperature to 70.00°
+2024-11-01 14:04:55 - serialCaptureWorker - INFO - Manual temp set to 70.00
+2024-11-01 14:04:56 - serialCaptureWorker - INFO - Duration: 60000
+2024-11-01 14:04:56 - serialCaptureWorker - INFO - Room_temp: 43.91 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 14:04:56 - cliWorker - INFO - cli worker thread is running
+2024-11-01 14:04:56 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 14:04:58 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-11-01 14:04:58 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-11-01 14:04:59 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-11-01 14:04:59 - cliWorker - INFO - core arduino is already installed.
+2024-11-01 14:04:59 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-11-01 14:05:01 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:05:01 - serialCaptureWorker - INFO - arduino says: Room_temp: 43.97 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 14:05:02 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 14:05:02 - cliWorker - INFO - compilation successful!
+2024-11-01 14:05:02 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-11-01 14:05:06 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:05:06 - serialCaptureWorker - INFO - arduino says: Room_temp: 44.06 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 14:05:06 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 14:05:06 - cliWorker - INFO - upload successful!
+2024-11-01 14:05:09 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-11-01 14:05:09 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-11-01 14:05:09 - __main__ - INFO - cli worker quit
+2024-11-01 14:05:09 - __main__ - INFO - cli worker deleted
+2024-11-01 14:05:10 - __main__ - INFO - connect signals
+2024-11-01 14:05:10 - __main__ - INFO - test board worker restarted
+2024-11-01 14:05:10 - mainTab - INFO - ABCDEFGHIJKLMNOPQRSTUVWXYZ
+2024-11-01 14:05:10 - __main__ - INFO - trigger compare
+2024-11-01 14:18:31 - __main__ - INFO - app started
+2024-11-01 14:18:31 - portSelector - INFO - ports refreshed
+2024-11-01 14:18:37 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 14:18:37 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 14:18:38 - testBoardWorker - INFO - test board thread is running
+2024-11-01 14:18:38 - serialCaptureWorker - INFO - thread is running
+2024-11-01 14:18:43 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:18:43 - serialCaptureWorker - INFO - arduino says: Room_temp: 42.53 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 14:18:44 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 14:18:44 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 14:18:44 - __main__ - INFO - ABCDEFGHIJKLMNOPQRSTUVWXYZ
+2024-11-01 14:18:45 - __main__ - INFO - test starting
+2024-11-01 14:18:45 - serialCaptureWorker - INFO - sent to arduino: {"tests": {"test_1": {"chamber_sequences": [{"temp": 50, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, "test_2": {"chamber_sequences": [{"temp": 60, "duration": 60000}, {"temp": 70, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}}
+2024-11-01 14:18:45 - serialCaptureWorker - INFO - Sending full tests data with 2 tests
+2024-11-01 14:18:45 - testBoardWorker - INFO - ABCDEFGHIJKLMN
+2024-11-01 14:18:45 - testBoardWorker - INFO - test worker thread is running
+2024-11-01 14:18:45 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-01 14:18:45 - __main__ - INFO - test board worker temporarily deleted
+2024-11-01 14:18:45 - __main__ - INFO - cli worker started
+2024-11-01 14:18:45 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-11-01 14:18:46 - serialCaptureWorker - INFO - Queued test: test_1
+2024-11-01 14:18:46 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:18:46 - serialCaptureWorker - INFO - arduino says: Running sequence: Target temp = 50.00°C Duration = 1 minutes
+2024-11-01 14:18:46 - serialCaptureWorker - INFO - Waiting for target temp to be reached
+2024-11-01 14:18:46 - serialCaptureWorker - INFO - Room_temp: 42.53 | Desired_temp: 50 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 14:18:46 - cliWorker - INFO - cli worker thread is running
+2024-11-01 14:18:46 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 14:18:48 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-11-01 14:18:48 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-11-01 14:18:49 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-11-01 14:18:49 - cliWorker - INFO - core arduino is already installed.
+2024-11-01 14:18:49 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-11-01 14:18:51 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:18:51 - serialCaptureWorker - INFO - arduino says: Room_temp: 42.50 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-11-01 14:18:52 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 14:18:52 - cliWorker - INFO - compilation successful!
+2024-11-01 14:18:53 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-11-01 14:18:56 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 14:18:56 - serialCaptureWorker - INFO - arduino says: Room_temp: 42.50 | Desired_temp: 50 | Heater: 1 | Cooler: 0 | LH Indicator: 1
+2024-11-01 14:18:57 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-01 14:18:57 - cliWorker - INFO - upload successful!
+2024-11-01 14:19:00 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-11-01 14:19:00 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-11-01 14:19:00 - __main__ - INFO - cli worker quit
+2024-11-01 14:19:00 - __main__ - INFO - cli worker deleted
+2024-11-01 14:19:01 - __main__ - INFO - connect signals
+2024-11-01 14:19:01 - __main__ - INFO - test board worker restarted
+2024-11-01 14:19:01 - mainTab - INFO - ABCDEFGHIJKLMNOPQRSTUVWXYZ
+2024-11-01 14:19:01 - __main__ - INFO - trigger compare

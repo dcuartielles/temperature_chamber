@@ -11,10 +11,14 @@ logger = setup_logger(__name__)
 
 class MainTab(QWidget):
 
+    expected_outcome_listbox_signal = pyqtSignal(str)  # signal to show expected test outcome
+    incorrect_output = pyqtSignal(str)  # signal to update main
 
     def __init__(self, test_data, parent=None):
         super().__init__(parent)
         self.test_data = test_data
+        self.exp_output = None
+        self.expected_outcome_listbox_signal.connect(self.expected_output_listbox_gui)
         self.initUI()
 
     def initUI(self):
@@ -103,8 +107,23 @@ class MainTab(QWidget):
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
 
+    # compare t-board output with expected test outcome
+    def check_output(self, readout):
+        response = str(readout)
+        if self.exp_output == response:
+            logger.info("correct test output")
+            self.update_gui_correct()
+        else:
+            date_str = datetime.now().strftime("%m/%d %H:%M:%S")
+            error_message = f"{date_str}    incorrect test board output"
+            self.incorrect_output.emit(error_message)
+            self.update_gui_incorrect()
+            logger.error(response)
+
     # update exp output listbox
-    def expected_output_listbox(self, message):
+    def expected_output_listbox_gui(self, message):
+        self.exp_output = str(message)
+        logger.info(self.exp_output)
         self.expected_outcome_listbox.addItem(message)
         self.expected_outcome_listbox.scrollToBottom()
 
@@ -121,6 +140,7 @@ class MainTab(QWidget):
     # change test part gui to show sketch upload progress before test runs
     def on_run_test_gui(self):
         if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
+            logger.info('update gui on run')
             self.instruction_listbox.show()
             self.instruction_listbox.clear()
             self.test_output_label.hide()
