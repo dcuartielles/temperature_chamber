@@ -10,15 +10,11 @@ logger = setup_logger(__name__)
 
 
 class MainTab(QWidget):
-
-    expected_outcome_listbox_signal = pyqtSignal(str)  # signal to show expected test outcome
-    incorrect_output = pyqtSignal(str)  # signal to update main
+    incorrect_output = pyqtSignal(str)  # signal to main: print in running test info when test board output incorrect
 
     def __init__(self, test_data, parent=None):
         super().__init__(parent)
         self.test_data = test_data
-        self.exp_output = None
-        self.expected_outcome_listbox_signal.connect(self.expected_output_listbox_gui)
         self.initUI()
 
     def initUI(self):
@@ -79,52 +75,70 @@ class MainTab(QWidget):
         self.test_output_listbox.addItem(f'{message}')
         self.test_output_listbox.scrollToBottom()
 
-    # handle correct / incorrect test board output
-    def handle_t_board_output(self, status):
-        if status:
-            self.update_gui_correct()
-        else:
-            self.update_gui_incorrect()
+    # check if output is as expected
+    def check_output(self, message):
+        message = str(message) if message else None
+        exp_outputs = self.expected_output(self.test_data)
 
-    # update gui if correct output
+        # check for missing output
+        if not message:
+            self.reset_gui_for_waiting()
+            return
+
+        # compare t-board output with expected test outcome
+        for expected in exp_outputs:
+            if str(expected) == message:
+                self.update_gui_correct()
+                logger.info("correct test output")
+            else:
+                date_str = datetime.now().strftime("%m/%d %H:%M:%S")
+                error_message = f"incorrect test board output ({date_str})"
+                logger.error(message)
+                # emit incorrect output signal with the error message
+                self.incorrect_output.emit(error_message)
+                # if no matches, handle as incorrect output
+                self.update_gui_incorrect()
+
     def update_gui_correct(self):
         self.test_output_listbox.setStyleSheet("color: #009FAF; font-weight: bold;")
         self.expected_outcome_listbox.setStyleSheet("color: black; font-weight: normal;")
 
-    # update gui if incorrect output
     def update_gui_incorrect(self):
         self.expected_outcome_listbox.setStyleSheet("color: red; font-weight: bold;")
         self.test_output_listbox.setStyleSheet("color: red; font-weight: bold;")
 
+
     # waiting for t-board output
-    def reset_gui_for_waiting(self, message):
+    def reset_gui_for_waiting(self):
         self.expected_outcome_listbox.clear()
-        self.expected_outcome_listbox.addItem(message)
-        logger.info(message)
+        self.test_output_listbox.addItem("waiting for test board output")
+        logger.info("waiting for test board output...")
 
     # the actual upper listbox updates
     def cli_update_upper_listbox_gui(self, message):
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
 
-    # compare t-board output with expected test outcome
-    def check_output(self, readout):
-        response = str(readout)
-        if self.exp_output == response:
-            logger.info("correct test output")
-            self.update_gui_correct()
-        else:
-            date_str = datetime.now().strftime("%m/%d %H:%M:%S")
-            error_message = f"{date_str}    incorrect test board output"
-            self.incorrect_output.emit(error_message)
-            self.update_gui_incorrect()
-            logger.error(response)
+    # extract expected test outcome from test file
+    def expected_output(self, test_data):
+        if test_data is not None and 'tests' in test_data:
+            all_expected_outputs = []
+            all_tests = [key for key in test_data['tests'].keys()]
+            # iterate through each test and run it
+            for test_key in all_tests:
+                test = test_data['tests'].get(test_key, {})
+                expected_output = test.get('expected output', '')  # get the expected output string
+                if expected_output:
+                    all_expected_outputs.append(expected_output)
+            return all_expected_outputs
+        return []
 
     # update exp output listbox
-    def expected_output_listbox_gui(self, message):
-        self.exp_output = str(message)
-        logger.info(self.exp_output)
-        self.expected_outcome_listbox.addItem(message)
+    def expected_output_listbox(self):
+        exp_outputs = self.expected_output(self.test_data)
+        self.expected_outcome_listbox.clear()
+        for i, output in enumerate(exp_outputs):
+            self.expected_outcome_listbox.addItem(f'{output}')
         self.expected_outcome_listbox.scrollToBottom()
 
     # change test part gui when test is running
@@ -140,7 +154,6 @@ class MainTab(QWidget):
     # change test part gui to show sketch upload progress before test runs
     def on_run_test_gui(self):
         if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
-            logger.info('update gui on run')
             self.instruction_listbox.show()
             self.instruction_listbox.clear()
             self.test_output_label.hide()

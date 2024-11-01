@@ -48,7 +48,6 @@ class MainWindow(QMainWindow):
         self.input_dictionary = []
         self.test_data = None
         self.filepath = None
-        self.exp_output = None
 
         # tabs
         self.main_tab = MainTab(self.test_data)
@@ -180,7 +179,7 @@ class MainWindow(QMainWindow):
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
         self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
         self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
-
+        self.main_tab.incorrect_output.connect(self.incorrect_output_gui)
         self.port_selector.ports_refreshed.connect(self.re_enable_start)
 
         # create test board worker thread
@@ -231,31 +230,11 @@ class MainWindow(QMainWindow):
     def load_test_file(self):
         self.test_data = self.json_handler.open_file()
         self.filepath = self.json_handler.get_filepath()
-        self.expected_output(self.test_data)
 
     # button click handlers
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
         self.serial_worker.trigger_run_tests.emit(self.test_data)
-
-    # extract expected test outcome from test file
-    def expected_output(self, test_data):
-        if test_data is not None and 'tests' in test_data:
-            all_expected_outputs = []
-            all_tests = [key for key in test_data['tests'].keys()]
-            # iterate through each test and run it
-            for test_key in all_tests:
-                test = test_data['tests'].get(test_key, {})
-                expected_output = test.get('expected output', '')  # get the expected output string
-                if expected_output:
-                    all_expected_outputs.append(expected_output)
-            self.exp_output = all_expected_outputs[0]
-            logger.info(self.exp_output)
-            return all_expected_outputs
-        return []
-
-    def trigger_compare(self):
-        self.main_tab.expected_outcome_listbox_signal.emit(self.exp_output)
 
     # run all benchmark tests
     def on_run_button_clicked(self):
@@ -347,18 +326,13 @@ class MainWindow(QMainWindow):
         # restart test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.update_upper_listbox.connect(self.main_tab.update_test_output_listbox_gui)
-        self.test_board.update_upper_listbox.connect(self.main_tab.check_output)
-        logger.info('connect signals')
-        self.main_tab.incorrect_output.connect(self.incorrect_output_gui)
-        self.test_board.empty_output.connect(self.main_tab.reset_gui_for_waiting)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
         logger.info('test board worker restarted')
-        self.trigger_compare()
-        logger.info('trigger compare')
 
         # update the gui
         self.main_tab.change_test_part_gui(self.test_data)
+        self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
 
     # method to set test_is_runing to False when test_interrupted from manual
     def set_flag_to_false(self):
@@ -397,6 +371,3 @@ def main():
     sys.exit(app.exec_())
 
 main()
-
-
-# self.manual_tab.test_interrupted.connect(self.update_listbox_gui)

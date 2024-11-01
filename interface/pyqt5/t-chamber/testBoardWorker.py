@@ -1,7 +1,6 @@
 from PyQt5.QtCore import QThread, pyqtSignal, QTimer
 import time
 import serial
-from datetime import datetime
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -9,9 +8,8 @@ logger = setup_logger(__name__)
 
 class TestBoardWorker(QThread):
 
-    update_upper_listbox = pyqtSignal(str)  # signal to show t-board output
-    empty_output = pyqtSignal(str)  # signal for waiting for output
-
+    update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
+    expected_outcome_listbox = pyqtSignal(str)  # signal to show expected test outcome
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -75,11 +73,7 @@ class TestBoardWorker(QThread):
 
     # show serial response
     def show_response(self, response):
-        self.update_upper_listbox.emit(response)
-        logger.info(response)
-
-        # notify user test board is working but has nothing to print yet
-        if response == '':
-            message = 'waiting for test board output...'
-            logger.info(message)
-            self.empty_output.emit(message)
+        if response:
+            printout = f'{response}'
+            self.update_upper_listbox.emit(printout)  # emit signal to update listbox
+            self.expected_outcome_listbox.emit(printout)  # emit signal to update expected outcome
