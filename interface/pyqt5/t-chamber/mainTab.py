@@ -10,7 +10,7 @@ logger = setup_logger(__name__)
 
 
 class MainTab(QWidget):
-    incorrect_output = pyqtSignal(str)  # signal to main: print in running test info when test board output incorrect
+
 
     def __init__(self, test_data, parent=None):
         super().__init__(parent)
@@ -82,19 +82,20 @@ class MainTab(QWidget):
         else:
             self.update_gui_incorrect()
 
+    # update gui if correct output
     def update_gui_correct(self):
         self.test_output_listbox.setStyleSheet("color: #009FAF; font-weight: bold;")
         self.expected_outcome_listbox.setStyleSheet("color: black; font-weight: normal;")
 
+    # update gui if incorrect output
     def update_gui_incorrect(self):
         self.expected_outcome_listbox.setStyleSheet("color: red; font-weight: bold;")
         self.test_output_listbox.setStyleSheet("color: red; font-weight: bold;")
 
-
     # waiting for t-board output
     def reset_gui_for_waiting(self, message):
         self.expected_outcome_listbox.clear()
-        self.test_output_listbox.addItem(message)
+        self.expected_outcome_listbox.addItem(message)
         logger.info(message)
 
     # the actual upper listbox updates

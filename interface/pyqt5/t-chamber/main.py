@@ -323,6 +323,9 @@ class MainWindow(QMainWindow):
 
         time.sleep(1.5)  # time for the port to fully close before restarting
 
+        # update the gui
+        self.main_tab.change_test_part_gui(self.test_data)
+
         # restart test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.update_upper_listbox.connect(self.main_tab.update_test_output_listbox_gui)
@@ -334,9 +337,6 @@ class MainWindow(QMainWindow):
         self.test_board.is_running = True
         logger.info('test board worker restarted')
 
-        # update the gui
-        self.main_tab.change_test_part_gui(self.test_data)
-        self.test_board.update_upper_listbox.connect(self.main_tab.check_output)
 
     # method to set test_is_runing to False when test_interrupted from manual
     def set_flag_to_false(self):

@@ -90,29 +90,38 @@ class TestBoardWorker(QThread):
             return all_expected_outputs
         return []
 
+    # display expected output
+    def display_expected(self):
+        expected = self.exp_output()
+        self.expected_outcome_listbox.emit(expected)
+
+    # return the firs expected output as all expected output is the same per test
+    def exp_output(self):
+        exp_outputs = self.expected_output(self.test_data)
+        exp_output = exp_outputs[0]
+        return exp_output
+
     # show serial response and check if output is as expected
     def show_response(self, response):
-        if response:
-            printout = f'{response}'
-            self.update_upper_listbox.emit(printout)
+        self.update_upper_listbox.emit(response)
 
-            # notify user test board is working but has nothing to print yet
-            if printout == '':
-                message = 'waiting for test board output...'
-                logger.info(message)
-                self.empty_output.emit(message)
+        # notify user test board is working but has nothing to print yet
+        if response == '':
+            message = 'waiting for test board output...'
+            logger.info(message)
+            self.empty_output.emit(message)
+        else:
+            self.check_output(response)
 
-            # compare t-board output with expected test outcome
-            exp_outputs = self.expected_output(self.test_data)
-            for expected in exp_outputs:
-                self.expected_outcome_listbox.emit(expected)
-                if str(expected) == printout:
-                    logger.info("correct test output")
-                    self.correct_or_not.emit(True)
-                else:
-                    date_str = datetime.now().strftime("%m/%d %H:%M:%S")
-                    error_message = f"{date_str}    incorrect test board output"
-                    self.incorrect_output.emit(error_message)
-                    self.correct_or_not.emit(False)
-                    logger.error(printout)
-
+    # compare t-board output with expected test outcome
+    def check_output(self, response):
+        expected = self.exp_output()
+        if str(expected) == response:
+            logger.info("correct test output")
+            self.correct_or_not.emit(True)
+        else:
+            date_str = datetime.now().strftime("%m/%d %H:%M:%S")
+            error_message = f"{date_str}    incorrect test board output"
+            self.incorrect_output.emit(error_message)
+            self.correct_or_not.emit(False)
+            logger.error(response)
