@@ -756,3 +756,26 @@ serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
 2024-11-01 10:43:23 - __main__ - INFO - cli worker deleted
 2024-11-01 10:43:23 - serialCaptureWorker - INFO - sent command: SHOW DATA
 2024-11-01 10:43:23 - serialCaptureWorker - INFO - arduino says: Room_temp: 21.31 | Desired_temp: 70 | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 11:23:57 - __main__ - INFO - app started
+2024-11-01 11:23:57 - portSelector - INFO - ports refreshed
+2024-11-01 11:24:02 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-01 11:24:02 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-01 11:24:03 - testBoardWorker - INFO - test board thread is running
+2024-11-01 11:24:03 - serialCaptureWorker - INFO - thread is running
+2024-11-01 11:24:06 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-01 11:24:06 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-01 11:24:08 - serialCaptureWorker - INFO - sent command: SHOW DATA
+2024-11-01 11:24:08 - serialCaptureWorker - INFO - arduino says: Room_temp: 21.12 | Desired_temp: - | Heater: 0 | Cooler: 0 | LH Indicator: 0
+2024-11-01 11:24:09 - __main__ - INFO - test starting
+2024-11-01 11:24:09 - serialCaptureWorker - INFO - all tests: ['test_1', 'test_2']
+2024-11-01 11:24:09 - serialCaptureWorker - INFO - test data for test_1: {'chamber_sequences': [{'temp': 50, 'duration': 60000}, {'temp': 40, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected_output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 11:24:09 - serialCaptureWorker - INFO - sent to arduino: {"temp": 50, "duration": 60000}
+2024-11-01 11:24:09 - serialCaptureWorker - INFO - sending sequence {'temp': 50, 'duration': 60000} for test test_1
+2024-11-01 11:24:09 - serialCaptureWorker - INFO - sent to arduino: {"temp": 40, "duration": 60000}
+2024-11-01 11:24:09 - serialCaptureWorker - INFO - sending sequence {'temp': 40, 'duration': 60000} for test test_1
+2024-11-01 11:24:09 - serialCaptureWorker - INFO - test data for test_2: {'chamber_sequences': [{'temp': 60, 'duration': 60000}, {'temp': 70, 'duration': 60000}], 'sketch': './alphabet.ino', 'expected output': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+2024-11-01 11:24:09 - serialCaptureWorker - INFO - sent to arduino: {"temp": 60, "duration": 60000}
+2024-11-01 11:24:09 - serialCaptureWorker - INFO - sending sequence {'temp': 60, 'duration': 60000} for test test_2
+2024-11-01 11:24:09 - serialCaptureWorker - INFO - sent to arduino: {"temp": 70, "duration": 60000}
+2024-11-01 11:24:09 - serialCaptureWorker - INFO - sending sequence {'temp': 70, 'duration': 60000} for test test_2
+2024-11-01 11:24:09 - testBoardWorker - INFO - connection to COM7 closed now

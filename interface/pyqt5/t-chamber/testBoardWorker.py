@@ -14,6 +14,7 @@ class TestBoardWorker(QThread):
     empty_output = pyqtSignal(str)  # signal for waiting for output
     incorrect_output = pyqtSignal(str)  # signal to update main
     correct_or_not = pyqtSignal(bool)
+    trigger_compare = pyqtSignal(str)
 
 
     def __init__(self, port, baudrate, timeout=5):
@@ -27,6 +28,7 @@ class TestBoardWorker(QThread):
         self.is_stopped = False  # flag to stop the read loop
         self.test_data = None
         self.last_command_time = time.time()
+        self.trigger_compare.connect(self.check_output)
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -76,32 +78,7 @@ class TestBoardWorker(QThread):
         self.quit()
         self.wait()
 
-    # extract expected test outcome from test file
-    def expected_output(self, test_data):
-        if test_data is not None and 'tests' in test_data:
-            all_expected_outputs = []
-            all_tests = [key for key in test_data['tests'].keys()]
-            # iterate through each test and run it
-            for test_key in all_tests:
-                test = test_data['tests'].get(test_key, {})
-                expected_output = test.get('expected output', '')  # get the expected output string
-                if expected_output:
-                    all_expected_outputs.append(expected_output)
-            return all_expected_outputs
-        return []
-
-    # display expected output
-    def display_expected(self):
-        expected = self.exp_output()
-        self.expected_outcome_listbox.emit(expected)
-
-    # return the firs expected output as all expected output is the same per test
-    def exp_output(self):
-        exp_outputs = self.expected_output(self.test_data)
-        exp_output = exp_outputs[0]
-        return exp_output
-
-    # show serial response and check if output is as expected
+    # show serial response
     def show_response(self, response):
         self.update_upper_listbox.emit(response)
 
@@ -110,12 +87,11 @@ class TestBoardWorker(QThread):
             message = 'waiting for test board output...'
             logger.info(message)
             self.empty_output.emit(message)
-        else:
-            self.check_output(response)
 
     # compare t-board output with expected test outcome
-    def check_output(self, response):
-        expected = self.exp_output()
+    def check_output(self, expected):
+        self.expected_outcome_listbox.emit(expected)
+        response = self.ser.readline().decode('utf-8').strip()
         if str(expected) == response:
             logger.info("correct test output")
             self.correct_or_not.emit(True)

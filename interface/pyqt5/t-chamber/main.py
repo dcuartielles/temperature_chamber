@@ -48,6 +48,7 @@ class MainWindow(QMainWindow):
         self.input_dictionary = []
         self.test_data = None
         self.filepath = None
+        self.exp_output = None
 
         # tabs
         self.main_tab = MainTab(self.test_data)
@@ -236,6 +237,30 @@ class MainWindow(QMainWindow):
     def trigger_run_t(self):
         self.serial_worker.trigger_run_tests.emit(self.test_data)
 
+    # extract expected test outcome from test file
+    def expected_output(self):
+        test_data = self.test_data
+        if test_data is not None and 'tests' in test_data:
+            all_expected_outputs = []
+            all_tests = [key for key in test_data['tests'].keys()]
+            # iterate through each test and run it
+            for test_key in all_tests:
+                test = test_data['tests'].get(test_key, {})
+                expected_output = test.get('expected output', '')  # get the expected output string
+                if expected_output:
+                    all_expected_outputs.append(expected_output)
+            return all_expected_outputs
+        return []
+
+    # return the firs expected output as all expected output is the same per test
+    def exp_output(self):
+        exp_outputs = self.expected_output()
+        exp_output = exp_outputs[0]
+        self.exp_output = exp_output
+
+    def trigger_compare(self):
+        self.test_board.trigger_compare.emit(self.exp_output)
+
     # run all benchmark tests
     def on_run_button_clicked(self):
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
@@ -331,7 +356,7 @@ class MainWindow(QMainWindow):
         self.test_board.update_upper_listbox.connect(self.main_tab.update_test_output_listbox_gui)
         self.test_board.incorrect_output.connect(self.incorrect_output_gui)
         self.test_board.empty_output.connect(self.main_tab.reset_gui_for_waiting)
-        self.test_board.expected_outcome_listbox.connect(self.main_tab.expected_outcome_listbox)
+        self.test_board.expected_outcome_listbox.connect(self.main_tab.expected_output_listbox)
         self.test_board.correct_or_not.connect(self.main_tab.handle_t_board_output)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
