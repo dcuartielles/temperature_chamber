@@ -81,7 +81,7 @@ class MainTab(QWidget):
         exp_outputs = self.expected_output(self.test_data)
 
         # check for missing output
-        if not message:
+        if message == '':
             self.reset_gui_for_waiting()
             return
 
@@ -110,7 +110,7 @@ class MainTab(QWidget):
 
     # waiting for t-board output
     def reset_gui_for_waiting(self):
-        self.expected_outcome_listbox.clear()
+        self.test_output_listbox.clear()
         self.test_output_listbox.addItem("waiting for test board output")
         logger.info("waiting for test board output...")
 
