@@ -402,7 +402,7 @@ void parseAndRunCommands(JsonObject& commands) {
         } else if (command == "SHOW RUNNING SEQUENCE") {
             if (isTestRunning) {
                 Serial.print("Running sequence: Target temp = ");
-                Serial.print(chamberState.temperatureDesired, 2);
+                Serial.print(chamberState.temperatureDesired);
                 Serial.print("°C Duration = ");
                 Serial.print(currentDuration / 60000);
                 Serial.println(" minutes");
