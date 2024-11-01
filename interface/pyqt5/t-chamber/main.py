@@ -179,7 +179,7 @@ class MainWindow(QMainWindow):
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
         self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
         self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
-        self.main_tab.incorrect_output.connect(self.incorrect_output_gui)
+
         self.port_selector.ports_refreshed.connect(self.re_enable_start)
 
         # create test board worker thread
@@ -326,6 +326,10 @@ class MainWindow(QMainWindow):
         # restart test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.update_upper_listbox.connect(self.main_tab.update_test_output_listbox_gui)
+        self.test_board.incorrect_output.connect(self.incorrect_output_gui)
+        self.test_board.empty_output.connect(self.main_tab.reset_gui_for_waiting)
+        self.test_board.expected_outcome_listbox.connect(self.main_tab.expected_outcome_listbox)
+        self.test_board.correct_or_not.connect(self.main_tab.handle_t_board_output)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
         logger.info('test board worker restarted')

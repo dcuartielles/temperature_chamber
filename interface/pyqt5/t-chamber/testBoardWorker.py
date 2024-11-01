@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QThread, pyqtSignal, QTimer
 import time
 import serial
+from datetime import datetime
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -8,8 +9,12 @@ logger = setup_logger(__name__)
 
 class TestBoardWorker(QThread):
 
-    update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
-    # expected_outcome_listbox = pyqtSignal(str)  # signal to show expected test outcome
+    update_upper_listbox = pyqtSignal(str)  # signal to show t-board output
+    expected_outcome_listbox = pyqtSignal(str)  # signal to show expected test outcome
+    empty_output = pyqtSignal(str)  # signal for waiting for output
+    incorrect_output = pyqtSignal(str)  # signal to update main
+    correct_or_not = pyqtSignal(bool)
+
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -71,9 +76,43 @@ class TestBoardWorker(QThread):
         self.quit()
         self.wait()
 
-    # show serial response
+    # extract expected test outcome from test file
+    def expected_output(self, test_data):
+        if test_data is not None and 'tests' in test_data:
+            all_expected_outputs = []
+            all_tests = [key for key in test_data['tests'].keys()]
+            # iterate through each test and run it
+            for test_key in all_tests:
+                test = test_data['tests'].get(test_key, {})
+                expected_output = test.get('expected output', '')  # get the expected output string
+                if expected_output:
+                    all_expected_outputs.append(expected_output)
+            return all_expected_outputs
+        return []
+
+    # show serial response and check if output is as expected
     def show_response(self, response):
         if response:
             printout = f'{response}'
-            self.update_upper_listbox.emit(printout)  # emit signal to update listbox
-            # self.expected_outcome_listbox.emit(printout)  # emit signal to update expected outcome
+            self.update_upper_listbox.emit(printout)
+
+            # notify user test board is working but has nothing to print yet
+            if printout == '':
+                message = 'waiting for test board output...'
+                logger.info(message)
+                self.empty_output.emit(message)
+
+            # compare t-board output with expected test outcome
+            exp_outputs = self.expected_output(self.test_data)
+            for expected in exp_outputs:
+                self.expected_outcome_listbox.emit(expected)
+                if str(expected) == printout:
+                    logger.info("correct test output")
+                    self.correct_or_not.emit(True)
+                else:
+                    date_str = datetime.now().strftime("%m/%d %H:%M:%S")
+                    error_message = f"{date_str}    incorrect test board output"
+                    self.incorrect_output.emit(error_message)
+                    self.correct_or_not.emit(False)
+                    logger.error(printout)
+
