@@ -332,7 +332,7 @@ class MainWindow(QMainWindow):
 
         # update the gui
         self.main_tab.change_test_part_gui(self.test_data)
-        self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
+        self.test_board.update_upper_listbox.connect(self.main_tab.check_output)
 
     # method to set test_is_runing to False when test_interrupted from manual
     def set_flag_to_false(self):

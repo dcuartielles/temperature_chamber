@@ -9,7 +9,7 @@ logger = setup_logger(__name__)
 class TestBoardWorker(QThread):
 
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
-    expected_outcome_listbox = pyqtSignal(str)  # signal to show expected test outcome
+    # expected_outcome_listbox = pyqtSignal(str)  # signal to show expected test outcome
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -76,4 +76,4 @@ class TestBoardWorker(QThread):
         if response:
             printout = f'{response}'
             self.update_upper_listbox.emit(printout)  # emit signal to update listbox
-            self.expected_outcome_listbox.emit(printout)  # emit signal to update expected outcome
+            # self.expected_outcome_listbox.emit(printout)  # emit signal to update expected outcome
