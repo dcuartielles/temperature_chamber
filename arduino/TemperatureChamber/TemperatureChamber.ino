@@ -40,7 +40,8 @@ Authors:
 #include <OneWire.h>
 #include <LiquidCrystal_I2C.h>
 #include <EduIntro.h>
-#include<ArduinoJson.h>
+#include <ArduinoJson.h>
+#include <RTC.h>
 
 // Defines
 #define ONE_WIRE_BUS_1      A0  // temp sensor 1
@@ -157,6 +158,9 @@ struct ChamberState {
 
 ChamberState chamberState;
 
+String lastShutdownCause = "Unknown";
+String lastHeatingTime = "";
+
 // function for checking how much memory remains after parsing JSON of different sizes
 extern "C" {
     char* sbrk(int incr);
@@ -170,6 +174,18 @@ int freeMemory() {
 void setup() {
     // Initialise Serial
     Serial.begin(9600);
+
+    // Initialize RTC
+    if (!RTC.begin()) {
+        Serial.println("RTC initialization failed!");
+    }
+
+    if (!RTC.isRunning()) {
+        RTCTime defaultTime(2024, Month::NOVEMBER, 1, 10, 26, 0, DayOfWeek::FRIDAY, SaveLight::SAVING_TIME_INACTIVE);
+        RTC.setTimeIfNotRunning(defaultTime);
+    }
+
+    sendHandshake();
 
     // Initialise thermocouples
     sensors1.begin();
@@ -188,6 +204,31 @@ void setup() {
     currentTest.numSequences = 0;
 
     readAndParseSerial();
+}
+
+String getCurrentTimestamp() {
+    RTCTime now;
+    if (RTC.getTime(now)) {
+        return now.toString();
+    } else {
+        return "Error: Unable to get time";
+    }
+}
+
+String getLastHeatingTime() {
+    return lastHeatingTime.isEmpty() ? "N/A" : lastHeatingTime;
+}
+
+void sendHandshake() {
+    StaticJsonDocument<512> handshakeDoc;
+
+    handshakeDoc["handshake"]["timestamp"] = getCurrentTimestamp();
+    handshakeDoc["handshake"]["current_state"] = getMachineState();
+    handshakeDoc["handshake"]["last_shutdown_cause"] = lastShutdownCause;
+    handshakeDoc["handshake"]["last_heat_time"] = getLastHeatingTime();
+
+    serializeJson(handshakeDoc, Serial);
+    Serial.println();
 }
 
 float getTemperature() {
@@ -381,6 +422,7 @@ void sendPingResponse() {
     StaticJsonDocument<512> responseDoc;
 
     responseDoc["ping_response"]["alive"] = true;
+    responseDoc["ping_response"]["timestamp"] = getCurrentTimestamp();
     responseDoc["ping_response"]["machine_state"] = getMachineState();
 
     JsonObject testStatus = responseDoc["ping_response"].createNestedObject("test_status");
@@ -605,6 +647,9 @@ void handleHeatingState() {
 
         chamberState.longHeatingFlag = 0;
         chamberState.isHeating = false;
+
+        lastHeatingTime = getCurrentTimestamp();    // capture current timestamp for handshake
+
         status = REPORT;
         return;
     } else if(temperatureThreshold < -4) {
