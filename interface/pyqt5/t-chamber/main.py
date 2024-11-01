@@ -361,7 +361,7 @@ class MainWindow(QMainWindow):
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
         logger.info('test board worker restarted')
-
+        self.trigger_compare()
 
     # method to set test_is_runing to False when test_interrupted from manual
     def set_flag_to_false(self):

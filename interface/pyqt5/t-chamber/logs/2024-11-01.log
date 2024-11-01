@@ -779,3 +779,5 @@ serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
 2024-11-01 11:24:09 - serialCaptureWorker - INFO - sent to arduino: {"temp": 70, "duration": 60000}
 2024-11-01 11:24:09 - serialCaptureWorker - INFO - sending sequence {'temp': 70, 'duration': 60000} for test test_2
 2024-11-01 11:24:09 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-01 11:49:20 - __main__ - INFO - app started
+2024-11-01 11:49:20 - portSelector - INFO - ports refreshed
