@@ -411,7 +411,7 @@ void parseAndRunCommands(JsonObject& commands) {
         } else if (command == "SET_TIMESTAMP") {
             setInitialTimestamp(commandParams);
             sendHandshake();
-        } else if (command == "SHOW DATA") {
+        } else if (command == "SHOW_DATA") {
             displaySerial();
         } else if (command == "RESET") {
             status = RESET;
@@ -478,6 +478,10 @@ String getMachineState() {
 }
 
 void parseTextFromJson(JsonDocument& doc) {
+    if (doc.containsKey("handshake")) {
+        JsonObject handshake = doc["handshake"];
+        setInitialTimestamp(handshake);
+        sendHandshake();
     if (doc.containsKey("tests")) {             // if json consists of tests
         JsonObject test = doc["tests"];
         parseAndQueueTests(test);
@@ -580,7 +584,7 @@ void parseCommand(String command) {
         Serial.println("Temp set to: " + String(chamberState.temperatureDesired));
         displaySerial();
     }
-    else if (command == "SYSTEM OFF") {
+    else if (command == "SYSTEM_OFF") {
         status = EMERGENCY_STOP;
         Serial.println("SYSTEM OFF/EMERGENCY_STOP");
     }
@@ -593,10 +597,10 @@ void parseCommand(String command) {
         Serial.println("System Report:");
         displaySerial();
     }
-    else if (command == "SHOW DATA") {
+    else if (command == "SHOW_DATA") {
         displaySerial();
     }
-    else if (command == "SHOW RUNNING SEQUENCE") {
+    else if (command == "SHOW_RUNNING_SEQUENCE") {
         if (isTestRunning) {
             Serial.print("Running sequence: Target temp = ");
             Serial.print(chamberState.temperatureDesired, 2);
@@ -798,7 +802,7 @@ void readAndParseSerial() {
             if (!error) {
                 parseTextFromJson(jsonBuffer);  // Parse the JSON
             } else {
-                parseCommand(incomingString);  // Parse regular commands
+                parseCommand(incomingString);  // TODO: remove once python has been updated to send json
             }
 
             incomingString[0] = '\0';
