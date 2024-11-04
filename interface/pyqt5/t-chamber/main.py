@@ -17,6 +17,7 @@ from logger_config import setup_logger
 from mainTab import MainTab
 from manualTab import ManualTab
 import popups
+import usefuls
 
 logger = setup_logger(__name__)
 
@@ -336,32 +337,18 @@ class MainWindow(QMainWindow):
         self.main_tab.change_test_part_gui(self.test_data)
         self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
 
-    # extract expected test outcome from test file
-    def expected_output(self, test_data):
-        if test_data is not None and 'tests' in test_data:
-            all_expected_outputs = []
-            all_tests = [key for key in test_data['tests'].keys()]
-            # iterate through each test and run it
-            for test_key in all_tests:
-                test = test_data['tests'].get(test_key, {})
-                expected_output = test.get('expected output', '')  # get the expected output string
-                if expected_output:
-                    all_expected_outputs.append(expected_output)
-            output = all_expected_outputs[0]
-            return output
-        return []
-
+    # check if test board output is as expected
     def check_output(self, output):
         output = str(output)
-        exp_output = self.expected_output(self.test_data)
+        exp_output = usefuls.expected_output(self.test_data)
         if output == '':
             message = 'waiting for test board output'
             self.update_listbox_gui(message)
-        if output == exp_output:
+        elif output == exp_output:
             return
         else:
             date_str = datetime.now().strftime("%m/%d %H:%M:%S")
-            error_message = f"incorrect test board output ({date_str})"
+            error_message = f"{output} ({date_str})"
             self.incorrect_output_gui(error_message)
 
     # method to set test_is_runing to False when test_interrupted from manual
