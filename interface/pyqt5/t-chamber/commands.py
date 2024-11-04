@@ -4,7 +4,7 @@ from datetime import datetime
 # show data
 def show_data():
     show_data = {"commands": {
-                "SHOWDATA": {}
+                "SHOW_DATA": {}
                 }
     }
     return show_data
@@ -52,9 +52,7 @@ def handshake():
 # set temp & duration
 def set_temp(data):
     set_all = {"commands": {
-            "SET_TEMP": {
-                data
-            }
+            "SET_TEMP": data
             }
     }
     return set_all

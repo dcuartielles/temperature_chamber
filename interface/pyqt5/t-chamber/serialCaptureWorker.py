@@ -78,24 +78,6 @@ class SerialCaptureWorker(QThread):
         self.quit()
         self.wait()
 
-    '''
-    # sends a command to arduino via serial
-    def send_command(self, command):
-        try:
-            if self.ser and self.ser.is_open:
-                self.ser.reset_input_buffer()  # clear the gates
-                self.ser.write((command + '\n').encode('utf-8'))  # encode command in serial
-                logger.info(f'sent command: {command}')
-                time.sleep(0.01)  # small delay for command processing
-            else:
-                logger.warning('connection is not open')
-
-        except serial.SerialException as e:
-            logger.exception(f'error sending command: {e}')
-        except Exception as e:
-            logger.exception(f'unexpected error: {e}')
-            '''
-
     # senf json to arduino
     def send_json_to_arduino(self, test_data):
         json_data = json.dumps(test_data)  # convert python dictionary to json
