@@ -93,11 +93,7 @@ class MainTab(QWidget):
                 logger.info("correct test output")
             else:
                 date_str = datetime.now().strftime("%m/%d %H:%M:%S")
-                error_message = f"incorrect test board output ({date_str})"
                 logger.error(message)
-                # emit incorrect output signal with the error message
-                # self.incorrect_output.emit(error_message)
-                # if no matches, handle as incorrect output
                 self.update_gui_incorrect()
 
     def update_gui_correct(self):

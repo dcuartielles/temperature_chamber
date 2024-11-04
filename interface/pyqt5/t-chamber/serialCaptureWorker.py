@@ -3,6 +3,7 @@ import time
 import serial
 import json
 from logger_config import setup_logger
+import commands
 
 logger = setup_logger(__name__)
 
@@ -77,6 +78,7 @@ class SerialCaptureWorker(QThread):
         self.quit()
         self.wait()
 
+    '''
     # sends a command to arduino via serial
     def send_command(self, command):
         try:
@@ -92,6 +94,7 @@ class SerialCaptureWorker(QThread):
             logger.exception(f'error sending command: {e}')
         except Exception as e:
             logger.exception(f'unexpected error: {e}')
+            '''
 
     # senf json to arduino
     def send_json_to_arduino(self, test_data):
@@ -115,7 +118,8 @@ class SerialCaptureWorker(QThread):
     def read_data(self):
         if not self.is_stopped and self.ser and self.ser.is_open:
             try:
-                self.send_command('SHOW DATA')
+                show_data = commands.show_data()
+                self.send_json_to_arduino(show_data)
                 response = self.ser.readline().decode('utf-8').strip()
                 if response:
                     if response.lower().startswith('error'):
@@ -170,7 +174,8 @@ class SerialCaptureWorker(QThread):
 
     # emergency stop
     def emergency_stop(self):
-        self.send_command('EMERGENCY STOP')
+        stop = commands.emergency_stop()
+        self.send_json_to_arduino(stop)
         logger.info('emergency stop issued')
         message = 'EMERGENCY STOP'
         self.update_listbox.emit(message)
