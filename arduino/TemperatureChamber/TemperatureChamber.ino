@@ -219,6 +219,23 @@ String getLastHeatingTime() {
     return lastHeatingTime.isEmpty() ? "N/A" : lastHeatingTime;
 }
 
+void setInitialTimestamp(JsonObject& commandParams) {
+    if (commandParams.containsKey("timestamp")) {
+        String timestamp = commandParams["timestamp"].as<String>();
+        int year, month, day, hour, minute, second;
+        sscanf(timestamp.c_str(), "%4d-%2d-%2dT%2d:%2d:%2d", &year, &month, &day, &hour, &minute, &second);
+
+        RTCTime initialTime(day, static_cast<Month>(month - 1), year, hour, minute, second, DayOfWeek::SUNDAY, SaveLight::SAVING_TIME_INACTIVE);
+        if (RTC.setTime(initialTime)) {
+            Serial.println("RTC updated with initial timestamp from python app.");
+        } else {
+            Serial.println("Error setting RTC time.");
+        }
+    } else {
+        Serial.println("Timestamp key not found in commandParams.");
+    }
+}
+
 void sendHandshake() {
     StaticJsonDocument<512> handshakeDoc;
 
@@ -391,6 +408,9 @@ void parseAndRunCommands(JsonObject& commands) {
 
         if (command == "PING") {
             sendPingResponse();
+        } else if (command == "SET_TIMESTAMP") {
+            setInitialTimestamp(commandParams);
+            sendHandshake();
         } else if (command == "SHOW DATA") {
             displaySerial();
         } else if (command == "RESET") {
