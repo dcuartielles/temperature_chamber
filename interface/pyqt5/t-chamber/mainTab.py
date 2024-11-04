@@ -5,7 +5,6 @@ from PyQt5.QtGui import QColor, QFont
 from datetime import datetime
 from logger_config import setup_logger
 import popups
-import usefuls
 
 logger = setup_logger(__name__)
 
@@ -79,7 +78,7 @@ class MainTab(QWidget):
     # check if output is as expected
     def check_output(self, message):
         message = str(message) if message else None
-        exp_outputs = usefuls.expected_output(self.test_data)
+        exp_outputs = self.expected_output(self.test_data)
 
         # check for missing output
         if message == '':
@@ -92,8 +91,10 @@ class MainTab(QWidget):
                 self.update_gui_correct()
                 logger.info("correct test output")
             else:
-                date_str = datetime.now().strftime("%m/%d %H:%M:%S")
                 logger.error(message)
+                # emit incorrect output signal with the error message
+                # self.incorrect_output.emit(error_message)
+                # if no matches, handle as incorrect output
                 self.update_gui_incorrect()
 
     def update_gui_correct(self):
@@ -115,6 +116,20 @@ class MainTab(QWidget):
     def cli_update_upper_listbox_gui(self, message):
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
+
+    # extract expected test outcome from test file
+    def expected_output(self, test_data):
+        if test_data is not None and 'tests' in test_data:
+            all_expected_outputs = []
+            all_tests = [key for key in test_data['tests'].keys()]
+            # iterate through each test and run it
+            for test_key in all_tests:
+                test = test_data['tests'].get(test_key, {})
+                expected_output = test.get('expected output', '')  # get the expected output string
+                if expected_output:
+                    all_expected_outputs.append(expected_output)
+            return all_expected_outputs
+        return []
 
     # update exp output listbox
     def expected_output_listbox(self):

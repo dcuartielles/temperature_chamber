@@ -1,7 +1,10 @@
+from datetime import datetime
+
+
 # show data
 def show_data():
     show_data = {"commands": {
-                "SHOW DATA": {}
+                "SHOW_DATA": {}
                 }
     }
     return show_data
@@ -24,9 +27,13 @@ def emergency_stop():
 
 # ping
 def ping():
+    time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+    time_string = f'"timestamp”:"{time}"'
     ping = {
         "commands": {
-            "PING": {}
+            "PING": {
+                time_string
+            }
         }
     }
     return ping
@@ -39,3 +46,13 @@ def handshake():
         }
     }
     return handshake
+
+# set temp & duration
+def set_temp(data):
+    set_all = {"commands": {
+            "SET_TEMP": {
+                data
+            }
+            }
+    }
+    return set_all

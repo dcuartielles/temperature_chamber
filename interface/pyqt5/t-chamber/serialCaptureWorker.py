@@ -152,7 +152,8 @@ class SerialCaptureWorker(QThread):
     def set_temp(self, input_dictionary):
         if input_dictionary is not None:
             logger.info(input_dictionary)
-            set_temp_data = input_dictionary[0]
+            data = input_dictionary[0]
+            set_temp_data = commands.set_temp(data)
             self.send_json_to_arduino(set_temp_data)
         else:
             logger.warning('nothing to set the t-chamber to')
