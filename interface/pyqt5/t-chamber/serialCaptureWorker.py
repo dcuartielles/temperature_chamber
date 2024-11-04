@@ -102,15 +102,18 @@ class SerialCaptureWorker(QThread):
             }
             self.send_json_to_arduino(handshake)
             handshake_response = self.ser.readline().decode('utf-8').strip()
-            if 'handshake' in handshake_response:
-                all_data = [key for key in handshake_response['handshake'].keys()]
-                for data_key in all_data:
-                    piece_of_info = handshake_response['handshake'].get(data_key, '')
-                    status = piece_of_info.get('current_state', '')
-
-                    if status == 'EMERGENCY_STOP':
+            try:
+                # convert response string to dictionary
+                parsed_response = json.loads(handshake_response)
+                if 'handshake' in parsed_response:
+                    current_state = parsed_response['handshake'].get('current_state', '')
+                    if current_state == 'EMERGENCY_STOP':
                         popups.show_error_message('warning', 'the system is off, flip the switch')
 
+            except json.JSONDecodeError:
+                logger.exception('failed to parse arduino response')
+
+            # prevent handshake from being sent again
             self.sent_handshake = True
 
     # ping
