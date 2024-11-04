@@ -4,7 +4,7 @@ from datetime import datetime
 # show data
 def show_data():
     show_data = {"commands": {
-                "SHOW_DATA": {}
+                "SHOWDATA": {}
                 }
     }
     return show_data
@@ -27,12 +27,10 @@ def emergency_stop():
 
 # ping
 def ping():
-    time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-    time_string = f'"timestamp”:"{time}"'
     ping = {
         "commands": {
             "PING": {
-                time_string
+
             }
         }
     }
@@ -40,9 +38,13 @@ def ping():
 
 # handshake
 def handshake():
+    time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+    time_string = f'"timestamp”:"{time}"'
     handshake = {
         "commands": {
-            "HANDSHAKE": {}
+            "HANDSHAKE": {
+                time_string
+            }
         }
     }
     return handshake
