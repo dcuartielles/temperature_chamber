@@ -36,18 +36,6 @@ def ping():
     }
     return ping
 
-# handshake
-def handshake():
-    time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-    time_string = f'"timestamp”:"{time}"'
-    handshake = {
-        "commands": {
-            "HANDSHAKE": {
-                time_string
-            }
-        }
-    }
-    return handshake
 
 # set temp & duration
 def set_temp(data):
@@ -56,3 +44,31 @@ def set_temp(data):
             }
     }
     return set_all
+
+
+'''
+{"handshake":
+    {
+        "timestamp":"2157-11-01T10:37:47",
+        "current_state":"EMERGENCY_STOP",
+        "last_shutdown_cause":"Unknown",
+        "last_heat_time":"N/A"
+    }
+}
+
+PING
+{
+    "ping_response": {
+        "alive": true,
+        "timestamp": "2024-11-01T10:31:47",
+        "machine_state": "REPORT",
+        "test_status": {
+            "is_test_running": false,
+            "current_test": "",
+            "current_sequence": 1,
+            "desired_temp": -41,
+            "current_duration": 0
+        }
+    }
+}
+'''

@@ -2,8 +2,11 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import serial
 import json
+
+import popups
 from logger_config import setup_logger
 import commands
+from datetime import datetime
 
 logger = setup_logger(__name__)
 
@@ -23,9 +26,11 @@ class SerialCaptureWorker(QThread):
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
         self.last_command_time = time.time()
+        self.last_ping = time.time()
         self.last_readout = time.time()
         self.test_data = None
         self.trigger_run_tests.connect(self.run_all_tests)
+        self.sent_handshake = False
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -55,6 +60,8 @@ class SerialCaptureWorker(QThread):
             if not self.is_stopped:
                 try:
                     if self.ser and self.ser.is_open:
+                        # send handshake
+                        self.handshake()
                         # read incoming serial data
                         response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                         if response:
@@ -63,6 +70,11 @@ class SerialCaptureWorker(QThread):
                         if time.time() - self.last_command_time > 1:
                             self.last_command_time = time.time()
                             self.trigger_read_data()
+
+                        if time.time() - self.last_ping > 0.5:
+                            self.last_ping = time.time()
+                            self.ping()
+
                 except serial.SerialException as e:
                     logger.exception(f'serial error: {e}')
                     self.is_running = False
@@ -77,6 +89,34 @@ class SerialCaptureWorker(QThread):
             logger.info(f'connection to {self.port} closed')
         self.quit()
         self.wait()
+
+    # handshake
+    def handshake(self):
+        if not self.sent_handshake:
+            time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            time_string = f'"timestamp”:"{time}"'
+            handshake = {
+                "handshake": {
+                    time_string
+                }
+            }
+            self.send_json_to_arduino(handshake)
+            handshake_response = self.ser.readline().decode('utf-8').strip()
+            if 'handshake' in handshake_response:
+                all_data = [key for key in handshake_response['handshake'].keys()]
+                for data_key in all_data:
+                    piece_of_info = handshake_response['handshake'].get(data_key, '')
+                    status = piece_of_info.get('current_state', '')
+
+                    if status == 'EMERGENCY_STOP':
+                        popups.show_error_message('warning', 'the system is off, flip the switch')
+
+            self.sent_handshake = True
+
+    # ping
+    def ping(self):
+        ping = commands.ping()
+        self.send_json_to_arduino(ping)
 
     # senf json to arduino
     def send_json_to_arduino(self, test_data):
