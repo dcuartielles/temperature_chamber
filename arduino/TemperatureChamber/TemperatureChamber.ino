@@ -386,10 +386,10 @@ void runNextTest() {
     }
 }
 
-void parseAndRunManualSet(JsonDocument& doc) {
+void parseAndRunManualSet(JsonObject& commandParams) {
 
-        float temp = doc["temp"];
-        unsigned long duration = doc["duration"];
+        float temp = commandParams["temp"];
+        unsigned long duration = commandParams["duration"];
         setTemperature(temp);
         Serial.print("Manual temp set to ");
         Serial.println(temp);
@@ -408,6 +408,8 @@ void parseAndRunCommands(JsonObject& commands) {
             sendPingResponse();
         } else if (command == "SHOW_DATA") {
             displaySerial();
+        } else if (command == "SET_TEMP") {
+            parseAndRunManualSet(commandParams);
         } else if (command == "RESET") {
             status = RESET;
             Serial.println("System reset via command.");
@@ -447,9 +449,6 @@ void sendPingResponse() {
     testStatus["desired_temp"] = chamberState.temperatureDesired;
     testStatus["current_duration"] = currentDuration;
 
-    // add timestamp
-    //responseDoc["ping_response"]["time
-
     serializeJson(responseDoc, Serial);
     Serial.println();
 }
@@ -483,8 +482,8 @@ void parseTextFromJson(JsonDocument& doc) {
     } else if (doc.containsKey("commands")) {   // if json consists of commands
         JsonObject commands = doc["commands"];
         parseAndRunCommands(commands);
-    } else if (doc.containsKey("temp") && doc.containsKey("duration")) {
-        parseAndRunManualSet(doc);
+    // } else if (doc.containsKey("temp") && doc.containsKey("duration")) {
+    //     parseAndRunManualSet(doc);
     } else {
         Serial.println("Error: Invalid JSON format");
     }
