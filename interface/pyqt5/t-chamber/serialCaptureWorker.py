@@ -31,6 +31,16 @@ class SerialCaptureWorker(QThread):
         self.test_data = None
         self.trigger_run_tests.connect(self.run_all_tests)
         self.sent_handshake = False
+        self.alive = False
+        self.timestamp = None
+        self.machine_state = None
+        self.is_test_running = None
+        self.current_test = None
+        self.current_sequence = None
+        self.current_duration = None
+        self.desired_temp = None
+        self.time_left = None
+
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -126,6 +136,30 @@ class SerialCaptureWorker(QThread):
     def ping(self):
         ping = commands.ping()
         self.send_json_to_arduino(ping)
+        ping_response = self.ser.readline().decode('utf-8').strip()
+        try:
+            # convert response string to dictionary
+            parsed_response = json.loads(ping_response)
+            if 'ping_response' in parsed_response:
+                ping_data = parsed_response['ping_response']
+                # get all the data from ping & store it in class variables
+                self.alive = ping_data.get('alive', False)
+                self.timestamp = ping_data.get('timestamp', '')
+                self.machine_state = ping_data.get('machine_state', '')
+
+                # extract test status information
+                test_status = ping_data.get('test_status', {})
+                self.is_test_running = test_status.get('is_test_running', False)
+                self.current_test = test_status.get('current_test', '')
+                self.current_sequence = test_status.get('current_sequence', 0)
+                self.desired_temp = test_status.get('desired_temp', 0)
+                self.current_duration = test_status.get('current_duration', 0)
+
+                # get time left and convert for display
+                self.time_left = test_status.get('time_left', 0) / 60
+
+        except json.JSONDecodeError:
+                logger.exception('failed to parse arduino response')
 
     # senf json to arduino
     def send_json_to_arduino(self, test_data):

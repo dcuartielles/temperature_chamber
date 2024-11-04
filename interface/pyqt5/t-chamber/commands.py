@@ -67,7 +67,8 @@ PING
             "current_test": "",
             "current_sequence": 1,
             "desired_temp": -41,
-            "current_duration": 0
+            "current_duration": 0,
+            "time_left": 120
         }
     }
 }
