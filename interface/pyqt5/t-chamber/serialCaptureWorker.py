@@ -101,7 +101,9 @@ class SerialCaptureWorker(QThread):
                 }
             }
             self.send_json_to_arduino(handshake)
+            # decode arduino response
             handshake_response = self.ser.readline().decode('utf-8').strip()
+
             try:
                 # convert response string to dictionary
                 parsed_response = json.loads(handshake_response)
@@ -115,6 +117,10 @@ class SerialCaptureWorker(QThread):
 
             # prevent handshake from being sent again
             self.sent_handshake = True
+
+    # trigger ping
+    def trigger_ping(self):
+        self.ping()
 
     # ping
     def ping(self):
