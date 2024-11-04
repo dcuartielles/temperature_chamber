@@ -220,6 +220,16 @@ class MainWindow(QMainWindow):
         self.listbox.addItem(item)
         self.listbox.scrollToBottom()
 
+    # update running test info label
+    def update_test_label(self, test_info):
+        
+        if self.test_is_running:
+            test = test_info.get('test')
+            sequence = test_info.get('sequence')
+            time_left = test_info.get('time_left')
+
+            self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {time_left}')
+
     # the actual chamber_monitor QList updates
     def update_chamber_monitor_gui(self, message):
         self.chamber_monitor.clear()  # clear old data
@@ -274,6 +284,7 @@ class MainWindow(QMainWindow):
             if not self.serial_worker.is_stopped:
                 self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
                 self.manual_tab.clear_current_setting_label()
+                self.serial_worker.update_test_label_signal.connect(self.update_test_label)
             if not self.test_board.is_stopped:
                 self.test_board.is_running = False
                 self.test_board.stop()

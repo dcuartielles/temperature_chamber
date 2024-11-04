@@ -15,6 +15,16 @@ class SerialCaptureWorker(QThread):
     update_listbox = pyqtSignal(str)  # signal to update listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
     trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
+    machine_status = pyqtSignal(str)
+    # signals to main to update running test info
+    is_test_running_signal = pyqtSignal(bool)
+    update_test_label_signal = pyqtSignal(dict)
+    current_test_signal = pyqtSignal(str)
+    current_sequence_signal = pyqtSignal(int)
+    desired_temp_signal = pyqtSignal(int)
+    current_duration_signal = pyqtSignal(int)
+    time_left_signal = pyqtSignal(int)
+
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -81,7 +91,7 @@ class SerialCaptureWorker(QThread):
                             self.last_command_time = time.time()
                             self.trigger_read_data()
 
-                        if time.time() - self.last_ping > 0.5:
+                        if time.time() - self.last_ping > 0.6:
                             self.last_ping = time.time()
                             self.ping()
 
@@ -147,19 +157,31 @@ class SerialCaptureWorker(QThread):
                 self.timestamp = ping_data.get('timestamp', '')
                 self.machine_state = ping_data.get('machine_state', '')
 
-                # extract test status information
+                # extract test status information and emit signals for gui updates
                 test_status = ping_data.get('test_status', {})
                 self.is_test_running = test_status.get('is_test_running', False)
+                self.is_test_running_signal.emit(self.is_test_running)
                 self.current_test = test_status.get('current_test', '')
                 self.current_sequence = test_status.get('current_sequence', 0)
                 self.desired_temp = test_status.get('desired_temp', 0)
-                self.current_duration = test_status.get('current_duration', 0)
 
-                # get time left and convert for display
+                # get duration and time left, and convert them for display
+                self.current_duration = test_status.get('current_duration', 0) / 60000
                 self.time_left = test_status.get('time_left', 0) / 60
+                self.emit_test_status()
+
 
         except json.JSONDecodeError:
-                logger.exception('failed to parse arduino response')
+            logger.exception('failed to parse arduino response')
+
+    # prep running test info updates to be emitted
+    def emit_test_status(self):
+        test_status_data = {
+            'test': self.current_test,
+            'sequence': self.current_sequence,
+            'time_left': self.time_left
+        }
+        self.update_test_label_signal.emit(test_status_data)
 
     # senf json to arduino
     def send_json_to_arduino(self, test_data):
