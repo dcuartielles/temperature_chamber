@@ -185,8 +185,6 @@ void setup() {
         RTC.setTimeIfNotRunning(defaultTime);
     }
 
-    sendHandshake();
-
     // Initialise thermocouples
     sensors1.begin();
     sensors2.begin();
@@ -408,9 +406,6 @@ void parseAndRunCommands(JsonObject& commands) {
 
         if (command == "PING") {
             sendPingResponse();
-        } else if (command == "SET_TIMESTAMP") {
-            setInitialTimestamp(commandParams);
-            sendHandshake();
         } else if (command == "SHOW_DATA") {
             displaySerial();
         } else if (command == "RESET") {
@@ -482,7 +477,7 @@ void parseTextFromJson(JsonDocument& doc) {
         JsonObject handshake = doc["handshake"];
         setInitialTimestamp(handshake);
         sendHandshake();
-    if (doc.containsKey("tests")) {             // if json consists of tests
+    } else if (doc.containsKey("tests")) {             // if json consists of tests
         JsonObject test = doc["tests"];
         parseAndQueueTests(test);
     } else if (doc.containsKey("commands")) {   // if json consists of commands
