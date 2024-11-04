@@ -4,6 +4,7 @@ import time
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox, QTabWidget
 from PyQt5.QtGui import QIcon, QPixmap, QColor, QFont
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
+from datetime import datetime
 
 # functionality imports
 from jsonFunctionality import FileHandler
@@ -179,7 +180,7 @@ class MainWindow(QMainWindow):
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
         self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
         self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
-        self.main_tab.incorrect_output.connect(self.incorrect_output_gui)
+        # self.main_tab.incorrect_output.connect(self.incorrect_output_gui)
         self.port_selector.ports_refreshed.connect(self.re_enable_start)
 
         # create test board worker thread
@@ -326,6 +327,7 @@ class MainWindow(QMainWindow):
         # restart test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.update_upper_listbox.connect(self.main_tab.update_test_output_listbox_gui)
+        self.test_board.update_upper_listbox.connect(self.check_output)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
         logger.info('test board worker restarted')
@@ -333,6 +335,34 @@ class MainWindow(QMainWindow):
         # update the gui
         self.main_tab.change_test_part_gui(self.test_data)
         self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
+
+    # extract expected test outcome from test file
+    def expected_output(self, test_data):
+        if test_data is not None and 'tests' in test_data:
+            all_expected_outputs = []
+            all_tests = [key for key in test_data['tests'].keys()]
+            # iterate through each test and run it
+            for test_key in all_tests:
+                test = test_data['tests'].get(test_key, {})
+                expected_output = test.get('expected output', '')  # get the expected output string
+                if expected_output:
+                    all_expected_outputs.append(expected_output)
+            output = all_expected_outputs[0]
+            return output
+        return []
+
+    def check_output(self, output):
+        output = str(output)
+        exp_output = self.expected_output(self.test_data)
+        if output == '':
+            message = 'waiting for test board output'
+            self.update_listbox_gui(message)
+        if output == exp_output:
+            return
+        else:
+            date_str = datetime.now().strftime("%m/%d %H:%M:%S")
+            error_message = f"incorrect test board output ({date_str})"
+            self.incorrect_output_gui(error_message)
 
     # method to set test_is_runing to False when test_interrupted from manual
     def set_flag_to_false(self):
