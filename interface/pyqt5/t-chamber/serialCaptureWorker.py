@@ -170,7 +170,6 @@ class SerialCaptureWorker(QThread):
                 self.time_left = test_status.get('time_left', 0) / 60
                 self.emit_test_status()
 
-
         except json.JSONDecodeError:
             logger.exception('failed to parse arduino response')
 

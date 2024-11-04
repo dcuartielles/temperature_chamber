@@ -222,7 +222,7 @@ class MainWindow(QMainWindow):
 
     # update running test info label
     def update_test_label(self, test_info):
-        
+
         if self.test_is_running:
             test = test_info.get('test')
             sequence = test_info.get('sequence')
@@ -375,9 +375,13 @@ class MainWindow(QMainWindow):
             error_message = f"incorrect test board output ({date_str})"
             self.incorrect_output_gui(error_message)
 
-    # method to set test_is_runing to False when test_interrupted from manual
+    # method to set test_is_running to False when test_interrupted from manual
     def set_flag_to_false(self):
         self.test_is_running = False
+
+    # set the test_is_running flag according to signal from serial worker
+    def set_flag(self, is_running):
+        self.test_is_running = is_running
 
     # re-enable start button after refreshing ports
     def re_enable_start(self):
