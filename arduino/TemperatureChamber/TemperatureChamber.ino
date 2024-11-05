@@ -303,9 +303,9 @@ bool isTemperatureReached(float targetTemp, float currentTemp) {
 
 bool holdForPeriod(unsigned long duration) {
     // Serial.print("Checking timer: ");
-    Serial.print(millis() - sequenceStartTime);
-    Serial.print(" / ");
-    Serial.println(duration);
+    // Serial.print(millis() - sequenceStartTime);
+    // Serial.print(" / ");
+    // Serial.println(duration);
     return millis() - sequenceStartTime >= duration;
 }
 
