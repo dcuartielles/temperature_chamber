@@ -309,9 +309,13 @@ bool holdForPeriod(unsigned long duration) {
     return millis() - sequenceStartTime >= duration;
 }
 
-int getTimeLeft(unsigned long duration) {
-    int timeLeft = (duration - (millis() - sequenceStartTime)) / 1000;
-    return timeLeft;
+int getTimeLeft(unsigned long duration, Sequence currentSequence) {
+    if (isTemperatureReached(currentSequence.targetTemp, chamberState.temperatureRoom)) {
+        int timeLeft = (duration - (millis() - sequenceStartTime)) / 1000;
+        return timeLeft;
+    } else {
+        return 0;
+    }
 }
 
 // dutyCycle has to be 0..100
@@ -443,6 +447,8 @@ void parseAndRunCommands(JsonObject& commands) {
 void sendPingResponse() {
     StaticJsonDocument<512> responseDoc;
 
+    Sequence currentSequence = currentTest.sequences[currentSequenceIndex];
+
     responseDoc["ping_response"]["alive"] = true;
     responseDoc["ping_response"]["timestamp"] = getCurrentTimestamp();
     responseDoc["ping_response"]["machine_state"] = getMachineState();
@@ -453,7 +459,7 @@ void sendPingResponse() {
     testStatus["current_sequence"] = currentSequenceIndex + 1;
     testStatus["desired_temp"] = chamberState.temperatureDesired;
     testStatus["current_duration"] = currentDuration;
-    testStatus["time_left"] = getTimeLeft(currentDuration);
+    testStatus["time_left"] = getTimeLeft(currentDuration, currentSequence);
 
     serializeJson(responseDoc, Serial);
     Serial.println();
