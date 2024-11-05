@@ -175,7 +175,7 @@ class SerialCaptureWorker(QThread):
         test_status_data = {
             'test': self.current_test,
             'sequence': self.current_sequence,
-            'time_left': self.time_left
+            'time_left': int(self.time_left)
         }
         self.update_test_label_signal.emit(test_status_data)
         logger.info(f'emitting test status data: {test_status_data}')

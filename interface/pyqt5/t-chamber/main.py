@@ -179,10 +179,10 @@ class MainWindow(QMainWindow):
 
         # only now create the worker threads with the selected ports
         self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
-        self.serial_worker.update_listbox.connect(self.update_listbox_gui)
+        # self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
-        self.serial_worker.no_ping.connect(self.no_ping_for_five)
+        # self.serial_worker.no_ping.connect(self.no_ping_for_five)
         self.serial_worker.start()  # start the worker thread
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
         self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
@@ -193,6 +193,8 @@ class MainWindow(QMainWindow):
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.start()  # start test board thread
+        if not self.selected_t_port or self.selected_c_port:
+            popups.show_error_message('warning', 'there is no serial connection to the boards')
 
     # the actual listbox updates
     def update_listbox_gui(self, message):
@@ -247,7 +249,7 @@ class MainWindow(QMainWindow):
             time_left = test_info.get('time_left')
             logger.info('parsing test info to update running test label')
 
-            self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {time_left}')
+            self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {time_left} minutes')
             self.serial_label.setStyleSheet('font-weight: bold;')
         else:
             self.serial_label.setText('running test info')
@@ -277,7 +279,7 @@ class MainWindow(QMainWindow):
     def trigger_run_t(self):
         self.serial_worker.trigger_run_tests.emit(self.test_data)
 
-    #interrupt test on arduino
+    # interrupt test on arduino
     def trigger_interrupt_t(self):
         self.serial_worker.trigger_interrupt_test.emit()
 
