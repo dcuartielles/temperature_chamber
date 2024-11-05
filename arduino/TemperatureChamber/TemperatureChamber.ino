@@ -309,6 +309,11 @@ bool holdForPeriod(unsigned long duration) {
     return millis() - sequenceStartTime >= duration;
 }
 
+int getTimeLeft(unsigned long duration) {
+    int timeLeft = (duration - (millis() - sequenceStartTime)) / 1000;
+    return timeLeft;
+}
+
 // dutyCycle has to be 0..100
 void controlRelay(Led& relay, int dutyCycle, unsigned long period, unsigned long& lastOnTimer) {
     unsigned long elapsedTime = millis() - lastOnTimer;
@@ -413,10 +418,10 @@ void parseAndRunCommands(JsonObject& commands) {
         } else if (command == "RESET") {
             status = RESET;
             Serial.println("System reset via command.");
-        } else if (command == "EMERGENCY STOP") {
+        } else if (command == "EMERGENCY_STOP") {
             status = EMERGENCY_STOP;
             Serial.println("Emergency Stop initiated via command.");
-        } else if (command == "SHOW RUNNING SEQUENCE") {
+        } else if (command == "SHOW_RUNNING_SEQUENCE") {
             if (isTestRunning) {
                 Serial.print("Running sequence: Target temp = ");
                 Serial.print(chamberState.temperatureDesired);
@@ -448,6 +453,7 @@ void sendPingResponse() {
     testStatus["current_sequence"] = currentSequenceIndex + 1;
     testStatus["desired_temp"] = chamberState.temperatureDesired;
     testStatus["current_duration"] = currentDuration;
+    testStatus["time_left"] = getTimeLeft(currentDuration);
 
     serializeJson(responseDoc, Serial);
     Serial.println();
