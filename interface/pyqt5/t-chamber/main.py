@@ -187,7 +187,7 @@ class MainWindow(QMainWindow):
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
         self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
         self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
-        # self.main_tab.incorrect_output.connect(self.incorrect_output_gui)
+        self.main_tab.incorrect_output.connect(self.incorrect_output_gui)
         self.port_selector.ports_refreshed.connect(self.re_enable_start)
 
         # create test board worker thread
@@ -333,7 +333,7 @@ class MainWindow(QMainWindow):
             if not self.serial_worker.is_stopped:
                 self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
                 self.manual_tab.clear_current_setting_label()
-                # self.serial_worker.update_test_label_signal.connect(self.update_test_label)
+                self.serial_worker.update_test_label_signal.connect(self.update_test_label)
             if not self.test_board.is_stopped:
                 self.test_board.is_running = False
                 self.test_board.stop()

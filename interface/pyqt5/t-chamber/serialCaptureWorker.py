@@ -147,28 +147,31 @@ class SerialCaptureWorker(QThread):
         ping = commands.ping()  # create ping command
         self.send_json_to_arduino(ping)  # send ping to arduino
         ping_response = self.ser.readline().decode('utf-8').strip()
-        # convert response string to dictionary
-        parsed_response = json.loads(ping_response)
-        if 'ping_response' in parsed_response:
-            ping_data = parsed_response['ping_response']
-            # get all the data from ping & store it in class variables
-            self.alive = ping_data.get('alive', False)
-            self.timestamp = ping_data.get('timestamp', '')
-            self.machine_state = ping_data.get('machine_state', '')
-            # self.machine_state_signal.emit(self.machine_state)
-            # extract test status information and emit signals for gui updates
-            self.current_temperature = ping_data.get('current_temp', 0)
-            test_status = ping_data.get('test_status', {})
-            self.is_test_running = test_status.get('is_test_running', False)
-            # self.is_test_running_signal.emit(self.is_test_running)
-            self.current_test = test_status.get('current_test', '')
-            self.current_sequence = test_status.get('current_sequence', 0)
-            self.desired_temp = test_status.get('desired_temp', 0)
-            # get duration and time left, and convert them for display
-            self.current_duration = test_status.get('current_duration', 0) / 60000
-            self.time_left = test_status.get('time_left', 0) / 60
-            self.emit_test_status()
-            self.display_info()
+        try:
+            # convert response string to dictionary
+            parsed_response = json.loads(ping_response)
+            if 'ping_response' in parsed_response:
+                ping_data = parsed_response['ping_response']
+                # get all the data from ping & store it in class variables
+                self.alive = ping_data.get('alive', False)
+                self.timestamp = ping_data.get('timestamp', '')
+                self.machine_state = ping_data.get('machine_state', '')
+                # self.machine_state_signal.emit(self.machine_state)
+                # extract test status information and emit signals for gui updates
+                self.current_temperature = ping_data.get('current_temp', 0)
+                test_status = ping_data.get('test_status', {})
+                self.is_test_running = test_status.get('is_test_running', False)
+                # self.is_test_running_signal.emit(self.is_test_running)
+                self.current_test = test_status.get('current_test', '')
+                self.current_sequence = test_status.get('current_sequence', 0)
+                self.desired_temp = test_status.get('desired_temp', 0)
+                # get duration and time left, and convert them for display
+                self.current_duration = test_status.get('current_duration', 0) / 60000
+                self.time_left = test_status.get('time_left', 0) / 60
+                self.emit_test_status()
+                self.display_info()
+        except json.JSONDecodeError:
+            logger.exception(f'failed to decode ping response as json: {ping_response}')
 
     # prep running test info updates to be emitted
     def emit_test_status(self):
