@@ -179,7 +179,7 @@ class MainWindow(QMainWindow):
 
         # only now create the worker threads with the selected ports
         self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
-        # self.serial_worker.update_listbox.connect(self.update_listbox_gui)
+        self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         # self.serial_worker.no_ping.connect(self.no_ping_for_five)
@@ -193,7 +193,7 @@ class MainWindow(QMainWindow):
         # create test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.start()  # start test board thread
-        if not self.selected_t_port or self.selected_c_port:
+        if not self.serial_worker or self.test_board:
             popups.show_error_message('warning', 'there is no serial connection to the boards')
 
     # the actual listbox updates
@@ -333,7 +333,7 @@ class MainWindow(QMainWindow):
             if not self.serial_worker.is_stopped:
                 self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
                 self.manual_tab.clear_current_setting_label()
-                self.serial_worker.update_test_label_signal.connect(self.update_test_label)
+                # self.serial_worker.update_test_label_signal.connect(self.update_test_label)
             if not self.test_board.is_stopped:
                 self.test_board.is_running = False
                 self.test_board.stop()

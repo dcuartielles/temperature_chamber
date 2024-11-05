@@ -92,9 +92,9 @@ class SerialCaptureWorker(QThread):
                         self.handshake()
                         time.sleep(0.1)
                         # read incoming serial data
-                        '''response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                        response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                         if response:
-                            self.process_response(response)'''
+                            self.process_response(response)
 
                         if time.time() - self.last_ping >= 0.6:
                             self.last_ping = time.time()
@@ -155,12 +155,12 @@ class SerialCaptureWorker(QThread):
             self.alive = ping_data.get('alive', False)
             self.timestamp = ping_data.get('timestamp', '')
             self.machine_state = ping_data.get('machine_state', '')
-            self.machine_state_signal.emit(self.machine_state)
+            # self.machine_state_signal.emit(self.machine_state)
             # extract test status information and emit signals for gui updates
             self.current_temperature = ping_data.get('current_temp', 0)
             test_status = ping_data.get('test_status', {})
             self.is_test_running = test_status.get('is_test_running', False)
-            self.is_test_running_signal.emit(self.is_test_running)
+            # self.is_test_running_signal.emit(self.is_test_running)
             self.current_test = test_status.get('current_test', '')
             self.current_sequence = test_status.get('current_sequence', 0)
             self.desired_temp = test_status.get('desired_temp', 0)
@@ -175,7 +175,7 @@ class SerialCaptureWorker(QThread):
         test_status_data = {
             'test': self.current_test,
             'sequence': self.current_sequence,
-            'time_left': int(self.time_left)
+            'time_left': self.time_left
         }
         self.update_test_label_signal.emit(test_status_data)
         logger.info(f'emitting test status data: {test_status_data}')
