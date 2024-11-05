@@ -13,7 +13,7 @@ logger = setup_logger(__name__)
 class SerialCaptureWorker(QThread):
 
     update_listbox = pyqtSignal(str)  # signal to update listbox
-    update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
+    update_chamber_monitor = pyqtSignal(dict)  # signal to update chamber monitor
     trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
     trigger_interrupt_test = pyqtSignal()  # signal form main to send interrupt test command to arduino
     machine_state_signal = pyqtSignal(str)
@@ -27,7 +27,7 @@ class SerialCaptureWorker(QThread):
     desired_temp_signal = pyqtSignal(int)
     current_duration_signal = pyqtSignal(int)
     time_left_signal = pyqtSignal(int)
-    current_temp_signal = pyqtSignal(int)
+    # current_temp_signal = pyqtSignal(int)
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -96,15 +96,9 @@ class SerialCaptureWorker(QThread):
                         if response:
                             self.process_response(response)
 
-                        if time.time() - self.last_command_time >= 1:
-                            self.last_command_time = time.time()
-                            self.trigger_read_data()
-
                         if time.time() - self.last_ping >= 0.6:
                             self.last_ping = time.time()
                             self.ping()
-                        elif time.time() - self.last_ping >= 300:
-                            self.no_ping.emit()
 
                 except serial.SerialException as e:
                     logger.exception(f'serial error: {e}')
@@ -167,6 +161,7 @@ class SerialCaptureWorker(QThread):
             self.machine_state = ping_data.get('machine_state', '')
             self.machine_state_signal.emit(self.machine_state)
             # extract test status information and emit signals for gui updates
+            self.current_temperature = ping_data.get('current_temp', 0)
             test_status = ping_data.get('test_status', {})
             self.is_test_running = test_status.get('is_test_running', False)
             self.is_test_running_signal.emit(self.is_test_running)
@@ -177,6 +172,7 @@ class SerialCaptureWorker(QThread):
             self.current_duration = test_status.get('current_duration', 0) / 60000
             self.time_left = test_status.get('time_left', 0) / 60
             self.emit_test_status()
+            self.display_info()
 
     # prep running test info updates to be emitted
     def emit_test_status(self):
@@ -187,6 +183,15 @@ class SerialCaptureWorker(QThread):
         }
         self.update_test_label_signal.emit(test_status_data)
         logger.info(f'emitting test status data: {test_status_data}')
+
+    # extract relevant info for display in serial monitor
+    def display_info(self):
+        relevant_info = {
+            'current_temp': self.current_temperature,
+            'desired_temp': self.desired_temp,
+            'machine_state': self.machine_state
+        }
+        self.update_chamber_monitor.emit(relevant_info)
 
     # senf json to arduino
     def send_json_to_arduino(self, test_data):
@@ -211,29 +216,6 @@ class SerialCaptureWorker(QThread):
         interrupt = commands.interrupt_test()
         self.send_json_to_arduino(interrupt)
 
-    # read data
-    def read_data(self):
-        if not self.is_stopped and self.ser and self.ser.is_open:
-            try:
-                show_data = commands.show_data()
-                self.send_json_to_arduino(show_data)
-                response = self.ser.readline().decode('utf-8').strip()
-                if response:
-                    if response.lower().startswith('error'):
-                        logger.info(response)
-                        return
-                    logger.info(f'arduino says: {response}')
-                    return response
-                else:
-                    logger.info('there was nothing worth saying here')
-                    return None
-            except serial.SerialException as e:
-                logger.exception(f'error reading data from control board serial: {e}')
-                return None
-        else:
-            logger.warning('serial closed or stopped')
-            return None
-
     # run the entire test file
     def run_all_tests(self, test_data):
         if test_data is not None and 'tests' in test_data:
@@ -255,11 +237,6 @@ class SerialCaptureWorker(QThread):
         else:
             logger.warning('nothing to set the t-chamber to')
 
-    def trigger_read_data(self):
-        response = self.read_data()  # read data using custom method
-        if response:
-            self.update_chamber_monitor.emit(response)  # emit signal to update the chamber monitor
-
     # process serial response
     def process_response(self, response):
         # list of responses to be picked up
@@ -273,6 +250,7 @@ class SerialCaptureWorker(QThread):
     # emergency stop
     def emergency_stop(self):
         stop = commands.emergency_stop()
+        logger.info('emergency stop should be sending now')
         self.send_json_to_arduino(stop)
         logger.info('emergency stop issued')
         message = 'EMERGENCY STOP'

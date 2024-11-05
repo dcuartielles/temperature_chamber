@@ -68,6 +68,7 @@ PING
         "alive": true,
         "timestamp": "2024-11-01T10:31:47",
         "machine_state": "REPORT",
+        "current_temp": 423,
         "test_status": {
             "is_test_running": false,
             "current_test": "",

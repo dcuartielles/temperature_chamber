@@ -47,11 +47,14 @@ class MainWindow(QMainWindow):
         self.test_board = None
         self.cli_worker = None
 
-        # create a dictionary for setting temp & duration and space for test file accessible from the worker thread
+        # create a dictionary for setting temp & duration
         self.input_dictionary = []
+        # space for test file accessible from the worker thread
         self.test_data = None
         self.filepath = None
+        # updates from ping
         self.current_temperature = None
+        self.machine_state = None
 
         # tabs
         self.main_tab = MainTab(self.test_data)
@@ -155,6 +158,7 @@ class MainWindow(QMainWindow):
         self.start_button.clicked.connect(self.on_start_button_clicked)
         self.main_tab.load_button.clicked.connect(self.load_test_file)
         self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
+        self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
 
         # set layout to the central widget
@@ -181,7 +185,6 @@ class MainWindow(QMainWindow):
         self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
         self.serial_worker.no_ping.connect(self.no_ping_for_five)
         self.serial_worker.start()  # start the worker thread
-        self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
         self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
         self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
@@ -250,25 +253,16 @@ class MainWindow(QMainWindow):
         else:
             self.serial_label.setText('running test info')
 
-    # the actual chamber_monitor QList updates
+    # the actual chamber_monitor QList updates from ping
     def update_chamber_monitor_gui(self, message):
+        self.current_temperature = message.get('current_temp')
+        desired_temp = message.get('desired_temp')
+        self.machine_state = message.get('machine_state')
+        status = f'current temperature: {self.current_temperature}°C | desired temperature: {desired_temp}°C | machine state: {self.machine_state}'
         self.chamber_monitor.clear()  # clear old data
-        item = QListWidgetItem(message)
+        item = QListWidgetItem(status)
         item.setTextAlignment(Qt.AlignCenter)
         self.chamber_monitor.addItem(item)
-        # retrieve the monitor string from arduino
-        arduino_string = message
-        # use reg ex to extract room_temp value
-        match = re.search(r"Room_temp:\s*([\d.]+)", arduino_string)
-        if match:
-            try:
-                # convert the extracted string to int (handle decimals, if any)
-                self.current_temperature = int(float(match.group(1)))
-                logger.info(f'room temp parsed: {self.current_temperature}')
-            except ValueError:
-                logger.exception('failed to convert room temp to int')
-        else:
-            logger.info('room temp not found')
 
     # load test file and store it in the app
     def load_test_file(self):
@@ -288,7 +282,6 @@ class MainWindow(QMainWindow):
     def check_temp(self):
         test_keys = list(self.test_data["tests"].keys())
         first_test_key = test_keys[0]
-
         first_temp = int(self.test_data["tests"][first_test_key]["chamber_sequences"][0]["temp"])
         # check absolute difference
         if abs(self.current_temperature - first_temp) >= 10:
