@@ -142,14 +142,10 @@ class SerialCaptureWorker(QThread):
             # prevent handshake from being sent again
             self.sent_handshake = True
 
-    # trigger ping
-    def trigger_ping(self):
-        self.ping()
-
     # ping
     def ping(self):
-        ping = commands.ping()
-        self.send_json_to_arduino(ping)
+        ping = commands.ping()  # create ping command
+        self.send_json_to_arduino(ping)  # send ping to arduino
         ping_response = self.ser.readline().decode('utf-8').strip()
         # convert response string to dictionary
         parsed_response = json.loads(ping_response)

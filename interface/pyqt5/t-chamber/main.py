@@ -158,7 +158,6 @@ class MainWindow(QMainWindow):
         self.start_button.clicked.connect(self.on_start_button_clicked)
         self.main_tab.load_button.clicked.connect(self.load_test_file)
         self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
-        self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
 
         # set layout to the central widget
@@ -183,6 +182,7 @@ class MainWindow(QMainWindow):
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
+        self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.serial_worker.no_ping.connect(self.no_ping_for_five)
         self.serial_worker.start()  # start the worker thread
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
@@ -255,14 +255,18 @@ class MainWindow(QMainWindow):
 
     # the actual chamber_monitor QList updates from ping
     def update_chamber_monitor_gui(self, message):
-        self.current_temperature = message.get('current_temp')
+        # retrieve current temperature from ping and convert it to int
+        self.current_temperature = int(message.get('current_temp'))
+        # retrieve desired temp
         desired_temp = message.get('desired_temp')
+        #retrieve machine state
         self.machine_state = message.get('machine_state')
+        # create a displayable info string
         status = f'current temperature: {self.current_temperature}°C | desired temperature: {desired_temp}°C | machine state: {self.machine_state}'
         self.chamber_monitor.clear()  # clear old data
-        item = QListWidgetItem(status)
-        item.setTextAlignment(Qt.AlignCenter)
-        self.chamber_monitor.addItem(item)
+        item = QListWidgetItem(status)  # add string as a widget
+        item.setTextAlignment(Qt.AlignCenter)   # align it to center
+        self.chamber_monitor.addItem(item)  # display it
 
     # load test file and store it in the app
     def load_test_file(self):
