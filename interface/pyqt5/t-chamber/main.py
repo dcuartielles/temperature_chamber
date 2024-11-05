@@ -267,7 +267,7 @@ class MainWindow(QMainWindow):
 
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
     def check_temp(self):
-        first_temp = int(self.test_data["tests"]["test_1"]["chamber_sequences"][0]["temp"])
+        first_temp = int(self.test_data["tests"]["1"]["chamber_sequences"][0]["temp"])
         # check absolute difference
         if abs(self.current_temperature - first_temp) >= 10:
             temp_situation = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'
@@ -298,7 +298,7 @@ class MainWindow(QMainWindow):
                 elif response == QMessageBox.No:
                     return
 
-            self.check_temp()
+            self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
             self.test_is_running = True
             self.manual_tab.test_is_running = True
             message = 'test starting'

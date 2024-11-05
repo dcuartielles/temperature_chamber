@@ -1,5 +1,3 @@
-from datetime import datetime
-
 
 # show data
 def show_data():
@@ -45,17 +43,17 @@ def set_temp(data):
     }
     return set_all
 
+def handshake(time):
+    hand = {"handshake":
+        {
+            "timestamp": time
+        }
+    }
+    return hand
+
+
 
 '''
-{"handshake":
-    {
-        "timestamp":"2157-11-01T10:37:47",
-        "current_state":"EMERGENCY_STOP",
-        "last_shutdown_cause":"Unknown",
-        "last_heat_time":"N/A"
-    }
-}
-
 PING
 {
     "ping_response": {

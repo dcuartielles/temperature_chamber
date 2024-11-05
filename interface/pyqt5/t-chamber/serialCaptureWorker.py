@@ -12,7 +12,6 @@ logger = setup_logger(__name__)
 
 class SerialCaptureWorker(QThread):
 
-
     update_listbox = pyqtSignal(str)  # signal to update listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
     trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
@@ -88,6 +87,7 @@ class SerialCaptureWorker(QThread):
                     if self.ser and self.ser.is_open:
                         # send handshake
                         self.handshake()
+                        time.sleep(0.1)
                         # read incoming serial data
                         response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                         if response:
@@ -122,24 +122,20 @@ class SerialCaptureWorker(QThread):
     def handshake(self):
         if not self.sent_handshake:
             time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-            time_string = f'"timestamp”:"{time}"'
-            handshake = {
-                "handshake": {
-                    time_string
-                }
-            }
+            handshake = commands.handshake(time)
+            logger.info(handshake)
             self.send_json_to_arduino(handshake)
+            logger.info(f'handshake sent to arduino: {handshake}')
             # decode arduino response
             handshake_response = self.ser.readline().decode('utf-8').strip()
 
             try:
                 # convert response string to dictionary
                 parsed_response = json.loads(handshake_response)
+                logger.info(parsed_response)
                 if 'handshake' in parsed_response:
-                    current_state = parsed_response['handshake'].get('current_state', '')
-                    if current_state == 'EMERGENCY_STOP':
-                        popups.show_error_message('warning', 'the system is off, flip the switch if you wanna play')
-
+                    self.machine_state = parsed_response["handshake"].get('machine_state', '')
+                    logger.info('extract machine state')
             except json.JSONDecodeError:
                 logger.exception('failed to parse arduino response')
 
@@ -155,30 +151,27 @@ class SerialCaptureWorker(QThread):
         ping = commands.ping()
         self.send_json_to_arduino(ping)
         ping_response = self.ser.readline().decode('utf-8').strip()
-        try:
-            # convert response string to dictionary
-            parsed_response = json.loads(ping_response)
-            if 'ping_response' in parsed_response:
-                ping_data = parsed_response['ping_response']
-                logger.info(f'parsed ping: {ping_data}')
-                # get all the data from ping & store it in class variables
-                self.alive = ping_data.get('alive', False)
-                self.timestamp = ping_data.get('timestamp', '')
-                self.machine_state = ping_data.get('machine_state', '')
-                # extract test status information and emit signals for gui updates
-                test_status = ping_data.get('test_status', {})
-                self.is_test_running = test_status.get('is_test_running', False)
-                self.is_test_running_signal.emit(self.is_test_running)
-                self.current_test = test_status.get('current_test', '')
-                self.current_sequence = test_status.get('current_sequence', 0)
-                self.desired_temp = test_status.get('desired_temp', 0)
-                # get duration and time left, and convert them for display
-                self.current_duration = test_status.get('current_duration', 0) / 60000
-                self.time_left = test_status.get('time_left', 0) / 60
-                self.emit_test_status()
-
-        except json.JSONDecodeError:
-            logger.exception('failed to parse arduino response')
+        # convert response string to dictionary
+        parsed_response = json.loads(ping_response)
+        if 'ping_response' in parsed_response:
+            ping_data = parsed_response['ping_response']
+            # get all the data from ping & store it in class variables
+            self.alive = ping_data.get('alive', False)
+            self.timestamp = ping_data.get('timestamp', '')
+            self.machine_state = ping_data.get('machine_state', '')
+            if self.machine_state == 'EMERGENCY_STOP':
+                popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
+            # extract test status information and emit signals for gui updates
+            test_status = ping_data.get('test_status', {})
+            self.is_test_running = test_status.get('is_test_running', False)
+            self.is_test_running_signal.emit(self.is_test_running)
+            self.current_test = test_status.get('current_test', '')
+            self.current_sequence = test_status.get('current_sequence', 0)
+            self.desired_temp = test_status.get('desired_temp', 0)
+            # get duration and time left, and convert them for display
+            self.current_duration = test_status.get('current_duration', 0) / 60000
+            self.time_left = test_status.get('time_left', 0) / 60
+            self.emit_test_status()
 
     # prep running test info updates to be emitted
     def emit_test_status(self):
