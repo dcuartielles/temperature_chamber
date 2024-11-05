@@ -92,9 +92,9 @@ class SerialCaptureWorker(QThread):
                         self.handshake()
                         time.sleep(0.1)
                         # read incoming serial data
-                        response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                        '''response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                         if response:
-                            self.process_response(response)
+                            self.process_response(response)'''
 
                         if time.time() - self.last_ping >= 0.6:
                             self.last_ping = time.time()

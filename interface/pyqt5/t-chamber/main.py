@@ -181,7 +181,6 @@ class MainWindow(QMainWindow):
         self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
-        self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.serial_worker.no_ping.connect(self.no_ping_for_five)
         self.serial_worker.start()  # start the worker thread
@@ -201,8 +200,8 @@ class MainWindow(QMainWindow):
         self.listbox.scrollToBottom()
 
     # intercept emergency stop machine state
-    def emergency_stop_from_arduino(self, machine_state):
-        if machine_state == 'EMERGENCY_STOP':
+    def emergency_stop_from_arduino(self):
+        if self.machine_state == 'EMERGENCY_STOP':
             popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
 
     # if no ping comes through for over 5 minutes
