@@ -227,6 +227,7 @@ class MainWindow(QMainWindow):
             test = test_info.get('test')
             sequence = test_info.get('sequence')
             time_left = test_info.get('time_left')
+            logger.info('parsing test info to update running test label')
 
             self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {time_left}')
             self.serial_label.setStyleSheet('font-weight: bold;')

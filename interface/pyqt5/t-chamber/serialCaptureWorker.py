@@ -162,6 +162,7 @@ class SerialCaptureWorker(QThread):
             parsed_response = json.loads(ping_response)
             if 'ping_response' in parsed_response:
                 ping_data = parsed_response['ping_response']
+                logger.info(f'parsed ping: {ping_data}')
                 # get all the data from ping & store it in class variables
                 self.alive = ping_data.get('alive', False)
                 self.timestamp = ping_data.get('timestamp', '')
@@ -189,6 +190,7 @@ class SerialCaptureWorker(QThread):
             'time_left': self.time_left
         }
         self.update_test_label_signal.emit(test_status_data)
+        logger.info(f'emitting test status data: {test_status_data}')
 
     # prep current and desired temp for comparison & potential warning
     def check_temp(self):
