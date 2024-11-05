@@ -179,6 +179,7 @@ class MainWindow(QMainWindow):
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
         self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
+        self.serial_worker.no_ping.connect(self.no_ping_for_five)
         self.serial_worker.start()  # start the worker thread
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
@@ -200,6 +201,11 @@ class MainWindow(QMainWindow):
     def emergency_stop_from_arduino(self, machine_state):
         if machine_state == 'EMERGENCY_STOP':
             popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
+
+    # if no ping comes through for over 5 minutes
+    def no_ping_for_five(self):
+        message = 'there has been no communication with control board for at least 5 minutes now, control board is reset'
+        popups.show_error_message('error', message)
 
     # similar method for incorrect test board output notice
     def incorrect_output_gui(self, message):

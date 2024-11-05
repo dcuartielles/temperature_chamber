@@ -17,6 +17,7 @@ class SerialCaptureWorker(QThread):
     trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
     trigger_interrupt_test = pyqtSignal()  # signal form main to send interrupt test command to arduino
     machine_state_signal = pyqtSignal(str)
+    no_ping = pyqtSignal()
 
     # signals to main to update running test info
     is_test_running_signal = pyqtSignal(bool)
@@ -102,6 +103,8 @@ class SerialCaptureWorker(QThread):
                         if time.time() - self.last_ping >= 0.6:
                             self.last_ping = time.time()
                             self.ping()
+                        elif time.time() - self.last_ping >= 300:
+                            self.no_ping.emit()
 
                 except serial.SerialException as e:
                     logger.exception(f'serial error: {e}')
@@ -138,6 +141,7 @@ class SerialCaptureWorker(QThread):
                 if 'handshake' in parsed_response:
                     self.machine_state = parsed_response["handshake"].get('machine_state', '')
                     logger.info('extract machine state')
+                    self.machine_state_signal.emit(self.machine_state)
             except json.JSONDecodeError:
                 logger.exception('failed to parse arduino response')
 
