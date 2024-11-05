@@ -153,6 +153,7 @@ class MainWindow(QMainWindow):
         self.main_tab.load_button.clicked.connect(self.load_test_file)
         self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
+        self.main_tab.run_button.clicked.connect(self.serial_worker.check_temp_signal)
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
@@ -254,16 +255,9 @@ class MainWindow(QMainWindow):
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
     def check_temp(self, temp_situation):
         if not self.test_is_running:
-            current_temp = int(temp_situation.get('room_temp'))
-            desired_temp = int(temp_situation.get('desired_temp'))
-            # check absolute difference
-            if abs(current_temp - desired_temp) >= 10:
-                message = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'
-                response = popups.show_dialog(message)
-                if response == QMessageBox.Yes:
-                    pass
-                else:
-                    pass
+            response = popups.show_dialog(temp_situation)
+            if response == QMessageBox.No:
+                return
 
     # run all benchmark tests
     def on_run_button_clicked(self):
@@ -287,7 +281,6 @@ class MainWindow(QMainWindow):
                         logger.info(message)
                 elif response == QMessageBox.No:
                     return
-            self.check_temp()
             self.test_is_running = True
             self.manual_tab.test_is_running = True
             message = 'test starting'

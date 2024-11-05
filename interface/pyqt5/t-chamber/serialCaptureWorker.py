@@ -28,7 +28,7 @@ class SerialCaptureWorker(QThread):
     current_duration_signal = pyqtSignal(int)
     time_left_signal = pyqtSignal(int)
     current_temp_signal = pyqtSignal(int)
-    check_temp_signal = pyqtSignal(dict)
+    check_temp_signal = pyqtSignal(str)
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -194,11 +194,10 @@ class SerialCaptureWorker(QThread):
 
     # prep current and desired temp for comparison & potential warning
     def check_temp(self):
-        temp_situation = {
-            'room_temp': self.current_temperature,
-            'desired_temp': self.desired_temp
-        }
-        self.check_temp_signal.emit(temp_situation)
+        # check absolute difference
+        if abs(self.current_temperature - self.desired_temp) >= 10:
+            temp_situation = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'
+            self.check_temp_signal.emit(temp_situation)
 
     # senf json to arduino
     def send_json_to_arduino(self, test_data):
