@@ -2,7 +2,6 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import serial
 import json
-import re
 
 import popups
 from logger_config import setup_logger
@@ -28,7 +27,6 @@ class SerialCaptureWorker(QThread):
     current_duration_signal = pyqtSignal(int)
     time_left_signal = pyqtSignal(int)
     current_temp_signal = pyqtSignal(int)
-    check_temp_signal = pyqtSignal(str)
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -192,13 +190,6 @@ class SerialCaptureWorker(QThread):
         self.update_test_label_signal.emit(test_status_data)
         logger.info(f'emitting test status data: {test_status_data}')
 
-    # prep current and desired temp for comparison & potential warning
-    def check_temp(self):
-        # check absolute difference
-        if abs(self.current_temperature - self.desired_temp) >= 10:
-            temp_situation = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'
-            self.check_temp_signal.emit(temp_situation)
-
     # senf json to arduino
     def send_json_to_arduino(self, test_data):
         json_data = json.dumps(test_data)  # convert python dictionary to json
@@ -229,19 +220,6 @@ class SerialCaptureWorker(QThread):
                         logger.info(response)
                         return
                     logger.info(f'arduino says: {response}')
-                    # retrieve the monitor string from arduino
-                    arduino_string = response
-                    # use reg ex to extract room_temp value
-                    match = re.search(r"Room_temp:\s*([\d.]+)", arduino_string)
-                    if match:
-                        try:
-                            # convert the extracted string to int (handle decimals, if any)
-                            self.current_temperature = int(float(match.group(1)))
-                            logger.info(f'room temp parsed: {self.current_temperature}')
-                        except ValueError:
-                            logger.exception('failed to convert room temp to int')
-                    else:
-                        logger.info('room temp not found')
                     return response
                 else:
                     logger.info('there was nothing worth saying here')

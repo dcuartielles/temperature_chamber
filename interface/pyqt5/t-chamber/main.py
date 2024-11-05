@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdi
 from PyQt5.QtGui import QIcon, QPixmap, QColor, QFont
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 from datetime import datetime
+import re
 
 # functionality imports
 from jsonFunctionality import FileHandler
@@ -49,6 +50,7 @@ class MainWindow(QMainWindow):
         self.input_dictionary = []
         self.test_data = None
         self.filepath = None
+        self.current_temperature = None
 
         # tabs
         self.main_tab = MainTab(self.test_data)
@@ -153,7 +155,6 @@ class MainWindow(QMainWindow):
         self.main_tab.load_button.clicked.connect(self.load_test_file)
         self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
-        self.main_tab.run_button.clicked.connect(self.serial_worker.check_temp_signal)
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
@@ -176,7 +177,6 @@ class MainWindow(QMainWindow):
         self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
-        self.serial_worker.check_temp_signal.connect(self.check_temp)
         self.serial_worker.start()  # start the worker thread
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
@@ -241,6 +241,19 @@ class MainWindow(QMainWindow):
         item = QListWidgetItem(message)
         item.setTextAlignment(Qt.AlignCenter)
         self.chamber_monitor.addItem(item)
+        # retrieve the monitor string from arduino
+        arduino_string = message
+        # use reg ex to extract room_temp value
+        match = re.search(r"Room_temp:\s*([\d.]+)", arduino_string)
+        if match:
+            try:
+                # convert the extracted string to int (handle decimals, if any)
+                self.current_temperature = int(float(match.group(1)))
+                logger.info(f'room temp parsed: {self.current_temperature}')
+            except ValueError:
+                logger.exception('failed to convert room temp to int')
+        else:
+            logger.info('room temp not found')
 
     # load test file and store it in the app
     def load_test_file(self):
@@ -253,8 +266,11 @@ class MainWindow(QMainWindow):
         self.serial_worker.trigger_run_tests.emit(self.test_data)
 
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
-    def check_temp(self, temp_situation):
-        if not self.test_is_running:
+    def check_temp(self):
+        first_temp = int(self.test_data["tests"]["test_1"]["chamber_sequences"][0]["temp"])
+        # check absolute difference
+        if abs(self.current_temperature - first_temp) >= 10:
+            temp_situation = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'
             response = popups.show_dialog(temp_situation)
             if response == QMessageBox.No:
                 return
@@ -281,6 +297,8 @@ class MainWindow(QMainWindow):
                         logger.info(message)
                 elif response == QMessageBox.No:
                     return
+
+            self.check_temp()
             self.test_is_running = True
             self.manual_tab.test_is_running = True
             message = 'test starting'
