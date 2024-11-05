@@ -2,6 +2,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import serial
 import json
+import re
 
 import popups
 from logger_config import setup_logger
@@ -12,10 +13,12 @@ logger = setup_logger(__name__)
 
 class SerialCaptureWorker(QThread):
 
+
     update_listbox = pyqtSignal(str)  # signal to update listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
     trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
-    machine_status = pyqtSignal(str)
+    machine_state = pyqtSignal(str)
+
     # signals to main to update running test info
     is_test_running_signal = pyqtSignal(bool)
     update_test_label_signal = pyqtSignal(dict)
@@ -24,7 +27,8 @@ class SerialCaptureWorker(QThread):
     desired_temp_signal = pyqtSignal(int)
     current_duration_signal = pyqtSignal(int)
     time_left_signal = pyqtSignal(int)
-
+    current_temp_signal = pyqtSignal(int)
+    check_temp_signal = pyqtSignal(dict)
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -50,6 +54,7 @@ class SerialCaptureWorker(QThread):
         self.current_duration = None
         self.desired_temp = None
         self.time_left = None
+        self.current_temperature = None
 
 
     # set up serial communication
@@ -71,13 +76,16 @@ class SerialCaptureWorker(QThread):
 
     # method to run the thread
     def run(self):
+
         if not self.serial_setup():
             logger.error(f'failed to connect to {self.port}')
             return
         logger.info('thread is running')
 
         while self.is_running:
+
             if not self.is_stopped:
+
                 try:
                     if self.ser and self.ser.is_open:
                         # send handshake
@@ -87,18 +95,20 @@ class SerialCaptureWorker(QThread):
                         if response:
                             self.process_response(response)
 
-                        if time.time() - self.last_command_time > 1:
+                        if time.time() - self.last_command_time >= 1:
                             self.last_command_time = time.time()
                             self.trigger_read_data()
 
-                        if time.time() - self.last_ping > 0.6:
+                        if time.time() - self.last_ping >= 0.6:
                             self.last_ping = time.time()
                             self.ping()
 
                 except serial.SerialException as e:
                     logger.exception(f'serial error: {e}')
                     self.is_running = False
+
             time.sleep(0.1)  # avoid excessive cpu usage
+
         self.stop()
 
     # method to stop the serial communication
@@ -130,7 +140,7 @@ class SerialCaptureWorker(QThread):
                 if 'handshake' in parsed_response:
                     current_state = parsed_response['handshake'].get('current_state', '')
                     if current_state == 'EMERGENCY_STOP':
-                        popups.show_error_message('warning', 'the system is off, flip the switch')
+                        popups.show_error_message('warning', 'the system is off, flip the switch if you wanna play')
 
             except json.JSONDecodeError:
                 logger.exception('failed to parse arduino response')
@@ -156,7 +166,6 @@ class SerialCaptureWorker(QThread):
                 self.alive = ping_data.get('alive', False)
                 self.timestamp = ping_data.get('timestamp', '')
                 self.machine_state = ping_data.get('machine_state', '')
-
                 # extract test status information and emit signals for gui updates
                 test_status = ping_data.get('test_status', {})
                 self.is_test_running = test_status.get('is_test_running', False)
@@ -164,7 +173,6 @@ class SerialCaptureWorker(QThread):
                 self.current_test = test_status.get('current_test', '')
                 self.current_sequence = test_status.get('current_sequence', 0)
                 self.desired_temp = test_status.get('desired_temp', 0)
-
                 # get duration and time left, and convert them for display
                 self.current_duration = test_status.get('current_duration', 0) / 60000
                 self.time_left = test_status.get('time_left', 0) / 60
@@ -181,6 +189,14 @@ class SerialCaptureWorker(QThread):
             'time_left': self.time_left
         }
         self.update_test_label_signal.emit(test_status_data)
+
+    # prep current and desired temp for comparison & potential warning
+    def check_temp(self):
+        temp_situation = {
+            'room_temp': self.current_temperature,
+            'desired_temp': self.desired_temp
+        }
+        self.check_temp_signal.emit(temp_situation)
 
     # senf json to arduino
     def send_json_to_arduino(self, test_data):
@@ -212,6 +228,19 @@ class SerialCaptureWorker(QThread):
                         logger.info(response)
                         return
                     logger.info(f'arduino says: {response}')
+                    # retrieve the monitor string from arduino
+                    arduino_string = response
+                    # use reg ex to extract room_temp value
+                    match = re.search(r"Room_temp:\s*([\d.]+)", arduino_string)
+                    if match:
+                        try:
+                            # convert the extracted string to int (handle decimals, if any)
+                            self.current_temperature = int(float(match.group(1)))
+                            logger.info(f'room temp parsed: {self.current_temperature}')
+                        except ValueError:
+                            logger.exception('failed to convert room temp to int')
+                    else:
+                        logger.info('room temp not found')
                     return response
                 else:
                     logger.info('there was nothing worth saying here')

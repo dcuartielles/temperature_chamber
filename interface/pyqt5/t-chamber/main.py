@@ -175,6 +175,7 @@ class MainWindow(QMainWindow):
         self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
+        self.serial_worker.check_temp_signal.connect(self.check_temp)
         self.serial_worker.start()  # start the worker thread
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
@@ -222,13 +223,15 @@ class MainWindow(QMainWindow):
 
     # update running test info label
     def update_test_label(self, test_info):
-
         if self.test_is_running:
             test = test_info.get('test')
             sequence = test_info.get('sequence')
             time_left = test_info.get('time_left')
 
             self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {time_left}')
+            self.serial_label.setStyleSheet('font-weight: bold;')
+        else:
+            self.serial_label.setText('running test info')
 
     # the actual chamber_monitor QList updates
     def update_chamber_monitor_gui(self, message):
@@ -247,6 +250,20 @@ class MainWindow(QMainWindow):
     def trigger_run_t(self):
         self.serial_worker.trigger_run_tests.emit(self.test_data)
 
+    # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
+    def check_temp(self, temp_situation):
+        if not self.test_is_running:
+            current_temp = int(temp_situation.get('room_temp'))
+            desired_temp = int(temp_situation.get('desired_temp'))
+            # check absolute difference
+            if abs(current_temp - desired_temp) >= 10:
+                message = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'
+                response = popups.show_dialog(message)
+                if response == QMessageBox.Yes:
+                    pass
+                else:
+                    pass
+
     # run all benchmark tests
     def on_run_button_clicked(self):
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
@@ -262,16 +279,14 @@ class MainWindow(QMainWindow):
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
                         self.on_cli_test_interrupted()
-
                     else:
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
-                        message = 'test interrupted'
-                        self.test_interrupted_gui(message)
-                        logger.warning(message)
+                        message = 'test was not interrupted'
+                        logger.info(message)
                 elif response == QMessageBox.No:
                     return
-
+            self.check_temp()
             self.test_is_running = True
             self.manual_tab.test_is_running = True
             message = 'test starting'
@@ -387,6 +402,7 @@ class MainWindow(QMainWindow):
     def re_enable_start(self):
         self.start_button.setEnabled(True)
 
+    # visually signal that the app is running
     def light_up(self):
         self.setWindowTitle('temperature chamber app is running')
         self.chamber_monitor.setStyleSheet('color: #009FAF;'
