@@ -15,6 +15,14 @@ def reset():
     }
     return reset
 
+# interrupt test
+def interrupt_test():
+    interrupt = {"commands": {
+            "INTERRUPT_TEST": {}
+            }
+    }
+    return interrupt
+
 # emergency stop
 def emergency_stop():
     stop = {"commands": {
