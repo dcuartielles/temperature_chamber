@@ -238,7 +238,7 @@ void sendHandshake() {
     StaticJsonDocument<512> handshakeDoc;
 
     handshakeDoc["handshake"]["timestamp"] = getCurrentTimestamp();
-    handshakeDoc["handshake"]["current_state"] = getMachineState();
+    handshakeDoc["handshake"]["machine_state"] = getMachineState();
     handshakeDoc["handshake"]["last_shutdown_cause"] = lastShutdownCause;
     handshakeDoc["handshake"]["last_heat_time"] = getLastHeatingTime();
 
@@ -302,7 +302,7 @@ bool isTemperatureReached(float targetTemp, float currentTemp) {
 }
 
 bool holdForPeriod(unsigned long duration) {
-    Serial.print("Checking timer: ");
+    // Serial.print("Checking timer: ");
     Serial.print(millis() - sequenceStartTime);
     Serial.print(" / ");
     Serial.println(duration);
