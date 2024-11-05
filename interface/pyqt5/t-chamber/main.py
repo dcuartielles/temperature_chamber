@@ -178,6 +178,7 @@ class MainWindow(QMainWindow):
         self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
         self.serial_worker.update_listbox.connect(self.update_listbox_gui)
         self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
+        self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
         self.serial_worker.start()  # start the worker thread
         self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
         self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
@@ -194,6 +195,11 @@ class MainWindow(QMainWindow):
     def update_listbox_gui(self, message):
         self.listbox.addItem(message)
         self.listbox.scrollToBottom()
+
+    # intercept emergency stop machine state
+    def emergency_stop_from_arduino(self, machine_state):
+        if machine_state == 'EMERGENCY_STOP':
+            popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
 
     # similar method for incorrect test board output notice
     def incorrect_output_gui(self, message):
@@ -274,7 +280,10 @@ class MainWindow(QMainWindow):
 
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
     def check_temp(self):
-        first_temp = int(self.test_data["tests"]["1"]["chamber_sequences"][0]["temp"])
+        test_keys = list(self.test_data["tests"].keys())
+        first_test_key = test_keys[0]
+
+        first_temp = int(self.test_data["tests"][first_test_key]["chamber_sequences"][0]["temp"])
         # check absolute difference
         if abs(self.current_temperature - first_temp) >= 10:
             temp_situation = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'

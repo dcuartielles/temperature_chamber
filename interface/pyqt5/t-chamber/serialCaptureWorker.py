@@ -16,7 +16,7 @@ class SerialCaptureWorker(QThread):
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
     trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
     trigger_interrupt_test = pyqtSignal()  # signal form main to send interrupt test command to arduino
-    machine_state = pyqtSignal(str)
+    machine_state_signal = pyqtSignal(str)
 
     # signals to main to update running test info
     is_test_running_signal = pyqtSignal(bool)
@@ -161,8 +161,7 @@ class SerialCaptureWorker(QThread):
             self.alive = ping_data.get('alive', False)
             self.timestamp = ping_data.get('timestamp', '')
             self.machine_state = ping_data.get('machine_state', '')
-            if self.machine_state == 'EMERGENCY_STOP':
-                popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
+            self.machine_state_signal.emit(self.machine_state)
             # extract test status information and emit signals for gui updates
             test_status = ping_data.get('test_status', {})
             self.is_test_running = test_status.get('is_test_running', False)
