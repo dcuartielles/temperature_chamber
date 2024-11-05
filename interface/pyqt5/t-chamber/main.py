@@ -7,6 +7,7 @@ from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 from datetime import datetime
 import re
 
+import commands
 # functionality imports
 from jsonFunctionality import FileHandler
 from serialCaptureWorker import SerialCaptureWorker
@@ -206,6 +207,8 @@ class MainWindow(QMainWindow):
 
     # similar method to be triggered separately when a test is interrupted
     def test_interrupted_gui(self, message):
+        self.test_is_running = False
+        self.trigger_interrupt_t()
         item = QListWidgetItem(message)
         font = QFont()
         font.setBold(True)
@@ -265,6 +268,10 @@ class MainWindow(QMainWindow):
     def trigger_run_t(self):
         self.serial_worker.trigger_run_tests.emit(self.test_data)
 
+    #interrupt test on arduino
+    def trigger_interrupt_t(self):
+        self.serial_worker.trigger_interrupt_test.emit()
+
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
     def check_temp(self):
         first_temp = int(self.test_data["tests"]["1"]["chamber_sequences"][0]["temp"])
@@ -287,13 +294,15 @@ class MainWindow(QMainWindow):
                         message = 'test interrupted'
                         self.test_interrupted_gui(message)
                         logger.warning(message)
+                        self.trigger_interrupt_t()
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
                         self.on_cli_test_interrupted()
                     else:
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
-                        message = 'test was not interrupted'
+                        self.trigger_interrupt_t()
+                        message = 'test was interrupted'
                         logger.info(message)
                 elif response == QMessageBox.No:
                     return

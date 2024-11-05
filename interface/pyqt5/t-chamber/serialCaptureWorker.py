@@ -15,6 +15,7 @@ class SerialCaptureWorker(QThread):
     update_listbox = pyqtSignal(str)  # signal to update listbox
     update_chamber_monitor = pyqtSignal(str)  # signal to update chamber monitor
     trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
+    trigger_interrupt_test = pyqtSignal()  # signal form main to send interrupt test command to arduino
     machine_state = pyqtSignal(str)
 
     # signals to main to update running test info
@@ -41,6 +42,7 @@ class SerialCaptureWorker(QThread):
         self.last_readout = time.time()
         self.test_data = None
         self.trigger_run_tests.connect(self.run_all_tests)
+        self.trigger_interrupt_test.connect(self.interrupt_test)
         self.sent_handshake = False
         self.alive = False
         self.timestamp = None
@@ -200,6 +202,11 @@ class SerialCaptureWorker(QThread):
                 logger.warning('serial not open')
         except serial.SerialException as e:
             logger.error(f'error sending JSON: {e}')
+
+    # interrupt test on arduino
+    def interrupt_test(self):
+        interrupt = commands.interrupt_test()
+        self.send_json_to_arduino(interrupt)
 
     # read data
     def read_data(self):
