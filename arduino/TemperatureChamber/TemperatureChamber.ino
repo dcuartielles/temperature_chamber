@@ -310,7 +310,7 @@ bool holdForPeriod(unsigned long duration) {
 }
 
 int getTimeLeft(unsigned long duration, Sequence currentSequence) {
-    if (isTemperatureReached(currentSequence.targetTemp, chamberState.temperatureRoom)) {
+    if (isTestRunning && isTemperatureReached(currentSequence.targetTemp, chamberState.temperatureRoom)) {
         int timeLeft = (duration - (millis() - sequenceStartTime)) / 1000;
         return timeLeft;
     } else {
