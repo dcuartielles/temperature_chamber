@@ -2,10 +2,10 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import serial
 import json
-
+import popups
 from logger_config import setup_logger
 import commands
-from datetime import datetime
+from datetime import datetime, timedelta
 
 logger = setup_logger(__name__)
 
@@ -93,6 +93,10 @@ class SerialCaptureWorker(QThread):
 
                         if response:
                             self.process_response(response)
+                            self.update_timestamp_from_ping(response)
+
+                        if self.timestamp and datetime.now() - self.timestamp > timedelta(minutes=5):
+                            logger.warning("No ping received for 5 minutes or more.")
 
                         if time.time() - self.last_ping >= 0.6:
                             self.last_ping = time.time()
@@ -146,6 +150,21 @@ class SerialCaptureWorker(QThread):
     def trigger_ping(self):
         self.ping()
 
+    # check if there has been valid ping under the last 5 minutes
+    def update_timestamp_from_ping(self, response):
+        try:
+            # parse json response
+            data = json.loads(response)
+            if 'ping_response' in data:
+                # extract the timestamp from ping response
+                timestamp_str = data['ping_response'].get('timestamp', '')
+                if timestamp_str:
+                    self.timestamp = datetime.fromisoformat(timestamp_str)
+                    logger.info(f"updated timestamp from ping: {self.timestamp}")
+                    popups.show_error_message('warning', 'due to an at least 5 minute disconnection, control board is reset')
+        except json.JSONDecodeError:
+            logger.exception(f"failed to parse response as JSON: {response}")
+
     # ping
     def ping(self):
         ping = commands.ping()  # create ping command
@@ -158,7 +177,7 @@ class SerialCaptureWorker(QThread):
                 ping_data = parsed_response['ping_response']
                 # get all the data from ping & store it in class variables
                 self.alive = ping_data.get('alive', False)
-                self.timestamp = ping_data.get('timestamp', '')
+                # self.timestamp = ping_data.get('timestamp', '')
                 self.machine_state = ping_data.get('machine_state', '')
                 # extract test status information and emit signals for gui updates
                 self.current_temperature = ping_data.get('current_temp', 0)
