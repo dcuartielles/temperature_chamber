@@ -3,7 +3,6 @@ import time
 import serial
 import json
 
-import popups
 from logger_config import setup_logger
 import commands
 from datetime import datetime
@@ -83,9 +82,7 @@ class SerialCaptureWorker(QThread):
         logger.info('thread is running')
 
         while self.is_running:
-
             if not self.is_stopped:
-
                 try:
                     if self.ser and self.ser.is_open:
                         # send handshake
@@ -93,12 +90,13 @@ class SerialCaptureWorker(QThread):
                         time.sleep(0.1)
                         # read incoming serial data
                         response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+
                         if response:
                             self.process_response(response)
 
                         if time.time() - self.last_ping >= 0.6:
                             self.last_ping = time.time()
-                            self.ping()
+                            self.trigger_ping()
 
                 except serial.SerialException as e:
                     logger.exception(f'serial error: {e}')
@@ -121,14 +119,16 @@ class SerialCaptureWorker(QThread):
     def handshake(self):
         if not self.sent_handshake:
             time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            # insert timestamp into handshake
             handshake = commands.handshake(time)
-            logger.info(handshake)
+            logger.info(f'sending handshake: {handshake}')
+            # send handshake to arduino
             self.send_json_to_arduino(handshake)
             logger.info(f'handshake sent to arduino: {handshake}')
-            # decode arduino response
-            handshake_response = self.ser.readline().decode('utf-8').strip()
 
             try:
+                # decode arduino response
+                handshake_response = self.ser.readline().decode('utf-8').strip()
                 # convert response string to dictionary
                 parsed_response = json.loads(handshake_response)
                 logger.info(parsed_response)
@@ -142,12 +142,16 @@ class SerialCaptureWorker(QThread):
             # prevent handshake from being sent again
             self.sent_handshake = True
 
+    # trigger ping
+    def trigger_ping(self):
+        self.ping()
+
     # ping
     def ping(self):
         ping = commands.ping()  # create ping command
         self.send_json_to_arduino(ping)  # send ping to arduino
-        ping_response = self.ser.readline().decode('utf-8').strip()
         try:
+            ping_response = self.ser.readline().decode('utf-8').strip()
             # convert response string to dictionary
             parsed_response = json.loads(ping_response)
             if 'ping_response' in parsed_response:
@@ -156,12 +160,10 @@ class SerialCaptureWorker(QThread):
                 self.alive = ping_data.get('alive', False)
                 self.timestamp = ping_data.get('timestamp', '')
                 self.machine_state = ping_data.get('machine_state', '')
-                # self.machine_state_signal.emit(self.machine_state)
                 # extract test status information and emit signals for gui updates
                 self.current_temperature = ping_data.get('current_temp', 0)
                 test_status = ping_data.get('test_status', {})
                 self.is_test_running = test_status.get('is_test_running', False)
-                # self.is_test_running_signal.emit(self.is_test_running)
                 self.current_test = test_status.get('current_test', '')
                 self.current_sequence = test_status.get('current_sequence', 0)
                 self.desired_temp = test_status.get('desired_temp', 0)
@@ -171,7 +173,7 @@ class SerialCaptureWorker(QThread):
                 self.emit_test_status()
                 self.display_info()
         except json.JSONDecodeError:
-            logger.exception(f'failed to decode ping response as json: {ping_response}')
+            logger.exception('failed to decode ping response as json')
 
     # prep running test info updates to be emitted
     def emit_test_status(self):

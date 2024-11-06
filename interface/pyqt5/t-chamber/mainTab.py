@@ -10,7 +10,6 @@ logger = setup_logger(__name__)
 
 
 class MainTab(QWidget):
-    # incorrect_output = pyqtSignal(str)  # signal to main: print in running test info when test board output incorrect
 
     def __init__(self, test_data, parent=None):
         super().__init__(parent)
@@ -92,8 +91,6 @@ class MainTab(QWidget):
                 logger.info("correct test output")
             else:
                 logger.error(message)
-                # emit incorrect output signal with the error message
-                # self.incorrect_output.emit(error_message)
                 # if no matches, handle as incorrect output
                 self.update_gui_incorrect()
 

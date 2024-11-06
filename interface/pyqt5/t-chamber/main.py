@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdi
 from PyQt5.QtGui import QIcon, QPixmap, QColor, QFont
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 from datetime import datetime
-import re
 
 import commands
 # functionality imports
@@ -169,32 +168,49 @@ class MainWindow(QMainWindow):
 
     # method to start running threads after ports have been selected
     def on_start_button_clicked(self):
+        logger.info('start button clicked')
         self.light_up()
-        # disable the start button to prevent double-clicks
-        self.start_button.setDisabled(True)
+        self.start_button.setDisabled(True)  # disable to prevent double-clicks
 
-        # retrieve selected ports after user has had a chance to pick them
+        # get selected ports
         self.selected_c_port = self.port_selector.get_selected_c_port()
         self.selected_t_port = self.port_selector.get_selected_t_port()
 
-        # only now create the worker threads with the selected ports
-        self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
-        self.serial_worker.update_listbox.connect(self.update_listbox_gui)
-        self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
-        self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
-        # self.serial_worker.no_ping.connect(self.no_ping_for_five)
-        self.serial_worker.start()  # start the worker thread
-        self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
-        self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
-        self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
-        self.main_tab.incorrect_output.connect(self.incorrect_output_gui)
-        self.port_selector.ports_refreshed.connect(self.re_enable_start)
+        # validate selected ports
+        if not self.selected_c_port or not self.selected_t_port:
+            popups.show_error_message('warning', 'no serial connection to the boards. ports are missing or invalid.')
+            self.start_button.setEnabled(True)  # re-enable button to try again
+            return
 
-        # create test board worker thread
-        self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
-        self.test_board.start()  # start test board thread
-        if not self.serial_worker or self.test_board:
-            popups.show_error_message('warning', 'there is no serial connection to the boards')
+        # attempt to start serial worker thread
+        try:
+            self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
+            self.serial_worker.update_listbox.connect(self.update_listbox_gui)
+            self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
+            self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
+            self.serial_worker.start()  # start the worker thread
+
+            # connect manual tab signals
+            self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
+            self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
+            self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
+            # self.main_tab.incorrect_output.connect(self.incorrect_output_gui)
+
+        except Exception as e:
+            logger.exception(f'failed to start serial capture worker: {e}')
+            popups.show_error_message('error', f'failed to start serial worker: {e}')
+            self.start_button.setEnabled(True)
+            return
+
+        # attempt to start test board thread
+        try:
+            self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
+            self.test_board.start()
+        except Exception as e:
+            logger.exception(f'failed to start test board worker: {e}')
+            popups.show_error_message('error', f'failed to start test board worker: {e}')
+            self.start_button.setEnabled(True)
+            return
 
     # the actual listbox updates
     def update_listbox_gui(self, message):
@@ -257,10 +273,10 @@ class MainWindow(QMainWindow):
     # the actual chamber_monitor QList updates from ping
     def update_chamber_monitor_gui(self, message):
         # retrieve current temperature from ping and convert it to int
-        self.current_temperature = int(message.get('current_temp'))
+        self.current_temperature = message.get('current_temp')
         # retrieve desired temp
         desired_temp = message.get('desired_temp')
-        #retrieve machine state
+        # retrieve machine state
         self.machine_state = message.get('machine_state')
         # create a displayable info string
         status = f'current temperature: {self.current_temperature}°C | desired temperature: {desired_temp}°C | machine state: {self.machine_state}'
