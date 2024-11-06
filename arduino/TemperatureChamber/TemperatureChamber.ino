@@ -415,31 +415,39 @@ void parseAndRunCommands(JsonObject& commands) {
 
         if (command == "PING") {
             sendPingResponse();
-        } else if (command == "SHOW_DATA") {
-            displaySerial();
-        } else if (command == "SET_TEMP") {
-            parseAndRunManualSet(commandParams);
-        } else if (command == "RESET") {
-            status = RESET;
-            Serial.println("System reset via command.");
-        } else if (command == "EMERGENCY_STOP") {
-            status = EMERGENCY_STOP;
-            Serial.println("Emergency Stop initiated via command.");
-        } else if (command == "SHOW_RUNNING_SEQUENCE") {
-            if (isTestRunning) {
-                Serial.print("Running sequence: Target temp = ");
-                Serial.print(chamberState.temperatureDesired);
-                Serial.print("°C Duration = ");
-                Serial.print(currentDuration / 60000);
-                Serial.println(" minutes");
+        } 
+        if (systemSwitchState) {
+            if (command == "INTERRUPT_TEST") {
 
+            } else if (command == "SHOW_DATA") {
+                displaySerial();
+            } else if (command == "SET_TEMP") {
+                parseAndRunManualSet(commandParams);
+            } else if (command == "RESET") {
+                status = RESET;
+                Serial.println("System reset via command.");
+            } else if (command == "EMERGENCY_STOP") {
+                status = EMERGENCY_STOP;
+                sendPingResponse();
+                Serial.println("Emergency Stop initiated via command.");
+            } else if (command == "SHOW_RUNNING_SEQUENCE") {
+                if (isTestRunning) {
+                    Serial.print("Running sequence: Target temp = ");
+                    Serial.print(chamberState.temperatureDesired);
+                    Serial.print("°C Duration = ");
+                    Serial.print(currentDuration / 60000);
+                    Serial.println(" minutes");
+
+                } else {
+                    Serial.println("No sequence is currently running.");
+                }
             } else {
-                Serial.println("No sequence is currently running.");
+                Serial.print("Error: Unknown command '");
+                Serial.print(command);
+                Serial.println("'.");
             }
         } else {
-            Serial.print("Error: Unknown command '");
-            Serial.print(command);
-            Serial.println("'.");
+            Serial.println("System switch is off, please switch it on.");
         }
     }
 }
@@ -489,14 +497,12 @@ void parseTextFromJson(JsonDocument& doc) {
         JsonObject handshake = doc["handshake"];
         setInitialTimestamp(handshake);
         sendHandshake();
-    } else if (doc.containsKey("tests")) {             // if json consists of tests
+    } else if (doc.containsKey("tests") && systemSwitchState) {             // if json consists of tests
         JsonObject test = doc["tests"];
         parseAndQueueTests(test);
     } else if (doc.containsKey("commands")) {   // if json consists of commands
         JsonObject commands = doc["commands"];
         parseAndRunCommands(commands);
-    // } else if (doc.containsKey("temp") && doc.containsKey("duration")) {
-    //     parseAndRunManualSet(doc);
     } else {
         Serial.println("Error: Invalid JSON format");
     }
@@ -798,24 +804,20 @@ void runTestSequence() {
 }
 
 void readAndParseSerial() {
-    if (systemSwitchState) {
-        if (Serial.available() > 0) {
-            // Read the incoming data in chunks instead of one character at a time
-            int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
-            incomingString[len] = '\0'; // null-terminate the string
+    if (Serial.available() > 0) {
+        // Read the incoming data in chunks instead of one character at a time
+        int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
+        incomingString[len] = '\0'; // null-terminate the string
 
-            DeserializationError error = deserializeJson(jsonBuffer, incomingString);
-            // Handle the input string (either a command or JSON)
-            if (!error) {
-                parseTextFromJson(jsonBuffer);  // Parse the JSON
-            } else {
-                parseCommand(incomingString);  // TODO: remove once python has been updated to send json
-            }
-
-            incomingString[0] = '\0';
+        DeserializationError error = deserializeJson(jsonBuffer, incomingString);
+        // Handle the input string (either a command or JSON)
+        if (!error) {
+            parseTextFromJson(jsonBuffer);  // Parse the JSON
+        } else {
+            parseCommand(incomingString);  // TODO: remove once python has been updated to send json
         }
-    } else {
-        //Serial.println("Switches are OFF. Test will not be processed.");
+
+        incomingString[0] = '\0';
     }
 }
 
