@@ -263,9 +263,10 @@ class MainWindow(QMainWindow):
             test = test_info.get('test')
             sequence = test_info.get('sequence')
             time_left = test_info.get('time_left')
+            formatted_time_left = f"{time_left:.1f}"
             logger.info('parsing test info to update running test label')
 
-            self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {time_left} minutes')
+            self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {formatted_time_left} minutes')
             self.serial_label.setStyleSheet('font-weight: bold;')
         else:
             self.serial_label.setText('running test info')
@@ -273,7 +274,7 @@ class MainWindow(QMainWindow):
     # the actual chamber_monitor QList updates from ping
     def update_chamber_monitor_gui(self, message):
         # retrieve current temperature from ping and convert it to int
-        self.current_temperature = message.get('current_temp')
+        self.current_temperature = int(message.get('current_temp'))
         # retrieve desired temp
         desired_temp = message.get('desired_temp')
         # retrieve machine state
@@ -332,6 +333,7 @@ class MainWindow(QMainWindow):
                         self.manual_tab.test_is_running = False
                         self.trigger_interrupt_t()
                         message = 'test was interrupted'
+                        self.test_interrupted_gui(message)
                         logger.info(message)
                 elif response == QMessageBox.No:
                     return
@@ -437,7 +439,7 @@ class MainWindow(QMainWindow):
             return
         else:
             date_str = datetime.now().strftime("%m/%d %H:%M:%S")
-            error_message = f"incorrect test board output ({date_str})"
+            error_message = f"{date_str}:   {output}"
             self.incorrect_output_gui(error_message)
 
     # method to set test_is_running to False when test_interrupted from manual
