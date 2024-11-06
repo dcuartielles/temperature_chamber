@@ -438,8 +438,8 @@ class MainWindow(QMainWindow):
         if output == exp_output:
             return
         else:
-            date_str = datetime.now().strftime("%m/%d %H:%M:%S")
-            error_message = f"{date_str}:   {output}"
+            date_str = datetime.now().strftime("%H:%M:%S")
+            error_message = f"{date_str}   {output}"
             self.incorrect_output_gui(error_message)
 
     # method to set test_is_running to False when test_interrupted from manual
