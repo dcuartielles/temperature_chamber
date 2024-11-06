@@ -161,6 +161,9 @@ ChamberState chamberState;
 String lastShutdownCause = "Unknown";
 String lastHeatingTime = "";
 
+unsigned long lastPingTime = 0;
+const unsigned long TIMEOUT_DURATION = 300000;
+
 // function for checking how much memory remains after parsing JSON of different sizes
 extern "C" {
     char* sbrk(int incr);
@@ -430,6 +433,7 @@ void parseAndRunCommands(JsonObject& commands) {
 
         if (command == "PING") {
             sendPingResponse();
+            lastPingTime = millis();
         } 
         if (systemSwitchState) {
             if (command == "INTERRUPT_TEST") {
@@ -458,11 +462,7 @@ void parseAndRunCommands(JsonObject& commands) {
                 } else {
                     Serial.println("No sequence is currently running.");
                 }
-            } else {
-                Serial.print("Error: Unknown command '");
-                Serial.print(command);
-                Serial.println("'.");
-            }
+            } 
         } else {
             Serial.println("System switch is off, please switch it on.");
         }
@@ -807,6 +807,14 @@ unsigned long updateInterval = 500;
 void loop() {  
     currentMillis = millis();
 
+    // Check for timeout (5 min without ping)
+    if (currentMillis - lastPingTime > TIMEOUT_DURATION) {
+        Serial.println("No ping received for 5 minutes. Resetting and shutting down.");
+        status = EMERGENCY_STOP;
+        clearTests();
+        displayLCDOff();
+    }
+
     // Update switch states and temperature readings
     updateSwitchStates();
     chamberState.temperatureRoom = getTemperature();
@@ -823,7 +831,6 @@ void loop() {
         }
     } else {
         displayLCDOff();
-        //Serial.println("LCD turning off");
     }
 
     runTestSequence();
