@@ -177,60 +177,46 @@ class MainWindow(QMainWindow):
         self.selected_t_port = self.port_selector.get_selected_t_port()
 
         # validate selected ports
-        if self.selected_c_port is not None and self.selected_t_port is not None:
+        if self.selected_c_port and self.selected_t_port:
             logger.info('check if ports are selected')
             # visually signal app activation
             self.light_up()
 
-            try:
-                if self.cli_worker:
+            if not hasattr(self, 'serial_worker') or self.serial_worker is None or not self.serial_worker.is_running:
+                try:
+                    self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
+                    self.serial_worker.update_listbox.connect(self.update_listbox_gui)
+                    self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
+                    self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
+                    self.serial_worker.reenable_start.connect(self.no_ping_for_five)
+                    self.serial_worker.start()  # start the worker thread
+
+                    # connect manual tab signals
+                    self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
+                    self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
+                    self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
+                except Exception as e:
+                    logger.exception(f'failed to start serial worker: {e}')
+                    popups.show_error_message('error', f'failed to start serial worker: {e}')
+                    self.start_button.setEnabled(True)
                     return
-            except:
-                logger.exception('cli worker does not even exist')
 
-            try:
-                if not self.serial_worker.is_running:
-                    # attempt to start serial worker thread
-                    try:
-                        self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
-                        self.serial_worker.update_listbox.connect(self.update_listbox_gui)
-                        self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
-                        self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
-                        self.serial_worker.reenable_start.connect(self.no_ping_for_five)
-                        self.serial_worker.start()  # start the worker thread
+            if not hasattr(self, 'test_board') or self.test_board is None or not self.test_board.is_running:
+                try:
+                    self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
+                    self.test_board.start()  # start worker thread
 
-                        # connect manual tab signals
-                        self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
-                        self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
-                        self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
+                except Exception as e:
+                    logger.exception(f'failed to start test board worker: {e}')
+                    popups.show_error_message('error', f'failed to start test board worker: {e}')
+                    self.start_button.setEnabled(True)
+                    return
 
-                    except Exception as e:
-                        logger.exception(f'failed to start serial capture worker: {e}')
-                        popups.show_error_message('error', f'failed to start serial worker: {e}')
-                        self.start_button.setEnabled(True)
-                        return
-            except:
-                logger.exception('serial worker does not even exist')
-
-            try:
-
-                if not self.test_board.is_running:
-                    # attempt to start test board thread
-                    try:
-                        self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
-                        self.test_board.start()
-                    except Exception as e:
-                        logger.exception(f'failed to start test board worker: {e}')
-                        popups.show_error_message('error', f'failed to start test board worker: {e}')
-                        self.start_button.setEnabled(True)
-                        return
-            except:
-                logger.exception('test board does not even exist')
-
-        else:
-            popups.show_error_message('warning', 'no serial connection to the boards. ports are missing or invalid.')
-            self.start_button.setEnabled(True)  # re-enable button to try again
-            return
+            else:
+                popups.show_error_message('warning',
+                                          'no serial connection to the boards, ports are missing or invalid.')
+                self.start_button.setEnabled(True)  # Re-enable button to try again
+                return
 
     # the actual listbox updates
     def update_listbox_gui(self, message):
