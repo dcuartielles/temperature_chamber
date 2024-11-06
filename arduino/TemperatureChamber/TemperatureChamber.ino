@@ -591,42 +591,6 @@ void setTemperature(float temp) {
     }
 }
 
-void parseCommand(String command) {
-    if (command.startsWith("SET TEMP ")) {
-        chamberState.temperatureDesired = command.substring(9).toFloat();
-        Serial.println("Temp set to: " + String(chamberState.temperatureDesired));
-        displaySerial();
-    }
-    else if (command == "SYSTEM_OFF") {
-        status = EMERGENCY_STOP;
-        Serial.println("SYSTEM OFF/EMERGENCY_STOP");
-    }
-    else if (command == "RESET") {
-        status = RESET;
-        Serial.println("RESET");
-    }
-    else if (command == "REPORT") {
-        status = REPORT;
-        Serial.println("System Report:");
-        displaySerial();
-    }
-    else if (command == "SHOW_DATA") {
-        displaySerial();
-    }
-    else if (command == "SHOW_RUNNING_SEQUENCE") {
-        if (isTestRunning) {
-            Serial.print("Running sequence: Target temp = ");
-            Serial.print(chamberState.temperatureDesired, 2);
-            Serial.print(" Duration = ");
-            Serial.print(currentDuration / 60000);
-            Serial.println(" minutes");
-
-        } else {
-            Serial.println("No sequence is currently running.");
-        }
-    }
-}
-
 int getSwitchStatus() {
     int switchStatus;
     if (switchSystem.read() == LOW) {
@@ -813,8 +777,6 @@ void readAndParseSerial() {
         // Handle the input string (either a command or JSON)
         if (!error) {
             parseTextFromJson(jsonBuffer);  // Parse the JSON
-        } else {
-            parseCommand(incomingString);  // TODO: remove once python has been updated to send json
         }
 
         incomingString[0] = '\0';
