@@ -2,7 +2,6 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import time
 import serial
 import json
-import popups
 from logger_config import setup_logger
 import commands
 from datetime import datetime, timedelta
@@ -17,6 +16,7 @@ class SerialCaptureWorker(QThread):
     trigger_interrupt_test = pyqtSignal()  # signal form main to send interrupt test command to arduino
     machine_state_signal = pyqtSignal(str)
     no_ping = pyqtSignal()
+    reenable_start = pyqtSignal()
 
     # signals to main to update running test info
     is_test_running_signal = pyqtSignal(bool)
@@ -93,10 +93,10 @@ class SerialCaptureWorker(QThread):
 
                         if response:
                             self.process_response(response)
-                            self.update_timestamp_from_ping(response)
 
                         if self.timestamp and datetime.now() - self.timestamp > timedelta(minutes=5):
                             logger.warning("No ping received for 5 minutes or more.")
+                            self.reenable_start.emit()
 
                         if time.time() - self.last_ping >= 0.6:
                             self.last_ping = time.time()
@@ -151,19 +151,13 @@ class SerialCaptureWorker(QThread):
         self.ping()
 
     # check if there has been valid ping under the last 5 minutes
-    def update_timestamp_from_ping(self, response):
-        try:
-            # parse json response
-            data = json.loads(response)
-            if 'ping_response' in data:
-                # extract the timestamp from ping response
-                timestamp_str = data['ping_response'].get('timestamp', '')
-                if timestamp_str:
-                    self.timestamp = datetime.fromisoformat(timestamp_str)
-                    logger.info(f"updated timestamp from ping: {self.timestamp}")
-                    popups.show_error_message('warning', 'due to an at least 5 minute disconnection, control board is reset')
-        except json.JSONDecodeError:
-            logger.exception(f"failed to parse response as JSON: {response}")
+    def update_timestamp_from_ping(self, data):
+        # extract the timestamp from ping response
+        timestamp_str = data.get('timestamp', '')
+        if timestamp_str:
+            # update class variable timestamp
+            self.timestamp = datetime.fromisoformat(timestamp_str)
+            logger.info(f"updated timestamp from ping: {self.timestamp}")
 
     # ping
     def ping(self):
@@ -177,7 +171,7 @@ class SerialCaptureWorker(QThread):
                 ping_data = parsed_response['ping_response']
                 # get all the data from ping & store it in class variables
                 self.alive = ping_data.get('alive', False)
-                # self.timestamp = ping_data.get('timestamp', '')
+                self.update_timestamp_from_ping(ping_data)
                 self.machine_state = ping_data.get('machine_state', '')
                 # extract test status information and emit signals for gui updates
                 self.current_temperature = ping_data.get('current_temp', 0)

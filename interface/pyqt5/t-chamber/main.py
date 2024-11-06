@@ -188,6 +188,7 @@ class MainWindow(QMainWindow):
             self.serial_worker.update_listbox.connect(self.update_listbox_gui)
             self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
             self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
+            self.serial_worker.reenable_start.connect(self.no_ping_for_five)
             self.serial_worker.start()  # start the worker thread
 
             # connect manual tab signals
@@ -224,8 +225,9 @@ class MainWindow(QMainWindow):
 
     # if no ping comes through for over 5 minutes
     def no_ping_for_five(self):
-        message = 'there has been no communication with control board for at least 5 minutes now, control board is reset'
-        popups.show_error_message('error', message)
+        self.re_enable_start()
+        message = 'due to lack of communication for at least 5 minutes, control board is reset'
+        popups.show_error_message('warning', message)
 
     # similar method for incorrect test board output notice
     def incorrect_output_gui(self, message):
