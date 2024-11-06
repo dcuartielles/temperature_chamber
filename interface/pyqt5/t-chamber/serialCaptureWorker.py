@@ -173,7 +173,7 @@ class SerialCaptureWorker(QThread):
                 self.alive = ping_data.get('alive', False)
                 self.update_timestamp_from_ping(ping_data)
                 self.machine_state = ping_data.get('machine_state', '')
-
+                self.machine_state_signal.emit()
                 # extract test status information and emit signals for gui updates
                 self.current_temperature = ping_data.get('current_temp', 0)
                 test_status = ping_data.get('test_status', {})

@@ -189,6 +189,7 @@ class MainWindow(QMainWindow):
                     self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
                     self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
                     self.serial_worker.reenable_start.connect(self.no_ping_for_five)
+                    self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
                     self.serial_worker.start()  # start the worker thread
 
                     # connect manual tab signals
@@ -225,9 +226,9 @@ class MainWindow(QMainWindow):
 
     # intercept emergency stop machine state
     def emergency_stop_from_arduino(self):
-        logger.info('notifying user machine state = emergency stop')
         if self.machine_state == 'EMERGENCY_STOP':
             popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
+            logger.info('the system is off: DO SOMETHING!')
 
     # if no ping comes through for over 5 minutes
     def no_ping_for_five(self):
@@ -289,7 +290,6 @@ class MainWindow(QMainWindow):
         desired_temp = message.get('desired_temp')
         # retrieve machine state
         self.machine_state = message.get('machine_state')
-        self.emergency_stop_from_arduino()
         # create a displayable info string
         status = f'current temperature: {self.current_temperature}°C | desired temperature: {desired_temp}°C | machine state: {self.machine_state}'
         self.chamber_monitor.clear()  # clear old data
