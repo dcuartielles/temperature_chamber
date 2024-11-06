@@ -452,6 +452,7 @@ void sendPingResponse() {
     responseDoc["ping_response"]["alive"] = true;
     responseDoc["ping_response"]["timestamp"] = getCurrentTimestamp();
     responseDoc["ping_response"]["machine_state"] = getMachineState();
+    responseDoc["ping_response"]["current_temp"] = chamberState.temperatureRoom;
 
     JsonObject testStatus = responseDoc["ping_response"].createNestedObject("test_status");
     testStatus["is_test_running"] = isTestRunning;
