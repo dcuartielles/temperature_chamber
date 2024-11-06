@@ -195,7 +195,7 @@ void setup() {
     // Initialise LCD
     lcd.init();
     chamberState.temperatureRoom = getTemperature();
-    chamberState.temperatureDesired = -41;
+    chamberState.temperatureDesired = 0;
     chamberState.longHeatingFlag = 0;
     chamberState.isHeating = false;
     chamberState.isCooling = false;
@@ -270,7 +270,7 @@ void displayLCD(float tempRoom, int tempDesired) {
     lcd.print(" C");
     lcd.setCursor(0, 1);
     lcd.print("Goal: ");
-    if (tempDesired == -41) {
+    if (tempDesired == 0) {
         lcd.print("-");
     } else {
         lcd.print(tempDesired);
@@ -282,7 +282,7 @@ void displaySerial() {
     Serial.print(F("Room_temp: "));
     Serial.print(chamberState.temperatureRoom);
     Serial.print(F(" | Desired_temp: "));
-    if (chamberState.temperatureDesired == -41) {
+    if (chamberState.temperatureDesired == 0) {
         Serial.print("-");
     } else {
         Serial.print(chamberState.temperatureDesired);
@@ -583,7 +583,7 @@ void changeTemperature() {
         chamberState.temperatureDesired = TEMPERATURE_MAX;
     }
     // if (chamberState.temperatureDesired == -41) { handleResetState(); }
-    else if (chamberState.temperatureDesired <= TEMPERATURE_MIN && chamberState.temperatureDesired != -41)  {
+    else if (chamberState.temperatureDesired <= TEMPERATURE_MIN && chamberState.temperatureDesired != 0)  {
         chamberState.temperatureDesired = TEMPERATURE_MIN;
     }
 }
@@ -814,7 +814,7 @@ void loop() {
     // Update switch states and temperature readings
     updateSwitchStates();
     chamberState.temperatureRoom = getTemperature();
-    if (chamberState.temperatureDesired != -41) {
+    if (chamberState.temperatureDesired != 0) {
         temperatureThreshold = chamberState.temperatureRoom - chamberState.temperatureDesired;
     }
 
