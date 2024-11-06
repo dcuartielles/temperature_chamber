@@ -301,15 +301,11 @@ void displayLCDOff() {
 }
 
 bool isTemperatureReached(float targetTemp, float currentTemp) {
-    return currentTemp >= targetTemp - 0.1;
+    return currentTemp >= targetTemp - 0.1 && currentTemp <= targetTemp + 0.1;
 }
 
 bool holdForPeriod(unsigned long duration) {
-    // Serial.print("Checking timer: ");
-    // Serial.print(millis() - sequenceStartTime);
-    // Serial.print(" / ");
-    // Serial.println(duration);
-    return millis() - sequenceStartTime >= duration;
+   return millis() - sequenceStartTime >= duration;
 }
 
 int getTimeLeft(unsigned long duration, Sequence currentSequence) {
