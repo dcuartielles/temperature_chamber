@@ -214,7 +214,7 @@ class MainWindow(QMainWindow):
 
             else:
                 popups.show_error_message('warning',
-                                          'no serial connection to the boards, ports are missing or invalid.')
+                                          'ports are either not selected or already busy.')
                 self.start_button.setEnabled(True)  # Re-enable button to try again
                 return
 
@@ -276,7 +276,7 @@ class MainWindow(QMainWindow):
             formatted_time_left = f"{time_left:.1f}"
             logger.info('parsing test info to update running test label')
 
-            self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {formatted_time_left} minutes')
+            self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {formatted_time_left} min')
             self.serial_label.setStyleSheet('font-weight: bold;')
         else:
             self.serial_label.setText('running test info')
