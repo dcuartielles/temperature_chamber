@@ -395,6 +395,21 @@ void runNextTest() {
     }
 }
 
+void clearTests() {
+    isTestRunning = false;
+    currentSequenceIndex = 0;
+    currentTest.numSequences = 0;
+    currentTestName = "";
+    sequenceStartTime = 0;
+    currentDuration = 0;
+
+    // clear queued tests
+    queuedTestCount = 0;
+    currentTestIndex = 0;
+
+    Serial.println("All tests cleared. Ready for new tests.");
+}
+
 void parseAndRunManualSet(JsonObject& commandParams) {
 
         float temp = commandParams["temp"];
@@ -418,7 +433,9 @@ void parseAndRunCommands(JsonObject& commands) {
         } 
         if (systemSwitchState) {
             if (command == "INTERRUPT_TEST") {
-
+                clearTests();
+                status = RESET;
+                Serial.println("Test interrupted and system reset.");
             } else if (command == "SHOW_DATA") {
                 displaySerial();
             } else if (command == "SET_TEMP") {
