@@ -1499,3 +1499,35 @@ Traceback (most recent call last):
     raise PortNotOpenError()
 serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
 2024-11-06 11:56:12 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-06 13:38:36 - __main__ - INFO - app started
+2024-11-06 13:38:38 - portSelector - INFO - []
+2024-11-06 13:38:42 - __main__ - INFO - start button clicked
+2024-11-06 13:42:15 - __main__ - INFO - app started
+2024-11-06 13:42:17 - portSelector - INFO - []
+2024-11-06 13:42:20 - __main__ - INFO - start button clicked
+2024-11-06 13:46:00 - __main__ - INFO - app started
+2024-11-06 13:46:00 - portSelector - INFO - ports refreshed
+2024-11-06 13:46:02 - portSelector - INFO - no boards connected
+2024-11-06 13:46:06 - __main__ - INFO - start button clicked
+2024-11-06 13:53:19 - __main__ - INFO - app started
+2024-11-06 13:53:19 - portSelector - INFO - ports refreshed
+2024-11-06 13:53:20 - portSelector - INFO - no boards connected
+2024-11-06 13:53:24 - __main__ - INFO - start button clicked
+2024-11-06 13:53:24 - __main__ - INFO - check if ports are selected
+2024-11-06 13:58:47 - __main__ - INFO - app started
+2024-11-06 13:58:47 - portSelector - INFO - ports refreshed
+2024-11-06 13:58:49 - portSelector - INFO - no boards connected
+2024-11-06 13:58:53 - __main__ - INFO - start button clicked
+2024-11-06 13:58:53 - __main__ - INFO - check if ports are selected
+2024-11-06 13:58:53 - __main__ - ERROR - serial worker does not even exist
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\main.py", line 192, in on_start_button_clicked
+    if not self.serial_worker.is_running:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'is_running'
+2024-11-06 13:58:53 - __main__ - ERROR - test board does not even exist
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\main.py", line 217, in on_start_button_clicked
+    if not self.test_board.is_running:
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'is_running'

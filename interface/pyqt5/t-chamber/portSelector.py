@@ -88,8 +88,12 @@ class PortSelector(QWidget):
 
     # refresh ports (independent of config)
     def refresh_ports(self):
+        logger.info('ports refreshed')
         self.ports_refreshed.emit()  # emit signal to re-enable start button click
         ports_and_boards = arduinoUtils.get_arduino_boards()  # should be [(port, board_name), (port, board_name)]
+        if not ports_and_boards:
+            logger.info('no boards connected')
+            return None
         logger.info(ports_and_boards)
         self.t_port_dropdown.clear()
         self.c_port_dropdown.clear()
