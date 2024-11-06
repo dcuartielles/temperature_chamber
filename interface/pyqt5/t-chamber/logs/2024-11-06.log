@@ -1108,3 +1108,394 @@ Traceback (most recent call last):
     raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
 serial.serialutil.SerialException: could not open port 'COM15': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
 2024-11-06 10:34:37 - serialCaptureWorker - ERROR - failed to connect to COM15
+2024-11-06 11:46:18 - __main__ - INFO - app started
+2024-11-06 11:46:20 - portSelector - INFO - [('COM7', 'Arduino Uno'), ('COM15', 'Arduino UNO R4 WiFi')]
+2024-11-06 11:46:23 - __main__ - INFO - start button clicked
+2024-11-06 11:46:23 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-06 11:46:23 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-06 11:46:24 - testBoardWorker - INFO - test board thread is running
+2024-11-06 11:46:24 - serialCaptureWorker - INFO - thread is running
+2024-11-06 11:46:24 - serialCaptureWorker - INFO - sending handshake: {'handshake': {'timestamp': '2024-11-06T11:46:24'}}
+2024-11-06 11:46:24 - serialCaptureWorker - INFO - sent to arduino: {"handshake": {"timestamp": "2024-11-06T11:46:24"}}
+2024-11-06 11:46:24 - serialCaptureWorker - INFO - handshake sent to arduino: {'handshake': {'timestamp': '2024-11-06T11:46:24'}}
+2024-11-06 11:46:24 - serialCaptureWorker - ERROR - failed to parse arduino response
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 137, in handshake
+    parsed_response = json.loads(handshake_response)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-11-06 11:46:24 - serialCaptureWorker - INFO - {"handshake":{"timestamp":"2024-11-06T11:46:24","machine_state":"REPORT","last_shutdown_cause":"Unknown","last_heat_time":"N/A"}}
+2024-11-06 11:46:24 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:46:25 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:46:24
+2024-11-06 11:46:30 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:46:30 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:46:30
+2024-11-06 11:46:32 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-06 11:46:32 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-06 11:46:34 - __main__ - INFO - test starting
+2024-11-06 11:46:34 - serialCaptureWorker - INFO - sent to arduino: {"tests": {"test_1": {"chamber_sequences": [{"temp": 20, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, "test_2": {"chamber_sequences": [{"temp": 60, "duration": 60000}, {"temp": 70, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}}
+2024-11-06 11:46:34 - serialCaptureWorker - INFO - Sending full tests data with 2 tests
+2024-11-06 11:46:34 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:46:34 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-06 11:46:34 - __main__ - INFO - test board worker temporarily deleted
+2024-11-06 11:46:34 - __main__ - INFO - cli worker started
+2024-11-06 11:46:34 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-11-06 11:46:35 - serialCaptureWorker - INFO - Queued test: test_1
+2024-11-06 11:46:35 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:46:35 - serialCaptureWorker - INFO - arduino says: Queued test: test_2
+2024-11-06 11:46:35 - serialCaptureWorker - INFO - arduino says: Setting temperature to 20.00°
+2024-11-06 11:46:35 - serialCaptureWorker - INFO - arduino says: Running test: test_1
+2024-11-06 11:46:35 - serialCaptureWorker - ERROR - failed to decode ping response as json
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 169, in ping
+    parsed_response = json.loads(ping_response)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-11-06 11:46:35 - serialCaptureWorker - INFO - Target temperature reached! Starting timer.
+2024-11-06 11:46:35 - serialCaptureWorker - INFO - {"ping_response":{"alive":true,"timestamp":"2024-11-06T11:46:35","machine_state":"REPORT","current_temp":26.125,"test_status":{"is_test_running":true,"current_test":"test_1","current_sequence":1,"desired_temp":20,"current_duration":60000,"time_left":59}}}
+2024-11-06 11:46:35 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:46:35 - cliWorker - INFO - cli worker thread is running
+2024-11-06 11:46:35 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-06 11:46:36 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:46:35
+2024-11-06 11:46:36 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:46:37 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-11-06 11:46:37 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-11-06 11:46:38 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-11-06 11:46:38 - cliWorker - INFO - core arduino is already installed.
+2024-11-06 11:46:38 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-11-06 11:46:41 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:46:41 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:46:41
+2024-11-06 11:46:41 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:46:42 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-06 11:46:42 - cliWorker - INFO - compilation successful!
+2024-11-06 11:46:42 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-11-06 11:46:46 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:46:47 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:46:46
+2024-11-06 11:46:47 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:46:47 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-06 11:46:47 - cliWorker - INFO - upload successful!
+2024-11-06 11:46:49 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-11-06 11:46:49 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-11-06 11:46:49 - __main__ - INFO - cli worker quit
+2024-11-06 11:46:49 - __main__ - INFO - cli worker deleted
+2024-11-06 11:46:51 - __main__ - INFO - test board worker restarted
+2024-11-06 11:46:51 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-06 11:46:52 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:46:52 - testBoardWorker - INFO - test board thread is running
+2024-11-06 11:46:52 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:46:52
+2024-11-06 11:46:52 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:46:57 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:46:58 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:46:58
+2024-11-06 11:46:58 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:03 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:03 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:47:04
+2024-11-06 11:47:03 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:05 - mainTab - INFO - correct test output
+2024-11-06 11:47:05 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:47:08 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:09 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:47:09
+2024-11-06 11:47:09 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:14 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:14 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:47:15
+2024-11-06 11:47:14 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:17 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"INTERRUPT_TEST": {}}}
+2024-11-06 11:47:17 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"INTERRUPT_TEST": {}}}
+2024-11-06 11:47:17 - __main__ - INFO - test was interrupted
+2024-11-06 11:47:17 - __main__ - INFO - test starting
+2024-11-06 11:47:17 - serialCaptureWorker - INFO - sent to arduino: {"tests": {"test_1": {"chamber_sequences": [{"temp": 20, "duration": 60000}, {"temp": 40, "duration": 60000}], "sketch": "./alphabet.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, "test_2": {"chamber_sequences": [{"temp": 60, "duration": 60000}, {"temp": 70, "duration": 60000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}}
+2024-11-06 11:47:17 - serialCaptureWorker - INFO - Sending full tests data with 2 tests
+2024-11-06 11:47:17 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:47:17 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-06 11:47:17 - serialCaptureWorker - INFO - All tests cleared. Ready for new tests.
+2024-11-06 11:47:17 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:17 - serialCaptureWorker - INFO - arduino says: Test interrupted and system reset.
+2024-11-06 11:47:17 - __main__ - INFO - test board worker temporarily deleted
+2024-11-06 11:47:17 - __main__ - INFO - cli worker started
+2024-11-06 11:47:17 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-11-06 11:47:17 - mainTab - ERROR - ABCDEFGHIJKLMNOPQRSTUV
+2024-11-06 11:47:17 - serialCaptureWorker - ERROR - failed to decode ping response as json
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 169, in ping
+    parsed_response = json.loads(ping_response)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-11-06 11:47:17 - serialCaptureWorker - INFO - Test interrupted and system reset.
+2024-11-06 11:47:18 - serialCaptureWorker - INFO - Queued test: test_1
+2024-11-06 11:47:18 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:18 - serialCaptureWorker - INFO - arduino says: Queued test: test_2
+2024-11-06 11:47:18 - serialCaptureWorker - INFO - arduino says: Setting temperature to 20.00°
+2024-11-06 11:47:18 - serialCaptureWorker - INFO - arduino says: Running test: test_1
+2024-11-06 11:47:18 - serialCaptureWorker - INFO - arduino says: {"ping_response":{"alive":true,"timestamp":"2024-11-06T11:47:19","machine_state":"COOLING","current_temp":26.46875,"test_status":{"is_test_running":true,"current_test":"test_1","current_sequence":1,"desired_temp":20,"current_duration":0,"time_left":4294796}}}
+2024-11-06 11:47:18 - serialCaptureWorker - ERROR - failed to decode ping response as json
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 169, in ping
+    parsed_response = json.loads(ping_response)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-11-06 11:47:18 - cliWorker - INFO - cli worker thread is running
+2024-11-06 11:47:18 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-06 11:47:18 - serialCaptureWorker - INFO - {"ping_response":{"alive":true,"timestamp":"2024-11-06T11:47:19","machine_state":"COOLING","current_temp":26.4375,"test_status":{"is_test_running":true,"current_test":"test_1","current_sequence":1,"desired_temp":20,"current_duration":60000,"time_left":59}}}
+2024-11-06 11:47:20 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-11-06 11:47:20 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-11-06 11:47:21 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-11-06 11:47:21 - cliWorker - INFO - core arduino is already installed.
+2024-11-06 11:47:21 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-11-06 11:47:23 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:24 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:47:25
+2024-11-06 11:47:24 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:24 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:24 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-06 11:47:24 - cliWorker - INFO - compilation successful!
+2024-11-06 11:47:25 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-11-06 11:47:29 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:29 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-06 11:47:29 - cliWorker - INFO - upload successful!
+2024-11-06 11:47:29 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:47:30
+2024-11-06 11:47:29 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:29 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:32 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-11-06 11:47:32 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-11-06 11:47:32 - __main__ - INFO - cli worker quit
+2024-11-06 11:47:32 - __main__ - INFO - cli worker deleted
+2024-11-06 11:47:33 - __main__ - INFO - test board worker restarted
+2024-11-06 11:47:33 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-06 11:47:34 - testBoardWorker - INFO - test board thread is running
+2024-11-06 11:47:35 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:35 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:47:36
+2024-11-06 11:47:35 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:35 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:40 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:40 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:47:42
+2024-11-06 11:47:40 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:40 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:46 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:46 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:47:48
+2024-11-06 11:47:46 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:46 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:48 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:47:48 - mainTab - INFO - correct test output
+2024-11-06 11:47:51 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:51 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:47:53
+2024-11-06 11:47:51 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:51 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:57 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:47:57 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:47:59
+2024-11-06 11:47:57 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:47:57 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:02 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:48:02 - mainTab - INFO - correct test output
+2024-11-06 11:48:02 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:48:03 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:48:05
+2024-11-06 11:48:03 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:03 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:08 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:48:08 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:48:10
+2024-11-06 11:48:08 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:08 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:13 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:48:14 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:48:16
+2024-11-06 11:48:14 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:14 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:16 - mainTab - INFO - correct test output
+2024-11-06 11:48:16 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:48:18 - serialCaptureWorker - INFO - Sequence complete
+2024-11-06 11:48:18 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:48:18 - serialCaptureWorker - INFO - arduino says: Setting temperature to 40.00°
+2024-11-06 11:48:18 - serialCaptureWorker - ERROR - failed to decode ping response as json
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 169, in ping
+    parsed_response = json.loads(ping_response)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-11-06 11:48:18 - serialCaptureWorker - INFO - Waiting for target temp to be reached
+2024-11-06 11:48:19 - serialCaptureWorker - INFO - {"ping_response":{"alive":true,"timestamp":"2024-11-06T11:48:21","machine_state":"RESET","current_temp":26.59375,"test_status":{"is_test_running":true,"current_test":"test_1","current_sequence":2,"desired_temp":40,"current_duration":60000,"time_left":0}}}
+2024-11-06 11:48:19 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:48:19 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:48:22
+2024-11-06 11:48:19 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:19 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:24 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:48:25 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:48:27
+2024-11-06 11:48:25 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:25 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:30 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:48:30 - mainTab - INFO - correct test output
+2024-11-06 11:48:30 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:48:30 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:48:33
+2024-11-06 11:48:30 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:30 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:35 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:48:36 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:48:39
+2024-11-06 11:48:36 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:36 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:41 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:48:41 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:48:45
+2024-11-06 11:48:41 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:41 - __main__ - INFO - parsing test info to update running test label
+2024-11-06 11:48:43 - serialCaptureWorker - INFO - connection to COM15 closed
+2024-11-06 11:48:43 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:48:43 - serialCaptureWorker - ERROR - error sending JSON: ClearCommError failed (OSError(9, 'The handle is invalid.', None, 6))
+2024-11-06 11:48:43 - serialCaptureWorker - ERROR - serial error: Attempting to use a port that is not open
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 103, in run
+    self.trigger_ping()
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 151, in trigger_ping
+    self.ping()
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 167, in ping
+    ping_response = self.ser.readline().decode('utf-8').strip()
+                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 269, in read
+    raise PortNotOpenError()
+serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
+2024-11-06 11:48:43 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:48:43 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-06 11:48:43 - mainTab - ERROR - ABCDEFGHIJKLMNOPQRSTUVWXY
+2024-11-06 11:49:03 - __main__ - INFO - app started
+2024-11-06 11:49:05 - portSelector - INFO - [('COM7', 'Arduino Uno')]
+2024-11-06 11:49:12 - __main__ - INFO - start button clicked
+2024-11-06 11:49:12 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-06 11:49:12 - serialCaptureWorker - ERROR - error
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 67, in serial_setup
+    self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM7': PermissionError(13, 'Access is denied.', None, 5)
+2024-11-06 11:49:12 - serialCaptureWorker - ERROR - failed to connect to COM7
+2024-11-06 11:49:13 - testBoardWorker - INFO - test board thread is running
+2024-11-06 11:49:27 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:49:34 - portSelector - INFO - [('COM7', 'Arduino Uno')]
+2024-11-06 11:49:39 - portSelector - INFO - [('COM7', 'Arduino Uno'), ('COM15', 'Arduino UNO R4 WiFi')]
+2024-11-06 11:49:41 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:49:43 - portSelector - INFO - [('COM7', 'Arduino Uno'), ('COM15', 'Arduino UNO R4 WiFi')]
+2024-11-06 11:49:55 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:50:09 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:50:23 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:50:37 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:50:43 - portSelector - INFO - [('COM15', 'Arduino UNO R4 WiFi'), ('COM7', 'Arduino Uno')]
+2024-11-06 11:50:51 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:51:05 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:51:19 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:51:21 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-06 11:54:44 - __main__ - INFO - app started
+2024-11-06 11:54:46 - portSelector - INFO - [('COM7', 'Arduino Uno'), ('COM15', 'Arduino UNO R4 WiFi')]
+2024-11-06 11:55:05 - __main__ - INFO - start button clicked
+2024-11-06 11:55:05 - testBoardWorker - INFO - test board worker connected to arduino port: COM15
+2024-11-06 11:55:05 - serialCaptureWorker - ERROR - error
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 67, in serial_setup
+    self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM15': PermissionError(13, 'Access is denied.', None, 5)
+2024-11-06 11:55:05 - serialCaptureWorker - ERROR - failed to connect to COM15
+2024-11-06 11:55:06 - testBoardWorker - INFO - test board thread is running
+2024-11-06 11:55:11 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:55:16 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:55:21 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:55:26 - testBoardWorker - INFO - connection to COM15 closed now
+2024-11-06 11:55:31 - __main__ - INFO - app started
+2024-11-06 11:55:33 - portSelector - INFO - [('COM15', 'Arduino UNO R4 WiFi'), ('COM7', 'Arduino Uno')]
+2024-11-06 11:55:43 - __main__ - INFO - start button clicked
+2024-11-06 11:55:43 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-06 11:55:43 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-06 11:55:44 - testBoardWorker - INFO - test board thread is running
+2024-11-06 11:55:44 - serialCaptureWorker - INFO - thread is running
+2024-11-06 11:55:44 - serialCaptureWorker - INFO - sending handshake: {'handshake': {'timestamp': '2024-11-06T11:55:44'}}
+2024-11-06 11:55:44 - serialCaptureWorker - INFO - sent to arduino: {"handshake": {"timestamp": "2024-11-06T11:55:44"}}
+2024-11-06 11:55:44 - serialCaptureWorker - INFO - handshake sent to arduino: {'handshake': {'timestamp': '2024-11-06T11:55:44'}}
+2024-11-06 11:55:44 - serialCaptureWorker - ERROR - failed to parse arduino response
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 137, in handshake
+    parsed_response = json.loads(handshake_response)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-11-06 11:55:44 - serialCaptureWorker - INFO - {"handshake":{"timestamp":"2024-11-06T11:55:44","machine_state":"EMERGENCY_STOP","last_shutdown_cause":"Unknown","last_heat_time":"N/A"}}
+2024-11-06 11:55:44 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:55:44 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:55:44
+2024-11-06 11:55:45 - serialCaptureWorker - INFO - System switch is off, please switch it on.
+2024-11-06 11:55:50 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:55:50 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:55:50
+2024-11-06 11:55:50 - serialCaptureWorker - INFO - System switch is off, please switch it on.
+2024-11-06 11:55:56 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:55:56 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:55:56
+2024-11-06 11:55:56 - serialCaptureWorker - INFO - System switch is off, please switch it on.
+2024-11-06 11:55:57 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:56:01 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:56:02 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:56:02
+2024-11-06 11:56:02 - serialCaptureWorker - INFO - System switch is off, please switch it on.
+2024-11-06 11:56:07 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:56:08 - serialCaptureWorker - INFO - updated timestamp from ping: 2024-11-06 11:56:08
+2024-11-06 11:56:11 - testBoardWorker - INFO - test worker thread is running
+2024-11-06 11:56:12 - serialCaptureWorker - INFO - connection to COM15 closed
+2024-11-06 11:56:12 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-06 11:56:12 - serialCaptureWorker - ERROR - error sending JSON: ClearCommError failed (OSError(9, 'The handle is invalid.', None, 6))
+2024-11-06 11:56:12 - serialCaptureWorker - ERROR - serial error: Attempting to use a port that is not open
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 103, in run
+    self.trigger_ping()
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 151, in trigger_ping
+    self.ping()
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 167, in ping
+    ping_response = self.ser.readline().decode('utf-8').strip()
+                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 269, in read
+    raise PortNotOpenError()
+serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
+2024-11-06 11:56:12 - testBoardWorker - INFO - connection to COM7 closed now

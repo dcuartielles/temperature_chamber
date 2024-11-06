@@ -19,10 +19,10 @@ class PortSelector(QWidget):
         self.c_b_name_label = QLabel('control board')
         self.t_port_dropdown = QComboBox()
         self.c_port_dropdown = QComboBox()
-        self.setStyleSheet('background-color: white;'
-                           'color: grey;'
-                           'alignment: right;'
-                           'font-weight: bold;')
+        self.setStyleSheet('color: #009FAF;'
+                                         'background-color: white;'
+                                         'alignment: right;'
+                                         'font-weight: bold;')
 
         self.refresh_button = QPushButton('refresh')
         self.refresh_button.setFixedSize(80, 37)
@@ -88,9 +88,9 @@ class PortSelector(QWidget):
 
     # refresh ports (independent of config)
     def refresh_ports(self):
-        self.ports_refreshed.emit()
-        logger.info('ports refreshed')
+        self.ports_refreshed.emit()  # emit signal to re-enable start button click
         ports_and_boards = arduinoUtils.get_arduino_boards()  # should be [(port, board_name), (port, board_name)]
+        logger.info(ports_and_boards)
         self.t_port_dropdown.clear()
         self.c_port_dropdown.clear()
         # add both board name and port to dropdowns

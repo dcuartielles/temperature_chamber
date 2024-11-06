@@ -94,8 +94,8 @@ class SerialCaptureWorker(QThread):
                         if response:
                             self.process_response(response)
 
-                        if self.timestamp and datetime.now() - self.timestamp > timedelta(minutes=5):
-                            logger.warning("No ping received for 5 minutes or more.")
+                        if self.timestamp and datetime.now() - self.timestamp >= timedelta(minutes=5):
+                            logger.warning("no ping received for 5 minutes or more")
                             self.reenable_start.emit()
 
                         if time.time() - self.last_ping >= 0.6:
@@ -173,6 +173,7 @@ class SerialCaptureWorker(QThread):
                 self.alive = ping_data.get('alive', False)
                 self.update_timestamp_from_ping(ping_data)
                 self.machine_state = ping_data.get('machine_state', '')
+
                 # extract test status information and emit signals for gui updates
                 self.current_temperature = ping_data.get('current_temp', 0)
                 test_status = ping_data.get('test_status', {})
@@ -196,7 +197,6 @@ class SerialCaptureWorker(QThread):
             'time_left': self.time_left
         }
         self.update_test_label_signal.emit(test_status_data)
-        logger.info(f'emitting test status data: {test_status_data}')
 
     # extract relevant info for display in serial monitor
     def display_info(self):

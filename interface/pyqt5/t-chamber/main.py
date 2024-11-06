@@ -158,6 +158,7 @@ class MainWindow(QMainWindow):
         self.main_tab.load_button.clicked.connect(self.load_test_file)
         self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
+        self.port_selector.ports_refreshed.connect(self.re_enable_start)
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
@@ -182,36 +183,42 @@ class MainWindow(QMainWindow):
             self.start_button.setEnabled(True)  # re-enable button to try again
             return
 
-        # attempt to start serial worker thread
-        try:
-            self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
-            self.serial_worker.update_listbox.connect(self.update_listbox_gui)
-            self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
-            self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
-            self.serial_worker.reenable_start.connect(self.no_ping_for_five)
-            self.serial_worker.start()  # start the worker thread
-
-            # connect manual tab signals
-            self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
-            self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
-            self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
-            # self.main_tab.incorrect_output.connect(self.incorrect_output_gui)
-
-        except Exception as e:
-            logger.exception(f'failed to start serial capture worker: {e}')
-            popups.show_error_message('error', f'failed to start serial worker: {e}')
-            self.start_button.setEnabled(True)
+        # if cli worker is running, prevent trying to open and run test board worker
+        if self.cli_worker.is_running:
+            logger.info('cli worker is running, test board cannot restart')
             return
 
-        # attempt to start test board thread
-        try:
-            self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
-            self.test_board.start()
-        except Exception as e:
-            logger.exception(f'failed to start test board worker: {e}')
-            popups.show_error_message('error', f'failed to start test board worker: {e}')
-            self.start_button.setEnabled(True)
-            return
+        if not self.serial_worker.is_running:
+            # attempt to start serial worker thread
+            try:
+                self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
+                self.serial_worker.update_listbox.connect(self.update_listbox_gui)
+                self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
+                self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
+                self.serial_worker.reenable_start.connect(self.no_ping_for_five)
+                self.serial_worker.start()  # start the worker thread
+
+                # connect manual tab signals
+                self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
+                self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
+                self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
+
+            except Exception as e:
+                logger.exception(f'failed to start serial capture worker: {e}')
+                popups.show_error_message('error', f'failed to start serial worker: {e}')
+                self.start_button.setEnabled(True)
+                return
+
+        if not self.test_board.is_running:
+            # attempt to start test board thread
+            try:
+                self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
+                self.test_board.start()
+            except Exception as e:
+                logger.exception(f'failed to start test board worker: {e}')
+                popups.show_error_message('error', f'failed to start test board worker: {e}')
+                self.start_button.setEnabled(True)
+                return
 
     # the actual listbox updates
     def update_listbox_gui(self, message):
@@ -220,14 +227,17 @@ class MainWindow(QMainWindow):
 
     # intercept emergency stop machine state
     def emergency_stop_from_arduino(self):
+        logger.info('notifying user machine state = emergency stop')
         if self.machine_state == 'EMERGENCY_STOP':
             popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
 
     # if no ping comes through for over 5 minutes
     def no_ping_for_five(self):
-        self.re_enable_start()
-        message = 'due to lack of communication for at least 5 minutes, control board is reset'
+        self.no_ping_gui()
+        message = 'due to lack of communication for at least 5 minutes, control board is reset\n you can reconnect the board(s) and click start again'
         popups.show_error_message('warning', message)
+        logger.warning(message)
+        self.re_enable_start()
 
     # similar method for incorrect test board output notice
     def incorrect_output_gui(self, message):
@@ -281,6 +291,7 @@ class MainWindow(QMainWindow):
         desired_temp = message.get('desired_temp')
         # retrieve machine state
         self.machine_state = message.get('machine_state')
+        self.emergency_stop_from_arduino()
         # create a displayable info string
         status = f'current temperature: {self.current_temperature}°C | desired temperature: {desired_temp}°C | machine state: {self.machine_state}'
         self.chamber_monitor.clear()  # clear old data
@@ -455,6 +466,7 @@ class MainWindow(QMainWindow):
     # re-enable start button after refreshing ports
     def re_enable_start(self):
         self.start_button.setEnabled(True)
+        logger.info('start button re-enabled')
 
     # visually signal that the app is running
     def light_up(self):
@@ -466,10 +478,17 @@ class MainWindow(QMainWindow):
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  )
-        self.port_selector.setStyleSheet('color: #009FAF;'
-                                         'background-color: white;'
-                                         'alignment: right;'
-                                         'font-weight: bold;')
+
+    # visually signal that there has been no connection to control board for at least 5 minutes
+    def no_ping_gui(self):
+        logger.info('changing gui to no ping for 5')
+        self.setWindowTitle('no connection to control board')
+        self.chamber_monitor.setStyleSheet('color: grey;'
+                                           )
+        self.emergency_stop_button.setStyleSheet('background-color: grey;'
+                                                 'color: white;'
+                                                 'font-size: 20px;'
+                                                 'font-weight: bold;')
 
     # stop both workers
     def closeEvent(self, event):
