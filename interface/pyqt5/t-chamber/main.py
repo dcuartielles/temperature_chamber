@@ -213,7 +213,7 @@ class MainWindow(QMainWindow):
                     self.no_ping_alert = False
                     self.no_ping_timer.start()
                     logger.info('qtimer started to check for pings every 5 seconds')
-
+                    self.show_reset_button()
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
                     self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
@@ -222,6 +222,7 @@ class MainWindow(QMainWindow):
                     logger.exception(f'failed to start serial worker: {e}')
                     popups.show_error_message('error', f'failed to start serial worker: {e}')
                     self.start_button.setEnabled(True)
+                    self.reactivated_start_button()
                     return
 
             if not hasattr(self, 'test_board') or self.test_board is None or not self.test_board.is_running:
@@ -543,10 +544,6 @@ class MainWindow(QMainWindow):
     def set_flag_to_false(self):
         self.test_is_running = False
 
-    # set the test_is_running flag according to signal from serial worker
-    def set_flag(self, is_running):
-        self.test_is_running = is_running
-
     # re-enable start button after refreshing ports
     def re_enable_start(self):
         self.reactivated_start_button()
@@ -556,7 +553,6 @@ class MainWindow(QMainWindow):
     # visually signal that the app is running
     def light_up(self):
         self.setWindowTitle('temperature chamber app is running')
-        self.show_reset_button()
         self.chamber_monitor.setStyleSheet('color: #009FAF;'
                                            )
         self.emergency_stop_button.setStyleSheet('background-color: red;'
@@ -569,6 +565,7 @@ class MainWindow(QMainWindow):
     def no_ping_gui(self):
         logger.info('changing gui to no ping for 5')
         self.setWindowTitle('no connection to control board')
+        self.reactivated_start_button()
         self.chamber_monitor.setStyleSheet('color: grey;'
                                            )
         self.emergency_stop_button.setStyleSheet('background-color: grey;'
