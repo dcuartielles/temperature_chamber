@@ -57,8 +57,8 @@ class PortSelector(QWidget):
         self.t_port_dropdown.currentIndexChanged.connect(self.update_config_t)
         self.c_port_dropdown.currentIndexChanged.connect(self.update_config_c)
 
-        self.update_config_t()
-        self.update_config_c()
+        self.update_config_t()  # update test board & port in config
+        self.update_config_c()  # update control board & port in config
 
     # load ports and boards from config
     def load_all_from_config(self):
@@ -72,6 +72,7 @@ class PortSelector(QWidget):
         saved_c_port = saved_c_board.get('port')
         saved_c_name = saved_c_board.get('board_name')
 
+        # create a dropdown menu
         if saved_t_port and saved_t_name:
             for i in range(self.t_port_dropdown.count()):
                 display_text = self.t_port_dropdown.itemText(i)
@@ -119,7 +120,7 @@ class PortSelector(QWidget):
             # update  config
             self.config.set_c_board(c_port, c_board_name)
 
-    # get selected port ONLY for test board / cli worker threads
+    # get selected port ONLY (for test board / cli worker thread configuration)
     def get_selected_t_port(self):
         saved_t_board = self.config.get('test_board', {})
         saved_t_port = saved_t_board.get('port')
@@ -129,7 +130,7 @@ class PortSelector(QWidget):
             port, _ = self.t_port_dropdown.itemData(self.t_port_dropdown.currentIndex())
             return str(port)
 
-    # get selected port ONLY for control board worker
+    # get selected port ONLY for control board worker (for control board / serial worker thread configuration)
     def get_selected_c_port(self):
         saved_c_board = self.config.get('control_board', {})
         saved_c_port = saved_c_board.get('port')
