@@ -24,6 +24,7 @@ class SerialCaptureWorker(QThread):
     current_duration_signal = pyqtSignal(int)
     time_left_signal = pyqtSignal(int)
     ping_timestamp_signal = pyqtSignal(str)
+    trigger_reset = pyqtSignal()  # signal form main to reset control board
     # current_temp_signal = pyqtSignal(int)
 
     def __init__(self, port, baudrate, timeout=5):
@@ -41,6 +42,7 @@ class SerialCaptureWorker(QThread):
         self.test_data = None
         self.trigger_run_tests.connect(self.run_all_tests)
         self.trigger_interrupt_test.connect(self.interrupt_test)
+        self.trigger_reset.connect(self.reset_test_board)
         self.sent_handshake = False
         self.alive = False
         self.timestamp = None
@@ -234,6 +236,12 @@ class SerialCaptureWorker(QThread):
             self.send_json_to_arduino(set_temp_data)
         else:
             logger.warning('nothing to set the t-chamber to')
+
+    # reset test board
+    def reset_test_board(self):
+        reset = commands.reset()
+        self.send_json_to_arduino(reset)
+        logger.info('resetting control board')
 
     # process serial response
     def process_response(self, response):

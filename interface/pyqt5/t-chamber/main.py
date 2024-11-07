@@ -110,6 +110,15 @@ class MainWindow(QMainWindow):
                                         'font-weight: bold;')
         layout.addWidget(self.start_button)
 
+        # reset control board button
+        self.reset_button = QPushButton('reset control board')
+        self.reset_button.setStyleSheet('background-color: #009FAF;'
+                                        'color: white;'
+                                        'font-size: 20px;'
+                                        'font-weight: bold;')
+        self.reset_button.hide()
+        layout.addWidget(self.reset_button)
+
         # add space btw sections: vertical 10px
         layout.addSpacerItem(QSpacerItem(0, 10))
 
@@ -162,6 +171,7 @@ class MainWindow(QMainWindow):
 
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
+        self.reset_button.clicked.connect(self.reset_control_board)
         self.main_tab.load_button.clicked.connect(self.load_test_file)
         self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
@@ -179,6 +189,7 @@ class MainWindow(QMainWindow):
     def on_start_button_clicked(self):
         logger.info('start button clicked')
         self.start_button.setDisabled(True)  # disable to prevent double-clicks
+        self.inactivated_start_button()
 
         # get selected ports
         self.selected_c_port = self.port_selector.get_selected_c_port()
@@ -225,13 +236,40 @@ class MainWindow(QMainWindow):
                     return
 
             if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
-                return 
+                return
 
         else:
             popups.show_error_message('warning',
                                       'ports are either not selected or already busy.')
             self.start_button.setEnabled(True)  # re-enable button to try again
             return
+
+    # inactive start button gui
+    def inactivated_start_button(self):
+        self.start_button.setStyleSheet('background-color: grey;'
+                                        'color: white;'
+                                        'font-size: 20px;'
+                                        'font-weight: bold;')
+
+    # reactivated start button gui
+    def reactivated_start_button(self):
+        self.start_button.show()
+        self.reset_button.hide()
+        self.start_button.setStyleSheet('background-color: #009FAF;'
+                                        'color: white;'
+                                        'font-size: 20px;'
+                                        'font-weight: bold;')
+
+    # show reset button when serial worker starts
+    def show_reset_button(self):
+        self.start_button.hide()
+        self.reset_button.show()
+
+    # reset control board
+    def reset_control_board(self):
+        if self.serial_worker and self.serial_worker.is_running:
+            self.serial_worker.trigger_reset.emit()
+            logger.info('reset signal emitted')
 
     # the actual listbox updates
     def update_listbox_gui(self, message):
@@ -289,6 +327,7 @@ class MainWindow(QMainWindow):
     # similar method to be triggered separately when a test is interrupted
     def test_interrupted_gui(self, message):
         self.test_is_running = False
+        self.test_label_no_test()
         self.trigger_interrupt_t()
         item = QListWidgetItem(message)
         font = QFont()
@@ -305,6 +344,15 @@ class MainWindow(QMainWindow):
         item.setFont(font)
         self.listbox.addItem(item)
         self.listbox.scrollToBottom()
+
+    # update test label if no test is running
+    def test_label_no_test(self):
+        if self.test_is_running:
+            return
+        else:
+            self.serial_label.setText(
+                'running test info:  no test currently running')
+            self.serial_label.setStyleSheet('font-weight: normal;')
 
     # update running test info label
     def update_test_label(self, test_info):
@@ -501,12 +549,14 @@ class MainWindow(QMainWindow):
 
     # re-enable start button after refreshing ports
     def re_enable_start(self):
+        self.reactivated_start_button()
         self.start_button.setEnabled(True)
         logger.info('start button re-enabled')
 
     # visually signal that the app is running
     def light_up(self):
         self.setWindowTitle('temperature chamber app is running')
+        self.show_reset_button()
         self.chamber_monitor.setStyleSheet('color: #009FAF;'
                                            )
         self.emergency_stop_button.setStyleSheet('background-color: red;'

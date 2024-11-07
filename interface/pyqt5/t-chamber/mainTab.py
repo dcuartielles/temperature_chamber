@@ -94,14 +94,15 @@ class MainTab(QWidget):
                 # if no matches, handle as incorrect output
                 self.update_gui_incorrect()
 
+    # gui for correct output
     def update_gui_correct(self):
         self.test_output_listbox.setStyleSheet("color: #009FAF; font-weight: bold;")
         self.expected_outcome_listbox.setStyleSheet("color: black; font-weight: normal;")
 
+    # gui for incorrect test board output
     def update_gui_incorrect(self):
         self.expected_outcome_listbox.setStyleSheet("color: red; font-weight: bold;")
         self.test_output_listbox.setStyleSheet("color: red; font-weight: bold;")
-
 
     # waiting for t-board output
     def reset_gui_for_waiting(self):
