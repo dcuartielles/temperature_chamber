@@ -7,6 +7,7 @@ def show_data():
     }
     return show_data
 
+
 # reset
 def reset():
     reset = {"commands": {
@@ -14,6 +15,7 @@ def reset():
             }
     }
     return reset
+
 
 # interrupt test
 def interrupt_test():
@@ -23,6 +25,7 @@ def interrupt_test():
     }
     return interrupt
 
+
 # emergency stop
 def emergency_stop():
     stop = {"commands": {
@@ -30,6 +33,7 @@ def emergency_stop():
             }
     }
     return stop
+
 
 # ping
 def ping():
@@ -51,6 +55,8 @@ def set_temp(data):
     }
     return set_all
 
+
+# handshake
 def handshake(time):
     hand = {"handshake":
         {
