@@ -29,20 +29,28 @@ class SerialCaptureWorker(QThread):
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
+        # serial setup variables
         self.port = port
         self.baudrate = baudrate
         self.timeout = timeout
+
         self.ser = None  # future serial connection object
         self.is_open = True
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
+
+        # timing setup to control thread flow and communication with control board
         self.last_command_time = time.time()
         self.last_ping = time.time()
         self.last_readout = time.time()
-        self.test_data = None
+
+        # connect signals from main
         self.trigger_run_tests.connect(self.run_all_tests)
         self.trigger_interrupt_test.connect(self.interrupt_test)
         self.trigger_reset.connect(self.reset_test_board)
+
+        # class variables
+        self.test_data = None
         self.sent_handshake = False
         self.alive = False
         self.timestamp = None
@@ -55,7 +63,7 @@ class SerialCaptureWorker(QThread):
         self.time_left = None
         self.current_temperature = None
 
-
+    # CORE THREAD METHODS
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
         if port:
@@ -73,9 +81,8 @@ class SerialCaptureWorker(QThread):
             logger.exception('error')
             return False
 
-    # method to run the thread
+    # main method to run the thread
     def run(self):
-
         if not self.serial_setup():
             logger.error(f'failed to connect to {self.port}')
             return
@@ -91,7 +98,7 @@ class SerialCaptureWorker(QThread):
                         # read incoming serial data
                         response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                         if response:
-                            self.process_response(response)
+                            self.process_response(response)  # update and show curated responses
 
                         if time.time() - self.last_ping >= 0.5:
                             self.last_ping = time.time()
@@ -114,6 +121,7 @@ class SerialCaptureWorker(QThread):
         self.quit()
         self.wait()
 
+    # BASIC COMMUNICATION WITH CONTROL BOARD
     # handshake
     def handshake(self):
         logger.info(f"attempting handshake, sent_handshake: {self.sent_handshake}")
@@ -175,6 +183,49 @@ class SerialCaptureWorker(QThread):
         except json.JSONDecodeError:
             logger.exception('failed to decode ping response as json')
 
+    # MORE ADVANCED COMMUNICATION WITH TEST BOARD
+    # run the entire test file
+    def run_all_tests(self, test_data):
+        if test_data is not None and 'tests' in test_data:
+            full_tests_json = {'tests': test_data["tests"]}
+            self.send_json_to_arduino(full_tests_json)  # send the data to arduino
+            # log and print status
+            logger.info(f'Sending full tests data with {len(test_data["tests"])} tests')
+        else:
+            # handle case when no test data is found
+            logger.warning('no test data found on file')
+
+    # interrupt test on arduino
+    def interrupt_test(self):
+        interrupt = commands.interrupt_test()
+        self.send_json_to_arduino(interrupt)
+
+    # set temp & duration from the gui
+    def set_temp(self, input_dictionary):
+        if input_dictionary is not None:
+            logger.info(input_dictionary)
+            data = input_dictionary[0]
+            set_temp_data = commands.set_temp(data)
+            self.send_json_to_arduino(set_temp_data)
+        else:
+            logger.warning('nothing to set the t-chamber to')
+
+    # reset test board
+    def reset_test_board(self):
+        reset = commands.reset()
+        self.send_json_to_arduino(reset)
+        logger.info('resetting control board')
+
+    # emergency stop
+    def emergency_stop(self):
+        stop = commands.emergency_stop()
+        logger.info('emergency stop should be sending now')
+        self.send_json_to_arduino(stop)
+        logger.info('emergency stop issued')
+        message = 'EMERGENCY STOP'
+        self.update_listbox.emit(message)
+
+    # SENDING STUFF TO MAIN APP
     # prep running test info updates to be emitted
     def emit_test_status(self):
         test_status_data = {
@@ -193,6 +244,7 @@ class SerialCaptureWorker(QThread):
         }
         self.update_chamber_monitor.emit(relevant_info)
 
+    # DECODING AND ENCODING TOOLS
     # senf json to arduino
     def send_json_to_arduino(self, test_data):
         json_data = json.dumps(test_data)  # convert python dictionary to json
@@ -211,38 +263,6 @@ class SerialCaptureWorker(QThread):
         except serial.SerialException as e:
             logger.error(f'error sending JSON: {e}')
 
-    # interrupt test on arduino
-    def interrupt_test(self):
-        interrupt = commands.interrupt_test()
-        self.send_json_to_arduino(interrupt)
-
-    # run the entire test file
-    def run_all_tests(self, test_data):
-        if test_data is not None and 'tests' in test_data:
-            full_tests_json = {'tests': test_data["tests"]}
-            self.send_json_to_arduino(full_tests_json)  # send the data to arduino
-            # log and print status
-            logger.info(f'Sending full tests data with {len(test_data["tests"])} tests')
-        else:
-            # handle case when no test data is found
-            logger.warning('no test data found on file')
-
-    # set temp & duration from the gui
-    def set_temp(self, input_dictionary):
-        if input_dictionary is not None:
-            logger.info(input_dictionary)
-            data = input_dictionary[0]
-            set_temp_data = commands.set_temp(data)
-            self.send_json_to_arduino(set_temp_data)
-        else:
-            logger.warning('nothing to set the t-chamber to')
-
-    # reset test board
-    def reset_test_board(self):
-        reset = commands.reset()
-        self.send_json_to_arduino(reset)
-        logger.info('resetting control board')
-
     # process serial response
     def process_response(self, response):
         # list of responses to be picked up
@@ -252,12 +272,3 @@ class SerialCaptureWorker(QThread):
             logger.info(f'{response}')
         else:
             logger.info(response)
-
-    # emergency stop
-    def emergency_stop(self):
-        stop = commands.emergency_stop()
-        logger.info('emergency stop should be sending now')
-        self.send_json_to_arduino(stop)
-        logger.info('emergency stop issued')
-        message = 'EMERGENCY STOP'
-        self.update_listbox.emit(message)
