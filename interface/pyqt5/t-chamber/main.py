@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdi
 from PyQt5.QtGui import QIcon, QPixmap, QColor, QFont
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 from datetime import datetime, timedelta
-
+from dateutil import parser
 import commands
 # functionality imports
 from jsonFunctionality import FileHandler
@@ -17,6 +17,7 @@ from config import Config
 from logger_config import setup_logger
 from mainTab import MainTab
 from manualTab import ManualTab
+from timerWroker import TimerWorker
 import popups
 
 logger = setup_logger(__name__)
@@ -45,6 +46,7 @@ class MainWindow(QMainWindow):
         self.serial_worker = None
         self.test_board = None
         self.cli_worker = None
+        self.timer_worker = None
 
         # create a dictionary for setting temp & duration
         self.input_dictionary = []
@@ -55,10 +57,6 @@ class MainWindow(QMainWindow):
         self.current_temperature = None
         self.machine_state = None
         self.timestamp = None
-
-        # initialize qtimer
-        self.no_ping_timer = QTimer()
-        self.no_ping_timer.timeout.connect(self.no_ping_for_five)
 
         # tabs
         self.main_tab = MainTab(self.test_data)
@@ -169,6 +167,7 @@ class MainWindow(QMainWindow):
         self.central_widget.setLayout(layout)
         # automatically adjust window size
         self.adjustSize()
+        logger.info('gui built')
 
     # GUI FUNCTIONALITY-RELATED METHODS
 
@@ -197,9 +196,6 @@ class MainWindow(QMainWindow):
                     self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
                     self.serial_worker.start()  # start the worker thread
 
-                    # start timer to check for ping every 5 sec
-                    self.no_ping_timer.start(5000)
-
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
                     self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
@@ -221,11 +217,16 @@ class MainWindow(QMainWindow):
                     self.start_button.setEnabled(True)
                     return
 
-            else:
-                popups.show_error_message('warning',
-                                          'ports are either not selected or already busy.')
-                self.start_button.setEnabled(True)  # re-enable button to try again
-                return
+            self.timer_worker = TimerWorker(interval=5)
+            self.timer_worker.timeout.connect(self.no_ping_for_five)
+            self.timer_worker.start()
+            logger.info('timer worker started')
+
+        else:
+            popups.show_error_message('warning',
+                                      'ports are either not selected or already busy.')
+            self.start_button.setEnabled(True)  # re-enable button to try again
+            return
 
     # the actual listbox updates
     def update_listbox_gui(self, message):
@@ -233,14 +234,30 @@ class MainWindow(QMainWindow):
         self.listbox.scrollToBottom()
 
     # intercept emergency stop machine state
-    def emergency_stop_from_arduino(self):
+    def emergency_stop_from_arduino(self, machine_state):
+        self.machine_state = machine_state
+        logger.info(self.machine_state)
         if self.machine_state == 'EMERGENCY_STOP':
             popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
             logger.info('the system is off: DO SOMETHING!')
 
     # get timestamp
     def get_timestamp(self, timestamp):
-        timestamp = self.timestamp
+
+        if not timestamp:
+            self.timestamp = None
+            logger.warning('received None for timestamp')
+            return
+        logger.debug(f"raw timestamp received: {timestamp}")
+
+        try:
+            clean_timestamp = timestamp.strip()
+            self.timestamp = parser.isoparse(clean_timestamp)
+            logger.info(f'timestamp from ping: {self.timestamp}')
+
+        except Exception as e:
+            logger.exception(f"error while processing timestamp: {e}")
+            self.timestamp = None
 
     # if no ping comes through for over 5 minutes
     def no_ping_for_five(self):
@@ -506,6 +523,7 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         self.serial_worker.stop()
         self.test_board.stop()
+        self.timer_worker.stop()
         event.accept()  # ensure the application closes
 
 

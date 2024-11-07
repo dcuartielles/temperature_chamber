@@ -23,7 +23,7 @@ class SerialCaptureWorker(QThread):
     desired_temp_signal = pyqtSignal(int)
     current_duration_signal = pyqtSignal(int)
     time_left_signal = pyqtSignal(int)
-    ping_timestamp_signal = pyqtSignal(object)
+    ping_timestamp_signal = pyqtSignal(str)
     # current_temp_signal = pyqtSignal(int)
 
     def __init__(self, port, baudrate, timeout=5):
@@ -92,7 +92,7 @@ class SerialCaptureWorker(QThread):
                         if response:
                             self.process_response(response)
 
-                        if time.time() - self.last_ping >= 0.6:
+                        if time.time() - self.last_ping >= 0.5:
                             self.last_ping = time.time()
                             self.trigger_ping()
 
@@ -115,6 +115,7 @@ class SerialCaptureWorker(QThread):
 
     # handshake
     def handshake(self):
+        logger.info(f"attempting handshake, sent_handshake: {self.sent_handshake}")
         if not self.sent_handshake:
             time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
             # insert timestamp into handshake
@@ -130,10 +131,6 @@ class SerialCaptureWorker(QThread):
                 # convert response string to dictionary
                 parsed_response = json.loads(handshake_response)
                 logger.info(parsed_response)
-                if 'handshake' in parsed_response:
-                    self.machine_state = parsed_response["handshake"].get('machine_state', '')
-                    logger.info('extract machine state')
-                    self.machine_state_signal.emit(self.machine_state)
             except json.JSONDecodeError:
                 logger.exception('failed to parse arduino response')
 
@@ -143,15 +140,6 @@ class SerialCaptureWorker(QThread):
     # trigger ping
     def trigger_ping(self):
         self.ping()
-
-    # check if there has been valid ping under the last 5 minutes
-    def update_timestamp_from_ping(self, data):
-        # extract the timestamp from ping response
-        timestamp_str = data.get('timestamp', '')
-        if timestamp_str:
-            # update class variable timestamp
-            self.timestamp = datetime.fromisoformat(timestamp_str)
-            logger.info(f"updated timestamp from ping: {self.timestamp}")
 
     # ping
     def ping(self):
@@ -165,10 +153,12 @@ class SerialCaptureWorker(QThread):
                 ping_data = parsed_response['ping_response']
                 # get all the data from ping & store it in class variables
                 self.alive = ping_data.get('alive', False)
-                self.update_timestamp_from_ping(ping_data)
+                logger.info(self.alive)
+                self.timestamp = ping_data.get('timestamp', '')
                 self.ping_timestamp_signal.emit(self.timestamp)
                 self.machine_state = ping_data.get('machine_state', '')
-                self.machine_state_signal.emit()
+                logger.info(self.machine_state)
+                self.machine_state_signal.emit(self.machine_state)
                 # extract test status information and emit signals for gui updates
                 self.current_temperature = ping_data.get('current_temp', 0)
                 test_status = ping_data.get('test_status', {})
