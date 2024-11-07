@@ -46,7 +46,6 @@ class MainWindow(QMainWindow):
         self.serial_worker = None
         self.test_board = None
         self.cli_worker = None
-        self.timer_worker = None
 
         # create a dictionary for setting temp & duration
         self.input_dictionary = []
@@ -57,6 +56,12 @@ class MainWindow(QMainWindow):
         self.current_temperature = None
         self.machine_state = None
         self.timestamp = None
+
+        self.no_ping_timer = QTimer(self)  # create the QTimer instance
+        self.no_ping_timer.timeout.connect(self.no_ping_for_five)  # connect to the method
+        self.no_ping_timer.setInterval(5000)
+
+        self.no_ping_alert = False
 
         # tabs
         self.main_tab = MainTab(self.test_data)
@@ -217,10 +222,11 @@ class MainWindow(QMainWindow):
                     self.start_button.setEnabled(True)
                     return
 
-            self.timer_worker = TimerWorker(interval=5)
-            self.timer_worker.timeout.connect(self.no_ping_for_five)
-            self.timer_worker.start()
-            logger.info('timer worker started')
+            if hasattr(self, 'cli_worker'):
+                return 
+
+            self.no_ping_timer.start()
+            logger.info('qtimer started to check for pings every 5 seconds')
 
         else:
             popups.show_error_message('warning',
@@ -262,12 +268,14 @@ class MainWindow(QMainWindow):
     # if no ping comes through for over 5 minutes
     def no_ping_for_five(self):
         if self.timestamp and datetime.now() - self.timestamp >= timedelta(minutes=5):
-            logger.warning("no ping received for 5 minutes or more")
-            self.no_ping_gui()
-            message = 'due to lack of communication for at least 5 minutes, control board is reset\n you can reconnect the board(s) and click start again'
-            popups.show_error_message('warning', message)
-            logger.warning(message)
-            self.re_enable_start()
+            if not self.no_ping_alert:
+                logger.warning("no ping received for 5 minutes or more")
+                self.no_ping_gui()
+                message = 'due to lack of communication for at least 5 minutes, control board is reset\n you can reconnect the board(s) and click start again'
+                popups.show_error_message('warning', message)
+                logger.warning(message)
+                self.re_enable_start()
+                self.no_ping_alert = True
 
     # similar method for incorrect test board output notice
     def incorrect_output_gui(self, message):

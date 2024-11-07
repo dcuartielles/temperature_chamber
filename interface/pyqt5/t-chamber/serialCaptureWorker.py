@@ -88,7 +88,6 @@ class SerialCaptureWorker(QThread):
                         time.sleep(0.1)
                         # read incoming serial data
                         response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-
                         if response:
                             self.process_response(response)
 
