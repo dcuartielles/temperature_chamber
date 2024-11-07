@@ -4,7 +4,6 @@ from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 
 
 # helper method to display error messages using QMessageBox
-
 def show_error_message(title, message):
     msg_box = QMessageBox()
     msg_box.setIcon(QMessageBox.Warning)
