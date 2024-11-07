@@ -93,17 +93,14 @@ Button switchSystem(SWITCH_SYSTEM_STATE);
 Led cooler(RELAY_COOLER);
 Led heater(RELAY_HEATER);
 
-// Timing variables
+// PWM for heater and cooler
 unsigned long periodHeater = 0;
 unsigned long periodCooler = 0;
-
-// State machine variables
-int stateHeaterOld = 0;
-int stateCoolerOld = 0;
 int dutyCycleHeater = 0;
 int dutyCycleCooler = 0;
+
+// State machine
 int status = EMERGENCY_STOP;
-bool dataEvent = false;
 
 // global variables to store switch states and flags
 bool systemSwitchState = false;
@@ -127,9 +124,8 @@ int currentSequenceIndex = 0;
 unsigned long sequenceStartTime = 0;
 unsigned long currentDuration = 0;
 
-const int MAX_QUEUED_TESTS = 5;
-
 // queue for tests
+const int MAX_QUEUED_TESTS = 5;
 Test testQueue[MAX_QUEUED_TESTS];
 String testNames[MAX_QUEUED_TESTS];
 int queuedTestCount = 0;
@@ -142,7 +138,6 @@ String currentTestName = "";
 char incomingString[1024];
 StaticJsonDocument<2048> jsonBuffer;
 
-// Define Variables
 float temperatureThreshold = 0;
 
 // struct for state of the heating/cooling system
@@ -194,6 +189,8 @@ void setup() {
 
     // Initialise LCD
     lcd.init();
+
+    // Initiate chamber state variables
     chamberState.temperatureRoom = getTemperature();
     chamberState.temperatureDesired = 0;
     chamberState.longHeatingFlag = 0;
@@ -510,7 +507,8 @@ void parseTextFromJson(JsonDocument& doc) {
         JsonObject handshake = doc["handshake"];
         setInitialTimestamp(handshake);
         sendHandshake();
-    } else if (doc.containsKey("tests") && systemSwitchState) {             // if json consists of tests
+        lastShutdownCause = "";
+    } else if (doc.containsKey("tests") && systemSwitchState) {     // if json consists of tests
         JsonObject test = doc["tests"];
         parseAndQueueTests(test);
     } else if (doc.containsKey("commands")) {   // if json consists of commands
@@ -807,6 +805,7 @@ void loop() {
     if (currentMillis - lastPingTime > TIMEOUT_DURATION) {
         Serial.println("No ping received for 5 minutes. Resetting and shutting down.");
         status = EMERGENCY_STOP;
+        lastShutdownCause = "Lost connection";
         clearTests();
         displayLCDOff();
     }
@@ -830,7 +829,7 @@ void loop() {
     }
 
     runTestSequence();
-    readAndParseSerial();       // check serial input for new tests or commands
+    readAndParseSerial();   // check serial input for new tests or commands
 
     switch (status) {
         case RESET:
