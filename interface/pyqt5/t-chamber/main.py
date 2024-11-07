@@ -17,7 +17,6 @@ from config import Config
 from logger_config import setup_logger
 from mainTab import MainTab
 from manualTab import ManualTab
-from timerWroker import TimerWorker
 import popups
 
 logger = setup_logger(__name__)
@@ -200,6 +199,9 @@ class MainWindow(QMainWindow):
                     self.serial_worker.ping_timestamp_signal.connect(self.get_timestamp)
                     self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
                     self.serial_worker.start()  # start the worker thread
+                    self.no_ping_alert = False
+                    self.no_ping_timer.start()
+                    logger.info('qtimer started to check for pings every 5 seconds')
 
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
@@ -222,11 +224,8 @@ class MainWindow(QMainWindow):
                     self.start_button.setEnabled(True)
                     return
 
-            if hasattr(self, 'cli_worker'):
+            if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
                 return 
-
-            self.no_ping_timer.start()
-            logger.info('qtimer started to check for pings every 5 seconds')
 
         else:
             popups.show_error_message('warning',
