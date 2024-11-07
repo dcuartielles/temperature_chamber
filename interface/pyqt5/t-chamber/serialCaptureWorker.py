@@ -4,7 +4,7 @@ import serial
 import json
 from logger_config import setup_logger
 import commands
-from datetime import datetime, timedelta
+from datetime import datetime
 
 logger = setup_logger(__name__)
 
@@ -15,9 +15,6 @@ class SerialCaptureWorker(QThread):
     trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
     trigger_interrupt_test = pyqtSignal()  # signal form main to send interrupt test command to arduino
     machine_state_signal = pyqtSignal(str)
-    no_ping = pyqtSignal()
-    reenable_start = pyqtSignal()
-
     # signals to main to update running test info
     is_test_running_signal = pyqtSignal(bool)
     update_test_label_signal = pyqtSignal(dict)
@@ -26,6 +23,7 @@ class SerialCaptureWorker(QThread):
     desired_temp_signal = pyqtSignal(int)
     current_duration_signal = pyqtSignal(int)
     time_left_signal = pyqtSignal(int)
+    ping_timestamp_signal = pyqtSignal(object)
     # current_temp_signal = pyqtSignal(int)
 
     def __init__(self, port, baudrate, timeout=5):
@@ -93,10 +91,6 @@ class SerialCaptureWorker(QThread):
 
                         if response:
                             self.process_response(response)
-
-                        if self.timestamp and datetime.now() - self.timestamp >= timedelta(minutes=5):
-                            logger.warning("no ping received for 5 minutes or more")
-                            self.reenable_start.emit()
 
                         if time.time() - self.last_ping >= 0.6:
                             self.last_ping = time.time()
@@ -172,6 +166,7 @@ class SerialCaptureWorker(QThread):
                 # get all the data from ping & store it in class variables
                 self.alive = ping_data.get('alive', False)
                 self.update_timestamp_from_ping(ping_data)
+                self.ping_timestamp_signal.emit(self.timestamp)
                 self.machine_state = ping_data.get('machine_state', '')
                 self.machine_state_signal.emit()
                 # extract test status information and emit signals for gui updates

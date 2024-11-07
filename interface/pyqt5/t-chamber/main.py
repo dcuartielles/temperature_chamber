@@ -4,7 +4,7 @@ import time
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox, QTabWidget
 from PyQt5.QtGui import QIcon, QPixmap, QColor, QFont
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import commands
 # functionality imports
@@ -54,6 +54,11 @@ class MainWindow(QMainWindow):
         # updates from ping
         self.current_temperature = None
         self.machine_state = None
+        self.timestamp = None
+
+        # initialize qtimer
+        self.no_ping_timer = QTimer()
+        self.no_ping_timer.timeout.connect(self.no_ping_for_five)
 
         # tabs
         self.main_tab = MainTab(self.test_data)
@@ -188,9 +193,12 @@ class MainWindow(QMainWindow):
                     self.serial_worker.update_listbox.connect(self.update_listbox_gui)
                     self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
                     self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
-                    self.serial_worker.reenable_start.connect(self.no_ping_for_five)
+                    self.serial_worker.ping_timestamp_signal.connect(self.get_timestamp)
                     self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
                     self.serial_worker.start()  # start the worker thread
+
+                    # start timer to check for ping every 5 sec
+                    self.no_ping_timer.start(5000)
 
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
@@ -216,7 +224,7 @@ class MainWindow(QMainWindow):
             else:
                 popups.show_error_message('warning',
                                           'ports are either not selected or already busy.')
-                self.start_button.setEnabled(True)  # Re-enable button to try again
+                self.start_button.setEnabled(True)  # re-enable button to try again
                 return
 
     # the actual listbox updates
@@ -230,13 +238,19 @@ class MainWindow(QMainWindow):
             popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
             logger.info('the system is off: DO SOMETHING!')
 
+    # get timestamp
+    def get_timestamp(self, timestamp):
+        timestamp = self.timestamp
+
     # if no ping comes through for over 5 minutes
     def no_ping_for_five(self):
-        self.no_ping_gui()
-        message = 'due to lack of communication for at least 5 minutes, control board is reset\n you can reconnect the board(s) and click start again'
-        popups.show_error_message('warning', message)
-        logger.warning(message)
-        self.re_enable_start()
+        if self.timestamp and datetime.now() - self.timestamp >= timedelta(minutes=5):
+            logger.warning("no ping received for 5 minutes or more")
+            self.no_ping_gui()
+            message = 'due to lack of communication for at least 5 minutes, control board is reset\n you can reconnect the board(s) and click start again'
+            popups.show_error_message('warning', message)
+            logger.warning(message)
+            self.re_enable_start()
 
     # similar method for incorrect test board output notice
     def incorrect_output_gui(self, message):
