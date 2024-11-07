@@ -6,7 +6,6 @@ from PyQt5.QtGui import QIcon, QPixmap, QColor, QFont
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 from datetime import datetime, timedelta
 from dateutil import parser
-import commands
 # functionality imports
 from jsonFunctionality import FileHandler
 from serialCaptureWorker import SerialCaptureWorker
@@ -19,6 +18,7 @@ from mainTab import MainTab
 from manualTab import ManualTab
 import popups
 
+# set up logger that takes the file name
 logger = setup_logger(__name__)
 
 
@@ -48,27 +48,30 @@ class MainWindow(QMainWindow):
 
         # create a dictionary for setting temp & duration
         self.input_dictionary = []
-        # space for test file accessible from the worker thread
+
+        # space for test file accessible from worker threads
         self.test_data = None
         self.filepath = None
-        # updates from ping
+
+        # class variables to keep updates from ping
         self.current_temperature = None
         self.machine_state = None
         self.timestamp = None
 
-        self.no_ping_timer = QTimer(self)  # create the QTimer instance
+        # create QTimer instance after 5 minutes of communication break with serial, control board is reset
+        self.no_ping_timer = QTimer(self)
         self.no_ping_timer.timeout.connect(self.no_ping_for_five)  # connect to the method
         self.no_ping_timer.setInterval(5000)
+        self.no_ping_alert = False  # flag to only have the 5-min alert show once
 
-        self.no_ping_alert = False
-
-        # tabs
+        # instantiate tabs
         self.main_tab = MainTab(self.test_data)
         self.manual_tab = ManualTab()
 
-        # flag for preventing user from interrupting a test
+        # flag for alerting user in case test is running
         self.test_is_running = False
 
+        # build the gui
         self.initUI()
 
     # method responsible for all gui elements
@@ -178,12 +181,13 @@ class MainWindow(QMainWindow):
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
+
         # automatically adjust window size
         self.adjustSize()
+
         logger.info('gui built')
 
-    # GUI FUNCTIONALITY-RELATED METHODS
-
+    # ESSENTIAL FUNCTIONALITY METHODS
     # method to start running threads after ports have been selected
     def on_start_button_clicked(self):
         logger.info('start button clicked')
@@ -246,171 +250,7 @@ class MainWindow(QMainWindow):
             self.start_button.setEnabled(True)  # re-enable button to try again
             return
 
-    # inactive start button gui
-    def inactivated_start_button(self):
-        self.start_button.setStyleSheet('background-color: grey;'
-                                        'color: white;'
-                                        'font-size: 20px;'
-                                        'font-weight: bold;')
-
-    # reactivated start button gui
-    def reactivated_start_button(self):
-        self.start_button.show()
-        self.reset_button.hide()
-        self.start_button.setStyleSheet('background-color: #009FAF;'
-                                        'color: white;'
-                                        'font-size: 20px;'
-                                        'font-weight: bold;')
-
-    # show reset button when serial worker starts
-    def show_reset_button(self):
-        self.start_button.hide()
-        self.reset_button.show()
-
-    # reset control board
-    def reset_control_board(self):
-        if self.serial_worker and self.serial_worker.is_running:
-            self.serial_worker.trigger_reset.emit()
-            logger.info('reset signal emitted')
-
-    # the actual listbox updates
-    def update_listbox_gui(self, message):
-        self.listbox.addItem(message)
-        self.listbox.scrollToBottom()
-
-    # intercept emergency stop machine state
-    def emergency_stop_from_arduino(self, machine_state):
-        self.machine_state = machine_state
-        logger.info(self.machine_state)
-        if self.machine_state == 'EMERGENCY_STOP':
-            popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
-            logger.info('the system is off: DO SOMETHING!')
-
-    # get timestamp
-    def get_timestamp(self, timestamp):
-
-        if not timestamp:
-            self.timestamp = None
-            logger.warning('received None for timestamp')
-            return
-        logger.debug(f"raw timestamp received: {timestamp}")
-
-        try:
-            clean_timestamp = timestamp.strip()
-            self.timestamp = parser.isoparse(clean_timestamp)
-            logger.info(f'timestamp from ping: {self.timestamp}')
-
-        except Exception as e:
-            logger.exception(f"error while processing timestamp: {e}")
-            self.timestamp = None
-
-    # if no ping comes through for over 5 minutes
-    def no_ping_for_five(self):
-        if self.timestamp and datetime.now() - self.timestamp >= timedelta(minutes=5):
-            if not self.no_ping_alert:
-                logger.warning("no ping received for 5 minutes or more")
-                self.no_ping_gui()
-                message = 'due to lack of communication for at least 5 minutes, control board is reset\n you can reconnect the board(s) and click start again'
-                popups.show_error_message('warning', message)
-                logger.warning(message)
-                self.re_enable_start()
-                self.no_ping_alert = True
-
-    # similar method for incorrect test board output notice
-    def incorrect_output_gui(self, message):
-        item = QListWidgetItem(message)
-        font = QFont()
-        font.setBold(True)
-        item.setFont(font)
-        item.setForeground(QColor('red'))
-        self.listbox.addItem(item)
-        self.listbox.scrollToBottom()
-
-    # similar method to be triggered separately when a test is interrupted
-    def test_interrupted_gui(self, message):
-        self.test_is_running = False
-        self.test_label_no_test()
-        self.trigger_interrupt_t()
-        item = QListWidgetItem(message)
-        font = QFont()
-        font.setBold(True)
-        item.setFont(font)
-        self.listbox.addItem(item)
-        self.listbox.scrollToBottom()
-
-    # similar method for new test
-    def new_test(self, message):
-        item = QListWidgetItem(message)
-        font = QFont()
-        font.setBold(True)
-        item.setFont(font)
-        self.listbox.addItem(item)
-        self.listbox.scrollToBottom()
-
-    # update test label if no test is running
-    def test_label_no_test(self):
-        if self.test_is_running:
-            return
-        else:
-            self.serial_label.setText(
-                'running test info:  no test currently running')
-            self.serial_label.setStyleSheet('font-weight: normal;')
-
-    # update running test info label
-    def update_test_label(self, test_info):
-        if self.test_is_running:
-            test = test_info.get('test')
-            sequence = test_info.get('sequence')
-            time_left = test_info.get('time_left')
-            formatted_time_left = f"{time_left:.1f}"
-            logger.info('parsing test info to update running test label')
-
-            self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {formatted_time_left} min')
-            self.serial_label.setStyleSheet('font-weight: bold;')
-        else:
-            self.serial_label.setText('running test info')
-
-    # the actual chamber_monitor QList updates from ping
-    def update_chamber_monitor_gui(self, message):
-        # retrieve current temperature from ping and convert it to int
-        self.current_temperature = int(message.get('current_temp'))
-        # retrieve desired temp
-        desired_temp = message.get('desired_temp')
-        # retrieve machine state
-        self.machine_state = message.get('machine_state')
-        # create a displayable info string
-        status = f'current temperature: {self.current_temperature}°C | desired temperature: {desired_temp}°C | machine state: {self.machine_state}'
-        self.chamber_monitor.clear()  # clear old data
-        item = QListWidgetItem(status)  # add string as a widget
-        item.setTextAlignment(Qt.AlignCenter)   # align it to center
-        self.chamber_monitor.addItem(item)  # display it
-
-    # load test file and store it in the app
-    def load_test_file(self):
-        self.test_data = self.json_handler.open_file()
-        self.filepath = self.json_handler.get_filepath()
-
-    # button click handlers
-    # connect run_tests signal from main to serial worker thread
-    def trigger_run_t(self):
-        self.serial_worker.trigger_run_tests.emit(self.test_data)
-
-    # interrupt test on arduino
-    def trigger_interrupt_t(self):
-        self.serial_worker.trigger_interrupt_test.emit()
-
-    # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
-    def check_temp(self):
-        test_keys = list(self.test_data["tests"].keys())
-        first_test_key = test_keys[0]
-        first_temp = int(self.test_data["tests"][first_test_key]["chamber_sequences"][0]["temp"])
-        # check absolute difference
-        if abs(self.current_temperature - first_temp) >= 10:
-            temp_situation = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'
-            response = popups.show_dialog(temp_situation)
-            if response == QMessageBox.No:
-                return
-
+    # TEST PART
     # run all benchmark tests
     def on_run_button_clicked(self):
         if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
@@ -513,6 +353,83 @@ class MainWindow(QMainWindow):
         self.main_tab.change_test_part_gui(self.test_data)
         self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
 
+    # load test file and store it in the app
+    def load_test_file(self):
+        self.test_data = self.json_handler.open_file()
+        self.filepath = self.json_handler.get_filepath()
+
+    # TEST-RELATED GUI UPDATES
+    # the actual listbox updates
+    def update_listbox_gui(self, message):
+        self.listbox.addItem(message)
+        self.listbox.scrollToBottom()
+
+    # similar method for incorrect test board output notice
+    def incorrect_output_gui(self, message):
+        item = QListWidgetItem(message)
+        font = QFont()
+        font.setBold(True)
+        item.setFont(font)
+        item.setForeground(QColor('red'))
+        self.listbox.addItem(item)
+        self.listbox.scrollToBottom()
+
+    # similar method to be triggered separately when a test is interrupted
+    def test_interrupted_gui(self, message):
+        self.test_is_running = False
+        self.test_label_no_test()
+        self.trigger_interrupt_t()
+        item = QListWidgetItem(message)
+        font = QFont()
+        font.setBold(True)
+        item.setFont(font)
+        self.listbox.addItem(item)
+        self.listbox.scrollToBottom()
+
+    # similar method for new test
+    def new_test(self, message):
+        item = QListWidgetItem(message)
+        font = QFont()
+        font.setBold(True)
+        item.setFont(font)
+        self.listbox.addItem(item)
+        self.listbox.scrollToBottom()
+
+    # update test label if no test is running
+    def test_label_no_test(self):
+        if self.test_is_running:
+            return
+        else:
+            self.serial_label.setText(
+                'running test info:  no test currently running')
+            self.serial_label.setStyleSheet('font-weight: normal;')
+
+    # update running test info label
+    def update_test_label(self, test_info):
+        if self.test_is_running:
+            test = test_info.get('test')
+            sequence = test_info.get('sequence')
+            time_left = test_info.get('time_left')
+            formatted_time_left = f"{time_left:.1f}"
+            logger.info('parsing test info to update running test label')
+
+            self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {formatted_time_left} min')
+            self.serial_label.setStyleSheet('font-weight: bold;')
+        else:
+            self.serial_label.setText('running test info')
+
+    # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
+    def check_temp(self):
+        test_keys = list(self.test_data["tests"].keys())
+        first_test_key = test_keys[0]
+        first_temp = int(self.test_data["tests"][first_test_key]["chamber_sequences"][0]["temp"])
+        # check absolute difference
+        if abs(self.current_temperature - first_temp) >= 10:
+            temp_situation = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'
+            response = popups.show_dialog(temp_situation)
+            if response == QMessageBox.No:
+                return
+
     # extract expected test outcome from test file
     def expected_output(self, test_data):
         if test_data is not None and 'tests' in test_data:
@@ -528,6 +445,7 @@ class MainWindow(QMainWindow):
             return output
         return []
 
+    # compare expected test outcome with actual test board output
     def check_output(self, output):
         output = str(output)
         exp_output = self.expected_output(self.test_data)
@@ -541,26 +459,58 @@ class MainWindow(QMainWindow):
             error_message = f"{date_str}   {output}"
             self.incorrect_output_gui(error_message)
 
-    # method to set test_is_running to False when test_interrupted from manual
-    def set_flag_to_false(self):
-        self.test_is_running = False
+    # WORKER THREAD TRIGGERS AND GETTERS + THEIR GUI PARTS
+    # CONTROL BOARD: the actual chamber_monitor QList updates from ping
+    def update_chamber_monitor_gui(self, message):
+        # retrieve current temperature from ping and convert it to int
+        self.current_temperature = int(message.get('current_temp'))
+        # retrieve desired temp
+        desired_temp = message.get('desired_temp')
+        # retrieve machine state
+        self.machine_state = message.get('machine_state')
+        # create a displayable info string
+        status = f'current temperature: {self.current_temperature}°C | desired temperature: {desired_temp}°C | machine state: {self.machine_state}'
+        self.chamber_monitor.clear()  # clear old data
+        item = QListWidgetItem(status)  # add string as a widget
+        item.setTextAlignment(Qt.AlignCenter)   # align it to center
+        self.chamber_monitor.addItem(item)  # display it
 
-    # re-enable start button after refreshing ports
-    def re_enable_start(self):
-        self.reactivated_start_button()
-        self.start_button.setEnabled(True)
-        logger.info('start button re-enabled')
+    # get timestamp from ping
+    def get_timestamp(self, timestamp):
+        if not timestamp:
+            self.timestamp = None
+            logger.warning('received None for timestamp')
+            return
+        logger.debug(f"raw timestamp received: {timestamp}")
 
-    # visually signal that the app is running
-    def light_up(self):
-        self.setWindowTitle('temperature chamber app is running')
-        self.chamber_monitor.setStyleSheet('color: #009FAF;'
-                                           )
-        self.emergency_stop_button.setStyleSheet('background-color: red;'
-                                                 'font-weight: bold;'
-                                                 'color: white;'
-                                                 'font-size: 20px;'
-                                                 )
+        try:
+            clean_timestamp = timestamp.strip()
+            self.timestamp = parser.isoparse(clean_timestamp)
+            logger.info(f'timestamp from ping: {self.timestamp}')
+
+        except Exception as e:
+            logger.exception(f"error while processing timestamp: {e}")
+            self.timestamp = None
+
+    # intercept emergency stop machine state
+    def emergency_stop_from_arduino(self, machine_state):
+        self.machine_state = machine_state
+        logger.info(self.machine_state)
+        if self.machine_state == 'EMERGENCY_STOP':
+            popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
+            logger.info('the system is off: DO SOMETHING!')
+
+    # if no ping comes through for over 5 minutes
+    def no_ping_for_five(self):
+        if self.timestamp and datetime.now() - self.timestamp >= timedelta(minutes=5):
+            if not self.no_ping_alert:
+                logger.warning("no ping received for 5 minutes or more")
+                self.no_ping_gui()
+                message = 'due to lack of communication for at least 5 minutes, control board is reset\n you can reconnect the board(s) and click start again'
+                popups.show_error_message('warning', message)
+                logger.warning(message)
+                self.re_enable_start()
+                self.no_ping_alert = True
 
     # visually signal that there has been no connection to control board for at least 5 minutes
     def no_ping_gui(self):
@@ -574,11 +524,68 @@ class MainWindow(QMainWindow):
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
 
+    # connect run_tests signal from main to serial worker thread
+    def trigger_run_t(self):
+        self.serial_worker.trigger_run_tests.emit(self.test_data)
+
+    # interrupt test on arduino
+    def trigger_interrupt_t(self):
+        self.serial_worker.trigger_interrupt_test.emit()
+
+    # GUI HELPER METHODS: START AND RESET BUTTONS
+    # visually signal that the app is running
+    def light_up(self):
+        self.setWindowTitle('temperature chamber app is running')
+        self.chamber_monitor.setStyleSheet('color: #009FAF;'
+                                           )
+        self.emergency_stop_button.setStyleSheet('background-color: red;'
+                                                 'font-weight: bold;'
+                                                 'color: white;'
+                                                 'font-size: 20px;'
+                                                 )
+
+    # inactive start button gui
+    def inactivated_start_button(self):
+        self.start_button.setStyleSheet('background-color: grey;'
+                                        'color: white;'
+                                        'font-size: 20px;'
+                                        'font-weight: bold;')
+
+    # reactivated start button gui
+    def reactivated_start_button(self):
+        self.start_button.show()
+        self.reset_button.hide()
+        self.start_button.setStyleSheet('background-color: #009FAF;'
+                                        'color: white;'
+                                        'font-size: 20px;'
+                                        'font-weight: bold;')
+
+    # show reset button when serial worker starts
+    def show_reset_button(self):
+        self.start_button.hide()
+        self.reset_button.show()
+
+    # reset control board
+    def reset_control_board(self):
+        if self.serial_worker and self.serial_worker.is_running:
+            self.serial_worker.trigger_reset.emit()
+            logger.info('reset signal emitted')
+
+    # re-enable start button after refreshing ports
+    def re_enable_start(self):
+        self.reactivated_start_button()
+        self.start_button.setEnabled(True)
+        logger.info('start button re-enabled')
+
+    # HIDDEN FUNCTIONALITY
+    # method to set test_is_running to False when test_interrupted from manual
+    def set_flag_to_false(self):
+        self.test_is_running = False
+
     # stop both workers
     def closeEvent(self, event):
         self.serial_worker.stop()
         self.test_board.stop()
-        self.timer_worker.stop()
         event.accept()  # ensure the application closes
 
 
