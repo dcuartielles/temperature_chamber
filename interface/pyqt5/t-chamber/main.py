@@ -114,8 +114,7 @@ class MainWindow(QMainWindow):
         self.reset_button = QPushButton('reset control board')
         self.reset_button.setStyleSheet('background-color: #009FAF;'
                                         'color: white;'
-                                        'font-size: 20px;'
-                                        'font-weight: bold;')
+                                        'font-size: 20px;')
         self.reset_button.hide()
         layout.addWidget(self.reset_button)
 
@@ -213,7 +212,6 @@ class MainWindow(QMainWindow):
                     self.no_ping_alert = False
                     self.no_ping_timer.start()
                     logger.info('qtimer started to check for pings every 5 seconds')
-                    self.show_reset_button()
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
                     self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
@@ -238,6 +236,9 @@ class MainWindow(QMainWindow):
 
             if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
                 return
+
+            if self.serial_worker and self.serial_worker.is_running:
+                self.show_reset_button()
 
         else:
             popups.show_error_message('warning',
