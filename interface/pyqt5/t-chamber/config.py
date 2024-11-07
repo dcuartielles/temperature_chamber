@@ -8,6 +8,7 @@ class Config:
         self.config = {}
         self.load_config()
 
+    # load config file
     def load_config(self):
         if self.config_file.exists():
             with self.config_file.open('r') as file:
@@ -15,8 +16,8 @@ class Config:
         else:
             self.create_default_config()
 
+    # create default file if it doesn't exist
     def create_default_config(self):
-        # create default file if it doesn't exist
         self.config = {
             "test_board": {"port": None, "board_name": None},
             "control_board": {"port": None, "board_name": None},
