@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QListWidget, QPushBut
 from PyQt5.QtGui import QColor, QFont
 from datetime import datetime
 from logger_config import setup_logger
-import popups
 
 logger = setup_logger(__name__)
 
@@ -67,12 +66,34 @@ class MainTab(QWidget):
 
         self.setLayout(layout)
 
-    # functionality
+    # TEST RUNNING
     # display test board output
     def update_test_output_listbox_gui(self, message):
         self.test_output_listbox.clear()
         self.test_output_listbox.addItem(f'{message}')
         self.test_output_listbox.scrollToBottom()
+
+    # update exp output listbox
+    def expected_output_listbox(self):
+        exp_outputs = self.expected_output(self.test_data)
+        self.expected_outcome_listbox.clear()
+        for i, output in enumerate(exp_outputs):
+            self.expected_outcome_listbox.addItem(f'{output}')
+        self.expected_outcome_listbox.scrollToBottom()
+
+    # extract expected test outcome from test file
+    def expected_output(self, test_data):
+        if test_data is not None and 'tests' in test_data:
+            all_expected_outputs = []
+            all_tests = [key for key in test_data['tests'].keys()]
+            # iterate through each test and run it
+            for test_key in all_tests:
+                test = test_data['tests'].get(test_key, {})
+                expected_output = test.get('expected output', '')  # get the expected output string
+                if expected_output:
+                    all_expected_outputs.append(expected_output)
+            return all_expected_outputs
+        return []
 
     # check if output is as expected
     def check_output(self, message):
@@ -110,43 +131,7 @@ class MainTab(QWidget):
         self.test_output_listbox.addItem("waiting for test board output")
         logger.info("waiting for test board output...")
 
-    # the actual upper listbox updates
-    def cli_update_upper_listbox_gui(self, message):
-        self.instruction_listbox.addItem(message)
-        self.instruction_listbox.scrollToBottom()
-
-    # extract expected test outcome from test file
-    def expected_output(self, test_data):
-        if test_data is not None and 'tests' in test_data:
-            all_expected_outputs = []
-            all_tests = [key for key in test_data['tests'].keys()]
-            # iterate through each test and run it
-            for test_key in all_tests:
-                test = test_data['tests'].get(test_key, {})
-                expected_output = test.get('expected output', '')  # get the expected output string
-                if expected_output:
-                    all_expected_outputs.append(expected_output)
-            return all_expected_outputs
-        return []
-
-    # update exp output listbox
-    def expected_output_listbox(self):
-        exp_outputs = self.expected_output(self.test_data)
-        self.expected_outcome_listbox.clear()
-        for i, output in enumerate(exp_outputs):
-            self.expected_outcome_listbox.addItem(f'{output}')
-        self.expected_outcome_listbox.scrollToBottom()
-
-    # change test part gui when test is running
-    def change_test_part_gui(self, test_data):
-        self.test_data = test_data
-        self.instruction_listbox.hide()
-        self.test_output_label.show()
-        self.test_output_listbox.show()
-        self.expected_outcome_label.show()
-        self.expected_outcome_listbox.show()
-        self.expected_output_listbox()
-
+    # BEFORE TEST IS RUNNING
     # change test part gui to show sketch upload progress before test runs
     def on_run_test_gui(self):
         if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
@@ -159,3 +144,18 @@ class MainTab(QWidget):
         else:
             self.instruction_listbox.clear()
             QApplication.processEvents()
+
+    # change test part gui when test is running
+    def change_test_part_gui(self, test_data):
+        self.test_data = test_data
+        self.instruction_listbox.hide()
+        self.test_output_label.show()
+        self.test_output_listbox.show()
+        self.expected_outcome_label.show()
+        self.expected_outcome_listbox.show()
+        self.expected_output_listbox()
+
+    # the actual (basic) upper listbox updates
+    def cli_update_upper_listbox_gui(self, message):
+        self.instruction_listbox.addItem(message)
+        self.instruction_listbox.scrollToBottom()
