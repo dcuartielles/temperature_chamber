@@ -8,6 +8,7 @@ logger = setup_logger(__name__)
 
 
 class ManualTab(QWidget):
+    # signals to and from main
     send_temp_data = pyqtSignal(list)
     test_interrupted = pyqtSignal(str)
     set_flag_to_false = pyqtSignal()
@@ -127,4 +128,3 @@ class ManualTab(QWidget):
     def clear_current_setting_label(self):
         self.current_setting.setText('')
         self.clear_entries()
-

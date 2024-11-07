@@ -10,11 +10,13 @@ logger = setup_logger(__name__)
 
 class SerialCaptureWorker(QThread):
 
-    update_listbox = pyqtSignal(str)  # signal to update listbox
     update_chamber_monitor = pyqtSignal(dict)  # signal to update chamber monitor
     trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
     trigger_interrupt_test = pyqtSignal()  # signal form main to send interrupt test command to arduino
+    trigger_reset = pyqtSignal()  # signal form main to reset control board
+    update_listbox = pyqtSignal(str)  # signal to update listbox
     machine_state_signal = pyqtSignal(str)
+    ping_timestamp_signal = pyqtSignal(str)
     # signals to main to update running test info
     is_test_running_signal = pyqtSignal(bool)
     update_test_label_signal = pyqtSignal(dict)
@@ -23,9 +25,6 @@ class SerialCaptureWorker(QThread):
     desired_temp_signal = pyqtSignal(int)
     current_duration_signal = pyqtSignal(int)
     time_left_signal = pyqtSignal(int)
-    ping_timestamp_signal = pyqtSignal(str)
-    trigger_reset = pyqtSignal()  # signal form main to reset control board
-    # current_temp_signal = pyqtSignal(int)
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
