@@ -71,6 +71,9 @@ class MainWindow(QMainWindow):
         # flag for alerting user in case test is running
         self.test_is_running = False
 
+        # flag for emergency stop alert to show up once
+        self.emergency_stop_popup = False
+
         # build the gui
         self.initUI()
 
@@ -216,6 +219,8 @@ class MainWindow(QMainWindow):
                     self.no_ping_alert = False
                     self.no_ping_timer.start()
                     logger.info('qtimer started to check for pings every 5 seconds')
+                    if self.serial_worker and self.serial_worker.is_running:
+                        self.show_reset_button()
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
                     self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
@@ -241,8 +246,6 @@ class MainWindow(QMainWindow):
             if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
                 return
 
-            if self.serial_worker and self.serial_worker.is_running:
-                self.show_reset_button()
 
         else:
             popups.show_error_message('warning',
@@ -410,11 +413,15 @@ class MainWindow(QMainWindow):
             test = test_info.get('test')
             sequence = test_info.get('sequence')
             time_left = test_info.get('time_left')
-            formatted_time_left = f"{time_left:.1f}"
+            formatted_time_left = f"{time_left:.2f}"
             logger.info('parsing test info to update running test label')
-
-            self.serial_label.setText(f'running test info:  test: {test} | sequence: {sequence} | time left: {formatted_time_left} min')
-            self.serial_label.setStyleSheet('font-weight: bold;')
+            if str(formatted_time_left) == '0.00':
+                self.serial_label.setText(
+                    f'running test info:    {test}    |    sequence {sequence}    |    not timed')
+                self.serial_label.setStyleSheet('font-weight: bold;')
+            else:
+                self.serial_label.setText(f'running test info:    {test}    |    sequence {sequence}    |    time left: {formatted_time_left} min')
+                self.serial_label.setStyleSheet('font-weight: bold;')
         else:
             self.serial_label.setText('running test info')
 
@@ -469,7 +476,7 @@ class MainWindow(QMainWindow):
         # retrieve machine state
         self.machine_state = message.get('machine_state')
         # create a displayable info string
-        status = f'current temperature: {self.current_temperature}°C | desired temperature: {desired_temp}°C | machine state: {self.machine_state}'
+        status = f'current temp: {self.current_temperature}°C | goal temp: {desired_temp}°C | machine state: {self.machine_state}'
         self.chamber_monitor.clear()  # clear old data
         item = QListWidgetItem(status)  # add string as a widget
         item.setTextAlignment(Qt.AlignCenter)   # align it to center
@@ -497,8 +504,10 @@ class MainWindow(QMainWindow):
         self.machine_state = machine_state
         logger.info(self.machine_state)
         if self.machine_state == 'EMERGENCY_STOP':
-            popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
-            logger.info('the system is off: DO SOMETHING!')
+            if not self.emergency_stop_popup:
+                popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
+                logger.info('the system is off: DO SOMETHING!')
+                self.emergency_stop_popup = True
 
     # if no ping comes through for over 5 minutes
     def no_ping_for_five(self):
