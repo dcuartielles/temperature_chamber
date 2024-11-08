@@ -435,7 +435,7 @@ class MainWindow(QMainWindow):
         first_test_key = test_keys[0]
         first_temp = int(self.test_data["tests"][first_test_key]["chamber_sequences"][0]["temp"])
         # check absolute difference
-        if abs(self.current_temperature - first_temp) >= 10:
+        if self.current_temperature - first_temp >= 10:
             temp_situation = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'
             response = popups.show_dialog(temp_situation)
             if response == QMessageBox.No:
