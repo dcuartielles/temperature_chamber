@@ -137,6 +137,9 @@ class MainTab(QWidget):
         if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
             self.instruction_listbox.show()
             self.instruction_listbox.clear()
+            self.instruction_listbox.addItems(['* upload test file',
+                                               '* run full test sequence',
+                                               '* sit back and watch the test outcomes'])
             self.test_output_label.hide()
             self.test_output_listbox.hide()
             self.expected_outcome_label.hide()
