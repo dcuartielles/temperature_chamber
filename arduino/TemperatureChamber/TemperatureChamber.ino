@@ -298,7 +298,7 @@ void displayLCDOff() {
 }
 
 bool isTemperatureReached(float targetTemp, float currentTemp) {
-    return currentTemp >= targetTemp - 0.1 && currentTemp <= targetTemp + 0.1;
+    return currentTemp >= targetTemp - 0.1 && currentTemp <= targetTemp + 3;
 }
 
 bool holdForPeriod(unsigned long duration) {
@@ -429,15 +429,12 @@ void parseAndRunCommands(JsonObject& commands) {
             lastPingTime = millis();
         } 
         if (systemSwitchState) {
-            if (command == "INTERRUPT_TEST") {
-                clearTests();
-                status = RESET;
-                Serial.println("Test interrupted and system reset.");
-            } else if (command == "SHOW_DATA") {
+            if (command == "SHOW_DATA") {
                 displaySerial();
             } else if (command == "SET_TEMP") {
                 parseAndRunManualSet(commandParams);
             } else if (command == "RESET") {
+                clearTests();
                 status = RESET;
                 Serial.println("System reset via command.");
             } else if (command == "EMERGENCY_STOP") {
@@ -820,7 +817,6 @@ void loop() {
 
     if (systemSwitchState) {
         displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
-        //displaySerial();
         if (currentMillis - lastUpdate >= updateInterval) {
             lastUpdate = currentMillis;
         }
