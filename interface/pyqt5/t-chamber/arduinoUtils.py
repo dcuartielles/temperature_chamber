@@ -3,39 +3,6 @@ import json
 import logging
 
 
-''' WIFI-PORT ADJUSTMENT?
-def get_arduino_boards():
-    command = ["arduino-cli", "board", "list", "--format", "json"]
-    output = run_cli_command(command)
-
-    if output:
-        try:
-            # parse the output as JSON
-            boards_info = json.loads(output)
-            arduino_ports = []
-
-            # Handle detected USB ports
-            for board in boards_info.get("detected_ports", []):
-                if "matching_boards" in board and board["matching_boards"]:
-                    port = board.get("port", {}).get("address", "Unknown Port")
-                    board_name = board["matching_boards"][0].get("name", "Unknown Board")
-                    arduino_ports.append((port, board_name))
-            
-            # Hypothetical handling for network-based boards
-            for network_board in boards_info.get("network_ports", []):
-                if "matching_boards" in network_board and network_board["matching_boards"]:
-                    port = network_board.get("port", {}).get("address", "Unknown Network Port")
-                    board_name = network_board["matching_boards"][0].get("name", "Unknown Board")
-                    arduino_ports.append((port, board_name))
-
-            return arduino_ports
-        except json.JSONDecodeError:
-            logging.info("Error parsing arduino-cli board list output")
-            return []
-    return []
-
-'''
-
 def run_cli_command(command):
     try:
         result = subprocess.run(command, capture_output=True, text=True, check=True)

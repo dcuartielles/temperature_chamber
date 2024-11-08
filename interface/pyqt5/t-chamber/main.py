@@ -206,56 +206,52 @@ class MainWindow(QMainWindow):
         self.selected_t_port = self.port_selector.get_selected_t_port()
 
         # validate selected ports
-        if not self.selected_c_port and not self.selected_t_port:
-            popups.show_error_message('warning',
-                                      'ports are either not selected or already busy.')
-            self.start_button.setEnabled(True)  # re-enable button to try again
-            self.reactivated_start_button()
-            return
+
         logger.info('check if ports are selected')
         # visually signal app activation
         self.light_up()
+        if self.selected_c_port and self.selected_t_port:
+            if not hasattr(self, 'serial_worker') or self.serial_worker is None or not self.serial_worker.is_running:
+                try:
+                    self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
+                    self.serial_worker.update_listbox.connect(self.update_listbox_gui)
+                    self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
+                    self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
+                    self.serial_worker.no_port_connection.connect(self.on_no_port_connection_gui)
+                    self.serial_worker.serial_running_and_happy.connect(self.show_reset_button)
+                    self.serial_worker.ping_timestamp_signal.connect(self.get_timestamp)
+                    self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
+                    self.serial_worker.start()  # start the worker thread
+                    logger.info('serial worker started successfully')
+                    self.no_ping_alert = False
+                    self.no_ping_timer.start()
+                    logger.info('qtimer started to check for pings every 5 seconds')
 
-        if not hasattr(self, 'serial_worker') or self.serial_worker is None or not self.serial_worker.is_running:
-            try:
-                self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
-                self.serial_worker.update_listbox.connect(self.update_listbox_gui)
-                self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
-                self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
-                self.serial_worker.ping_timestamp_signal.connect(self.get_timestamp)
-                self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
-                self.serial_worker.start()  # start the worker thread
-                logger.info('serial worker started successfully')
-                self.show_reset_button()
-                self.no_ping_alert = False
-                self.no_ping_timer.start()
-                logger.info('qtimer started to check for pings every 5 seconds')
+                    # connect manual tab signals
+                    self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
+                    self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
+                    self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
 
-                # connect manual tab signals
-                self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
-                self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
-                self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
+                except Exception as e:
+                    logger.exception(f'failed to start serial worker: {e}')
+                    popups.show_error_message('error', f'failed to start serial worker: {e}')
+                    self.start_button.setEnabled(True)
+                    self.reactivated_start_button()
+                    return
 
-            except Exception as e:
-                logger.exception(f'failed to start serial worker: {e}')
-                popups.show_error_message('error', f'failed to start serial worker: {e}')
-                self.start_button.setEnabled(True)
-                self.reactivated_start_button()
+            if not hasattr(self, 'test_board') or self.test_board is None or not self.test_board.is_running:
+                try:
+                    self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
+                    self.test_board.start()  # start worker thread
+
+                except Exception as e:
+                    logger.exception(f'failed to start test board worker: {e}')
+                    popups.show_error_message('error', f'failed to start test board worker: {e}')
+                    self.start_button.setEnabled(True)
+                    return
+
+            if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
                 return
-
-        if not hasattr(self, 'test_board') or self.test_board is None or not self.test_board.is_running:
-            try:
-                self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
-                self.test_board.start()  # start worker thread
-
-            except Exception as e:
-                logger.exception(f'failed to start test board worker: {e}')
-                popups.show_error_message('error', f'failed to start test board worker: {e}')
-                self.start_button.setEnabled(True)
-                return
-
-        if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
-            return
 
 
     # TEST PART
@@ -580,6 +576,13 @@ class MainWindow(QMainWindow):
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  )
+
+    # on start button clicked in case no port connection
+    def on_no_port_connection_gui(self):
+        popups.show_error_message('warning',
+                                  'ports are either not selected or already busy.')
+        self.start_button.setEnabled(True)  # re-enable button to try again
+        self.reactivated_start_button()
 
     # inactive start button gui
     def inactivated_start_button(self):

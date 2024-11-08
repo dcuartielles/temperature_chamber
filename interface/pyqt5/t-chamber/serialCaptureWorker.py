@@ -25,6 +25,8 @@ class SerialCaptureWorker(QThread):
     desired_temp_signal = pyqtSignal(int)
     current_duration_signal = pyqtSignal(int)
     time_left_signal = pyqtSignal(int)
+    no_port_connection = pyqtSignal()
+    serial_running_and_happy = pyqtSignal()
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -83,6 +85,7 @@ class SerialCaptureWorker(QThread):
     def run(self):
         if not self.serial_setup():
             logger.error(f'failed to connect to {self.port}')
+            self.no_port_connection.emit()
             return
         logger.info('thread is running')
 
@@ -90,6 +93,7 @@ class SerialCaptureWorker(QThread):
             if not self.is_stopped:
                 try:
                     if self.ser and self.ser.is_open:
+                        self.serial_running_and_happy.emit()
                         # send handshake
                         self.handshake()
                         time.sleep(0.1)
