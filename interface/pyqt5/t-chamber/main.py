@@ -58,11 +58,18 @@ class MainWindow(QMainWindow):
         self.machine_state = None
         self.timestamp = None
 
-        # create QTimer instance after 5 minutes of communication break with serial, control board is reset
+        # create qtimer instance: after 5 minutes of communication break with serial, control board is reset
         self.no_ping_timer = QTimer(self)
         self.no_ping_timer.timeout.connect(self.no_ping_for_five)  # connect to the method
-        self.no_ping_timer.setInterval(5000)
+        self.no_ping_timer.setInterval(5000)  # set interval in milliseconds
         self.no_ping_alert = False  # flag to only have the 5-min alert show once
+
+        # create a qtimer for emergency stop alert popup
+        self.emergency_stop_popup_shown = False
+        self.emergency_stop_timer = QTimer()
+        self.emergency_stop_timer.setInterval(15000)  # 15000 ms = 15 seconds
+        self.emergency_stop_timer.setSingleShot(True)  # ensure the timer only triggers once
+        self.emergency_stop_timer.timeout.connect(self.show_emergency_stop_popup)
 
         # instantiate tabs
         self.main_tab = MainTab(self.test_data)
@@ -70,9 +77,6 @@ class MainWindow(QMainWindow):
 
         # flag for alerting user in case test is running
         self.test_is_running = False
-
-        # flag for emergency stop alert to show up once
-        self.emergency_stop_popup = False
 
         # build the gui
         self.initUI()
@@ -503,11 +507,31 @@ class MainWindow(QMainWindow):
     def emergency_stop_from_arduino(self, machine_state):
         self.machine_state = machine_state
         logger.info(self.machine_state)
+
         if self.machine_state == 'EMERGENCY_STOP':
-            if not self.emergency_stop_popup:
+            self.set_flag_to_false()  # notify app tests are interrupted
+
+            # if alert popup has not been shown, show it
+            if not self.self.emergency_stop_popup_shown:
+                self.emergency_stop_popup_shown = True
                 popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
                 logger.info('the system is off: DO SOMETHING!')
-                self.emergency_stop_popup = True
+                # if the issue has not been solved within 15 seconds, show popup again
+                self.emergency_stop_timer.start()
+
+    # emergency stop alert popup method to be triggered by qtimer
+    def show_emergency_stop_popup(self):
+        # check if the machine state is still in EMERGENCY_STOP
+        if self.machine_state == 'EMERGENCY_STOP':
+            popups.show_error_message('warning', 'system is still off: DO SOMETHING NOW!')
+            logger.info('system is still off: DO SOMETHING NOW!')
+        else:
+            self.reset_emergency_stop()
+
+    # reset emergency stop alert popup flag
+    def reset_emergency_stop(self):
+        self.emergency_stop_popup_shown = False
+        self.emergency_stop_timer.stop()
 
     # if no ping comes through for over 5 minutes
     def no_ping_for_five(self):

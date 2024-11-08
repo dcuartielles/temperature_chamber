@@ -39,7 +39,6 @@ class SerialCaptureWorker(QThread):
         self.is_stopped = False  # flag to stop the read loop
 
         # timing setup to control thread flow and communication with control board
-        self.last_command_time = time.time()
         self.last_ping = time.time()
         self.last_readout = time.time()
 
