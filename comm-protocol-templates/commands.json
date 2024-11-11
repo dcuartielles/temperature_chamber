@@ -1,9 +1,11 @@
 {
     "commands": {
+        "PING": {},
         "SHOW DATA": {},
         "RESET": {},
         "EMERGENCY STOP": {},
-        "SHOW RUNNING SEQUENCE": {}
+        "SHOW RUNNING SEQUENCE": {},
+        "SET_TEMP": { "temp": 40, "duration": 300000 } 
     }
 }
 
