@@ -57,8 +57,23 @@ class ProgressBar(QWidget):
         self.timer.start(100)  # timer updates every 100 milliseconds
 
     def update_progress(self):
-        if self.progress_value >= 100:
+        total_duration = self.estimate_total_time(self.test_data)
+        if self.progress_value >= total_duration:
             self.timer.stop()  # stop the timer when progress is complete
         else:
             self.progress_value += 1
             self.time_progress_bar.setValue(self.progress_value)
+
+    # estimate total running time
+    def estimate_total_time(self, test_data):
+        if test_data is not None and 'tests' in test_data:
+            total_duration = 0
+            for test_key in test_data['tests']:
+                test = test_data['tests'][test_key]
+                sequences = test.get('chamber_sequences', [])
+                for sequence in sequences:
+                    duration = sequence.get('duration', 0)  # get duration for every test sequence
+                    total_duration += int(duration)  # add to total duration, in milliseconds
+                return total_duration
+        return 0
+
