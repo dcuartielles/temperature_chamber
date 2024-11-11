@@ -26,6 +26,8 @@ logger = setup_logger(__name__)
 # create window class
 class MainWindow(QMainWindow):
 
+
+
     def __init__(self):
         super().__init__()
 
@@ -293,6 +295,7 @@ class MainWindow(QMainWindow):
                 message = 'test starting'
                 self.new_test(message)
                 logger.info(message)
+                self.progress.start_progress_signal.emit()
 
                 # if running tests for nth time, come back to original gui layout to start with
                 self.main_tab.on_run_test_gui()
@@ -302,6 +305,7 @@ class MainWindow(QMainWindow):
                     self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
                     self.manual_tab.clear_current_setting_label()
                     self.serial_worker.update_test_label_signal.connect(self.update_test_label)
+                    self.serial_worker.next_sequence_progress.connect(self.progress.advance_sequence)
                 if not self.test_board.is_stopped:
                     self.test_board.is_running = False
                     self.test_board.stop()

@@ -1,11 +1,15 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QProgressBar, QHBoxLayout, QLabel
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, pyqtSignal
 
 class ProgressBar(QWidget):
+
+    start_progress_signal = pyqtSignal()  # signal from main to start timer for progress bars
+
     def __init__(self, test_data, parent=None):
         super().__init__(parent)
         self.test_data = test_data
+        self.start_progress_signal.connect(self.start_progress)
         self.initUI()
 
     def initUI(self):
@@ -66,7 +70,7 @@ class ProgressBar(QWidget):
             self.time_progress_bar.setValue(0)
             self.sequence_progress_bar.setValue(0)
             self.timer.start(100)  # timer updates every 100 milliseconds
-            self.start_next_sequence()  # start the first sequence
+            # self.start_next_sequence()  # start the first sequence
 
 
     def update_time_progress(self):

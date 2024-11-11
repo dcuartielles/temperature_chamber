@@ -27,6 +27,7 @@ class SerialCaptureWorker(QThread):
     time_left_signal = pyqtSignal(int)
     no_port_connection = pyqtSignal()
     serial_running_and_happy = pyqtSignal()
+    next_sequence_progress = pyqtSignal()
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -272,5 +273,7 @@ class SerialCaptureWorker(QThread):
         if any(response.strip().startswith(trigger) for trigger in trigger_responses):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
+        elif any(response.strip().startswith('Target temperature reached!')):
+            self.next_sequence_progress.emit()
         else:
             logger.info(response)
