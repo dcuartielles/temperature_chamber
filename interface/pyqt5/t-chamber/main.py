@@ -294,7 +294,6 @@ class MainWindow(QMainWindow):
                 message = 'test starting'
                 self.new_test(message)
                 logger.info(message)
-                self.progress = ProgressBar(self.test_data)
                 self.progress.show()
 
                 logger.debug('emitting signal to start progress bars')

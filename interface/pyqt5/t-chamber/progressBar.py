@@ -61,13 +61,15 @@ class ProgressBar(QWidget):
 
         # initialize progress tracking variables
         self.current_sequence_index = 0
-        self.sequence_durations = self.get_sequence_durations()
+        self.sequence_durations = []
         self.elapsed_time = 0
 
         # progress value
         self.progress_value = 0
 
-    def start_progress(self):
+    def start_progress(self, test_data):
+        self.test_data = test_data
+        self.sequence_durations = self.get_sequence_durations()
         if self.sequence_durations:
             logger.debug('starting timer progress')
             self.elapsed_time = 0
@@ -90,13 +92,26 @@ class ProgressBar(QWidget):
         if self.current_sequence_index < len(self.sequence_durations):
             # set up the current sequence
             sequence_duration = self.sequence_durations[self.current_sequence_index]
-            self.timer.singleShot(sequence_duration, self.advance_sequence)  # wait for the duration to finish
+            self.sequence_progress_bar.setValue(0)  # reset progress bar
+            # set up separate timer for sequence progreess bar
+            self.sequence_timer = QTimer(self)
+            self.sequence_timer.timeout.connect(lambda: self.update_sequence_progress(sequence_duration))
+            self.sequence_timer.start(100)
 
             # set color for the current sequence in the progress bar
             color = self.get_color_for_sequence(self.current_sequence_index)
             self.sequence_progress_bar.setStyleSheet(f"QProgressBar::chunk {{ background-color: {color}; }}")
 
             self.current_sequence_index += 1
+
+    def update_sequence_progress(self, sequence_duration):
+        self.progress_value += 100 / (sequence_duration / 100)  # increment progress proportionally
+        if self.progress_value >= 100:
+            self.sequence_timer.stop()  # stop when the sequence is complete
+            self.progress_value = 0
+
+        else:
+            self.sequence_progress_bar.setValue(int(self.progress_value))
 
     def advance_sequence(self):
         logger.debug('triggering a new sequence')
@@ -125,6 +140,8 @@ class ProgressBar(QWidget):
                 sequences = test.get('chamber_sequences', [])
                 for sequence in sequences:
                     durations.append(sequence.get('duration', 0))
+
+        logger.info(durations)
         return durations
 
     def get_color_for_sequence(self, index):
