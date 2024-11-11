@@ -1,6 +1,9 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QProgressBar, QHBoxLayout, QLabel
 from PyQt5.QtCore import QTimer, pyqtSignal
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 class ProgressBar(QWidget):
 
@@ -49,10 +52,11 @@ class ProgressBar(QWidget):
 
         # set the layout
         self.setLayout(layout)
+        logger.debug('progress gui set up')
         self.total_duration = self.estimate_total_time(self.test_data)
 
         # set up the timer for updating progress
-        self.timer = QTimer()
+        self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_time_progress)
 
         # initialize progress tracking variables
@@ -65,12 +69,12 @@ class ProgressBar(QWidget):
 
     def start_progress(self):
         if self.sequence_durations:
+            logger.debug('starting timer progress')
             self.elapsed_time = 0
             self.current_sequence_index = 0
             self.time_progress_bar.setValue(0)
             self.sequence_progress_bar.setValue(0)
             self.timer.start(100)  # timer updates every 100 milliseconds
-            # self.start_next_sequence()  # start the first sequence
 
 
     def update_time_progress(self):
@@ -82,6 +86,7 @@ class ProgressBar(QWidget):
             self.timer.stop()  # stop timer when total progress is complete
 
     def start_next_sequence(self):
+        logger.debug('starting new sequence progress bar')
         if self.current_sequence_index < len(self.sequence_durations):
             # set up the current sequence
             sequence_duration = self.sequence_durations[self.current_sequence_index]
@@ -94,6 +99,7 @@ class ProgressBar(QWidget):
             self.current_sequence_index += 1
 
     def advance_sequence(self):
+        logger.debug('triggering a new sequence')
         # when a sequence is done, trigger the next one
         self.start_next_sequence()
 

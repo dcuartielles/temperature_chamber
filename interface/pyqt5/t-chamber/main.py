@@ -76,7 +76,7 @@ class MainWindow(QMainWindow):
 
         # create an instance of progress bar
         self.progress = ProgressBar(self.test_data)
-        self.progress.hide()  # hide progress bar initially
+        self.progress.hide()
 
         # instantiate tabs
         self.main_tab = MainTab(self.test_data)
@@ -103,7 +103,7 @@ class MainWindow(QMainWindow):
 
         # create a vertical layout
         layout = QVBoxLayout(self.central_widget)
-        layout.setContentsMargins(10, 10, 10, 10)  # add padding around the entire layout
+        layout.setContentsMargins(10, 0, 10, 10)  # add padding around the entire layout
 
         # logo
         self.im_label = QLabel(self)
@@ -116,8 +116,8 @@ class MainWindow(QMainWindow):
         # port selector
         layout.addWidget(self.port_selector)
 
-        # add space btw sections: vertical 15px
-        layout.addSpacerItem(QSpacerItem(0, 15))
+        # add space btw sections: vertical 12px
+        layout.addSpacerItem(QSpacerItem(0, 12))
 
         # start button
         self.start_button = QPushButton('start')
@@ -135,8 +135,8 @@ class MainWindow(QMainWindow):
         self.reset_button.hide()
         layout.addWidget(self.reset_button)
 
-        # add space btw sections: vertical 10px
-        layout.addSpacerItem(QSpacerItem(0, 10))
+        # add space btw sections: vertical 8px
+        layout.addSpacerItem(QSpacerItem(0, 8))
 
         # QTab widget to hold both tabs
         self.tab_widget = QTabWidget()
@@ -146,8 +146,8 @@ class MainWindow(QMainWindow):
         self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
         layout.addWidget(self.tab_widget)
 
-        # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
+        # add space btw sections: vertical 12px
+        layout.addSpacerItem(QSpacerItem(0, 12))
 
         # listbox for test updates
         self.serial_label = QLabel('running test info', self)
@@ -157,8 +157,8 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.progress)
         layout.addWidget(self.listbox)
 
-        # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
+        # add space btw sections: vertical 12px
+        layout.addSpacerItem(QSpacerItem(0, 12))
 
         # listbox for temperature chamber monitoring
         self.chamber_label = QLabel('temperature chamber situation', self)
@@ -171,9 +171,8 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.chamber_label)
         layout.addWidget(self.chamber_monitor)
 
-
-        # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 30))
+        # add space btw sections: vertical 12px
+        layout.addSpacerItem(QSpacerItem(0, 12))
 
         # emergency stop button
         self.emergency_stop_button = QPushButton('emergency stop', self)
@@ -183,8 +182,8 @@ class MainWindow(QMainWindow):
                                                  'font-weight: bold;')
         layout.addWidget(self.emergency_stop_button)
 
-        # add space btw sections: vertical 11px
-        layout.addSpacerItem(QSpacerItem(0, 11))
+        # add space btw sections: vertical 7px
+        layout.addSpacerItem(QSpacerItem(0, 7))
 
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
@@ -295,11 +294,14 @@ class MainWindow(QMainWindow):
                 message = 'test starting'
                 self.new_test(message)
                 logger.info(message)
-                self.progress.start_progress_signal.emit()
+                self.progress = ProgressBar(self.test_data)
+                self.progress.show()
+
+                logger.debug('emitting signal to start progress bars')
 
                 # if running tests for nth time, come back to original gui layout to start with
                 self.main_tab.on_run_test_gui()
-                self.progress.show()
+                self.progress.start_progress_signal.emit()
 
                 if not self.serial_worker.is_stopped:
                     self.trigger_run_t()  # send signal to serial capture worker thread to run all tests

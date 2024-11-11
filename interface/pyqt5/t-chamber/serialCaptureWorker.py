@@ -200,7 +200,7 @@ class SerialCaptureWorker(QThread):
 
     # interrupt test on arduino
     def interrupt_test(self):
-        interrupt = commands.interrupt_test()
+        interrupt = commands.reset()
         self.send_json_to_arduino(interrupt)
 
     # set temp & duration from the gui
@@ -269,11 +269,12 @@ class SerialCaptureWorker(QThread):
     # process serial response
     def process_response(self, response):
         # list of responses to be picked up
-        trigger_responses = ['Setting', 'Running', 'Waiting', 'Test complete', 'Target temp', 'Sequence complete']
+        trigger_responses = ['Setting', 'Running', 'Waiting', 'Test complete', 'Sequence complete']
         if any(response.strip().startswith(trigger) for trigger in trigger_responses):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
-        elif any(response.strip().startswith('Target temperature reached!')):
+        elif response.strip().startswith('Target temperature reached!'):
             self.next_sequence_progress.emit()
+            logger.info('sending signal to start new sequence progress bar')
         else:
             logger.info(response)
