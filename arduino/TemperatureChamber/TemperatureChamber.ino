@@ -28,7 +28,7 @@
 
 Authors:
  * Adam Harb, <adam.harb@hotmail.com>
- * Valentino Glave, defliez@protonmail.com
+ * Valentino Glave, valentinoglave@protonmail.com
  * David Cuartielles, d.cuartielles@arduino.cc
 
  (cc-sa-by-nc) 2024 Arduino, Sweden
@@ -112,8 +112,10 @@ struct Sequence {
     unsigned long duration;
 };
 
+const unsigned int MAX_SEQUENCES_IN_TEST = 5;
+
 struct Test {
-    Sequence sequences[5];
+    Sequence sequences[MAX_SEQUENCES_IN_TEST];
     int numSequences;
 };
 
@@ -125,7 +127,7 @@ unsigned long sequenceStartTime = 0;
 unsigned long currentDuration = 0;
 
 // queue for tests
-const int MAX_QUEUED_TESTS = 5;
+const unsigned int MAX_QUEUED_TESTS = 10;
 Test testQueue[MAX_QUEUED_TESTS];
 String testNames[MAX_QUEUED_TESTS];
 int queuedTestCount = 0;
@@ -354,8 +356,8 @@ void parseAndQueueTests(JsonObject& tests) {
 
         JsonArray sequences = testJson["chamber_sequences"];
         newTest.numSequences = sequences.size();
-        if (newTest.numSequences > 5) {
-            newTest.numSequences = 5;         // how many?
+        if (newTest.numSequences > MAX_SEQUENCES_IN_TEST) {
+            newTest.numSequences = MAX_SEQUENCES_IN_TEST;         // how many?
         }
 
         // iterate through each sequence in the chamber_sequences array
@@ -648,15 +650,8 @@ void handleHeatingState() {
     cooler.off();
 
     if(temperatureThreshold > -0.1) {
-
-        // Serial.println("\ncond: threshold > -0.1");
-        // Serial.println("Actual:");
-        // Serial.println("Threshold: " + String(temperatureThreshold));
-        // Serial.println("Going to report\n");
-
         chamberState.longHeatingFlag = 0;
         chamberState.isHeating = false;
-
         lastHeatingTime = getCurrentTimestamp();    // capture current timestamp for handshake
 
         status = REPORT;
@@ -665,42 +660,13 @@ void handleHeatingState() {
         dutyCycleHeater = 100;
         periodHeater = (temperatureThreshold < -8) ? 120000 : 60000;
         chamberState.longHeatingFlag = 1;
-
-        // Serial.println("\ncond: threshold < -4");
-        // Serial.println("Actual:");
-        // Serial.println("Threshold: " + String(temperatureThreshold));
-        // Serial.println("Setting dutycycle to 100");
-        // Serial.println("Dutycycle: " + String(dutyCycleHeater));
-        // Serial.println("Setting periodHeater to 120000 if threshold < -8, otherwise 60000");
-        // Serial.println("PeriodHeater: " + String(periodHeater));
-        // Serial.println("Setting lh flag to 1");
-        // Serial.println("lh flag: " + String(chamberState.longHeatingFlag));
-        // Serial.println();
-
     } else if(temperatureThreshold > -4) {
         dutyCycleHeater = (chamberState.longHeatingFlag) ? 0 : 80;
         periodHeater = 25000; //on for 20 seconds and off for 5
-
-        // Serial.println("\ncond: threshold > -4");
-        // Serial.println("Actual:");
-        // Serial.println("Threshold: " + String(temperatureThreshold));
-        // Serial.println("Setting dutycycle to 80");
-        // Serial.println("Dutycycle: " + String(dutyCycleHeater));
-        // Serial.println("Setting periodHeater to 25000");
-        // Serial.println("PeriodHeater: " + String(periodHeater));
-        // Serial.println();
-
     }
 
     controlRelay(heater, dutyCycleHeater, periodHeater, chamberState.lastHeaterOnTime);
-
-    // Serial.println("control relay function values:");
-    // Serial.println("Duty cycle: " + String(dutyCycleHeater));
-    // Serial.println("Period: " + String(periodHeater));
-    // Serial.println("Timer: " + String(chamberState.lastHeaterOnTime));
-
     chamberState.isHeating = true;
-
 }
 
 void handleCoolingState() {
@@ -732,18 +698,15 @@ void handleReportState() {
         status = EMERGENCY_STOP;
         return;
     }
-
     if (stopSwitchState) {
         status = RESET;
         return;
     }
-
     if(temperatureThreshold > 0.4) {
         status = COOLING;
     } else if(temperatureThreshold < -0.1) {
         status = HEATING;
     }
-
     readAndParseSerial();
 }
 
