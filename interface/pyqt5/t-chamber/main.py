@@ -1,7 +1,7 @@
 # system and PyQt5 imports
 import sys
 import time
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox, QTabWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QLineEdit, QListWidget, QVBoxLayout, QPushButton, QHBoxLayout, QListWidgetItem, QFrame, QSpacerItem, QSizePolicy, QMessageBox, QTabWidget, QProgressBar
 from PyQt5.QtGui import QIcon, QPixmap, QColor, QFont
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QThread, pyqtSignal
 from datetime import datetime, timedelta
@@ -16,6 +16,7 @@ from config import Config
 from logger_config import setup_logger
 from mainTab import MainTab
 from manualTab import ManualTab
+from progressBar import ProgressBar
 import popups
 
 # set up logger that takes the file name
@@ -70,6 +71,10 @@ class MainWindow(QMainWindow):
         self.emergency_stop_timer.setInterval(15000)  # 15000 ms = 15 seconds
         self.emergency_stop_timer.setSingleShot(True)  # ensure the timer only triggers once
         self.emergency_stop_timer.timeout.connect(self.show_emergency_stop_popup)
+
+        # create an instance of progress bar
+        self.progress = ProgressBar(self.test_data)
+        # self.progress.hide()  # hide progress bar initially
 
         # instantiate tabs
         self.main_tab = MainTab(self.test_data)
@@ -147,6 +152,7 @@ class MainWindow(QMainWindow):
         self.listbox = QListWidget(self)
         self.listbox.setFixedHeight(135)
         layout.addWidget(self.serial_label)
+        layout.addWidget(self.progress)
         layout.addWidget(self.listbox)
 
         # add space btw sections: vertical 20px
@@ -290,6 +296,7 @@ class MainWindow(QMainWindow):
 
                 # if running tests for nth time, come back to original gui layout to start with
                 self.main_tab.on_run_test_gui()
+                self.progress.show()
 
                 if not self.serial_worker.is_stopped:
                     self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
@@ -584,6 +591,12 @@ class MainWindow(QMainWindow):
     def on_no_port_connection_gui(self):
         popups.show_error_message('warning',
                                   'ports are either not selected or already busy.')
+        self.emergency_stop_button.setStyleSheet('background-color: grey;'
+                                                 'color: white;'
+                                                 'font-size: 20px;'
+                                                 'font-weight: bold;')
+        self.chamber_monitor.setStyleSheet('color: grey;'
+                                           )
         self.start_button.setEnabled(True)  # re-enable button to try again
         self.reactivated_start_button()
 

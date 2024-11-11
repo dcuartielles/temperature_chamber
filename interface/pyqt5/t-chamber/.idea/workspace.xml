@@ -13,6 +13,8 @@
       <change beforePath="$PROJECT_DIR$/../../.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../learning.py" beforeDir="false" afterPath="$PROJECT_DIR$/../learning.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2024-11-11.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/2024-11-11.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../tkinter/json-driven/json_based.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../tkinter/json-driven/json_based.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../tkinter/json-driven/tryout.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../tkinter/json-driven/tryout.py" afterDir="false" />
@@ -44,6 +46,7 @@
     "Python.logger_config.executor": "Run",
     "Python.main.executor": "Run",
     "Python.portSelector.executor": "Run",
+    "Python.progressBar.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "python",
