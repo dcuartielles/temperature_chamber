@@ -74,7 +74,7 @@ class MainWindow(QMainWindow):
 
         # create an instance of progress bar
         self.progress = ProgressBar(self.test_data)
-        # self.progress.hide()  # hide progress bar initially
+        self.progress.hide()  # hide progress bar initially
 
         # instantiate tabs
         self.main_tab = MainTab(self.test_data)
