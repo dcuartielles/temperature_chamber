@@ -5382,3 +5382,42 @@ Traceback (most recent call last):
     raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
 serial.serialutil.SerialException: could not open port 'COM15': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
 2024-11-08 14:31:32 - serialCaptureWorker - ERROR - failed to connect to COM15
+2024-11-08 17:00:13 - __main__ - INFO - app started
+2024-11-08 17:00:13 - portSelector - INFO - ports refreshed
+2024-11-08 17:00:19 - portSelector - INFO - no boards connected
+2024-11-08 17:00:20 - __main__ - INFO - gui built
+2024-11-08 17:00:47 - __main__ - INFO - start button clicked
+2024-11-08 17:00:47 - __main__ - INFO - check if ports are selected
+2024-11-08 17:00:47 - __main__ - INFO - serial worker started successfully
+2024-11-08 17:00:47 - __main__ - INFO - qtimer started to check for pings every 5 seconds
+2024-11-08 17:00:47 - testBoardWorker - ERROR - error
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\testBoardWorker.py", line 33, in serial_setup
+    self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2024-11-08 17:00:47 - testBoardWorker - ERROR - test board worker failed to connect to COM7
+2024-11-08 17:00:47 - serialCaptureWorker - ERROR - error
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 75, in serial_setup
+    self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM15': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+2024-11-08 17:00:47 - serialCaptureWorker - ERROR - failed to connect to COM15
+2024-11-08 17:00:57 - portSelector - INFO - ports refreshed
+2024-11-08 17:00:57 - __main__ - INFO - start button re-enabled
+2024-11-08 17:00:59 - portSelector - INFO - no boards connected
+2024-11-08 17:01:30 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-08 17:01:30 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes

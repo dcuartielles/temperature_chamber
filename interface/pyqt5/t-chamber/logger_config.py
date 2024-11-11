@@ -2,9 +2,11 @@ import logging
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 from datetime import datetime
-
+import coloredlogs
 
 def setup_logger(name=__name__, console_level=logging.INFO, file_level=logging.INFO):
+
+    coloredlogs.install()
 
     logs = (Path.cwd()) / 'logs' # set path to log files
     logs.mkdir(exist_ok=True)  # create 'logs' directory if it doesn't already exist
