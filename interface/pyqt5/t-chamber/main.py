@@ -280,34 +280,37 @@ class MainWindow(QMainWindow):
                         logger.info(message)
                 elif response == QMessageBox.No:
                     return
+            try:
+                self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
+                self.test_is_running = True
+                self.manual_tab.test_is_running = True
+                message = 'test starting'
+                self.new_test(message)
+                logger.info(message)
 
-            self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
-            self.test_is_running = True
-            self.manual_tab.test_is_running = True
-            message = 'test starting'
-            self.new_test(message)
-            logger.info(message)
+                # if running tests for nth time, come back to original gui layout to start with
+                self.main_tab.on_run_test_gui()
 
-            # if running tests for nth time, come back to original gui layout to start with
-            self.main_tab.on_run_test_gui()
-
-            if not self.serial_worker.is_stopped:
-                self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
-                self.manual_tab.clear_current_setting_label()
-                self.serial_worker.update_test_label_signal.connect(self.update_test_label)
-            if not self.test_board.is_stopped:
-                self.test_board.is_running = False
-                self.test_board.stop()
-                self.test_board.deleteLater()
-                logger.info('test board worker temporarily deleted')
-                # initiate cli worker thread
-                self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
-                self.cli_worker.set_test_data(self.test_data, self.filepath)
-                self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
-                self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
-                self.cli_worker.start()  # start cli worker thread
-                logger.info('cli worker started')
-                time.sleep(0.1)
+                if not self.serial_worker.is_stopped:
+                    self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
+                    self.manual_tab.clear_current_setting_label()
+                    self.serial_worker.update_test_label_signal.connect(self.update_test_label)
+                if not self.test_board.is_stopped:
+                    self.test_board.is_running = False
+                    self.test_board.stop()
+                    self.test_board.deleteLater()
+                    logger.info('test board worker temporarily deleted')
+                    # initiate cli worker thread
+                    self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
+                    self.cli_worker.set_test_data(self.test_data, self.filepath)
+                    self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
+                    self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
+                    self.cli_worker.start()  # start cli worker thread
+                    logger.info('cli worker started')
+                    time.sleep(0.1)
+            except:
+                logger.exception('no serial connection')
+                popups.show_error_message('error', 'no serial connection')
         else:
             popups.show_error_message('error', 'no test data loaded')
 
