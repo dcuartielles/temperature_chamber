@@ -19,7 +19,7 @@ class ProgressBar(QWidget):
         self.sequence_durations = []
         self.sequence_duration = 0
         self.total_duration = 0
-        self.current_temp = 0
+        self.current_temp = None
         self.temperatures = []
 
         # set up the timer for updating progress
@@ -81,7 +81,13 @@ class ProgressBar(QWidget):
         self.current_temp = current_temp
         self.test_data = test_data
         self.sequence_durations = self.get_sequence_durations()
+        self.temperatures = self.get_temperatures()
+        self.total_duration = 0
         self.total_duration = self.estimate_total_time()
+        # reset sequence progress bar
+        self.progress_value = 0
+        self.sequence_progress_bar.setValue(0)
+        self.sequence_timer.stop()
         if self.total_duration:
             self.update_test_bar_label()
             self.elapsed_time = 0
@@ -92,11 +98,9 @@ class ProgressBar(QWidget):
     # update the actual progress bar for general test time
     def update_time_progress(self):
         if self.test_data:
-            logger.debug('starting timer progress')
             self.elapsed_time += 100  # increment elapsed time by 100 milliseconds
             total_progress = (self.elapsed_time / self.total_duration) * 100
             self.time_progress_bar.setValue(int(total_progress))
-            logger.debug(f'time progress: {int(total_progress)}%')
 
             if self.elapsed_time >= self.total_duration:
                 self.timer.stop()  # stop timer when total progress is complete
@@ -107,12 +111,10 @@ class ProgressBar(QWidget):
     # start processing new sequence progress bar
     def start_next_sequence(self):
         if self.current_sequence_index < len(self.sequence_durations):
-            logger.debug('starting new sequence progress bar')
             self.sequence_duration = self.sequence_durations[self.current_sequence_index]
             self.progress_value = 0  # reset progress for the new sequence
             self.sequence_progress_bar.setValue(0)
             self.sequence_timer.start(100)  # timer updates every 100 milliseconds
-
             # set color for the current sequence in the progress bar
             color = self.get_color_for_sequence(self.current_sequence_index)
             self.sequence_progress_bar.setStyleSheet(f"QProgressBar::chunk {{ background-color: {color}; }}")
@@ -155,41 +157,47 @@ class ProgressBar(QWidget):
     def estimate_total_time(self):
         # start by adding total test sequence duration
         self.total_duration += sum(self.sequence_durations)
+        logger.debug('start by adding total test sequence duration')
 
         # calculate degrees to reach target temp for first sequence
-        degrees_to_target = int(self.temperatures[0]) - self.current_temp
+        degrees_to_target = int(self.temperatures[0]) - int(self.current_temp)
+        logger.debug('calculate degrees to reach target temp for first sequence')
+
         prep_time = 0
         # if chamber needs to heat up
         if degrees_to_target > 0:
-            prep_time = degrees_to_target * 13200  # ca 2.2 minutes per degree, in milliseconds
-
+            prep_time = degrees_to_target * 132000  # ca 2.2 minutes per degree, in milliseconds
+            logger.debug('ca 2.2 minutes per degree, in milliseconds')
         # if chamber needs cooling
         elif degrees_to_target < 0:
-            prep_time = abs(degrees_to_target) * 52800  # ca 9 minutes per degree, in milliseconds, absolute value
-
+            prep_time = abs(degrees_to_target) * 528000  # ca 9 minutes per degree, in milliseconds, absolute value
+            logger.debug('ca 9 minutes per degree, in milliseconds, absolute value')
         # add prep time
         self.total_duration += prep_time
-
-        time_between = 0
+        logger.debug('add prep time')
 
         # calculate time for temperature changes between subsequent target temperatures
         for i in range(1, len(self.temperatures)):
             degrees_difference = int(self.temperatures[i]) - int(self.temperatures[i - 1])
+            logger.debug('calculate time for temperature changes between subsequent target temperatures')
             # if chamber needs to heat up
             if degrees_difference > 0:
-                time_between = degrees_difference * 13200  # 2.2 minutes per degree, in milliseconds
+                self.total_duration += degrees_difference * 132000  # 2.2 minutes per degree, in milliseconds
+
             # if chamber needs cooling
             elif degrees_difference < 0:
-                time_between = abs(degrees_difference) * 52800  # 8.8 minutes per degree, in milliseconds
-
-        self.total_duration += time_between
+                self.total_duration += abs(degrees_difference) * 528000  # 8.8 minutes per degree, in milliseconds
 
         return self.total_duration
 
     # update test progress bar label with estimated total time
     def update_test_bar_label(self):
         estimated_time = self.total_duration / 60.000
-        formatted_est_time = f"{estimated_time:.2f}"
+        formatted_est_time = int(estimated_time)
+        if formatted_est_time >= 60:
+            hours = formatted_est_time / 60
+            hours_and_min = f"{hours:.2f}"
+            self.time_label.setText(f'estimated run time: {hours_and_min} hr')
         self.time_label.setText(f'estimated run time: {formatted_est_time} min')
 
     # get a dictionary of sequences for sequence progress bar
@@ -201,93 +209,10 @@ class ProgressBar(QWidget):
                 sequences = test.get('chamber_sequences', [])
                 for sequence in sequences:
                     durations.append(sequence.get('duration', 0))
-        logger.info(durations)
+        logger.info(f'all durations: {durations}')
         return durations
 
     def get_color_for_sequence(self, index):
         # define a list of colors to use for sequence progress bar
         colors = ['#10DDDD', '#E1DA0F', '#E10F85', '#3289DF', '#EC8F74']
         return colors[index % len(colors)]
-
-    '''# start processing progress bar for general test time
-    def start_progress(self, test_data):
-        self.test_data = test_data
-        self.sequence_durations = self.get_sequence_durations()
-        self.estimate_total_time()
-        if self.total_duration:
-            self.elapsed_time = 0
-            self.time_progress_bar.setValue(0)
-            self.timer.start(100)  # timer updates every 100 milliseconds
-            self.update_time_progress()
-
-    # update the actual progress bar for general test time
-    def update_time_progress(self):
-        if self.test_data:
-            logger.debug('starting timer progress')
-            self.elapsed_time += 100  # increment elapsed time by 100 milliseconds
-            total_progress = (self.elapsed_time / self.total_duration) * 100
-            self.time_progress_bar.setValue(int(total_progress))
-            if self.elapsed_time >= self.total_duration:
-                self.timer.stop()  # stop timer when total progress is complete
-        else:
-            logger.debug('setting up overall test time progress bar, no test data here yet')
-            return
-
-    # start processing new sequence progress bar
-    def start_next_sequence(self):
-        logger.debug('starting new sequence progress bar')
-        if self.current_sequence_index < len(self.sequence_durations):
-            # set up the current sequence
-            self.sequence_duration = self.sequence_durations[self.current_sequence_index]
-            self.sequence_progress_bar.setValue(0)  # reset progress bar
-            self.update_sequence_progress()
-            # set color for the current sequence in the progress bar
-            color = self.get_color_for_sequence(self.current_sequence_index)
-            self.sequence_progress_bar.setStyleSheet(f"QProgressBar::chunk {{ background-color: {color}; }}")
-            # self.current_sequence_index += 1
-
-    # display visually sequence progress
-    def update_sequence_progress(self):
-        if self.test_data:
-            self.progress_value += 100 / (self.sequence_duration / 100)  # increment progress proportionally
-            self.sequence_timer.start(100)
-            if self.progress_value >= 100:
-                self.sequence_timer.stop()  # stop when the sequence is complete
-                self.progress_value = 0
-            else:
-                self.sequence_progress_bar.setValue(int(self.progress_value))
-        else:
-            logger.debug('setting up sequence progress, no test data here yet')
-            return
-
-    
-    def advance_sequence(self, current_sequence):
-        # set current sequence index from current sequence number received from serial worker
-        self.current_sequence_index = current_sequence - 1
-        logger.debug('triggering a new sequence')
-        # trigger this sequence progress bar
-        self.start_next_sequence()
-
-    # estimate total running time
-    def estimate_total_time(self):
-        sequence_durations = self.get_sequence_durations()
-        self.total_duration = sum(sequence_durations)  # sum of all sequence durations in milliseconds
-        return self.total_duration
-
-    # get number of sequences for sequence progress bar
-    def get_sequence_durations(self):
-        durations = []
-        if self.test_data and 'tests' in self.test_data:
-            for test_key in self.test_data['tests']:
-                test = self.test_data['tests'][test_key]
-                sequences = test.get('chamber_sequences', [])
-                for sequence in sequences:
-                    durations.append(sequence.get('duration', 0))
-
-        logger.info(durations)
-        return durations
-
-    def get_color_for_sequence(self, index):
-        # define a list of colors to use for the sequences
-        colors = ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33F3']
-        return colors[index % len(colors)]  # cycle through colors if there are more sequences'''
