@@ -139,15 +139,12 @@ class ProgressBar(QWidget):
 
     # start processing new sequence progress bar
     def start_next_sequence(self):
-        # reset sequence progress bar
-        self.progress_value = 0
-        self.sequence_progress_bar.setValue(0)
         if self.current_sequence_index < len(self.sequence_durations):
             self.sequence_duration = self.sequence_durations[self.current_sequence_index]
             self.sequence_timer.start(50)  # timer updates every 50 milliseconds
             # set color for the current sequence in the progress bar
-            color = self.get_color_for_sequence(self.current_sequence_index)
-            self.sequence_progress_bar.setStyleSheet(f"QProgressBar::chunk {{ background-color: {color}; }}")
+            '''color = self.get_color_for_sequence(self.current_sequence_index)
+            self.sequence_progress_bar.setStyleSheet(f"QProgressBar::chunk {{ background-color: {color}; }}")'''
             self.current_sequence_index += 1
 
     # display visually sequence progress
@@ -164,12 +161,8 @@ class ProgressBar(QWidget):
 
     # trigger new sequence bar
     def advance_sequence(self):
-        # set current sequence index from current sequence number received from serial worker
         logger.debug('triggering a new sequence')
-        if self.current_sequence_index < len(self.sequence_durations):
-            self.sequence_duration = self.sequence_durations[self.current_sequence_index]
-            self.sequence_timer.start(50)  # update every 50 ms
-            self.start_next_sequence()
+        self.start_next_sequence()
 
     # get target temperatures from test_data
     def get_temperatures(self):
