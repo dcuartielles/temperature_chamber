@@ -38001,3 +38001,8 @@ json.decoder.JSONDecodeError: Unterminated string starting at: line 1 column 115
 2024-11-12 14:35:42 - serialCaptureWorker - INFO - connection to COM15 closed
 2024-11-12 14:35:42 - testBoardWorker - INFO - connection to COM7 closed now
 2024-11-12 14:35:42 - mainTab - ERROR - A
+2024-11-12 15:21:08 - __main__ - INFO - app started
+2024-11-12 15:21:08 - portSelector - INFO - ports refreshed
+2024-11-12 15:21:10 - portSelector - INFO - no boards connected
+2024-11-12 15:21:10 - progressBar - DEBUG - progress gui set up
+2024-11-12 15:21:11 - __main__ - INFO - gui built

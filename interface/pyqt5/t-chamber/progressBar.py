@@ -30,6 +30,7 @@ class ProgressBar(QWidget):
         # separate timer for sequence progress bar
         self.sequence_timer = QTimer(self)
         self.sequence_timer.timeout.connect(self.update_sequence_progress)
+        self.segment_lengths = []
         # progress value
         self.progress_value = 0
 
@@ -89,6 +90,7 @@ class ProgressBar(QWidget):
         self.progress_value = 0
         self.sequence_progress_bar.setValue(0)
         self.sequence_timer.stop()
+        self.render_initial_progress_bar()
         if self.total_duration:
             self.update_test_bar_label()
             self.elapsed_time = 0
@@ -109,6 +111,32 @@ class ProgressBar(QWidget):
             logger.debug('setting up overall test time progress bar, no test data here yet')
             return
 
+    # initial sequence progress bar
+    def render_initial_progress_bar(self):
+        if not self.sequence_durations:
+            return
+
+        # calculate the proportional length of each sequence
+        self.segment_lengths = [
+            (duration / sum(self.sequence_durations)) * 100 for duration in self.sequence_durations
+        ]
+
+        # construct a style sheet for the progress bar segments
+        colors = ['#B0E0E6', '#F0E68C', '#E6E6FA', '#FFB6C1', '#D3D3D3']  # light colors for initial display
+        gradient_stops = []
+
+        current_position = 0
+        # render all sequence segments in their colors
+        for index, length in enumerate(self.segment_lengths):
+            color = colors[index % len(colors)]
+            gradient_stops.append(f"{current_position}% {color}")
+            gradient_stops.append(f"{current_position + length}% {color}")
+            current_position += length
+
+        gradient_style = "QProgressBar::chunk { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, " + ", ".join(
+            gradient_stops) + "); }"
+        self.sequence_progress_bar.setStyleSheet(gradient_style)
+
     # start processing new sequence progress bar
     def start_next_sequence(self):
         # reset sequence progress bar
@@ -126,13 +154,10 @@ class ProgressBar(QWidget):
     def update_sequence_progress(self):
         if self.test_data:
             self.progress_value += 50 / (self.sequence_duration / 100)  # increment progress proportionally
+            if self.progress_value >= self.segment_lengths[self.current_sequence_index - 1]:
+                self.sequence_timer.stop()
+                self.progress_value = sum(self.segment_lengths[:self.current_sequence_index])  # move to next segment
             self.sequence_progress_bar.setValue(int(self.progress_value))
-            logger.debug(f'sequence progress: {int(self.progress_value)}%')
-
-            if self.progress_value >= 100:
-                self.sequence_timer.stop()  # stop when sequence is complete
-                self.progress_value = 0  # reset for next sequence
-                self.sequence_progress_bar.setValue(0)
         else:
             logger.debug('setting up sequence progress, no test data here yet')
             return
@@ -141,7 +166,10 @@ class ProgressBar(QWidget):
     def advance_sequence(self):
         # set current sequence index from current sequence number received from serial worker
         logger.debug('triggering a new sequence')
-        self.start_next_sequence()
+        if self.current_sequence_index < len(self.sequence_durations):
+            self.sequence_duration = self.sequence_durations[self.current_sequence_index]
+            self.sequence_timer.start(50)  # update every 50 ms
+            self.start_next_sequence()
 
     # get target temperatures from test_data
     def get_temperatures(self):
