@@ -171,11 +171,11 @@ class ProgressBar(QWidget):
         prep_time = 0
         # if chamber needs to heat up
         if degrees_to_target > 0:
-            prep_time = degrees_to_target * 13200  # 0.22 min per degree, in milliseconds
+            prep_time = degrees_to_target * 40000  # 0.6 min per degree, in milliseconds
             logger.debug('ca 2.2 minutes per degree, in milliseconds')
         # if chamber needs cooling
         elif degrees_to_target < 0:
-            prep_time = abs(degrees_to_target) * 60000  # 1 minute per degree, in milliseconds, absolute value
+            prep_time = abs(degrees_to_target) * 120000  # 2 minutes per degree, in milliseconds, absolute value
             logger.debug('ca 9 minutes per degree, in milliseconds, absolute value')
         # add prep time
         self.total_duration += prep_time
@@ -187,11 +187,11 @@ class ProgressBar(QWidget):
             logger.debug('calculate time for temperature changes between subsequent target temperatures')
             # if chamber needs to heat up
             if degrees_difference > 0:
-                self.total_duration += degrees_difference * 13200  # 0.22 min per degree, in milliseconds
+                self.total_duration += degrees_difference * 40000  # 0.6 min per degree, in milliseconds
 
             # if chamber needs cooling
             elif degrees_difference < 0:
-                self.total_duration += abs(degrees_difference) * 60000  # 1 minute per degree, absolute value
+                self.total_duration += abs(degrees_difference) * 120000  # 2 min per degree, in millis, absolute value
 
         return self.total_duration
 
