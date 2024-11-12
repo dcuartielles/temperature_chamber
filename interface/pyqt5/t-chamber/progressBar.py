@@ -50,7 +50,7 @@ class ProgressBar(QWidget):
         time_progress_layout = QVBoxLayout()
 
         # create sequence progress bar and label
-        self.sequence_label = QLabel('test progress', self)
+        self.sequence_label = QLabel('sequence progress', self)
         self.sequence_progress_bar = QProgressBar()
         self.sequence_progress_bar.setValue(0)  # initial value of the progress bar
         self.sequence_progress_bar.setTextVisible(False)  # hide percentage text
@@ -59,7 +59,7 @@ class ProgressBar(QWidget):
         sequence_progress_layout.addWidget(self.sequence_progress_bar)
 
         # create time progress bar and label
-        self.time_label = QLabel('total test progress', self)
+        self.time_label = QLabel('estimated run time', self)
         self.time_progress_bar = QProgressBar()
         self.time_progress_bar.setValue(0)
         time_progress_layout.addWidget(self.time_label)
@@ -83,6 +83,7 @@ class ProgressBar(QWidget):
         self.sequence_durations = self.get_sequence_durations()
         self.total_duration = self.estimate_total_time()
         if self.total_duration:
+            self.update_test_bar_label()
             self.elapsed_time = 0
             self.time_progress_bar.setValue(0)
             self.timer.start(100)  # timer updates every 100 milliseconds
@@ -184,6 +185,12 @@ class ProgressBar(QWidget):
         self.total_duration += time_between
 
         return self.total_duration
+
+    # update test progress bar label with estimated total time
+    def update_test_bar_label(self):
+        estimated_time = self.total_duration / 60.000
+        formatted_est_time = f"{estimated_time:.2f}"
+        self.time_label.setText(f'estimated run time: {formatted_est_time} min')
 
     # get a dictionary of sequences for sequence progress bar
     def get_sequence_durations(self):
