@@ -8,6 +8,7 @@ from datetime import datetime
 
 logger = setup_logger(__name__)
 
+
 class SerialCaptureWorker(QThread):
 
     update_chamber_monitor = pyqtSignal(dict)  # signal to update chamber monitor

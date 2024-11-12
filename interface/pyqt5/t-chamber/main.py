@@ -444,7 +444,6 @@ class MainWindow(QMainWindow):
         else:
             self.serial_label.show()
 
-
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
     def check_temp(self):
         test_keys = list(self.test_data["tests"].keys())
