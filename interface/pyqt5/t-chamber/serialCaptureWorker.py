@@ -177,8 +177,6 @@ class SerialCaptureWorker(QThread):
                 self.is_test_running = test_status.get('is_test_running', False)
                 self.current_test = test_status.get('current_test', '')
                 self.current_sequence = test_status.get('current_sequence', 0)
-                self.current_sequence_signal.emit(self.current_sequence)
-                logger.debug(self.current_sequence)
                 self.desired_temp = test_status.get('desired_temp', 0)
                 # get duration and time left, and convert them for display
                 self.current_duration = test_status.get('current_duration', 0) / 60000
@@ -277,6 +275,7 @@ class SerialCaptureWorker(QThread):
             logger.info(f'{response}')
         elif response.strip().startswith('Target temperature reached!'):
             self.next_sequence_progress.emit(self.current_sequence)
-            logger.info('sending signal to start new sequence progress bar')
+            logger.debug(self.current_sequence)
+            logger.debug('sending signal to start new sequence progress bar')
         else:
             logger.info(response)

@@ -75,7 +75,7 @@ class MainWindow(QMainWindow):
         self.emergency_stop_timer.timeout.connect(self.show_emergency_stop_popup)
 
         # create an instance of progress bar
-        self.progress = ProgressBar(self.test_data)
+        self.progress = ProgressBar()
         self.progress.hide()
 
         # instantiate tabs

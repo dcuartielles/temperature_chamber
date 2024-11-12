@@ -9,27 +9,29 @@ class ProgressBar(QWidget):
 
     start_progress_signal = pyqtSignal(dict)  # signal from main to start timer for progress bars
 
-    def __init__(self, test_data, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
-        self.test_data = test_data
+
+        self.test_data = None
+
         # initialize progress tracking variables
         self.current_sequence_index = 0
         self.sequence_durations = []
         self.elapsed_time = 0
         self.sequence_duration = 0
+        self.total_duration = 0
 
         # progress value
         self.progress_value = 0
-        self.total_duration = 0
 
         # set up the timer for updating progress
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self.update_time_progress)
+
         # separate timer for sequence progress bar
         self.sequence_timer = QTimer(self)
-        self.sequence_timer.timeout.connect(lambda: self.update_sequence_progress(self.sequence_duration))
-        self.sequence_timer.start(100)
+        self.sequence_timer.timeout.connect(self.update_sequence_progress)
 
         self.start_progress_signal.connect(self.start_progress)
 
@@ -83,15 +85,20 @@ class ProgressBar(QWidget):
             self.elapsed_time = 0
             self.time_progress_bar.setValue(0)
             self.timer.start(100)  # timer updates every 100 milliseconds
+            self.update_time_progress()
 
     # update the actual progress bar for general test time
     def update_time_progress(self):
-        logger.debug('starting timer progress')
-        self.elapsed_time += 100  # increment elapsed time by 100 milliseconds
-        total_progress = (self.elapsed_time / self.total_duration) * 100
-        self.time_progress_bar.setValue(int(total_progress))
-        if self.elapsed_time >= self.total_duration:
-            self.timer.stop()  # stop timer when total progress is complete
+        if self.test_data:
+            logger.debug('starting timer progress')
+            self.elapsed_time += 100  # increment elapsed time by 100 milliseconds
+            total_progress = (self.elapsed_time / self.total_duration) * 100
+            self.time_progress_bar.setValue(int(total_progress))
+            if self.elapsed_time >= self.total_duration:
+                self.timer.stop()  # stop timer when total progress is complete
+        else:
+            logger.debug('setting up overall test time progress bar, no test data here yet')
+            return
 
     # start processing new sequence progress bar
     def start_next_sequence(self):
@@ -100,20 +107,25 @@ class ProgressBar(QWidget):
             # set up the current sequence
             self.sequence_duration = self.sequence_durations[self.current_sequence_index]
             self.sequence_progress_bar.setValue(0)  # reset progress bar
-            self.update_sequence_progress(self.sequence_duration)
+            self.update_sequence_progress()
             # set color for the current sequence in the progress bar
             color = self.get_color_for_sequence(self.current_sequence_index)
             self.sequence_progress_bar.setStyleSheet(f"QProgressBar::chunk {{ background-color: {color}; }}")
             # self.current_sequence_index += 1
 
     # display visually sequence progress
-    def update_sequence_progress(self, sequence_duration):
-        self.progress_value += 100 / (sequence_duration / 100)  # increment progress proportionally
-        if self.progress_value >= 100:
-            self.sequence_timer.stop()  # stop when the sequence is complete
-            self.progress_value = 0
+    def update_sequence_progress(self):
+        if self.test_data:
+            self.progress_value += 100 / (self.sequence_duration / 100)  # increment progress proportionally
+            self.sequence_timer.start(100)
+            if self.progress_value >= 100:
+                self.sequence_timer.stop()  # stop when the sequence is complete
+                self.progress_value = 0
+            else:
+                self.sequence_progress_bar.setValue(int(self.progress_value))
         else:
-            self.sequence_progress_bar.setValue(int(self.progress_value))
+            logger.debug('setting up sequence progress, no test data here yet')
+            return
 
     # trigger new sequence bar
     def advance_sequence(self, current_sequence):
