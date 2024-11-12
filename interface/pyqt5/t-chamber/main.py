@@ -437,8 +437,12 @@ class MainWindow(QMainWindow):
             if str(formatted_time_left) == '0.00':
                 self.progress.sequence_label.setText(
                     f'{test}  |  sequence {sequence}  |  not timed')
+                self.serial_label.hide()
             else:
                 self.progress.sequence_label.setText(f'{test}  |  sequence {sequence}  |  time left: {formatted_time_left} min')
+                self.serial_label.hide()
+        else:
+            self.serial_label.show()
 
 
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
