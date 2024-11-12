@@ -152,10 +152,8 @@ class ProgressBar(QWidget):
 
     # estimate total running time
     def estimate_total_time(self):
-        sequence_durations = self.get_sequence_durations()
-        
         # start by adding total test sequence duration
-        self.total_duration += sum(sequence_durations)
+        self.total_duration += sum(self.sequence_durations)
 
         # calculate degrees to reach target temp for first sequence
         degrees_to_target = int(self.temperatures[0]) - self.current_temp
@@ -171,17 +169,19 @@ class ProgressBar(QWidget):
         # add prep time
         self.total_duration += prep_time
 
+        time_between = 0
+
         # calculate time for temperature changes between subsequent target temperatures
         for i in range(1, len(self.temperatures)):
-
             degrees_difference = int(self.temperatures[i]) - int(self.temperatures[i - 1])
-
             # if chamber needs to heat up
             if degrees_difference > 0:
-                self.total_duration += degrees_difference * 13200  # ca 2.2 minutes per degree, in milliseconds
+                time_between = degrees_difference * 13200  # 2.2 minutes per degree, in milliseconds
             # if chamber needs cooling
             elif degrees_difference < 0:
-                self.total_duration += abs(degrees_difference) * 52800  # ca 9 minutes per degree, in milliseconds
+                time_between = abs(degrees_difference) * 52800  # 8.8 minutes per degree, in milliseconds
+
+        self.total_duration += time_between
 
         return self.total_duration
 
