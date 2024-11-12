@@ -59,7 +59,7 @@ class ProgressBar(QWidget):
         sequence_progress_layout.addWidget(self.sequence_progress_bar)
 
         # create time progress bar and label
-        self.time_label = QLabel('estimated time progress', self)
+        self.time_label = QLabel('total test progress', self)
         self.time_progress_bar = QProgressBar()
         self.time_progress_bar.setValue(0)
         time_progress_layout.addWidget(self.time_label)
