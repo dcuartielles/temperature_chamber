@@ -78,20 +78,18 @@ class ProgressBar(QWidget):
     def start_progress(self, test_data):
         self.test_data = test_data
         self.sequence_durations = self.get_sequence_durations()
-        if self.sequence_durations:
-            logger.debug('starting timer progress')
+        self.estimate_total_time()
+        if self.total_duration:
             self.elapsed_time = 0
-            # self.current_sequence_index = 0
             self.time_progress_bar.setValue(0)
-            # self.sequence_progress_bar.setValue(0)
             self.timer.start(100)  # timer updates every 100 milliseconds
 
     # update the actual progress bar for general test time
     def update_time_progress(self):
+        logger.debug('starting timer progress')
         self.elapsed_time += 100  # increment elapsed time by 100 milliseconds
         total_progress = (self.elapsed_time / self.total_duration) * 100
         self.time_progress_bar.setValue(int(total_progress))
-
         if self.elapsed_time >= self.total_duration:
             self.timer.stop()  # stop timer when total progress is complete
 
@@ -128,7 +126,8 @@ class ProgressBar(QWidget):
     # estimate total running time
     def estimate_total_time(self):
         sequence_durations = self.get_sequence_durations()
-        total_sequence_duration = sum(sequence_durations)
+        self.total_duration = sum(sequence_durations)  # sum of all sequence durations in milliseconds
+        return self.total_duration
 
     # get number of sequences for sequence progress bar
     def get_sequence_durations(self):
