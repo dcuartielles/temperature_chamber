@@ -158,6 +158,8 @@ class ProgressBar(QWidget):
 
     # estimate total running time
     def estimate_total_time(self):
+        # reset total duration
+        self.total_duration = 0
         # start by adding total test sequence duration
         self.total_duration += sum(self.sequence_durations)
         logger.debug('start by adding total test sequence duration')
@@ -169,11 +171,11 @@ class ProgressBar(QWidget):
         prep_time = 0
         # if chamber needs to heat up
         if degrees_to_target > 0:
-            prep_time = degrees_to_target * 132000  # ca 2.2 minutes per degree, in milliseconds
+            prep_time = degrees_to_target * 13200  # 0.22 min per degree, in milliseconds
             logger.debug('ca 2.2 minutes per degree, in milliseconds')
         # if chamber needs cooling
         elif degrees_to_target < 0:
-            prep_time = abs(degrees_to_target) * 528000  # ca 9 minutes per degree, in milliseconds, absolute value
+            prep_time = abs(degrees_to_target) * 60000  # 1 minute per degree, in milliseconds, absolute value
             logger.debug('ca 9 minutes per degree, in milliseconds, absolute value')
         # add prep time
         self.total_duration += prep_time
@@ -185,23 +187,23 @@ class ProgressBar(QWidget):
             logger.debug('calculate time for temperature changes between subsequent target temperatures')
             # if chamber needs to heat up
             if degrees_difference > 0:
-                self.total_duration += degrees_difference * 132000  # 2.2 minutes per degree, in milliseconds
+                self.total_duration += degrees_difference * 13200  # 0.22 min per degree, in milliseconds
 
             # if chamber needs cooling
             elif degrees_difference < 0:
-                self.total_duration += abs(degrees_difference) * 528000  # 8.8 minutes per degree, in milliseconds
+                self.total_duration += abs(degrees_difference) * 60000  # 1 minute per degree, absolute value
 
         return self.total_duration
 
     # update test progress bar label with estimated total time
     def update_test_bar_label(self):
-        estimated_time = self.total_duration / 60.000
-        formatted_est_time = int(estimated_time)
-        if formatted_est_time >= 60:
-            hours = formatted_est_time / 60
+        estimated_time = int(self.total_duration / 60000)
+        if estimated_time >= 60:
+            hours = estimated_time / 60
             hours_and_min = f"{hours:.2f}"
             self.time_label.setText(f'estimated run time: {hours_and_min} hr')
-        self.time_label.setText(f'estimated run time: {formatted_est_time} min')
+        else:
+            self.time_label.setText(f'estimated run time: {estimated_time} min')
 
     # get a dictionary of sequences for sequence progress bar
     def get_sequence_durations(self):
