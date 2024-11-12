@@ -125,7 +125,7 @@ class ProgressBar(QWidget):
     # display visually sequence progress
     def update_sequence_progress(self):
         if self.test_data:
-            self.progress_value += 100 / (self.sequence_duration / 100)  # increment progress proportionally
+            self.progress_value += 50 / (self.sequence_duration / 100)  # increment progress proportionally
             self.sequence_progress_bar.setValue(int(self.progress_value))
             logger.debug(f'sequence progress: {int(self.progress_value)}%')
 

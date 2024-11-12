@@ -194,7 +194,7 @@ class SerialCaptureWorker(QThread):
             full_tests_json = {'tests': test_data["tests"]}
             self.send_json_to_arduino(full_tests_json)  # send the data to arduino
             # log and print status
-            logger.info(f'Sending full tests data with {len(test_data["tests"])} tests')
+            logger.info(f'sending full tests data with {len(test_data["tests"])} tests')
         else:
             # handle case when no test data is found
             logger.warning('no test data found on file')
@@ -235,7 +235,8 @@ class SerialCaptureWorker(QThread):
         test_status_data = {
             'test': self.current_test,
             'sequence': self.current_sequence,
-            'time_left': self.time_left
+            'time_left': self.time_left,
+            'current_duration': self.current_duration
         }
         self.update_test_label_signal.emit(test_status_data)
 
@@ -276,7 +277,6 @@ class SerialCaptureWorker(QThread):
             logger.info(f'{response}')
         elif response.strip().startswith('Target temperature reached!'):
             self.next_sequence_progress.emit()
-            logger.debug(self.current_sequence)
             logger.debug('sending signal to start new sequence progress bar')
         else:
             logger.info(response)
