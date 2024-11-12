@@ -85,6 +85,7 @@ class ProgressBar(QWidget):
         self.total_duration = 0
         self.total_duration = self.estimate_total_time()
         # reset sequence progress bar
+        self.current_sequence_index = 0
         self.progress_value = 0
         self.sequence_progress_bar.setValue(0)
         self.sequence_timer.stop()
@@ -110,14 +111,16 @@ class ProgressBar(QWidget):
 
     # start processing new sequence progress bar
     def start_next_sequence(self):
+        # reset sequence progress bar
+        self.progress_value = 0
+        self.sequence_progress_bar.setValue(0)
         if self.current_sequence_index < len(self.sequence_durations):
             self.sequence_duration = self.sequence_durations[self.current_sequence_index]
-            self.progress_value = 0  # reset progress for the new sequence
-            self.sequence_progress_bar.setValue(0)
-            self.sequence_timer.start(100)  # timer updates every 100 milliseconds
+            self.sequence_timer.start(50)  # timer updates every 50 milliseconds
             # set color for the current sequence in the progress bar
             color = self.get_color_for_sequence(self.current_sequence_index)
             self.sequence_progress_bar.setStyleSheet(f"QProgressBar::chunk {{ background-color: {color}; }}")
+            self.current_sequence_index += 1
 
     # display visually sequence progress
     def update_sequence_progress(self):
@@ -129,15 +132,15 @@ class ProgressBar(QWidget):
             if self.progress_value >= 100:
                 self.sequence_timer.stop()  # stop when sequence is complete
                 self.progress_value = 0  # reset for next sequence
+                self.sequence_progress_bar.setValue(0)
         else:
             logger.debug('setting up sequence progress, no test data here yet')
             return
 
     # trigger new sequence bar
-    def advance_sequence(self, current_sequence):
+    def advance_sequence(self):
         # set current sequence index from current sequence number received from serial worker
         logger.debug('triggering a new sequence')
-        self.current_sequence_index = current_sequence - 1
         self.start_next_sequence()
 
     # get target temperatures from test_data
