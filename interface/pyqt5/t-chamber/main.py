@@ -433,16 +433,13 @@ class MainWindow(QMainWindow):
             sequence = test_info.get('sequence')
             time_left = test_info.get('time_left')
             formatted_time_left = f"{time_left:.2f}"
-            logger.info('parsing test info to update running test label')
+            logger.info('parsing test info to update running sequence label')
             if str(formatted_time_left) == '0.00':
-                self.serial_label.setText(
-                    f'running test info:    {test}    |    sequence {sequence}    |    not timed')
-                self.serial_label.setStyleSheet('font-weight: bold;')
+                self.progress.sequence_label.setText(
+                    f'{test}  |  sequence {sequence}  |  not timed')
             else:
-                self.serial_label.setText(f'running test info:    {test}    |    sequence {sequence}    |    time left: {formatted_time_left} min')
-                self.serial_label.setStyleSheet('font-weight: bold;')
-        else:
-            self.serial_label.setText('running test info')
+                self.progress.sequence_label.setText(f'{test}  |  sequence {sequence}  |  time left: {formatted_time_left} min')
+
 
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
     def check_temp(self):
@@ -495,7 +492,7 @@ class MainWindow(QMainWindow):
         # retrieve machine state
         self.machine_state = message.get('machine_state')
         # create a displayable info string
-        status = f'current temp: {self.current_temperature}°C | goal temp: {desired_temp}°C | machine state: {self.machine_state}'
+        status = f'current temp: {self.current_temperature}°C | target temp: {desired_temp}°C | machine state: {self.machine_state}'
         self.chamber_monitor.clear()  # clear old data
         item = QListWidgetItem(status)  # add string as a widget
         item.setTextAlignment(Qt.AlignCenter)   # align it to center

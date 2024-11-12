@@ -1893,3 +1893,18 @@ serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
 2024-11-12 09:00:09 - testBoardWorker - INFO - test worker thread is running
 2024-11-12 09:00:09 - testBoardWorker - INFO - connection to COM7 closed now
 2024-11-12 09:00:09 - mainTab - ERROR - ABCDEFGHIJKLM
+2024-11-12 09:35:08 - __main__ - INFO - app started
+2024-11-12 09:35:08 - portSelector - INFO - ports refreshed
+2024-11-12 09:35:12 - portSelector - INFO - no boards connected
+2024-11-12 09:35:12 - progressBar - DEBUG - progress gui set up
+2024-11-12 09:35:13 - __main__ - INFO - gui built
+2024-11-12 09:35:24 - __main__ - INFO - app started
+2024-11-12 09:35:24 - portSelector - INFO - ports refreshed
+2024-11-12 09:35:25 - portSelector - INFO - no boards connected
+2024-11-12 09:35:25 - progressBar - DEBUG - progress gui set up
+2024-11-12 09:35:26 - __main__ - INFO - gui built
+2024-11-12 09:39:49 - __main__ - INFO - app started
+2024-11-12 09:39:49 - portSelector - INFO - ports refreshed
+2024-11-12 09:39:50 - portSelector - INFO - no boards connected
+2024-11-12 09:39:50 - progressBar - DEBUG - progress gui set up
+2024-11-12 09:39:51 - __main__ - INFO - gui built
