@@ -59,7 +59,7 @@ class MainTab(QWidget):
         self.expected_outcome_label = QLabel('expected output', self)
         self.expected_outcome_label.hide()
         self.expected_outcome_listbox = QListWidget(self)
-        self.expected_outcome_listbox.setFixedSize(475, 70)
+        self.expected_outcome_listbox.setFixedSize(475, 50)
         self.expected_outcome_listbox.hide()
         test_output_layout.addWidget(self.expected_outcome_label)
         test_output_layout.addWidget(self.expected_outcome_listbox)

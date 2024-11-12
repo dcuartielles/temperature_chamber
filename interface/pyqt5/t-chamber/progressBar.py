@@ -83,6 +83,7 @@ class ProgressBar(QWidget):
             self.elapsed_time = 0
             self.time_progress_bar.setValue(0)
             self.timer.start(100)  # timer updates every 100 milliseconds
+            self.time_progress_bar.setStyleSheet(f"QProgressBar::chunk {{ background-color: #009FAF; }}")
 
     # update the actual progress bar for general test time
     def update_time_progress(self):
@@ -111,7 +112,6 @@ class ProgressBar(QWidget):
             # set color for the current sequence in the progress bar
             color = self.get_color_for_sequence(self.current_sequence_index)
             self.sequence_progress_bar.setStyleSheet(f"QProgressBar::chunk {{ background-color: {color}; }}")
-            # self.current_sequence_index += 1
 
     # display visually sequence progress
     def update_sequence_progress(self):
@@ -154,7 +154,7 @@ class ProgressBar(QWidget):
 
     def get_color_for_sequence(self, index):
         # define a list of colors to use for sequence progress bar
-        colors = ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33F3']
+        colors = ['#10DDDD', '#E1DA0F', '#E10F85', '#3289DF', '#EC8F74']
         return colors[index % len(colors)]
 
     '''# start processing progress bar for general test time

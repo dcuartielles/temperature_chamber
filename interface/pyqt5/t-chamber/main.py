@@ -399,6 +399,7 @@ class MainWindow(QMainWindow):
         self.reset_control_board()
         self.test_label_no_test()
         self.trigger_interrupt_t()
+        self.progress.hide()
         if self.cli_worker and self.cli_worker.is_running:
             self.on_cli_test_interrupted()
         item = QListWidgetItem(message)
@@ -436,7 +437,7 @@ class MainWindow(QMainWindow):
             logger.info('parsing test info to update running sequence label')
             if str(formatted_time_left) == '0.00':
                 self.progress.sequence_label.setText(
-                    f'{test}  |  sequence {sequence}  |  not timed')
+                    f'{test}  |  sequence {sequence}  |  waiting to start')
                 self.serial_label.hide()
             else:
                 self.progress.sequence_label.setText(f'{test}  |  sequence {sequence}  |  time left: {formatted_time_left} min')
