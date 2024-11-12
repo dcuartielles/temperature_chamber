@@ -300,7 +300,7 @@ class MainWindow(QMainWindow):
 
                 # if running tests for nth time, come back to original gui layout to start with
                 self.main_tab.on_run_test_gui()
-                self.progress.start_progress_signal.emit(self.test_data)
+                self.progress.start_progress_signal.emit(self.test_data, self.current_temperature)
 
                 if not self.serial_worker.is_stopped:
                     self.trigger_run_t()  # send signal to serial capture worker thread to run all tests

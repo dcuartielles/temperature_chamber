@@ -7,7 +7,7 @@ logger = setup_logger(__name__)
 
 class ProgressBar(QWidget):
 
-    start_progress_signal = pyqtSignal(dict)  # signal from main to start timer for progress bars
+    start_progress_signal = pyqtSignal(dict, int)  # signal from main to start timer for progress bars
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -19,6 +19,8 @@ class ProgressBar(QWidget):
         self.sequence_durations = []
         self.sequence_duration = 0
         self.total_duration = 0
+        self.current_temp = 0
+        self.temperatures = []
 
         # set up the timer for updating progress
         self.timer = QTimer(self)
@@ -75,7 +77,8 @@ class ProgressBar(QWidget):
         logger.debug('progress gui set up')
 
     # start processing progress bar for general test time
-    def start_progress(self, test_data):
+    def start_progress(self, test_data, current_temp):
+        self.current_temp = current_temp
         self.test_data = test_data
         self.sequence_durations = self.get_sequence_durations()
         self.total_duration = self.estimate_total_time()
@@ -134,10 +137,52 @@ class ProgressBar(QWidget):
         self.current_sequence_index = current_sequence - 1
         self.start_next_sequence()
 
+    # get target temperatures from test_data
+    def get_temperatures(self):
+        temperatures = []
+        if self.test_data and 'tests' in self.test_data:
+            for test_key in self.test_data['tests']:
+                test = self.test_data['tests'][test_key]
+                sequences = test.get('chamber_sequences', [])
+                for sequence in sequences:
+                    temperatures.append(sequence.get('temp', 0))
+        logger.info(temperatures)
+        self.temperatures = temperatures
+        return self.temperatures
+
     # estimate total running time
     def estimate_total_time(self):
         sequence_durations = self.get_sequence_durations()
-        self.total_duration = sum(sequence_durations)  # sum of all sequence durations in milliseconds
+        
+        # start by adding total test sequence duration
+        self.total_duration += sum(sequence_durations)
+
+        # calculate degrees to reach target temp for first sequence
+        degrees_to_target = int(self.temperatures[0]) - self.current_temp
+        prep_time = 0
+        # if chamber needs to heat up
+        if degrees_to_target > 0:
+            prep_time = degrees_to_target * 13200  # ca 2.2 minutes per degree, in milliseconds
+
+        # if chamber needs cooling
+        elif degrees_to_target < 0:
+            prep_time = abs(degrees_to_target) * 52800  # ca 9 minutes per degree, in milliseconds, absolute value
+
+        # add prep time
+        self.total_duration += prep_time
+
+        # calculate time for temperature changes between subsequent target temperatures
+        for i in range(1, len(self.temperatures)):
+
+            degrees_difference = int(self.temperatures[i]) - int(self.temperatures[i - 1])
+
+            # if chamber needs to heat up
+            if degrees_difference > 0:
+                self.total_duration += degrees_difference * 13200  # ca 2.2 minutes per degree, in milliseconds
+            # if chamber needs cooling
+            elif degrees_difference < 0:
+                self.total_duration += abs(degrees_difference) * 52800  # ca 9 minutes per degree, in milliseconds
+
         return self.total_duration
 
     # get a dictionary of sequences for sequence progress bar
