@@ -31,9 +31,6 @@ class ProgressBar(QWidget):
         self.segment_lengths = []
         self.segment_color = '#009FAF'
 
-        # progress value
-        self.progress_value = 0
-
         self.start_progress_signal.connect(self.start_progress)
 
         self.initUI()
@@ -53,6 +50,8 @@ class ProgressBar(QWidget):
         # create sequence progress bar and label
         self.sequence_label = QLabel('sequence progress', self)
         self.sequence_progress_bar = QWidget(self)
+        self.sequence_progress_bar.setFixedWidth(450)
+        self.sequence_progress_bar.setFixedHeight(30)
         sequence_progress_layout.addWidget(self.sequence_label)
         sequence_progress_layout.addWidget(self.sequence_progress_bar)
 
@@ -72,6 +71,7 @@ class ProgressBar(QWidget):
 
         # set the layout
         self.setLayout(layout)
+        self.show()
         logger.debug('progress gui set up')
 
     # start processing progress bar for general test time
@@ -84,7 +84,7 @@ class ProgressBar(QWidget):
         self.total_duration = self.estimate_total_time()
         # reset sequence progress bar
         self.current_sequence_index = 0
-        self.sequence_progress_bar.update()
+        self.layout().update()
         if self.total_duration:
             self.update_test_bar_label()
             self.elapsed_time = 0
@@ -107,38 +107,51 @@ class ProgressBar(QWidget):
 
     # define sequence bar display updates
     def paintEvent(self, event):
+        logger.debug('starting sequence bar update')
+        logger.debug('width: %d, height: %d', self.sequence_progress_bar.width(), self.sequence_progress_bar.height())
+
+        if self.sequence_progress_bar.width() == 0 or self.sequence_progress_bar.height() == 0:
+            logger.warning('invalid dimensions for the sequence progress bar widget')
+            return
+
         # paint sequence progress bar
-        painter = QPainter(self.sequence_progress_bar)
+        painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
 
         total_width = self.sequence_progress_bar.width()
         bar_height = self.sequence_progress_bar.height()
 
         current_x = 0  # starting point for drawing the first segment
-        total_duration = sum(self.sequence_durations)
+        if self.test_data:
+            total_duration = sum(self.sequence_durations)
 
-        # draw each segment for the sequences
-        for index, duration in enumerate(self.sequence_durations):
+            # draw each segment for the sequences
+            for index, duration in enumerate(self.sequence_durations):
+                logger.debug('calculating each segment width')
+                segment_width = (duration / total_duration) * total_width  # proportional width of the segment
+                color = self.segment_color  # get color for the segment
 
-            segment_width = (duration / total_duration) * total_width  # proportional width of the segment
-            color = self.segment_color  # get color for the segment
+                # determine the color to paint based on progress
+                if index < self.current_sequence_index:
+                    painter.setBrush(QColor(color).darker())  # completed segments get a darker shade
+                elif index == self.current_sequence_index:
+                    painter.setBrush(QColor(color))  # current segment in regular color
+                else:
+                    painter.setBrush(QColor(color).lighter())  # upcoming segments get a lighter shade
 
-            # determine the color to paint based on progress
-            if index < self.current_sequence_index:
-                painter.setBrush(QColor(color).darker())  # completed segments get a darker shade
-            elif index == self.current_sequence_index:
-                painter.setBrush(QColor(color))  # current segment in regular color
+                painter.setPen(QPen(QColor('white'), 1))  # draw white borders between segments
+                painter.drawRect(current_x, 0, segment_width, bar_height)
+                current_x += segment_width  # move to the next segment
             else:
-                painter.setBrush(QColor(color).lighter())  # upcoming segments get a lighter shade
-
-            painter.setPen(QPen(QColor('white'), 1))  # draw white borders between segments
-            painter.drawRect(current_x, 0, segment_width, bar_height)
-            current_x += segment_width  # move to the next segment
+                logger.debug('setting up sequence progress, no test data here yet')
+                return
 
     # trigger new sequence bar
     def advance_sequence(self):
-        self.sequence_progress_bar.update()
+        logger.debug('triggering a new sequence')
         if self.current_sequence_index < len(self.sequence_durations):
+            self.sequence_progress_bar.update()
+            self.layout().update()
             self.current_sequence_index += 1
 
     # get target temperatures from test_data
@@ -199,9 +212,9 @@ class ProgressBar(QWidget):
         if estimated_time >= 60:
             hours = estimated_time / 60
             hours_and_min = f"{hours:.2f}"
-            self.time_label.setText(f'estimated run time: {hours_and_min} hr')
+            self.time_label.setText(f'estimated runtime: {hours_and_min} hr')
         else:
-            self.time_label.setText(f'estimated run time: {estimated_time} min')
+            self.time_label.setText(f'estimated runtime: {estimated_time} min')
 
     # get a dictionary of sequences for sequence progress bar
     def get_sequence_durations(self):
