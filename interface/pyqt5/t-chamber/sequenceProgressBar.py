@@ -48,17 +48,19 @@ class SequenceProgressBar(QWidget):
             segment_width = (duration / total_duration) * total_width  # proportional width of the segment
             # convert segment width to int
             segment_width = int(segment_width)
+            past_color = '#006a74'
             color = QColor(self.segment_color)
+            future_color = '#00c3d6'
 
             # determine color to paint based on progress
             if index < self.current_sequence_index:
-                painter.setBrush(color.darker())  # completed segments get a darker shade
+                painter.setBrush(past_color)  # completed segments get a darker shade
                 logger.debug('completed segments get a darker shade')
             elif index == self.current_sequence_index:
                 painter.setBrush(color)  # current segment in regular color
                 logger.debug('current segment in regular color')
             else:
-                painter.setBrush(color.lighter())  # upcoming segments get a lighter shade
+                painter.setBrush(future_color)  # upcoming segments get a lighter shade
                 logger.debug('upcoming segments get a lighter shade')
 
             logger.debug('about to make partitions')
