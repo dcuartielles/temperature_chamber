@@ -4042,3 +4042,340 @@ serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
 2024-11-13 15:16:46 - testBoardWorker - INFO - test worker thread is running
 2024-11-13 15:16:46 - testBoardWorker - INFO - connection to COM7 closed now
 2024-11-13 15:16:46 - mainTab - ERROR - ABCDEFGHIJKLMNOPQRSTUV
+2024-11-13 15:43:34 - __main__ - INFO - app started
+2024-11-13 15:43:34 - portSelector - INFO - ports refreshed
+2024-11-13 15:43:36 - portSelector - INFO - [('COM15', 'Arduino UNO R4 WiFi'), ('COM7', 'Arduino Uno')]
+2024-11-13 15:43:37 - progressBar - DEBUG - progress gui set up
+2024-11-13 15:43:37 - __main__ - INFO - gui built
+2024-11-13 15:43:40 - __main__ - INFO - start button clicked
+2024-11-13 15:43:40 - __main__ - INFO - check if ports are selected
+2024-11-13 15:43:40 - __main__ - INFO - serial worker started successfully
+2024-11-13 15:43:40 - __main__ - INFO - qtimer started to check for pings every 5 seconds
+2024-11-13 15:43:40 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-13 15:43:40 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-13 15:43:41 - testBoardWorker - INFO - test board thread is running
+2024-11-13 15:43:41 - serialCaptureWorker - INFO - thread is running
+2024-11-13 15:43:41 - serialCaptureWorker - INFO - attempting handshake, sent_handshake: False
+2024-11-13 15:43:41 - serialCaptureWorker - INFO - sending handshake: {'handshake': {'timestamp': '2024-11-13T15:43:41'}}
+2024-11-13 15:43:41 - serialCaptureWorker - INFO - sent to arduino: {"handshake": {"timestamp": "2024-11-13T15:43:41"}}
+2024-11-13 15:43:41 - serialCaptureWorker - INFO - handshake sent to arduino: {'handshake': {'timestamp': '2024-11-13T15:43:41'}}
+2024-11-13 15:43:42 - serialCaptureWorker - ERROR - failed to parse arduino response
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 145, in handshake
+    parsed_response = json.loads(handshake_response)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-11-13 15:43:42 - serialCaptureWorker - INFO - {"handshake":{"timestamp":"2024-11-13T15:43:41","machine_state":"REPORT","last_shutdown_cause":"Unknown","last_heat_time":"N/A"}}
+2024-11-13 15:43:42 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-13 15:43:42 - serialCaptureWorker - INFO - True
+2024-11-13 15:43:42 - serialCaptureWorker - INFO - REPORT
+ived: 2024-11-13T15:43:41
+2024-11-13 15:43:42 - __main__ - INFO - timestamp from ping: 2024-11-13 15:43:41
+2024-11-13 15:43:42 - __main__ - INFO - REPORT
+2024-11-13 15:43:42 - serialCaptureWorker - INFO - attempting handshake, sent_handshake: True
+2024-11-13 15:43:46 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-13 15:43:46 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-13 15:43:47 - __main__ - INFO - test starting
+2024-11-13 15:43:47 - __main__ - DEBUG - emitting signal to start progress bars
+2024-11-13 15:43:47 - progressBar - DEBUG - starting sequence bar update
+2024-11-13 15:43:47 - progressBar - DEBUG - width: 450, height: 30
+2024-11-13 15:43:47 - progressBar - INFO - all durations: [60000, 90000, 80000, 120000]
+2024-11-13 15:43:47 - progressBar - INFO - [36, 43, 60, 70]
+2024-11-13 15:43:47 - progressBar - DEBUG - start by adding total test sequence duration
+2024-11-13 15:43:47 - progressBar - DEBUG - calculate degrees to reach target temp for first sequence
+2024-11-13 15:43:47 - progressBar - DEBUG - ca 2.2 minutes per degree, in milliseconds
+2024-11-13 15:43:47 - progressBar - DEBUG - add prep time
+2024-11-13 15:43:47 - progressBar - DEBUG - calculate time for temperature changes between subsequent target temperatures
+2024-11-13 15:43:47 - progressBar - DEBUG - calculate time for temperature changes between subsequent target temperatures
+2024-11-13 15:43:47 - progressBar - DEBUG - calculate time for temperature changes between subsequent target temperatures
+2024-11-13 15:43:47 - serialCaptureWorker - INFO - sent to arduino: {"tests": {"test_1": {"chamber_sequences": [{"temp": 36, "duration": 60000}, {"temp": 43, "duration": 90000}], "sketch": "./alphabet.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, "test_2": {"chamber_sequences": [{"temp": 60, "duration": 80000}, {"temp": 70, "duration": 120000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}}
+2024-11-13 15:43:47 - serialCaptureWorker - INFO - sending full tests data with 2 tests
+2024-11-13 15:43:47 - testBoardWorker - INFO - test worker thread is running
+2024-11-13 15:43:47 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-13 15:43:47 - __main__ - INFO - test board worker temporarily deleted
+2024-11-13 15:43:47 - __main__ - INFO - cli worker started
+2024-11-13 15:43:47 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-11-13 15:43:47 - progressBar - DEBUG - starting sequence bar update
+2024-11-13 15:43:47 - progressBar - DEBUG - width: 450, height: 30
+2024-11-13 15:43:47 - progressBar - DEBUG - calculating each segment width
+2024-11-13 15:43:47 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-13 15:46:58 - __main__ - INFO - app started
+2024-11-13 15:46:58 - portSelector - INFO - ports refreshed
+2024-11-13 15:47:00 - portSelector - INFO - [('COM7', 'Arduino Uno'), ('COM15', 'Arduino UNO R4 WiFi')]
+2024-11-13 15:47:00 - progressBar - DEBUG - progress gui set up
+2024-11-13 15:47:01 - __main__ - INFO - gui built
+2024-11-13 15:47:03 - __main__ - INFO - start button clicked
+2024-11-13 15:47:03 - __main__ - INFO - check if ports are selected
+2024-11-13 15:47:03 - __main__ - INFO - serial worker started successfully
+2024-11-13 15:47:03 - __main__ - INFO - qtimer started to check for pings every 5 seconds
+2024-11-13 15:47:03 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-13 15:47:04 - serialCaptureWorker - INFO - connected to arduino port: COM15
+2024-11-13 15:47:04 - testBoardWorker - INFO - test board thread is running
+2024-11-13 15:47:05 - serialCaptureWorker - INFO - thread is running
+2024-11-13 15:47:05 - serialCaptureWorker - INFO - attempting handshake, sent_handshake: False
+2024-11-13 15:47:05 - serialCaptureWorker - INFO - sending handshake: {'handshake': {'timestamp': '2024-11-13T15:47:05'}}
+2024-11-13 15:47:05 - serialCaptureWorker - INFO - sent to arduino: {"handshake": {"timestamp": "2024-11-13T15:47:05"}}
+2024-11-13 15:47:05 - serialCaptureWorker - INFO - handshake sent to arduino: {'handshake': {'timestamp': '2024-11-13T15:47:05'}}
+2024-11-13 15:47:05 - serialCaptureWorker - ERROR - failed to parse arduino response
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 145, in handshake
+    parsed_response = json.loads(handshake_response)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-11-13 15:47:05 - serialCaptureWorker - INFO - {"handshake":{"timestamp":"2024-11-13T15:47:05","machine_state":"REPORT","last_shutdown_cause":"Unknown","last_heat_time":"N/A"}}
+2024-11-13 15:47:05 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-13 15:47:05 - serialCaptureWorker - INFO - True
+2024-11-13 15:47:05 - serialCaptureWorker - INFO - REPORT
+2024-11-13 15:47:05 - serialCaptureWorker - INFO - attempting handshake, sent_handshake: True
+2024-11-13 15:47:05 - __main__ - DEBUG - raw timestamp received: 2024-11-13T15:47:05
+2024-11-13 15:47:05 - __main__ - INFO - timestamp from ping: 2024-11-13 15:47:05
+2024-11-13 15:47:05 - __main__ - INFO - REPORT
+2024-11-13 15:47:08 - jsonFunctionality - INFO - C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-13 15:47:08 - jsonFunctionality - INFO - test directory updated to: C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\tests but with correct forward slashes
+2024-11-13 15:47:09 - __main__ - INFO - test starting
+2024-11-13 15:47:09 - __main__ - DEBUG - emitting signal to start progress bars
+2024-11-13 15:47:09 - progressBar - INFO - all durations: [60000, 90000, 80000, 120000]
+2024-11-13 15:47:09 - progressBar - INFO - [36, 43, 60, 70]
+2024-11-13 15:47:09 - progressBar - DEBUG - start by adding total test sequence duration
+2024-11-13 15:47:09 - progressBar - DEBUG - calculate degrees to reach target temp for first sequence
+2024-11-13 15:47:09 - progressBar - DEBUG - ca 9 minutes per degree, in milliseconds, absolute value
+2024-11-13 15:47:09 - progressBar - DEBUG - add prep time
+2024-11-13 15:47:09 - progressBar - DEBUG - calculate time for temperature changes between subsequent target temperatures
+2024-11-13 15:47:09 - progressBar - DEBUG - calculate time for temperature changes between subsequent target temperatures
+2024-11-13 15:47:09 - progressBar - DEBUG - calculate time for temperature changes between subsequent target temperatures
+2024-11-13 15:47:09 - serialCaptureWorker - INFO - sent to arduino: {"tests": {"test_1": {"chamber_sequences": [{"temp": 36, "duration": 60000}, {"temp": 43, "duration": 90000}], "sketch": "./alphabet.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, "test_2": {"chamber_sequences": [{"temp": 60, "duration": 80000}, {"temp": 70, "duration": 120000}], "sketch": "./alphabet.ino", "expected output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}}
+2024-11-13 15:47:09 - serialCaptureWorker - INFO - sending full tests data with 2 tests
+2024-11-13 15:47:09 - testBoardWorker - INFO - test worker thread is running
+2024-11-13 15:47:09 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-13 15:47:09 - __main__ - INFO - test board worker temporarily deleted
+2024-11-13 15:47:09 - __main__ - INFO - cli worker started
+2024-11-13 15:47:09 - cliWorker - INFO - cli worker connected to arduino port: COM7
+2024-11-13 15:47:10 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:10 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:10 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:10 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:10 - serialCaptureWorker - INFO - Queued test: test_1
+2024-11-13 15:47:10 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-13 15:47:10 - serialCaptureWorker - INFO - arduino says: Queued test: test_2
+2024-11-13 15:47:10 - serialCaptureWorker - INFO - arduino says: Setting temperature to 36.00°
+2024-11-13 15:47:10 - serialCaptureWorker - INFO - arduino says: Running test: test_1
+2024-11-13 15:47:10 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:10 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:10 - serialCaptureWorker - ERROR - failed to decode ping response as json
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 164, in ping
+    parsed_response = json.loads(ping_response)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2024-11-13 15:47:10 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:10 - serialCaptureWorker - INFO - attempting handshake, sent_handshake: True
+2024-11-13 15:47:10 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:10 - serialCaptureWorker - DEBUG - sending signal to start new sequence progress bar
+2024-11-13 15:47:10 - progressBar - DEBUG - triggering a new sequence
+2024-11-13 15:47:10 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:10 - serialCaptureWorker - INFO - attempting handshake, sent_handshake: True
+2024-11-13 15:47:10 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:10 - serialCaptureWorker - INFO - {"ping_response":{"alive":true,"timestamp":"2024-11-13T15:47:10","machine_state":"REPORT","current_temp":38.59375,"test_status":{"is_test_running":true,"current_test":"test_1","current_sequence":1,"desired_temp":36,"current_duration":60000,"time_left":59}}}
+2024-11-13 15:47:10 - cliWorker - INFO - cli worker thread is running
+2024-11-13 15:47:10 - cliWorker - INFO - running test with testdata filepath: C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet_test.json
+2024-11-13 15:47:10 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-13 15:47:11 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:11 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:11 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:11 - serialCaptureWorker - INFO - True
+2024-11-13 15:47:11 - serialCaptureWorker - INFO - COOLING
+2024-11-13 15:47:11 - __main__ - DEBUG - raw timestamp received: 2024-11-13T15:47:11
+2024-11-13 15:47:11 - __main__ - INFO - timestamp from ping: 2024-11-13 15:47:11
+2024-11-13 15:47:11 - __main__ - INFO - COOLING
+2024-11-13 15:47:11 - __main__ - INFO - parsing test info to update running sequence label
+2024-11-13 15:47:11 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:11 - serialCaptureWorker - INFO - attempting handshake, sent_handshake: True
+2024-11-13 15:47:11 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:11 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:11 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:11 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:11 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:11 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:12 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:12 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:12 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:12 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:12 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:12 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:12 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:12 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:12 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:13 - cliWorker - INFO - command succeeded: arduino-cli board list --format json
+2024-11-13 15:47:13 - cliWorker - INFO - detected fqbn: arduino:avr:uno
+2024-11-13 15:47:13 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:13 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:13 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:13 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:13 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:13 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:13 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:13 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:13 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:14 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:14 - cliWorker - INFO - command succeeded: arduino-cli core list
+2024-11-13 15:47:14 - cliWorker - INFO - core arduino is already installed.
+2024-11-13 15:47:14 - cliWorker - INFO - compiling sketch for the board with fqbn arduino:avr:uno...
+2024-11-13 15:47:14 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:14 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:14 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:14 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:14 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:14 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:14 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:14 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:15 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:15 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:15 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:15 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:15 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:15 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:15 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:15 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:15 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:16 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:16 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:16 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:16 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:16 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-13 15:47:16 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:16 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:16 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:16 - serialCaptureWorker - INFO - True
+2024-11-13 15:47:16 - serialCaptureWorker - INFO - COOLING
+2024-11-13 15:47:16 - __main__ - DEBUG - raw timestamp received: 2024-11-13T15:47:16
+2024-11-13 15:47:16 - __main__ - INFO - timestamp from ping: 2024-11-13 15:47:16
+2024-11-13 15:47:16 - __main__ - INFO - COOLING
+2024-11-13 15:47:16 - __main__ - INFO - parsing test info to update running sequence label
+2024-11-13 15:47:16 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:16 - serialCaptureWorker - INFO - attempting handshake, sent_handshake: True
+2024-11-13 15:47:16 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:16 - cliWorker - INFO - command succeeded: arduino-cli compile --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-13 15:47:16 - cliWorker - INFO - compilation successful!
+2024-11-13 15:47:17 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:17 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:17 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:17 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:17 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:17 - cliWorker - INFO - uploading sketch to board with fqbn arduino:avr:uno on port COM7...
+2024-11-13 15:47:17 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:17 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:17 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:17 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:18 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:18 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:18 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:18 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:18 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:18 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:18 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:18 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:18 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:18 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:19 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:19 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:19 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:19 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:19 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:19 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:19 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:19 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:19 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:20 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:20 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:20 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:20 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:20 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:20 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:20 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:20 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:20 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:21 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:21 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:21 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:21 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:21 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:21 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:21 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:21 - cliWorker - INFO - command succeeded: arduino-cli upload -p COM7 --fqbn arduino:avr:uno C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests/alphabet/alphabet.ino
+2024-11-13 15:47:21 - cliWorker - INFO - upload successful!
+2024-11-13 15:47:21 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:21 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:21 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-13 15:47:22 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:22 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:22 - serialCaptureWorker - INFO - True
+2024-11-13 15:47:22 - serialCaptureWorker - INFO - COOLING
+2024-11-13 15:47:22 - __main__ - DEBUG - raw timestamp received: 2024-11-13T15:47:22
+2024-11-13 15:47:22 - __main__ - INFO - timestamp from ping: 2024-11-13 15:47:22
+2024-11-13 15:47:22 - __main__ - INFO - COOLING
+2024-11-13 15:47:22 - __main__ - INFO - parsing test info to update running sequence label
+2024-11-13 15:47:22 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:22 - serialCaptureWorker - INFO - attempting handshake, sent_handshake: True
+2024-11-13 15:47:22 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:22 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:22 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:22 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:22 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:22 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:23 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:23 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:23 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:23 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:23 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:23 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:23 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:23 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:23 - cliWorker - WARNING - boards already detected: skipping new detect request
+2024-11-13 15:47:23 - cliWorker - WARNING - failed to detect board on port COM7.
+2024-11-13 15:47:23 - __main__ - INFO - cli worker quit
+2024-11-13 15:47:23 - __main__ - INFO - cli worker deleted
+2024-11-13 15:47:25 - __main__ - INFO - test board worker restarted
+2024-11-13 15:47:25 - progressBar - DEBUG - updating estimated runtime progress bar
+2024-11-13 15:47:25 - serialCaptureWorker - INFO - connection to COM15 closed
+2024-11-13 15:47:25 - serialCaptureWorker - INFO - sent to arduino: {"commands": {"PING": {}}}
+2024-11-13 15:47:25 - serialCaptureWorker - ERROR - error sending JSON: ClearCommError failed (OSError(9, 'The handle is invalid.', None, 6))
+2024-11-13 15:47:25 - testBoardWorker - INFO - test board worker connected to arduino port: COM7
+2024-11-13 15:47:25 - serialCaptureWorker - ERROR - serial error: Attempting to use a port that is not open
+Traceback (most recent call last):
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 109, in run
+    self.trigger_ping()
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 155, in trigger_ping
+    self.ping()
+  File "C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\serialCaptureWorker.py", line 162, in ping
+    ping_response = self.ser.readline().decode('utf-8').strip()
+                    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\owenk\anaconda3\Lib\site-packages\serial\serialwin32.py", line 269, in read
+    raise PortNotOpenError()
+serial.serialutil.PortNotOpenError: Attempting to use a port that is not open
+2024-11-13 15:47:25 - testBoardWorker - INFO - connection to COM7 closed now
+2024-11-13 15:47:26 - testBoardWorker - INFO - test board thread is running
+2024-11-13 15:47:26 - progressBar - DEBUG - updating estimated runtime progress bar
