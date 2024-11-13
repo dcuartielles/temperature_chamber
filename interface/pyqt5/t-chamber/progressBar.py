@@ -122,18 +122,25 @@ class ProgressBar(QWidget):
         ]
 
         # construct a style sheet for the progress bar segments
-        colors = ['#B0E0E6', '#F0E68C', '#E6E6FA', '#FFB6C1', '#D3D3D3']  # light colors for initial display
+        colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF']  # different colors for each segment
         gradient_stops = []
 
         current_position = 0
-        # render all sequence segments in their colors
+        # create gradient stops for each segment
         for index, length in enumerate(self.segment_lengths):
             color = colors[index % len(colors)]
             gradient_stops.append(f"stop: {current_position / 100} {color}")
             gradient_stops.append(f"stop: {(current_position + length) / 100} {color}")
             current_position += length
 
-        self.sequence_progress_bar.setStyleSheet("QProgressBar::chunk { background-color: #FF5733; }")
+        # construct the gradient style
+        gradient_style = (
+                "QProgressBar::chunk { "
+                "background: qlineargradient(x1:0, y1:0, x2:1, y2:0, " + ", ".join(gradient_stops) + "); }"
+        )
+
+        # apply the gradient style to the progress bar
+        self.sequence_progress_bar.setStyleSheet(gradient_style)
 
     def start_next_sequence(self):
         if self.current_sequence_index < len(self.sequence_durations):
@@ -142,9 +149,10 @@ class ProgressBar(QWidget):
 
             # calculate how much the progress should increase with each timer tick
             self.increment_per_tick = (self.segment_lengths[self.current_sequence_index] /
-                                       (self.sequence_duration / 100))  # adjusted for 100 ms interval
+                                       (
+                                                   self.sequence_duration / 10))  # adjusted for a 10 ms interval for smoother updates
 
-            self.sequence_timer.start(100)  # timer updates every 100 milliseconds
+            self.sequence_timer.start(10)  # timer updates every 10 milliseconds for smoother progress
             self.current_sequence_index += 1
 
     def update_sequence_progress(self):
@@ -157,7 +165,6 @@ class ProgressBar(QWidget):
             if self.progress_value >= segment_end:
                 self.progress_value = segment_end  # ensure it doesn't exceed the segment
                 self.sequence_timer.stop()  # stop timer when this sequence segment completes
-                self.advance_sequence()  # trigger the next sequence if available
 
             # update the progress bar with the current value
             self.sequence_progress_bar.setValue(int(self.progress_value))
