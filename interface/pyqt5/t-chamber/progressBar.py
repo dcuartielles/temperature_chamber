@@ -1,10 +1,10 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QProgressBar, QHBoxLayout, QLabel
 from PyQt5.QtCore import QTimer, pyqtSignal
-from PyQt5.QtGui import QPainter, QColor, QPen
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
+
 
 class ProgressBar(QWidget):
 
@@ -28,8 +28,12 @@ class ProgressBar(QWidget):
         self.timer.timeout.connect(self.update_time_progress)
         self.elapsed_time = 0
 
+        # separate timer for sequence progress bar
+        self.sequence_timer = QTimer(self)
+        self.sequence_timer.timeout.connect(self.update_sequence_progress)
         self.segment_lengths = []
-        self.segment_color = '#009FAF'
+        # progress value
+        self.progress_value = 0
 
         self.start_progress_signal.connect(self.start_progress)
 
@@ -49,9 +53,10 @@ class ProgressBar(QWidget):
 
         # create sequence progress bar and label
         self.sequence_label = QLabel('sequence progress', self)
-        self.sequence_progress_bar = QWidget(self)
-        self.sequence_progress_bar.setFixedWidth(450)
-        self.sequence_progress_bar.setFixedHeight(30)
+        self.sequence_progress_bar = QProgressBar()
+        self.sequence_progress_bar.setValue(0)  # initial value of the progress bar
+        self.sequence_progress_bar.setTextVisible(False)  # hide percentage text
+        self.sequence_progress_bar.setMaximum(100)  # represent progress as percent
         sequence_progress_layout.addWidget(self.sequence_label)
         sequence_progress_layout.addWidget(self.sequence_progress_bar)
 
@@ -71,7 +76,6 @@ class ProgressBar(QWidget):
 
         # set the layout
         self.setLayout(layout)
-        self.show()
         logger.debug('progress gui set up')
 
     # start processing progress bar for general test time
@@ -84,7 +88,10 @@ class ProgressBar(QWidget):
         self.total_duration = self.estimate_total_time()
         # reset sequence progress bar
         self.current_sequence_index = 0
-        self.layout().update()
+        self.progress_value = 0
+        self.sequence_progress_bar.setValue(0)
+        self.sequence_timer.stop()
+        self.render_initial_progress_bar()
         if self.total_duration:
             self.update_test_bar_label()
             self.elapsed_time = 0
@@ -105,54 +112,71 @@ class ProgressBar(QWidget):
             logger.debug('setting up overall test time progress bar, no test data here yet')
             return
 
-    # define sequence bar display updates
-    def paintEvent(self, event):
-        logger.debug('starting sequence bar update')
-        logger.debug('width: %d, height: %d', self.sequence_progress_bar.width(), self.sequence_progress_bar.height())
-
-        if self.sequence_progress_bar.width() == 0 or self.sequence_progress_bar.height() == 0:
-            logger.warning('invalid dimensions for the sequence progress bar widget')
+    # initial sequence progress bar
+    def render_initial_progress_bar(self):
+        if not self.sequence_durations:
             return
 
-        # paint sequence progress bar
-        painter = QPainter(self)
-        painter.setRenderHint(QPainter.Antialiasing)
+        # calculate the proportional length of each sequence
+        self.segment_lengths = [
+            (duration / sum(self.sequence_durations)) * 100 for duration in self.sequence_durations
+        ]
 
-        total_width = self.sequence_progress_bar.width()
-        bar_height = self.sequence_progress_bar.height()
+        # construct a style sheet for the progress bar segments
+        colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF']  # different colors for each segment
+        gradient_stops = []
 
-        current_x = 0  # starting point for drawing the first segment
+        current_position = 0
+        # create gradient stops for each segment
+        for index, length in enumerate(self.segment_lengths):
+            color = colors[index % len(colors)]
+            gradient_stops.append(f"stop: {current_position / 100} {color}")
+            gradient_stops.append(f"stop: {(current_position + length) / 100} {color}")
+            current_position += length
+
+        # construct the gradient style
+        gradient_style = (
+                "QProgressBar::chunk { "
+                "background: qlineargradient(x1:0, y1:0, x2:1, y2:0, " + ", ".join(gradient_stops) + "); }"
+        )
+
+        # apply the gradient style to the progress bar
+        self.sequence_progress_bar.setStyleSheet(gradient_style)
+
+    def start_next_sequence(self):
+        if self.current_sequence_index < len(self.sequence_durations):
+            # set the current sequence duration
+            self.sequence_duration = self.sequence_durations[self.current_sequence_index]
+
+            # calculate how much the progress should increase with each timer tick
+            self.increment_per_tick = (self.segment_lengths[self.current_sequence_index] /
+                                       (
+                                                   self.sequence_duration / 10))  # adjusted for a 10 ms interval for smoother updates
+
+            self.sequence_timer.start(10)  # timer updates every 10 milliseconds for smoother progress
+            self.current_sequence_index += 1
+
+    def update_sequence_progress(self):
         if self.test_data:
-            total_duration = sum(self.sequence_durations)
+            # increase the progress value proportionally
+            self.progress_value += self.increment_per_tick
 
-            # draw each segment for the sequences
-            for index, duration in enumerate(self.sequence_durations):
-                logger.debug('calculating each segment width')
-                segment_width = (duration / total_duration) * total_width  # proportional width of the segment
-                color = self.segment_color  # get color for the segment
+            # check if the current segment has reached its end
+            segment_end = sum(self.segment_lengths[:self.current_sequence_index])
+            if self.progress_value >= segment_end:
+                self.progress_value = segment_end  # ensure it doesn't exceed the segment
+                self.sequence_timer.stop()  # stop timer when this sequence segment completes
 
-                # determine the color to paint based on progress
-                if index < self.current_sequence_index:
-                    painter.setBrush(QColor(color).darker())  # completed segments get a darker shade
-                elif index == self.current_sequence_index:
-                    painter.setBrush(QColor(color))  # current segment in regular color
-                else:
-                    painter.setBrush(QColor(color).lighter())  # upcoming segments get a lighter shade
-
-                painter.setPen(QPen(QColor('white'), 1))  # draw white borders between segments
-                painter.drawRect(current_x, 0, segment_width, bar_height)
-                current_x += segment_width  # move to the next segment
-            else:
-                logger.debug('setting up sequence progress, no test data here yet')
-                return
+            # update the progress bar with the current value
+            self.sequence_progress_bar.setValue(int(self.progress_value))
+        else:
+            logger.debug('setting up sequence progress, no test data here yet')
+            return
 
     # trigger new sequence bar
     def advance_sequence(self):
         logger.debug('triggering a new sequence')
-        if self.current_sequence_index < len(self.sequence_durations):
-            self.sequence_progress_bar.update()
-            self.layout().update()
-            self.current_sequence_index += 1
+        self.start_next_sequence()
 
     # get target temperatures from test_data
     def get_temperatures(self):
@@ -212,9 +236,9 @@ class ProgressBar(QWidget):
         if estimated_time >= 60:
             hours = estimated_time / 60
             hours_and_min = f"{hours:.2f}"
-            self.time_label.setText(f'estimated runtime: {hours_and_min} hr')
+            self.time_label.setText(f'estimated run time: {hours_and_min} hr')
         else:
-            self.time_label.setText(f'estimated runtime: {estimated_time} min')
+            self.time_label.setText(f'estimated run time: {estimated_time} min')
 
     # get a dictionary of sequences for sequence progress bar
     def get_sequence_durations(self):
@@ -228,3 +252,7 @@ class ProgressBar(QWidget):
         logger.info(f'all durations: {durations}')
         return durations
 
+    def get_color_for_sequence(self, index):
+        # define a list of colors to use for sequence progress bar
+        colors = ['#10DDDD', '#E1DA0F', '#E10F85', '#3289DF', '#EC8F74']
+        return colors[index % len(colors)]
