@@ -108,8 +108,8 @@ class ProgressBar(QWidget):
     # trigger new sequence progress bar update
     def advance_sequence(self):
         logger.debug('triggering a new sequence')
+        self.current_sequence_index += 1
         if self.current_sequence_index < len(self.sequence_durations):
-            self.current_sequence_index += 1
             self.sequence_progress_bar.set_sequence_data(self.sequence_durations, self.current_sequence_index)
 
     # get target temperatures from test_data
