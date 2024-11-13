@@ -438,7 +438,7 @@ class MainWindow(QMainWindow):
             logger.info('parsing test info to update running sequence label')
             if str(formatted_time_left) == '0.00':
                 self.progress.sequence_label.setText(
-                    f'{test}  |  sequence {sequence}  |  waiting to start')
+                    f'{test}  |  sequence {sequence}  |  waiting')
                 self.serial_label.hide()
             else:
                 self.progress.sequence_label.setText(f'{test}  |  sequence {sequence}  |  duration: {duration} min')
