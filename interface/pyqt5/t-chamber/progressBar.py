@@ -55,7 +55,7 @@ class ProgressBar(QWidget):
         sequence_progress_layout.addWidget(self.sequence_progress_bar)
 
         # create time progress bar and label
-        self.time_label = QLabel('estimated run time', self)
+        self.time_label = QLabel('estimated runtime', self)
         self.time_progress_bar = QProgressBar()
         self.time_progress_bar.setValue(0)
         time_progress_layout.addWidget(self.time_label)
@@ -171,9 +171,9 @@ class ProgressBar(QWidget):
         if estimated_time >= 60:
             hours = estimated_time / 60
             hours_and_min = f"{hours:.2f}"
-            self.time_label.setText(f'estimated run time: {hours_and_min} hr')
+            self.time_label.setText(f'estimated runtime: {hours_and_min} hr')
         else:
-            self.time_label.setText(f'estimated run time: {estimated_time} min')
+            self.time_label.setText(f'estimated runtime: {estimated_time} min')
 
     # get a dictionary of sequences for sequence progress bar
     def get_sequence_durations(self):

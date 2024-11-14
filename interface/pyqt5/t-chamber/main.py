@@ -223,7 +223,7 @@ class MainWindow(QMainWindow):
                     self.serial_worker = SerialCaptureWorker(port=self.selected_c_port, baudrate=9600)
                     self.serial_worker.update_listbox.connect(self.update_listbox_gui)
                     self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
-                    self.emergency_stop_button.clicked.connect(self.serial_worker.emergency_stop)
+                    self.emergency_stop_button.clicked.connect(self.on_emergency_stop_button_clicked)
                     self.serial_worker.no_port_connection.connect(self.on_no_port_connection_gui)
                     self.serial_worker.serial_running_and_happy.connect(self.show_reset_button)
                     self.serial_worker.ping_timestamp_signal.connect(self.get_timestamp)
@@ -260,6 +260,9 @@ class MainWindow(QMainWindow):
             if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
                 return
 
+    # trigger emergency stop
+    def on_emergency_stop_button_clicked(self):
+        self.serial_worker.trigger_emergency_stop.emit()
 
     # TEST PART
     # run all benchmark tests

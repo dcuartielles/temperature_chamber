@@ -16,6 +16,7 @@ class SerialCaptureWorker(QThread):
     trigger_interrupt_test = pyqtSignal()  # signal form main to send interrupt test command to arduino
     trigger_reset = pyqtSignal()  # signal form main to reset control board
     update_listbox = pyqtSignal(str)  # signal to update listbox
+    trigger_emergency_stop = pyqtSignal()
     machine_state_signal = pyqtSignal(str)
     ping_timestamp_signal = pyqtSignal(str)
     # signals to main to update running test info
@@ -51,6 +52,7 @@ class SerialCaptureWorker(QThread):
         self.trigger_run_tests.connect(self.run_all_tests)
         self.trigger_interrupt_test.connect(self.interrupt_test)
         self.trigger_reset.connect(self.reset_test_board)
+        self.trigger_emergency_stop.connect(self.emergency_stop)
 
         # class variables
         self.test_data = None

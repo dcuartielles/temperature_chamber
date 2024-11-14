@@ -13,6 +13,8 @@ class SequenceProgressBar(QWidget):
         self.sequence_durations = []
         self.current_sequence_index = 0
         self.segment_color = '#009FAF'
+        self.past_color = '#006A74'
+        self.future_color = '#00D4EA'
         self.setFixedSize(450, 30)  # set a fixed size for the widget
 
     # get sequence data
@@ -48,9 +50,9 @@ class SequenceProgressBar(QWidget):
             segment_width = (duration / total_duration) * total_width  # proportional width of the segment
             # convert segment width to int
             segment_width = int(segment_width)
-            past_color = '#006a74'
+            past_color = QColor(self.past_color)
             color = QColor(self.segment_color)
-            future_color = '#00c3d6'
+            future_color = QColor(self.future_color)
 
             # determine color to paint based on progress
             if index < self.current_sequence_index:

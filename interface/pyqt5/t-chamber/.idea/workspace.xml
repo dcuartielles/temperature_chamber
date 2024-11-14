@@ -14,9 +14,9 @@
       <change beforePath="$PROJECT_DIR$/../../.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../learning.py" beforeDir="false" afterPath="$PROJECT_DIR$/../learning.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2024-11-13.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/2024-11-13.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/progressBar.py" beforeDir="false" afterPath="$PROJECT_DIR$/progressBar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sequenceProgressBar.py" beforeDir="false" afterPath="$PROJECT_DIR$/sequenceProgressBar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/serialCaptureWorker.py" beforeDir="false" afterPath="$PROJECT_DIR$/serialCaptureWorker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../tkinter/json-driven/json_based.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../tkinter/json-driven/json_based.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../tkinter/json-driven/tryout.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../tkinter/json-driven/tryout.py" afterDir="false" />
@@ -42,20 +42,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Python.logger_config.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.portSelector.executor": "Run",
-    "Python.progressBar.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "python",
-    "last_opened_file_path": "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/pyqt5/t-chamber",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Python.logger_config.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.portSelector.executor&quot;: &quot;Run&quot;,
+    &quot;Python.progressBar.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;python&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/pyqt5/t-chamber&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\owenk\OneDrive\Desktop\Arduino\temperature chamber\temperature_chamber\interface\pyqt5\t-chamber\logs" />
