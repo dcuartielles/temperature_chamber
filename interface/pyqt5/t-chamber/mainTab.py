@@ -11,6 +11,8 @@ logger = setup_logger(__name__)
 
 class MainTab(QWidget):
 
+    deterministic_output = pyqtSignal(str)
+
     def __init__(self, test_data, parent=None):
         super().__init__(parent)
         self.test_data = test_data
@@ -72,6 +74,7 @@ class MainTab(QWidget):
     # display test board output
     def update_test_output_listbox_gui(self, message):
         ready_for_display = self.extract_deterministic_part(message, self.expected_pattern)
+        self.deterministic_output.emit(ready_for_display)
         self.test_output_listbox.clear()
         self.test_output_listbox.addItem(f'{ready_for_display}')
         self.test_output_listbox.scrollToBottom()
@@ -85,6 +88,10 @@ class MainTab(QWidget):
         self.expected_outcome_listbox.scrollToBottom()
 
     # OUTPUT CHECKING PART
+    # set self.expected_pattern
+    def set_expected_pattern(self):
+        self.get_expected_pattern()
+
     # extract expected test outcome from test file
     def expected_output(self, test_data):
         if test_data is not None and 'tests' in test_data:
@@ -192,7 +199,6 @@ class MainTab(QWidget):
     # BEFORE TEST IS RUNNING
     # change test part gui to show sketch upload progress before test runs
     def on_run_test_gui(self):
-        self.get_expected_pattern()
         if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
             self.instruction_listbox.show()
             self.instruction_listbox.clear()
