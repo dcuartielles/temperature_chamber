@@ -263,7 +263,8 @@ class MainWindow(QMainWindow):
     # trigger emergency stop
     def on_emergency_stop_button_clicked(self):
         self.serial_worker.trigger_emergency_stop.emit()
-        self.test_interrupted_gui()
+        message = 'EMERGENCY STOP'
+        self.emergency_stop_gui(message)
 
     # TEST PART
     # run all benchmark tests
@@ -395,6 +396,20 @@ class MainWindow(QMainWindow):
         font.setBold(True)
         item.setFont(font)
         item.setForeground(QColor('red'))
+        self.listbox.addItem(item)
+        self.listbox.scrollToBottom()
+
+    # emergency stop gui
+    def emergency_stop_gui(self, message):
+        self.test_is_running = False
+        self.test_label_no_test()
+        self.progress.hide()
+        if self.cli_worker and self.cli_worker.is_running:
+            self.on_cli_test_interrupted()
+        item = QListWidgetItem(message)
+        font = QFont()
+        font.setBold(True)
+        item.setFont(font)
         self.listbox.addItem(item)
         self.listbox.scrollToBottom()
 
