@@ -2,6 +2,7 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QListWidget, QPushButton,
                              QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, QSpacerItem, QApplication)
 from PyQt5.QtGui import QColor, QFont
+import re
 from datetime import datetime
 from logger_config import setup_logger
 
@@ -81,6 +82,7 @@ class MainTab(QWidget):
             self.expected_outcome_listbox.addItem(f'{output}')
         self.expected_outcome_listbox.scrollToBottom()
 
+    # OUTPUT CHECKING PART
     # extract expected test outcome from test file
     def expected_output(self, test_data):
         if test_data is not None and 'tests' in test_data:
@@ -95,6 +97,24 @@ class MainTab(QWidget):
             return all_expected_outputs
         return []
 
+    # encode pattern
+    def encode_pattern(self, expected_pattern):
+        # escape special characters and use '(.*)' as a placeholder for non-deterministic parts
+        regex_pattern = re.escape(expected_pattern).replace(r'\*\*\*', '(.*)')
+        regex_pattern = f'^{regex_pattern}$'
+        return regex_pattern
+
+    # extract deterministic test output part
+    def extract_deterministic_part(self, message, expected_pattern):
+        regex_pattern = self.encode_pattern(expected_pattern)
+        match = re.match(regex_pattern, message)
+        if match:
+            # extract non-deterministic captured group '(.*)'
+            deterministic_parts = re.split(r'\(\.\*\)', regex_pattern)
+            deterministic_output = "".join(deterministic_parts)
+            return deterministic_output
+        return None
+
     # check if output is as expected
     def check_output(self, message):
         message = str(message) if message else None
@@ -105,15 +125,30 @@ class MainTab(QWidget):
             self.reset_gui_for_waiting()
             return
 
-        # compare t-board output with expected test outcome
+        # compare t-board output with expected test output pattern
+        match_found = False
+
         for expected in exp_outputs:
-            if str(expected) == message:
+            regex_pattern = self.encode_pattern(expected)
+            match = re.match(regex_pattern, message)
+
+            if match:
+                # update gui and log
                 self.update_gui_correct()
                 logger.info("correct test output")
-            else:
-                logger.error(message)
-                # if no matches, handle as incorrect output
-                self.update_gui_incorrect()
+
+                # log non-deterministic part
+                non_deterministic_part = match.group(1) if match.groups() else None
+                if non_deterministic_part:
+                    logger.info(f"non-deterministic output: {non_deterministic_part}")
+
+                match_found = True
+                break  # exit loop as soon as a match is found
+
+        if not match_found:
+            # for incorrect outputs, display the full message
+            logger.error(f"incorrect output: {message}")
+            self.update_gui_incorrect()
 
     # gui for correct output
     def update_gui_correct(self):
@@ -162,3 +197,84 @@ class MainTab(QWidget):
     def cli_update_upper_listbox_gui(self, message):
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
+
+
+    '''
+    import re
+import logging
+
+# Assuming logger is already set up as before
+
+def encode_pattern(expected_pattern):
+    """
+    Encodes the expected output pattern into a regular expression.
+    """
+    # Escape special characters and use '(.*)' as a placeholder for non-deterministic parts
+    regex_pattern = re.escape(expected_pattern).replace(r'\*\*\*', '(.*)')
+    regex_pattern = f'^{regex_pattern}$'
+    return regex_pattern
+
+def extract_deterministic_part(message, expected_pattern):
+    """
+    Extracts and returns the deterministic part of the message based on the expected pattern.
+    """
+    regex_pattern = encode_pattern(expected_pattern)
+    match = re.match(regex_pattern, message)
+    
+    if match:
+        # Deterministic parts are everything except the non-deterministic captured group '(.*)'
+        deterministic_parts = re.split(r'\(\.\*\)', regex_pattern)
+        deterministic_output = "".join(deterministic_parts)
+        return deterministic_output
+    return message  # Return the full message if no match is found
+
+def check_output(self, message):
+    message = str(message) if message else None
+    exp_outputs = self.expected_output(self.test_data)
+
+    # Check for missing output
+    if message == '':
+        self.reset_gui_for_waiting()
+        return
+
+    # Compare test board output with each expected pattern
+    match_found = False
+    displayed_output = None  # To store the deterministic part for display
+
+    for expected in exp_outputs:
+        regex_pattern = encode_pattern(expected)
+        match = re.match(regex_pattern, message)
+        
+        if match:
+            # Extract and store the deterministic part
+            displayed_output = extract_deterministic_part(message, expected)
+            
+            # Update GUI and log the output
+            self.update_gui_correct()
+            logger.info("Correct test output")
+
+            # Log the full message (including non-deterministic part) if necessary
+            non_deterministic_part = match.group(1) if match.groups() else None
+            if non_deterministic_part:
+                logger.info(f"Non-deterministic output: {non_deterministic_part}")
+            
+            match_found = True
+            break  # Exit loop as soon as a match is found
+
+    if not match_found:
+        # If no matches, handle as incorrect output
+        displayed_output = message  # For incorrect outputs, display the full message
+        logger.error(f"Incorrect output: {message}")
+        self.update_gui_incorrect()
+
+    # Display only the deterministic part of the output
+    self.display_output(displayed_output)
+
+def display_output(self, output):
+    """
+    Displays the output in the GUI.
+    """
+    # Replace this with your GUI logic to display the output
+    print(f"Displayed Output: {output}")
+
+    '''
