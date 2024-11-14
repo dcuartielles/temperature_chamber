@@ -74,6 +74,7 @@ class MainTab(QWidget):
     # display test board output
     def update_test_output_listbox_gui(self, message):
         ready_for_display = self.extract_deterministic_part(message, self.expected_pattern)
+        logger.debug('sending deterministic serial output to main')
         self.deterministic_output.emit(ready_for_display)
         self.test_output_listbox.clear()
         self.test_output_listbox.addItem(f'{ready_for_display}')
