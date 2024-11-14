@@ -14,6 +14,7 @@ class MainTab(QWidget):
     def __init__(self, test_data, parent=None):
         super().__init__(parent)
         self.test_data = test_data
+        self.expected_pattern = None
         self.initUI()
 
     def initUI(self):
@@ -70,8 +71,9 @@ class MainTab(QWidget):
     # TEST RUNNING
     # display test board output
     def update_test_output_listbox_gui(self, message):
+        ready_for_display = self.extract_deterministic_part(message, self.expected_pattern)
         self.test_output_listbox.clear()
-        self.test_output_listbox.addItem(f'{message}')
+        self.test_output_listbox.addItem(f'{ready_for_display}')
         self.test_output_listbox.scrollToBottom()
 
     # update exp output listbox
@@ -102,23 +104,38 @@ class MainTab(QWidget):
         # escape special characters and use '(.*)' as a placeholder for non-deterministic parts
         regex_pattern = re.escape(expected_pattern).replace(r'\*\*\*', '(.*)')
         regex_pattern = f'^{regex_pattern}$'
+        logger.debug('encoding pattern')
         return regex_pattern
+
+    # get expected pattern
+    def get_expected_pattern(self):
+        if self.test_data:
+            exp_outputs = self.expected_output(self.test_data)
+            for expected in exp_outputs:
+                regex_pattern = self.encode_pattern(expected)
+                self.expected_pattern = regex_pattern
+            logger.debug(f'getting expected pattern: {self.expected_pattern}')
+            return self.expected_pattern
+        else:
+            return
 
     # extract deterministic test output part
     def extract_deterministic_part(self, message, expected_pattern):
         regex_pattern = self.encode_pattern(expected_pattern)
         match = re.match(regex_pattern, message)
+        logger.debug('about to search for matches')
         if match:
             # extract non-deterministic captured group '(.*)'
             deterministic_parts = re.split(r'\(\.\*\)', regex_pattern)
             deterministic_output = "".join(deterministic_parts)
+            logger.debug(f'deterministic_output: {deterministic_output}')
             return deterministic_output
-        return None
+        logger.debug(f'no matches found, the message is: {message}')
+        return message
 
     # check if output is as expected
     def check_output(self, message):
         message = str(message) if message else None
-        exp_outputs = self.expected_output(self.test_data)
 
         # check for missing output
         if message == '':
@@ -128,22 +145,20 @@ class MainTab(QWidget):
         # compare t-board output with expected test output pattern
         match_found = False
 
-        for expected in exp_outputs:
-            regex_pattern = self.encode_pattern(expected)
-            match = re.match(regex_pattern, message)
+        regex_pattern = self.expected_pattern
+        match = re.match(regex_pattern, message)
 
-            if match:
-                # update gui and log
-                self.update_gui_correct()
-                logger.info("correct test output")
+        logger.debug('checking for matches')
+        if match:
+            # update gui and log
+            self.update_gui_correct()
+            logger.info("correct test output")
 
-                # log non-deterministic part
-                non_deterministic_part = match.group(1) if match.groups() else None
-                if non_deterministic_part:
-                    logger.info(f"non-deterministic output: {non_deterministic_part}")
-
-                match_found = True
-                break  # exit loop as soon as a match is found
+            # log non-deterministic part
+            non_deterministic_part = match.group(1) if match.groups() else None
+            if non_deterministic_part:
+                logger.info(f"non-deterministic output: {non_deterministic_part}")
+            match_found = True
 
         if not match_found:
             # for incorrect outputs, display the full message
@@ -169,6 +184,7 @@ class MainTab(QWidget):
     # BEFORE TEST IS RUNNING
     # change test part gui to show sketch upload progress before test runs
     def on_run_test_gui(self):
+        self.get_expected_pattern()
         if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
             self.instruction_listbox.show()
             self.instruction_listbox.clear()
