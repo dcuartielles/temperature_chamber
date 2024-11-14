@@ -2,7 +2,6 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QListWidget, QPushButton,
                              QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, QSpacerItem, QApplication)
 from PyQt5.QtGui import QColor, QFont
-import re
 from datetime import datetime
 from logger_config import setup_logger
 
@@ -11,12 +10,9 @@ logger = setup_logger(__name__)
 
 class MainTab(QWidget):
 
-    deterministic_output = pyqtSignal(str)
-
     def __init__(self, test_data, parent=None):
         super().__init__(parent)
         self.test_data = test_data
-        self.expected_pattern = None
         self.initUI()
 
     def initUI(self):
@@ -73,11 +69,8 @@ class MainTab(QWidget):
     # TEST RUNNING
     # display test board output
     def update_test_output_listbox_gui(self, message):
-        ready_for_display = self.extract_deterministic_part(message, self.expected_pattern)
-        logger.debug('sending deterministic serial output to main')
-        self.deterministic_output.emit(ready_for_display)
         self.test_output_listbox.clear()
-        self.test_output_listbox.addItem(f'{ready_for_display}')
+        self.test_output_listbox.addItem(f'{message}')
         self.test_output_listbox.scrollToBottom()
 
     # update exp output listbox
@@ -87,11 +80,6 @@ class MainTab(QWidget):
         for i, output in enumerate(exp_outputs):
             self.expected_outcome_listbox.addItem(f'{output}')
         self.expected_outcome_listbox.scrollToBottom()
-
-    # OUTPUT CHECKING PART
-    # set self.expected_pattern
-    def set_expected_pattern(self):
-        self.get_expected_pattern()
 
     # extract expected test outcome from test file
     def expected_output(self, test_data):
@@ -107,79 +95,25 @@ class MainTab(QWidget):
             return all_expected_outputs
         return []
 
-    # encode pattern
-    def encode_pattern(self, expected_pattern):
-        if '***' in expected_pattern:
-            # escape special characters and use '(.*)' as a placeholder for non-deterministic parts
-            regex_pattern = re.escape(expected_pattern).replace(r'\*\*\*', '(.*)')
-        else:
-            regex_pattern = re.escape(expected_pattern)
-        regex_pattern = f'^{regex_pattern}$'
-        logger.debug(f'encoding pattern: {regex_pattern}')
-        return regex_pattern
-
-    # get expected pattern
-    def get_expected_pattern(self):
-        if self.test_data:
-            exp_outputs = self.expected_output(self.test_data)
-            for expected in exp_outputs:
-                regex_pattern = self.encode_pattern(expected)
-                self.expected_pattern = regex_pattern
-            logger.debug(f'getting expected pattern: {self.expected_pattern}')
-            return self.expected_pattern
-        else:
-            return
-
-    # extract deterministic test output part
-    def extract_deterministic_part(self, message, expected_pattern):
-        regex_pattern = self.encode_pattern(expected_pattern)
-        match = re.match(regex_pattern, message)
-        logger.debug('about to search for matches')
-        if match:
-            if '***' in expected_pattern:
-                # extract non-deterministic captured group '(.*)'
-                deterministic_parts = re.split(r'\(\.\*\)', regex_pattern)
-                deterministic_output = "".join(deterministic_parts)
-                logger.debug(f'deterministic_output: {deterministic_output}')
-                return deterministic_output
-            else:
-                # if the pattern is fully deterministic, return the message as-is
-                logger.debug(f'fully deterministic match: {message}')
-                return message
-        logger.debug(f'no matches found, the message is: {message}')
-        return message
-
     # check if output is as expected
     def check_output(self, message):
         message = str(message) if message else None
+        exp_outputs = self.expected_output(self.test_data)
 
         # check for missing output
         if message == '':
             self.reset_gui_for_waiting()
             return
 
-        # compare t-board output with expected test output pattern
-        match_found = False
-
-        regex_pattern = self.expected_pattern
-        match = re.match(regex_pattern, message)
-
-        logger.debug('checking for matches')
-        if match:
-            # update gui and log
-            self.update_gui_correct()
-            logger.info("correct test output")
-
-            # log non-deterministic part
-            non_deterministic_part = match.group(1) if match.groups() else None
-            if non_deterministic_part:
-                logger.info(f"non-deterministic output: {non_deterministic_part}")
-            match_found = True
-
-        if not match_found:
-            # for incorrect outputs, display the full message
-            logger.error(f"incorrect output: {message}")
-            self.update_gui_incorrect()
+        # compare t-board output with expected test outcome
+        for expected in exp_outputs:
+            if str(expected) == message:
+                self.update_gui_correct()
+                logger.info("correct test output")
+            else:
+                logger.error(message)
+                # if no matches, handle as incorrect output
+                self.update_gui_incorrect()
 
     # gui for correct output
     def update_gui_correct(self):

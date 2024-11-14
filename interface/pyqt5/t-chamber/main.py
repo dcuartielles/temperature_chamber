@@ -249,7 +249,6 @@ class MainWindow(QMainWindow):
             if not hasattr(self, 'test_board') or self.test_board is None or not self.test_board.is_running:
                 try:
                     self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
-                    self.test_board.trigger_pattern_setting.connect(self.main_tab.set_expected_pattern)
                     self.test_board.start()  # start worker thread
 
                 except Exception as e:
@@ -370,7 +369,7 @@ class MainWindow(QMainWindow):
         # restart test board worker thread
         self.test_board = TestBoardWorker(port=self.selected_t_port, baudrate=9600)
         self.test_board.update_upper_listbox.connect(self.main_tab.update_test_output_listbox_gui)
-        self.main_tab.deterministic_output.connect(self.check_output)
+        self.test_board.update_upper_listbox.connect(self.check_output)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
         logger.info('test board worker restarted')
