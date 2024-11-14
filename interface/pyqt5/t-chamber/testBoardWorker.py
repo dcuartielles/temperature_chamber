@@ -10,7 +10,7 @@ class TestBoardWorker(QThread):
 
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
     expected_outcome_listbox = pyqtSignal(str)  # signal to show expected test outcome
-    trigger_pattern_setting = pyqtSignal()  # signal to set encoded pattern in main tab and main
+    trigger_pattern_setting = pyqtSignal()  # signal to set encoded pattern in main tab
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -76,6 +76,9 @@ class TestBoardWorker(QThread):
     def show_response(self, response):
         if response:
             printout = f'{response}'
+            self.trigger_pattern_setting.emit()  # emit signal to set encoded pattern in main tab
+            logger.debug('sending signal to set encoded pattern in main tab')
             self.update_upper_listbox.emit(printout)  # emit signal to update listbox
-            self.trigger_pattern_setting.emit()  # emit signal to set encoded pattern in main tab and main
+            logger.debug('sending signal to main tab to trigger update output gui')
             self.expected_outcome_listbox.emit(printout)  # emit signal to update expected outcome
+            logger.debug('emit signal to update expected outcome')
