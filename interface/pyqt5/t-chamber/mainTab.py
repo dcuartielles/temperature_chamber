@@ -101,10 +101,13 @@ class MainTab(QWidget):
 
     # encode pattern
     def encode_pattern(self, expected_pattern):
-        # escape special characters and use '(.*)' as a placeholder for non-deterministic parts
-        regex_pattern = re.escape(expected_pattern).replace(r'\*\*\*', '(.*)')
+        if '***' in expected_pattern:
+            # escape special characters and use '(.*)' as a placeholder for non-deterministic parts
+            regex_pattern = re.escape(expected_pattern).replace(r'\*\*\*', '(.*)')
+        else:
+            regex_pattern = re.escape(expected_pattern)
         regex_pattern = f'^{regex_pattern}$'
-        logger.debug('encoding pattern')
+        logger.debug(f'encoding pattern: {regex_pattern}')
         return regex_pattern
 
     # get expected pattern
@@ -125,11 +128,16 @@ class MainTab(QWidget):
         match = re.match(regex_pattern, message)
         logger.debug('about to search for matches')
         if match:
-            # extract non-deterministic captured group '(.*)'
-            deterministic_parts = re.split(r'\(\.\*\)', regex_pattern)
-            deterministic_output = "".join(deterministic_parts)
-            logger.debug(f'deterministic_output: {deterministic_output}')
-            return deterministic_output
+            if '***' in expected_pattern:
+                # extract non-deterministic captured group '(.*)'
+                deterministic_parts = re.split(r'\(\.\*\)', regex_pattern)
+                deterministic_output = "".join(deterministic_parts)
+                logger.debug(f'deterministic_output: {deterministic_output}')
+                return deterministic_output
+            else:
+                # if the pattern is fully deterministic, return the message as-is
+                logger.debug(f'fully deterministic match: {message}')
+                return message
         logger.debug(f'no matches found, the message is: {message}')
         return message
 
@@ -213,84 +221,3 @@ class MainTab(QWidget):
     def cli_update_upper_listbox_gui(self, message):
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
-
-
-    '''
-    import re
-import logging
-
-# Assuming logger is already set up as before
-
-def encode_pattern(expected_pattern):
-    """
-    Encodes the expected output pattern into a regular expression.
-    """
-    # Escape special characters and use '(.*)' as a placeholder for non-deterministic parts
-    regex_pattern = re.escape(expected_pattern).replace(r'\*\*\*', '(.*)')
-    regex_pattern = f'^{regex_pattern}$'
-    return regex_pattern
-
-def extract_deterministic_part(message, expected_pattern):
-    """
-    Extracts and returns the deterministic part of the message based on the expected pattern.
-    """
-    regex_pattern = encode_pattern(expected_pattern)
-    match = re.match(regex_pattern, message)
-    
-    if match:
-        # Deterministic parts are everything except the non-deterministic captured group '(.*)'
-        deterministic_parts = re.split(r'\(\.\*\)', regex_pattern)
-        deterministic_output = "".join(deterministic_parts)
-        return deterministic_output
-    return message  # Return the full message if no match is found
-
-def check_output(self, message):
-    message = str(message) if message else None
-    exp_outputs = self.expected_output(self.test_data)
-
-    # Check for missing output
-    if message == '':
-        self.reset_gui_for_waiting()
-        return
-
-    # Compare test board output with each expected pattern
-    match_found = False
-    displayed_output = None  # To store the deterministic part for display
-
-    for expected in exp_outputs:
-        regex_pattern = encode_pattern(expected)
-        match = re.match(regex_pattern, message)
-        
-        if match:
-            # Extract and store the deterministic part
-            displayed_output = extract_deterministic_part(message, expected)
-            
-            # Update GUI and log the output
-            self.update_gui_correct()
-            logger.info("Correct test output")
-
-            # Log the full message (including non-deterministic part) if necessary
-            non_deterministic_part = match.group(1) if match.groups() else None
-            if non_deterministic_part:
-                logger.info(f"Non-deterministic output: {non_deterministic_part}")
-            
-            match_found = True
-            break  # Exit loop as soon as a match is found
-
-    if not match_found:
-        # If no matches, handle as incorrect output
-        displayed_output = message  # For incorrect outputs, display the full message
-        logger.error(f"Incorrect output: {message}")
-        self.update_gui_incorrect()
-
-    # Display only the deterministic part of the output
-    self.display_output(displayed_output)
-
-def display_output(self, output):
-    """
-    Displays the output in the GUI.
-    """
-    # Replace this with your GUI logic to display the output
-    print(f"Displayed Output: {output}")
-
-    '''
