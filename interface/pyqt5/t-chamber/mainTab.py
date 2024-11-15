@@ -81,6 +81,7 @@ class MainTab(QWidget):
             self.expected_outcome_listbox.addItem(f'{output}')
         self.expected_outcome_listbox.scrollToBottom()
 
+    # OUTPUT CHECKING PART
     # extract expected test outcome from test file
     def expected_output(self, test_data):
         if test_data is not None and 'tests' in test_data:
@@ -99,11 +100,6 @@ class MainTab(QWidget):
     def check_output(self, message):
         message = str(message) if message else None
         exp_outputs = self.expected_output(self.test_data)
-
-        # check for missing output
-        if message == '':
-            self.reset_gui_for_waiting()
-            return
 
         # compare t-board output with expected test outcome
         for expected in exp_outputs:
@@ -124,12 +120,6 @@ class MainTab(QWidget):
     def update_gui_incorrect(self):
         self.expected_outcome_listbox.setStyleSheet("color: red; font-weight: bold;")
         self.test_output_listbox.setStyleSheet("color: red; font-weight: bold;")
-
-    # waiting for t-board output
-    def reset_gui_for_waiting(self):
-        self.test_output_listbox.clear()
-        self.test_output_listbox.addItem("waiting for test board output")
-        logger.info("waiting for test board output...")
 
     # BEFORE TEST IS RUNNING
     # change test part gui to show sketch upload progress before test runs
