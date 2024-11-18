@@ -412,7 +412,7 @@ class MainWindow(QMainWindow):
     # similar method to be triggered separately when a test is interrupted
     def test_interrupted_gui(self, message):
         self.test_is_running = False
-        self.main_tab.on_test_interrupted_signal.emit()
+        # self.main_tab.on_test_interrupted_signal.emit()
         self.reset_control_board()
         self.test_label_no_test()
         self.progress.hide()

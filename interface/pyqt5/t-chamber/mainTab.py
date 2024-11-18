@@ -10,13 +10,13 @@ logger = setup_logger(__name__)
 
 class MainTab(QWidget):
 
-    on_test_interrupted_signal = pyqtSignal()  # signal from main to change gui on test interrupted
+    # on_test_interrupted_signal = pyqtSignal()  # signal from main to change gui on test interrupted
 
     def __init__(self, test_data, parent=None):
         super().__init__(parent)
         self.test_data = test_data
         # connect signal from main
-        self.on_test_interrupted_signal.connect(self.on_test_interrupted_gui)
+        # self.on_test_interrupted_signal.connect(self.on_test_interrupted_gui)
         self.initUI()
 
     def initUI(self):

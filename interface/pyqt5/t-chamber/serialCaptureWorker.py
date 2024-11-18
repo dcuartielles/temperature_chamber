@@ -49,7 +49,6 @@ class SerialCaptureWorker(QThread):
 
         # connect signals from main
         self.trigger_run_tests.connect(self.run_all_tests)
-        self.trigger_interrupt_test.connect(self.interrupt_test)
         self.trigger_reset.connect(self.reset_test_board)
         self.trigger_emergency_stop.connect(self.emergency_stop)
 
