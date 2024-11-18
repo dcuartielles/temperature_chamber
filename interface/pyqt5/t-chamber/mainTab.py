@@ -82,6 +82,7 @@ class MainTab(QWidget):
         exp_outputs = self.expected_output(self.test_data)
         self.expected_outcome_listbox.clear()
         for i, output in enumerate(exp_outputs):
+            self.expected_outcome_listbox.clear()
             self.expected_outcome_listbox.addItem(f'{output}')
         self.expected_outcome_listbox.scrollToBottom()
 
@@ -161,8 +162,6 @@ class MainTab(QWidget):
     def on_test_interrupted_gui(self):
         if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
             self.expected_outcome_label.hide()
-            self.expected_outcome_listbox.hide()
-            self.instruction_listbox.clear()
-            self.instruction_listbox.show()
+            self.expected_outcome_listbox.clear()
             message = 'no tests are currently running'
-            self.cli_update_upper_listbox_gui(message)
+            self.expected_outcome_listbox.addItem(message)
