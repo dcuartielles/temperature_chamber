@@ -412,7 +412,6 @@ class MainWindow(QMainWindow):
     # similar method to be triggered separately when a test is interrupted
     def test_interrupted_gui(self, message):
         self.test_is_running = False
-        # self.main_tab.on_test_interrupted_signal.emit()
         self.reset_control_board()
         self.test_label_no_test()
         self.progress.hide()
@@ -456,7 +455,7 @@ class MainWindow(QMainWindow):
                     f'{test}  |  sequence {sequence}  |  waiting')
                 self.serial_label.hide()
             else:
-                self.progress.sequence_label.setText(f'{test}  |  sequence {sequence}  |  time left: {formatted_time_left} min')
+                self.progress.sequence_label.setText(f'{test}  |  sequence {sequence}  |  duration: {duration} min')
                 self.serial_label.hide()
         else:
             self.serial_label.show()
