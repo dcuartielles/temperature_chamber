@@ -54,6 +54,9 @@ class SerialCaptureWorker(QThread):
         self.trigger_reset.connect(self.reset_test_board)
         self.trigger_emergency_stop.connect(self.emergency_stop)
 
+        # flag to prevent test sequence segments to advance too fast
+        self.sequence_has_been_advanced = False
+
         # class variables
         self.test_data = None
         self.sent_handshake = False
@@ -279,13 +282,19 @@ class SerialCaptureWorker(QThread):
     # process serial response
     def process_response(self, response):
         # list of responses to be picked up
-        trigger_responses = ['Setting', 'Running', 'Waiting', 'Test complete', 'Target temperature reached!']
+        trigger_responses = ['Setting', 'Running', 'Test complete', 'Target temperature reached!']
         if any(response.strip().startswith(trigger) for trigger in trigger_responses):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
+        elif response.strip().startswith('Waiting'):
+            self.sequence_has_been_advanced = False
+            self.update_listbox.emit(response)  # emit signal to update listbox
+            logger.info(f'{response}')
         elif response.strip().startswith('Sequence complete'):
-            self.next_sequence_progress.emit()
-            logger.debug('sending signal to start new sequence progress bar')
-            self.sequence_complete.emit('sequence complete')
+            if not self.sequence_has_been_advanced:
+                self.next_sequence_progress.emit()
+                logger.info('sending signal to start new sequence progress bar')
+                self.sequence_has_been_advanced = True
+                self.sequence_complete.emit('sequence complete')
         else:
             logger.info(response)
