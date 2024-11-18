@@ -279,14 +279,12 @@ class MainWindow(QMainWindow):
                         message = 'test interrupted'
                         self.test_interrupted_gui(message)
                         logger.warning(message)
-                        self.trigger_interrupt_t()
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
                         self.on_cli_test_interrupted()
                     else:
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
-                        self.trigger_interrupt_t()
                         message = 'test was interrupted'
                         self.test_interrupted_gui(message)
                         logger.info(message)
@@ -344,7 +342,6 @@ class MainWindow(QMainWindow):
             logger.info('cli worker quit bcs interrupted')
             self.cli_worker.deleteLater()
             logger.info('cli worker deleted bcs interrupted')
-
             time.sleep(1.5)  # time for the port to fully close before restarting
 
             # restart test board worker thread
@@ -418,10 +415,10 @@ class MainWindow(QMainWindow):
         self.test_is_running = False
         self.reset_control_board()
         self.test_label_no_test()
-        self.trigger_interrupt_t()
         self.progress.hide()
-        if self.cli_worker and self.cli_worker.is_running:
-            self.on_cli_test_interrupted()
+        self.main_tab.on_test_interrupted_signal.emit()
+        # if self.cli_worker and self.cli_worker.is_running:
+            # self.on_cli_test_interrupted()
         item = QListWidgetItem(message)
         font = QFont()
         font.setBold(True)
@@ -598,11 +595,6 @@ class MainWindow(QMainWindow):
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
         self.serial_worker.trigger_run_tests.emit(self.test_data)
-
-    # interrupt test on arduino
-    def trigger_interrupt_t(self):
-        self.serial_worker.trigger_interrupt_test.emit()
-        self.main_tab.on_test_interrupted_signal.emit()
 
     # GUI HELPER METHODS: START AND RESET BUTTONS
     # visually signal that the app is running

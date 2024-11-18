@@ -159,8 +159,10 @@ class MainTab(QWidget):
 
     # gui on test interrupted
     def on_test_interrupted_gui(self):
-        self.expected_outcome_label.hide()
-        self.expected_outcome_listbox.hide()
-        self.instruction_listbox.show()
-        message = 'no tests are currently running'
-        self.cli_update_upper_listbox_gui(message)
+        if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
+            self.expected_outcome_label.hide()
+            self.expected_outcome_listbox.hide()
+            self.instruction_listbox.clear()
+            self.instruction_listbox.show()
+            message = 'no tests are currently running'
+            self.cli_update_upper_listbox_gui(message)
