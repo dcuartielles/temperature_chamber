@@ -398,9 +398,8 @@ class MainWindow(QMainWindow):
 
     # emergency stop gui
     def emergency_stop_gui(self, message):
-        self.test_is_running = False
         self.test_label_no_test()
-        self.progress.hide()
+        self.test_interrupted_gui()
         if self.cli_worker and self.cli_worker.is_running:
             self.on_cli_test_interrupted()
         item = QListWidgetItem(message)
@@ -542,12 +541,11 @@ class MainWindow(QMainWindow):
         logger.info(self.machine_state)
 
         if self.machine_state == 'EMERGENCY_STOP':
-            self.set_flag_to_false()  # notify app tests are interrupted
-
+            self.test_interrupted_gui()
             # if alert popup has not been shown, show it
             if not self.self.emergency_stop_popup_shown:
-                self.emergency_stop_popup_shown = True
                 popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
+                self.emergency_stop_popup_shown = True
                 logger.info('the system is off: DO SOMETHING!')
                 # if the issue has not been solved within 15 seconds, show popup again
                 self.emergency_stop_timer.start()
