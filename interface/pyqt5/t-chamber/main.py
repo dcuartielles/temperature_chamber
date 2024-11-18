@@ -276,6 +276,7 @@ class MainWindow(QMainWindow):
                     'a test is running: are you sure you want to interrupt it and proceed?')
                 if response == QMessageBox.Yes:
                     if self.cli_worker.is_running:
+                        self.reset_control_board()
                         message = 'test interrupted'
                         self.test_interrupted_gui(message)
                         logger.warning(message)
@@ -286,6 +287,7 @@ class MainWindow(QMainWindow):
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
                         message = 'test was interrupted'
+                        self.reset_control_board()
                         self.test_interrupted_gui(message)
                         logger.info(message)
                 elif response == QMessageBox.No:
@@ -399,7 +401,7 @@ class MainWindow(QMainWindow):
     # emergency stop gui
     def emergency_stop_gui(self, message):
         self.test_label_no_test()
-        self.test_interrupted_gui()
+        self.test_interrupted_gui(message)
         if self.cli_worker and self.cli_worker.is_running:
             self.on_cli_test_interrupted()
         item = QListWidgetItem(message)
@@ -412,7 +414,6 @@ class MainWindow(QMainWindow):
     # similar method to be triggered separately when a test is interrupted
     def test_interrupted_gui(self, message):
         self.test_is_running = False
-        self.reset_control_board()
         self.test_label_no_test()
         self.progress.hide()
         item = QListWidgetItem(message)
@@ -540,7 +541,8 @@ class MainWindow(QMainWindow):
         logger.info(self.machine_state)
 
         if self.machine_state == 'EMERGENCY_STOP':
-            self.test_interrupted_gui()
+            message = 'emergency stop'
+            self.test_interrupted_gui(message)
             # if alert popup has not been shown, show it
             if not self.self.emergency_stop_popup_shown:
                 popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
@@ -586,6 +588,15 @@ class MainWindow(QMainWindow):
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
+
+    # intercept reset machine state
+    def reset_from_arduino(self, machine_state):
+        self.machine_state = machine_state
+        logger.info(self.machine_state)
+
+        if self.machine_state == 'RESET':
+            message = 'control board is reset'
+            self.test_interrupted_gui(message)
 
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
