@@ -93,29 +93,34 @@ class SerialCaptureWorker(QThread):
             self.no_port_connection.emit()
             return
         logger.info('thread is running')
+        # wrap the whole while-loop in a try-except statement to prevent crashes in case of system failure
+        try:
+            while self.is_running:
+                if not self.is_stopped:
+                    try:
+                        if self.ser and self.ser.is_open:
+                            self.serial_running_and_happy.emit()
+                            # send handshake
+                            self.handshake()
+                            time.sleep(0.1)
+                            # read incoming serial data
+                            response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                            if response:
+                                self.process_response(response)  # update and show curated responses
 
-        while self.is_running:
-            if not self.is_stopped:
-                try:
-                    if self.ser and self.ser.is_open:
-                        self.serial_running_and_happy.emit()
-                        # send handshake
-                        self.handshake()
-                        time.sleep(0.1)
-                        # read incoming serial data
-                        response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                        if response:
-                            self.process_response(response)  # update and show curated responses
+                            if time.time() - self.last_ping >= 0.5:
+                                self.last_ping = time.time()
+                                self.trigger_ping()
 
-                        if time.time() - self.last_ping >= 0.5:
-                            self.last_ping = time.time()
-                            self.trigger_ping()
+                    except serial.SerialException as e:
+                        logger.exception(f'serial error: {e}')
+                        self.is_running = False
 
-                except serial.SerialException as e:
-                    logger.exception(f'serial error: {e}')
-                    self.is_running = False
-
-            time.sleep(0.1)  # avoid excessive cpu usage
+                time.sleep(0.1)  # avoid excessive cpu usage
+        except Exception as e:
+            # catch any other unexpected exceptions
+            logger.exception(f'unexpected error: {e}')
+            self.is_running = False
 
         self.stop()
 

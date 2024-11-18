@@ -602,6 +602,7 @@ class MainWindow(QMainWindow):
     # interrupt test on arduino
     def trigger_interrupt_t(self):
         self.serial_worker.trigger_interrupt_test.emit()
+        self.main_tab.on_test_interrupted_signal.emit()
 
     # GUI HELPER METHODS: START AND RESET BUTTONS
     # visually signal that the app is running

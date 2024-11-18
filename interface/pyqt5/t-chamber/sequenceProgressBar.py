@@ -8,6 +8,7 @@ logger = setup_logger(__name__)
 
 
 class SequenceProgressBar(QWidget):
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.sequence_durations = []

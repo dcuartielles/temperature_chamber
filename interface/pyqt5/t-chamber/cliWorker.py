@@ -56,18 +56,24 @@ class CliWorker(QThread):
             logger.error(f'cli worker failed to connect to {self.port}')
             return
         logger.info('cli worker thread is running')
+        # wrap the whole while-loop in a try-except statement to prevent crashes in case of system failure
+        try:
+            while self.is_running and not self.is_stopped:
+                try:
+                    # this worker thread's only task is to correctly upload a test sketch onto test board
+                    self.run_all_tests(self.test_data, self.filepath)
+                except serial.SerialException as e:
+                    logger.exception(f'serial error in cli: {e}')
+                    bye = f'serial error in cli worker: {str(e)}'
+                    self.wave(bye)
+                    self.is_running = False
+                    break
+                time.sleep(0.1)  # prevent jamming
+        except Exception as e:
+            # catch any other unexpected exceptions
+            logger.exception(f'unexpected error: {e}')
+            self.is_running = False
 
-        while self.is_running and not self.is_stopped:
-            try:
-                # this worker thread's only task is to correctly upload a test sketch onto test board
-                self.run_all_tests(self.test_data, self.filepath)
-            except serial.SerialException as e:
-                logger.exception(f'serial error in cli: {e}')
-                bye = f'serial error in cli worker: {str(e)}'
-                self.wave(bye)
-                self.is_running = False
-                break
-            time.sleep(0.1)  # prevent jamming
         self.stop()
 
     # assign test file and file path to class variables

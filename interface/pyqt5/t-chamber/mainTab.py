@@ -10,9 +10,13 @@ logger = setup_logger(__name__)
 
 class MainTab(QWidget):
 
+    on_test_interrupted_signal = pyqtSignal()  # signal from main to change gui on test interrupted
+
     def __init__(self, test_data, parent=None):
         super().__init__(parent)
         self.test_data = test_data
+        # connect signal from main
+        self.on_test_interrupted_signal.connect(self.on_test_interrupted_gui)
         self.initUI()
 
     def initUI(self):
@@ -152,3 +156,11 @@ class MainTab(QWidget):
     def cli_update_upper_listbox_gui(self, message):
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
+
+    # gui on test interrupted
+    def on_test_interrupted_gui(self):
+        self.expected_outcome_label.hide()
+        self.expected_outcome_listbox.hide()
+        self.instruction_listbox.show()
+        message = 'no tests are currently running'
+        self.cli_update_upper_listbox_gui(message)
