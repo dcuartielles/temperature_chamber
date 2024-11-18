@@ -13,7 +13,6 @@ class SerialCaptureWorker(QThread):
 
     update_chamber_monitor = pyqtSignal(dict)  # signal to update chamber monitor
     trigger_run_tests = pyqtSignal(dict)  # signal from main to run tests
-    trigger_interrupt_test = pyqtSignal()  # signal form main to send interrupt test command to arduino
     trigger_reset = pyqtSignal()  # signal form main to reset control board
     update_listbox = pyqtSignal(str)  # signal to update listbox
     trigger_emergency_stop = pyqtSignal()
@@ -210,10 +209,6 @@ class SerialCaptureWorker(QThread):
             # handle case when no test data is found
             logger.warning('no test data found on file')
 
-    # interrupt test on arduino
-    def interrupt_test(self):
-        interrupt = commands.reset()
-        self.send_json_to_arduino(interrupt)
 
     # set temp & duration from the gui
     def set_temp(self, input_dictionary):
