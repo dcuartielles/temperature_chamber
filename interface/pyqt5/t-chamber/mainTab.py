@@ -78,8 +78,7 @@ class MainTab(QWidget):
     def expected_output_listbox(self):
         exp_outputs = self.expected_output(self.test_data)
         self.expected_outcome_listbox.clear()
-        for i, output in enumerate(exp_outputs):
-            self.expected_outcome_listbox.clear()
+        for output in exp_outputs:
             self.expected_outcome_listbox.addItem(f'{output}')
         self.expected_outcome_listbox.scrollToBottom()
 
@@ -92,7 +91,7 @@ class MainTab(QWidget):
             # iterate through each test and run it
             for test_key in all_tests:
                 test = test_data['tests'].get(test_key, {})
-                expected_output = test.get('expected output', '')  # get the expected output string
+                expected_output = test.get('expected_output', '')  # get the expected output string
                 if expected_output:
                     all_expected_outputs.append(expected_output)
             return all_expected_outputs
