@@ -374,9 +374,11 @@ class MainWindow(QMainWindow):
             logger.info('test board worker restarted through cli interrupted')
             message = 'test was interrupted'
             self.test_interrupted_gui(message)
+            self.main_tab.test_interrupted_gui()
         else:
             message = 'test was interrupted'
             self.test_interrupted_gui(message)
+            self.main_tab.test_interrupted_gui()
 
     # clean up cli worker after it's done
     def cleanup_cli_worker(self):
