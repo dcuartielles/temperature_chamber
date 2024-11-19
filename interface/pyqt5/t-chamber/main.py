@@ -236,7 +236,7 @@ class MainWindow(QMainWindow):
 
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
-                    self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
+                    self.manual_tab.test_interrupted.connect(self.on_cli_test_interrupted_by_other_events)
                     self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
 
                 except Exception as e:
@@ -332,7 +332,7 @@ class MainWindow(QMainWindow):
         else:
             popups.show_error_message('error', 'no test data loaded')
 
-    # on cli test interrupted
+    # on cli test interrupted by another test
     def on_cli_test_interrupted(self):
         if self.cli_worker:
             logger.info('cli being interrupted')
@@ -352,6 +352,31 @@ class MainWindow(QMainWindow):
             self.test_board.is_running = True
             logger.info('test board worker restarted through cli interrupted')
             self.main_tab.on_run_test_gui()
+
+    # on cli test interrupted by manual temp setting or em stop or control board reset
+    def on_cli_test_interrupted_by_other_events(self):
+        if self.cli_worker:
+            logger.info('cli being interrupted')
+            self.cli_worker.finished.disconnect(self.cleanup_cli_worker)
+            self.cli_worker.is_running = False
+            self.cli_worker.stop()
+            self.cli_worker.quit()
+            self.cli_worker.wait()
+            logger.info('cli worker quit bcs interrupted')
+            self.cli_worker.deleteLater()
+            logger.info('cli worker deleted bcs interrupted')
+            time.sleep(1.5)  # time for the port to fully close before restarting
+
+            # restart test board worker thread
+            self.test_board = TestBoardWorker(self.test_data, port=self.selected_t_port, baudrate=9600)
+            self.test_board.start()  # start test board thread
+            self.test_board.is_running = True
+            logger.info('test board worker restarted through cli interrupted')
+            message = 'test was interrupted'
+            self.test_interrupted_gui(message)
+        else:
+            message = 'test was interrupted'
+            self.test_interrupted_gui(message)
 
     # clean up cli worker after it's done
     def cleanup_cli_worker(self):
@@ -403,7 +428,7 @@ class MainWindow(QMainWindow):
         self.test_label_no_test()
         self.test_interrupted_gui(message)
         if self.cli_worker and self.cli_worker.is_running:
-            self.on_cli_test_interrupted()
+            self.on_cli_test_interrupted_by_other_events()
         item = QListWidgetItem(message)
         font = QFont()
         font.setBold(True)
@@ -541,8 +566,7 @@ class MainWindow(QMainWindow):
         logger.info(self.machine_state)
 
         if self.machine_state == 'EMERGENCY_STOP':
-            message = 'emergency stop'
-            self.test_interrupted_gui(message)
+            self.on_cli_test_interrupted_by_other_events()
             # if alert popup has not been shown, show it
             if not self.self.emergency_stop_popup_shown:
                 popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
@@ -595,8 +619,7 @@ class MainWindow(QMainWindow):
         logger.info(self.machine_state)
 
         if self.machine_state == 'RESET':
-            message = 'control board is reset'
-            self.test_interrupted_gui(message)
+            self.on_cli_test_interrupted_by_other_events()
 
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
