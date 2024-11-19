@@ -109,7 +109,7 @@ class ProgressBar(QWidget):
     def advance_sequence(self):
         logger.debug('triggering a new sequence')
         self.current_sequence_index += 1
-        if self.current_sequence_index < len(self.sequence_durations):
+        if self.current_sequence_index <= len(self.sequence_durations):
             self.sequence_progress_bar.set_sequence_data(self.sequence_durations, self.current_sequence_index)
         else:
             return
