@@ -111,6 +111,8 @@ class ProgressBar(QWidget):
         self.current_sequence_index += 1
         if self.current_sequence_index < len(self.sequence_durations):
             self.sequence_progress_bar.set_sequence_data(self.sequence_durations, self.current_sequence_index)
+        else:
+            return
 
     # get target temperatures from test_data
     def get_temperatures(self):
@@ -162,6 +164,9 @@ class ProgressBar(QWidget):
             elif degrees_difference < 0:
                 self.total_duration += abs(
                     degrees_difference) * 120000  # 2 min per degree, in millis, absolute value
+
+        # adjust total duration according to what practice shows to be more realistic
+        self.total_duration = self.total_duration * 0.79
 
         return self.total_duration
 

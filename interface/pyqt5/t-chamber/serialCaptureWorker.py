@@ -286,7 +286,7 @@ class SerialCaptureWorker(QThread):
             if not self.sequence_has_been_advanced:
                 self.next_sequence_progress.emit()
                 logger.info('sending signal to start new sequence progress bar')
-                self.sequence_has_been_advanced = True
                 self.sequence_complete.emit('sequence complete')
+                self.sequence_has_been_advanced = True
         else:
             logger.info(response)
