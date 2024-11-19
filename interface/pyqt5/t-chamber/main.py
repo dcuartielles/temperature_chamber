@@ -306,6 +306,7 @@ class MainWindow(QMainWindow):
                 # if running tests for nth time, come back to original gui layout to start with
                 self.main_tab.on_run_test_gui()
                 self.progress.start_progress_signal.emit(self.test_data, self.current_temperature)
+                self.progress.alert_all_tests_complete_signal.connect(self.all_tests_complete)
 
                 if not self.serial_worker.is_stopped:
                     self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
@@ -487,6 +488,13 @@ class MainWindow(QMainWindow):
                 self.serial_label.hide()
         else:
             self.serial_label.show()
+
+    # display info about all tests being complete
+    def all_tests_complete(self, message):
+        self.test_is_running = False
+        self.progress.sequence_label.setText(message)
+        self.update_listbox_gui(message)
+        self.serial_label.show()
 
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
     def check_temp(self):

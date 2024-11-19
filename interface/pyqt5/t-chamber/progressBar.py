@@ -12,6 +12,7 @@ logger = setup_logger(__name__)
 class ProgressBar(QWidget):
 
     start_progress_signal = pyqtSignal(dict, int)  # signal from main to start timer for progress bars
+    alert_all_tests_complete_signal = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -24,6 +25,7 @@ class ProgressBar(QWidget):
         self.current_sequence_index = 0
         self.sequence_durations = []
         self.sequence_duration = 0
+        self.number_of_sequences = 0
         self.total_duration = 0
         self.current_temp = None
         self.temperatures = []
@@ -91,6 +93,10 @@ class ProgressBar(QWidget):
         # reset sequence progress bar
         self.current_sequence_index = 0
         self.sequence_progress_bar.set_sequence_data(self.sequence_durations, self.current_sequence_index)
+        self.number_of_sequences += 1
+        if self.number_of_sequences >= len(self.sequence_durations):
+            alert = 'all tests complete'
+            self.alert_all_tests_complete_signal.emit(alert)
 
     # update the actual progress bar for overall test time
     def update_time_progress(self):
@@ -191,3 +197,8 @@ class ProgressBar(QWidget):
                     durations.append(sequence.get('duration', 0))
         logger.info(f'all durations: {durations}')
         return durations
+
+    # signal to update main and sequence when all tests are complete
+    def alert_all_tests_complete(self, message):
+        alert = message
+        self.alert_all_tests_complete_signal.emit(alert)
