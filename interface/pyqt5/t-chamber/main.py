@@ -416,6 +416,7 @@ class MainWindow(QMainWindow):
         self.test_is_running = False
         self.test_label_no_test()
         self.progress.hide()
+        self.main_tab.test_interrupted_gui()
         item = QListWidgetItem(message)
         font = QFont()
         font.setBold(True)
@@ -424,7 +425,6 @@ class MainWindow(QMainWindow):
         self.listbox.scrollToBottom()
 
     # similar method for new test
-
     def new_test(self, message):
         item = QListWidgetItem(message)
         font = QFont()

@@ -150,7 +150,29 @@ class MainTab(QWidget):
         self.expected_outcome_listbox.show()
         self.expected_output_listbox()
 
+    # change gui when test interrupted
+    def test_interrupted_gui(self):
+        if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
+            self.instruction_listbox.show()
+            self.instruction_listbox.clear()
+            self.instruction_listbox.addItems(['test interrupted, but you can always start over:',
+                                               '* upload test file',
+                                               '* run full test sequence',
+                                               '* sit back and watch the test outcomes'])
+            self.test_output_label.hide()
+            self.test_output_listbox.hide()
+            self.expected_outcome_label.hide()
+            self.expected_outcome_listbox.hide()
+        else:
+            self.instruction_listbox.clear()
+            self.instruction_listbox.addItems(['test interrupted, but you can always start over:',
+                                               '* upload test file',
+                                               '* run full test sequence',
+                                               '* sit back and watch the test outcomes'])
+            QApplication.processEvents()
+
     # the actual (basic) upper listbox updates
     def cli_update_upper_listbox_gui(self, message):
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
+
