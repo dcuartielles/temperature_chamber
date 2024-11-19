@@ -166,7 +166,7 @@ class ProgressBar(QWidget):
                     degrees_difference) * 120000  # 2 min per degree, in millis, absolute value
 
         # adjust total duration according to what practice shows to be more realistic
-        self.total_duration = self.total_duration * 0.79
+        self.total_duration = self.total_duration * 0.83
 
         return self.total_duration
 
