@@ -493,8 +493,8 @@ class MainWindow(QMainWindow):
     def all_tests_complete(self, message):
         self.test_is_running = False
         self.progress.sequence_label.setText(message)
-        self.update_listbox_gui(message)
-        self.serial_label.show()
+        self.new_test(message)
+        self.serial_label.hide()
 
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
     def check_temp(self):

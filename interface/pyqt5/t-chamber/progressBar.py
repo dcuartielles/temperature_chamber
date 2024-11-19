@@ -93,10 +93,6 @@ class ProgressBar(QWidget):
         # reset sequence progress bar
         self.current_sequence_index = 0
         self.sequence_progress_bar.set_sequence_data(self.sequence_durations, self.current_sequence_index)
-        self.number_of_sequences += 1
-        if self.number_of_sequences >= len(self.sequence_durations):
-            alert = 'all tests complete'
-            self.alert_all_tests_complete_signal.emit(alert)
 
     # update the actual progress bar for overall test time
     def update_time_progress(self):
@@ -117,6 +113,13 @@ class ProgressBar(QWidget):
         self.current_sequence_index += 1
         if self.current_sequence_index <= len(self.sequence_durations):
             self.sequence_progress_bar.set_sequence_data(self.sequence_durations, self.current_sequence_index)
+            self.number_of_sequences += 1
+            logger.debug(self.number_of_sequences)
+            if self.number_of_sequences == len(self.sequence_durations):
+                alert = 'all tests complete'
+                self.alert_all_tests_complete_signal.emit(alert)
+            elif self.number_of_sequences > len(self.sequence_durations):
+                return
         else:
             return
 
@@ -172,7 +175,7 @@ class ProgressBar(QWidget):
                     degrees_difference) * 120000  # 2 min per degree, in millis, absolute value
 
         # adjust total duration according to what practice shows to be more realistic
-        self.total_duration = self.total_duration * 0.83
+        # self.total_duration = self.total_duration * 0.93
 
         return self.total_duration
 
@@ -202,3 +205,4 @@ class ProgressBar(QWidget):
     def alert_all_tests_complete(self, message):
         alert = message
         self.alert_all_tests_complete_signal.emit(alert)
+        self.time_label.setText(alert)
