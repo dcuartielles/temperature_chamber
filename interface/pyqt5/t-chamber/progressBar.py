@@ -129,14 +129,15 @@ class ProgressBar(QWidget):
         self.time_progress_bar.setStyleSheet("QProgressBar::chunk { background-color: #EE088C; }")
 
         self.elapsed_minutes = self.actual_runtime / 60000
+        minutes = f"{self.elapsed_minutes:.2f}"
         if self.elapsed_minutes >= 60:
             elapsed_hours = self.elapsed_minutes / 60
             formatted_hours = f"{elapsed_hours:.2f}"
             logger.info(f'actual runtime was {formatted_hours} hrs')
             self.time_label.setText(f'done in {formatted_hours} hrs')
         else:
-            logger.info(f'actual runtime was {self.elapsed_minutes} min')
-            self.time_label.setText(f'done in {self.elapsed_minutes} min')
+            logger.info(f'actual runtime was {minutes} min')
+            self.time_label.setText(f'done in {minutes} min')
 
     # trigger new sequence progress bar update
     def advance_sequence(self):
