@@ -236,7 +236,7 @@ class MainWindow(QMainWindow):
 
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
-                    self.manual_tab.test_interrupted.connect(self.on_cli_test_interrupted_by_other_events)
+                    self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
                     self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
 
                 except Exception as e:
@@ -354,7 +354,7 @@ class MainWindow(QMainWindow):
             logger.info('test board worker restarted through cli interrupted')
             self.main_tab.on_run_test_gui()
 
-    # on cli test interrupted by manual temp setting or em stop or control board reset
+    '''# on cli test interrupted by manual temp setting or em stop or control board reset
     def on_cli_test_interrupted_by_other_events(self):
         if self.cli_worker:
             logger.info('cli being interrupted')
@@ -379,7 +379,7 @@ class MainWindow(QMainWindow):
         else:
             message = 'test was interrupted'
             self.test_interrupted_gui(message)
-            self.main_tab.test_interrupted_gui()
+            self.main_tab.test_interrupted_gui() '''
 
     # clean up cli worker after it's done
     def cleanup_cli_worker(self):
@@ -430,8 +430,6 @@ class MainWindow(QMainWindow):
     def emergency_stop_gui(self, message):
         self.test_label_no_test()
         self.test_interrupted_gui(message)
-        if self.cli_worker and self.cli_worker.is_running:
-            self.on_cli_test_interrupted_by_other_events()
         item = QListWidgetItem(message)
         font = QFont()
         font.setBold(True)
@@ -576,7 +574,7 @@ class MainWindow(QMainWindow):
         logger.info(self.machine_state)
 
         if self.machine_state == 'EMERGENCY_STOP':
-            self.on_cli_test_interrupted_by_other_events()
+            # self.on_cli_test_interrupted_by_other_events()
             # if alert popup has not been shown, show it
             if not self.self.emergency_stop_popup_shown:
                 popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
@@ -628,8 +626,8 @@ class MainWindow(QMainWindow):
         self.machine_state = machine_state
         logger.info(self.machine_state)
 
-        if self.machine_state == 'RESET':
-            self.on_cli_test_interrupted_by_other_events()
+        # if self.machine_state == 'RESET':
+            # self.on_cli_test_interrupted_by_other_events()
 
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
