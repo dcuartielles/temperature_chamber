@@ -354,33 +354,6 @@ class MainWindow(QMainWindow):
             logger.info('test board worker restarted through cli interrupted')
             self.main_tab.on_run_test_gui()
 
-    '''# on cli test interrupted by manual temp setting or em stop or control board reset
-    def on_cli_test_interrupted_by_other_events(self):
-        if self.cli_worker:
-            logger.info('cli being interrupted')
-            self.cli_worker.finished.disconnect(self.cleanup_cli_worker)
-            self.cli_worker.is_running = False
-            self.cli_worker.stop()
-            self.cli_worker.quit()
-            self.cli_worker.wait()
-            logger.info('cli worker quit bcs interrupted')
-            self.cli_worker.deleteLater()
-            logger.info('cli worker deleted bcs interrupted')
-            time.sleep(1.5)  # time for the port to fully close before restarting
-
-            # restart test board worker thread
-            self.test_board = TestBoardWorker(self.test_data, port=self.selected_t_port, baudrate=9600)
-            self.test_board.start()  # start test board thread
-            self.test_board.is_running = True
-            logger.info('test board worker restarted through cli interrupted')
-            message = 'test was interrupted'
-            self.test_interrupted_gui(message)
-            self.main_tab.test_interrupted_gui()
-        else:
-            message = 'test was interrupted'
-            self.test_interrupted_gui(message)
-            self.main_tab.test_interrupted_gui() '''
-
     # clean up cli worker after it's done
     def cleanup_cli_worker(self):
         self.cli_worker.is_running = False
@@ -485,7 +458,8 @@ class MainWindow(QMainWindow):
     # display info about all tests being complete
     def all_tests_complete(self, message):
         self.test_is_running = False
-        self.progress.sequence_label.setText(message)
+        all_done = 'all tests complete'
+        self.progress.sequence_label.setText(all_done)
         self.new_test(message)
         self.serial_label.hide()
 
@@ -569,7 +543,6 @@ class MainWindow(QMainWindow):
         logger.info(self.machine_state)
 
         if self.machine_state == 'EMERGENCY_STOP':
-            # self.on_cli_test_interrupted_by_other_events()
             # if alert popup has not been shown, show it
             if not self.self.emergency_stop_popup_shown:
                 popups.show_error_message('warning', 'the system is off: DO SOMETHING!')

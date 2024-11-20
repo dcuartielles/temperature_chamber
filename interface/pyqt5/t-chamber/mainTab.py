@@ -172,7 +172,6 @@ class MainTab(QWidget):
             self.instruction_listbox.show()
             self.instruction_listbox.clear()
             self.instruction_listbox.addItems(['test interrupted, but you can always start over:',
-                                               '* upload test file',
                                                '* run full test sequence',
                                                '* sit back and watch the test outcomes'])
             QApplication.processEvents()
