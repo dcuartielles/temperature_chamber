@@ -123,6 +123,11 @@ class ProgressBar(QWidget):
     # stop stopwatch and save the actual runtime
     def stop_stopwatch(self):
         self.stopwatch_timer.stop()
+        # force progress bar to 100%
+        self.time_progress_bar.setValue(100)
+        # make it raspberry for success
+        self.time_progress_bar.setStyleSheet("QProgressBar::chunk { background-color: #EE088C; }")
+
         self.elapsed_minutes = self.actual_runtime / 60000
         if self.elapsed_minutes >= 60:
             elapsed_hours = self.elapsed_minutes / 60
