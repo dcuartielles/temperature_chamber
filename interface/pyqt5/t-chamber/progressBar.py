@@ -12,7 +12,7 @@ logger = setup_logger(__name__)
 class ProgressBar(QWidget):
 
     start_progress_signal = pyqtSignal(dict, int)  # signal from main to start timer for progress bars
-    alert_all_tests_complete_signal = pyqtSignal(str)
+    alert_all_tests_complete_signal = pyqtSignal(str)  # signal to update gui when last test sequence is complete
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -34,6 +34,12 @@ class ProgressBar(QWidget):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_time_progress)
         self.elapsed_time = 0
+        self.elapsed_minutes = 0
+
+        # timer to measure the actual runtime
+        self.stopwatch_timer = QTimer(self)
+        self.stopwatch_timer.timeout.connect(self.update_stopwatch)
+        self.actual_runtime = 0  # in milliseconds
 
         self.start_progress_signal.connect(self.start_progress)
 
@@ -93,6 +99,9 @@ class ProgressBar(QWidget):
         # reset sequence progress bar
         self.current_sequence_index = 0
         self.sequence_progress_bar.set_sequence_data(self.sequence_durations, self.current_sequence_index)
+        # start stopwatch
+        self.actual_runtime = 0
+        self.stopwatch_timer.start(1000)  # update / store every second
 
     # update the actual progress bar for overall test time
     def update_time_progress(self):
@@ -107,6 +116,23 @@ class ProgressBar(QWidget):
             logger.debug('setting up overall test time progress bar, no test data here yet')
             return
 
+    # stopwatch methods
+    def update_stopwatch(self):
+        self.actual_runtime += 1000  # increment actual runtime by 1 second
+
+    # stop stopwatch and save the actual runtime
+    def stop_stopwatch(self):
+        self.stopwatch_timer.stop()
+        self.elapsed_minutes = self.actual_runtime / 60000
+        if self.elapsed_minutes >= 60:
+            elapsed_hours = self.elapsed_minutes / 60
+            formatted_hours = f"{elapsed_hours:.2f}"
+            logger.info(f'actual runtime was {formatted_hours} hrs')
+            self.time_label.setText(f'done in {formatted_hours} hrs')
+        else:
+            logger.info(f'actual runtime was {self.elapsed_minutes} min')
+            self.time_label.setText(f'done in {self.elapsed_minutes} min')
+
     # trigger new sequence progress bar update
     def advance_sequence(self):
         logger.debug('triggering a new sequence')
@@ -116,7 +142,8 @@ class ProgressBar(QWidget):
             self.number_of_sequences += 1
             logger.debug(self.number_of_sequences)
             if self.number_of_sequences == len(self.sequence_durations):
-                alert = 'all tests complete'
+                self.stop_stopwatch()
+                alert = f'all tests complete in {self.elapsed_minutes} min'
                 self.alert_all_tests_complete_signal.emit(alert)
             elif self.number_of_sequences > len(self.sequence_durations):
                 return
@@ -205,4 +232,4 @@ class ProgressBar(QWidget):
     def alert_all_tests_complete(self, message):
         alert = message
         self.alert_all_tests_complete_signal.emit(alert)
-        self.time_label.setText(alert)
+
