@@ -49,7 +49,7 @@ class SerialCaptureWorker(QThread):
 
         # connect signals from main
         self.trigger_run_tests.connect(self.run_all_tests)
-        self.trigger_reset.connect(self.reset_test_board)
+        self.trigger_reset.connect(self.reset_control_board)
         self.trigger_emergency_stop.connect(self.emergency_stop)
 
         # flag to prevent test sequence segments to advance too fast
@@ -208,7 +208,6 @@ class SerialCaptureWorker(QThread):
             # handle case when no test data is found
             logger.warning('no test data found on file')
 
-
     # set temp & duration from the gui
     def set_temp(self, input_dictionary):
         if input_dictionary is not None:
@@ -220,7 +219,7 @@ class SerialCaptureWorker(QThread):
             logger.warning('nothing to set the t-chamber to')
 
     # reset test board
-    def reset_test_board(self):
+    def reset_control_board(self):
         reset = commands.reset()
         self.send_json_to_arduino(reset)
         logger.info('resetting control board')

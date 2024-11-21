@@ -275,8 +275,9 @@ class MainWindow(QMainWindow):
                 response = popups.show_dialog(
                     'a test is running: are you sure you want to interrupt it and proceed?')
                 if response == QMessageBox.Yes:
+                    self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                     if self.cli_worker.is_running:
-                        self.reset_control_board()
+                        #vself.reset_control_board()
                         message = 'test interrupted'
                         self.test_interrupted_gui(message)
                         logger.warning(message)
@@ -287,7 +288,7 @@ class MainWindow(QMainWindow):
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
                         message = 'test was interrupted'
-                        self.reset_control_board()
+                        # self.reset_control_board()
                         self.test_interrupted_gui(message)
                         logger.info(message)
                 elif response == QMessageBox.No:
@@ -413,6 +414,7 @@ class MainWindow(QMainWindow):
     # similar method to be triggered separately when a test is interrupted
     def test_interrupted_gui(self, message):
         self.test_is_running = False
+        self.reset_control_board()
         self.test_label_no_test()
         self.progress.hide()
         self.main_tab.test_interrupted_gui()
@@ -593,9 +595,6 @@ class MainWindow(QMainWindow):
     def reset_from_arduino(self, machine_state):
         self.machine_state = machine_state
         logger.info(self.machine_state)
-
-        # if self.machine_state == 'RESET':
-            # self.on_cli_test_interrupted_by_other_events()
 
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
