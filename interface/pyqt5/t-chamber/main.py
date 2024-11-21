@@ -545,7 +545,7 @@ class MainWindow(QMainWindow):
 
         if self.machine_state == 'EMERGENCY_STOP':
             # if alert popup has not been shown, show it
-            if not self.self.emergency_stop_popup_shown:
+            if not self.emergency_stop_popup_shown:
                 popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
                 self.emergency_stop_popup_shown = True
                 logger.info('the system is off: DO SOMETHING!')
