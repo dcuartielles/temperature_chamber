@@ -1,0 +1,9 @@
+{
+    "handshake": {
+        "timestamp": "2024-10-28T10:38:00Z",
+        "current_state": "RESET",
+        "last_shutdown_cause": "EMERGENCY_STOP",
+        "last_shutdown_cause": "LOST CONNECTION",
+        "last_heat_time": "2024-10-25T10:38:00Z"
+    }
+}
