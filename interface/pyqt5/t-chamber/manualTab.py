@@ -82,6 +82,8 @@ class ManualTab(QWidget):
                     elif response == QMessageBox.No:
                         return
                 self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
+                message = 'temperature and duration set manually'
+                self.test_interrupted.emit(message)
                 if duration_string == '1':
                     current_string = f'temperature set to {temp_string}°C for the duration of {duration_string} minute'
                 else:
