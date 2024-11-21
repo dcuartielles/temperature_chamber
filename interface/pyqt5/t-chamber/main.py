@@ -401,7 +401,6 @@ class MainWindow(QMainWindow):
 
     # emergency stop gui
     def emergency_stop_gui(self, message):
-        self.test_label_no_test()
         self.test_interrupted_gui(message)
         item = QListWidgetItem(message)
         font = QFont()
