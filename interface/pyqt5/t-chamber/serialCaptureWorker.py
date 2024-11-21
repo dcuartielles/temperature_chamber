@@ -19,13 +19,7 @@ class SerialCaptureWorker(QThread):
     machine_state_signal = pyqtSignal(str)
     ping_timestamp_signal = pyqtSignal(str)
     # signals to main to update running test info
-    is_test_running_signal = pyqtSignal(bool)
     update_test_label_signal = pyqtSignal(dict)
-    current_test_signal = pyqtSignal(str)
-    current_sequence_signal = pyqtSignal(int)
-    desired_temp_signal = pyqtSignal(int)
-    current_duration_signal = pyqtSignal(int)
-    time_left_signal = pyqtSignal(int)
     no_port_connection = pyqtSignal()
     serial_running_and_happy = pyqtSignal()
     next_sequence_progress = pyqtSignal()
