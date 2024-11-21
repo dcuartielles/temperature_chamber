@@ -11,10 +11,12 @@ class ManualTab(QWidget):
     # signals to and from main
     send_temp_data = pyqtSignal(list)
     test_interrupted = pyqtSignal(str)
+    set_test_flag_to_false_signal = pyqtSignal()  # signal from main to set test is running to false
 
     def __init__(self, parent=None):
         self.input_dictionary = []
         super().__init__(parent)
+        self.set_test_flag_to_false_signal.connect(self.set_test_is_running_flag_to_false)
         self.test_is_running = False
         self.initUI()
 
@@ -126,3 +128,7 @@ class ManualTab(QWidget):
     def clear_current_setting_label(self):
         self.current_setting.setText('')
         self.clear_entries()
+
+    # set test is running flag to false
+    def set_test_is_running_flag_to_false(self):
+        self.test_is_running = False
