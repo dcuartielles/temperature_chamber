@@ -29,6 +29,13 @@ def get_arduino_boards():
                     board_name = board["matching_boards"][0].get("name", "Unknown Board")
                     arduino_ports.append((port, board_name))
 
+            # hypothetical handling for network-based boards
+            for network_board in boards_info.get("network_ports", []):
+                if "matching_boards" in network_board and network_board["matching_boards"]:
+                    port = network_board.get("port", {}).get("address", "Unknown Network Port")
+                    board_name = network_board["matching_boards"][0].get("name", "Unknown Board")
+                    arduino_ports.append((port, board_name))
+
             return arduino_ports
         except json.JSONDecodeError:
             logging.info("Error parsing arduino-cli board list output")
@@ -122,4 +129,4 @@ def handle_board_and_upload(port, sketch_path):
     else:
         logging.warning(f"Failed to detect board on port {port}.")
 
-handle_board_and_upload("/dev/cu.usbmodem14301", "../../../tests/alphabet/alphabet.ino")
+

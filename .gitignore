@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+logs/
+kivy/
+tkinter/
+.idea/

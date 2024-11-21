@@ -1,0 +1,12 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+__pycache__/
+*.pyc
+logs/
+kivy/
+tkinter/
+interface.iml
+misc.xml
+modules.xml
+vcs.xml

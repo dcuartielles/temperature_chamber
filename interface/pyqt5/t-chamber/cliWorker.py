@@ -1,17 +1,19 @@
 from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtWidgets import QMessageBox
 import subprocess
 import json
 import time
 import serial
-import logging
+import threading
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 
 class CliWorker(QThread):
 
-    finished = pyqtSignal()
+    finished = pyqtSignal()  # signal to main when the thread's work is done
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
-    pause_serial = pyqtSignal()  # signal to pause serial worker thread
-    resume_serial = pyqtSignal()  # signal to resume it
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -22,13 +24,14 @@ class CliWorker(QThread):
         self.is_open = True
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
-        self.last_command_time = time.time()
+        # flags preventing each and every one operation from running twice and interrupting the work
         self.is_uploading = False
         self.is_compiling = False
         self.is_detecting = False
         self.checking_core = False
         self.core_installed = False
         self.boards_are_there = False
+        # class variables
         self.test_data = None
         self.filepath = None
 
@@ -40,46 +43,45 @@ class CliWorker(QThread):
             self.baudrate = baudrate
         try:
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
-            logging.info(f'cli worker connected to arduino port: {self.port}')
-            print(f'cli worker connected to arduino port: {self.port}')
+            logger.info(f'cli worker connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
             return True
         except serial.SerialException as e:
-            logging.error(f'error: {e}')
+            logger.error(f'error: {e}')
             return False
 
+    # core run method
     def run(self):
         if not self.serial_setup():
-            logging.error(f'cli worker failed to connect to {self.port}')
-            print(f'cli worker failed to connect to {self.port}')
+            logger.error(f'cli worker failed to connect to {self.port}')
             return
-        logging.info('cli worker thread is running')
-        print('cli worker is running')
-
-        while self.is_running:
-            if not self.is_stopped:
-                self.run_all_tests(self.test_data, self.filepath)
+        logger.info('cli worker thread is running')
+        # wrap the whole while-loop in a try-except statement to prevent crashes in case of system failure
+        try:
+            while self.is_running and not self.is_stopped:
                 try:
-                    if not self.is_stopped and self.ser and self.ser.is_open:
-                        if time.time() - self.last_command_time > 5:
-                            self.last_command_time = time.time()
-                            print('all good on test side')
-
+                    # this worker thread's only task is to correctly upload a test sketch onto test board
+                    self.run_all_tests(self.test_data, self.filepath)
                 except serial.SerialException as e:
-                    logging.error(f'serial error in cli: {e}')
-                    print(f'serial error in cli worker: {e}')
+                    logger.exception(f'serial error in cli: {e}')
                     bye = f'serial error in cli worker: {str(e)}'
                     self.wave(bye)
                     self.is_running = False
                     break
+                time.sleep(0.1)  # prevent jamming
+        except Exception as e:
+            # catch any other unexpected exceptions
+            logger.exception(f'unexpected error: {e}')
+            self.is_running = False
 
-            time.sleep(0.1)
         self.stop()
 
+    # assign test file and file path to class variables
     def set_test_data(self, test_data, filepath):
         self.test_data = test_data
         self.filepath = filepath
 
+    # emit message (via signal) to be displayed in main
     def wave(self, hello):
         if hello:
             self.update_upper_listbox.emit(hello)
@@ -89,57 +91,34 @@ class CliWorker(QThread):
         self.is_running = False  # stop the worker thread loop
         if self.ser and self.ser.is_open:
             self.ser.close()  # close the serial connection
-            logging.info(f'connection to {self.port} closed now')
-            print(f'connection to {self.port} closed now')
+            logger.info(f'connection to {self.port} closed now')
         self.quit()
         self.wait()
 
-    def run_cli_command(self, command):
+    # static method for running cli commands
+    @staticmethod
+    def run_cli_command(command):
         try:
             result = subprocess.run(command, capture_output=True, text=True, check=True)
-            logging.info(f'command succeeded: {" ".join(command)}')
+            logger.info(f'command succeeded: {" ".join(command)}')
 
             return result.stdout
         except subprocess.CalledProcessError as e:
-            logging.info(f'command failed: {e.stderr}')
+            logger.info(f'command failed: {e.stderr}')
             return None
 
-    def get_arduino_boards(self):
-
-        if self.boards_are_there:
-            logging.warning('boards are already detected, moving on')
-            return
-
-        command = ["arduino-cli", "board", "list", "--format", "json"]
-        output = self.run_cli_command(command)
-
-        if output:
-            self.boards_are_there = True
-            try:
-                boards_info = json.loads(output)
-                arduino_ports = []
-
-                for board in boards_info.get("detected_ports", []):
-                    if "matching_boards" in board and board["matching_boards"]:
-                        port = board.get("port", {}).get("address", "unknown port")
-                        board_name = board["matching_boards"][0].get("name", "unknown board")
-                        arduino_ports.append((port, board_name))
-                return arduino_ports
-            except json.JSONDecodeError:
-                logging.info('error parsing arduino-cli board list output')
-                return []
-        return []
-
+    # detect test board
     def detect_board(self, port):
-
         if self.is_detecting:
-            logging.warning('boards already detected: skipping new detect request')
+            logger.warning('boards already detected: skipping new detect request')
             return
 
         command = ["arduino-cli", "board", "list", "--format", "json"]
         output = self.run_cli_command(command)
 
         if output:
+            headsup = 'detecting test board'
+            self.wave(headsup)
             boards_info = json.loads(output)
             for board in boards_info.get("detected_ports", []):
                 if board["port"]["address"] == port:
@@ -147,17 +126,17 @@ class CliWorker(QThread):
                         fqbn = board["matching_boards"][0].get("fqbn", None)
                         if fqbn:
                             self.is_detecting = True
-                            logging.info(f'detected fqbn: {fqbn}')
+                            logger.info(f'detected fqbn: {fqbn}')
                             return fqbn
                         else:
-                            logging.warning(f'no fqbn found for board on port {port}')
+                            logger.warning(f'no fqbn found for board on port {port}')
                             return None
         return None
 
+    # check if core is installed on test board
     def is_core_installed(self, fqbn):
-
         if self.checking_core:
-            logging.warning('checking core already: skipping new check core request')
+            logger.warning('checking core already: skipping new check core request')
             return
 
         core_name = fqbn.split(":")[0]
@@ -169,33 +148,33 @@ class CliWorker(QThread):
             installed_cores = output.splitlines()
             for core in installed_cores:
                 if core_name in core:
-                    logging.info(f'core {core_name} is already installed.')
+                    logger.info(f'core {core_name} is already installed.')
                     return True
         return False
 
+    # install core on test board, if necessary
     def install_core_if_needed(self, fqbn):
-
         if self.core_installed:
-            logging.warning('core already installed: skipping new core install request')
+            logger.warning('core already installed: skipping new core install request')
             return
 
         core_name = fqbn.split(":")[0]
 
         if not self.is_core_installed(fqbn):
             self.core_installed = True
-            logging.info(f'core {core_name} not installed. installing...')
+            logger.info(f'core {core_name} not installed. installing...')
             update = 'installing core on test board'
             self.wave(update)
             command = ["arduino-cli", "core", "install", core_name]
             self.run_cli_command(command)
 
+    # compile sketch before upload
     def compile_sketch(self, fqbn, sketch_path):
-
         if self.is_compiling:
-            logging.warning('compiling already: skipping new compile request')
+            logger.warning('compiling already: skipping new compile request')
             return
 
-        logging.info(f'compiling sketch for the board with fqbn {fqbn}...')
+        logger.info(f'compiling sketch for the board with fqbn {fqbn}...')
         headsup = 'compiling sketch for test board'
         self.wave(headsup)
         command = [
@@ -206,25 +185,25 @@ class CliWorker(QThread):
         result = self.run_cli_command(command)
         if result:
             self.is_compiling = True
-            logging.info('compilation successful!')
+            logger.info('compilation successful!')
             yes = 'compilation successful!'
             self.wave(yes)
             time.sleep(0.5)
             return True
         else:
-            logging.warning('compilation failed')
+            logger.warning('compilation failed')
             no = 'compilation failed'
             self.wave(no)
             time.sleep(0.5)
             return False
 
+    # upload sketch on test board
     def upload_sketch(self, fqbn, port, sketch_path):
-
         if self.is_uploading:
-            logging.warning('uploading already: skipping new upload request')
+            logger.warning('uploading already: skipping new upload request')
             return
 
-        logging.info(f'uploading sketch to board with fqbn {fqbn} on port {port}...')
+        logger.info(f'uploading sketch to board with fqbn {fqbn} on port {port}...')
         uploading = 'uploading sketch on test board'
         self.wave(uploading)
         time.sleep(0.5)
@@ -243,50 +222,28 @@ class CliWorker(QThread):
 
                 if result:
                     self.is_uploading = True
-                    logging.info('upload successful!')
-                    print('upload successful!')
+                    logger.info('upload successful!')
                     bye = 'upload successful!'
                     self.wave(bye)
-                    time.sleep(2.5)
-                    self.finished.emit()
+                    time.sleep(2)
+                    self.finished.emit()    # signal to main the cli worker's job is finished
                     return True
                 else:
-                    logging.warning('upload failed!')
-                    print('upload failed!')
+                    logger.warning('upload failed!')
                     bye = 'upload failed!'
                     self.wave(bye)
-
-                    self.finished.emit()
+                    self.finished.emit()    # signal to main the cli worker's job can't be completed
                     return False
             else:
-
-                logging.warning(f'cli worker port connection to {port} seems to fail')
-                print(f'cli worker port connection to {port} seems to fail')
-                self.finished.emit()
+                logger.warning(f'cli worker port connection to {port} seems to fail')
 
         except serial.SerialException as e:
-            logging.error(f'serial error on cli thread during upload: {e}')
+            logger.error(f'serial error on cli thread during upload: {e}')
             error = f'serial error on cli thread during upload: {str(e)}'
             self.wave(error)
+            self.finished.emit()    # signal to main the cli worker's job can't be completed
 
-            self.finished.emit()
-
-    def reset_arduino(self):
-        if self.ser:
-            try:
-                self.ser.setDTR(False)  # reset arduino by setting str to False
-                time.sleep(0.5)  # time to reset
-                self.ser.setDTR(True)  # re-enable dtr
-                logging.info(f'arduino on {self.port} reset successfully')
-                print(f'arduino on {self.port} reset successfully')
-                reset = 'test board reset successfully'
-                self.wave(reset)
-                time.sleep(0.5)
-
-            except serial.SerialException as e:
-                logging.error(f'failed to reset arduino on {self.port}: {e}')
-                print(f'arduino on {self.port} reset successfully')
-
+    # all-in method for handling sketch upload
     def handle_board_and_upload(self, port, sketch_path):
         fqbn = self.detect_board(port)
         if fqbn:
@@ -295,36 +252,30 @@ class CliWorker(QThread):
                 self.upload_sketch(fqbn, port, sketch_path)
                 return True
             else:
-                logging.error('aborting upload due to compilation failure.')
+                logger.error('aborting upload due to compilation failure.')
         else:
-            logging.warning(f'failed to detect board on port {port}.')
+            logger.warning(f'failed to detect board on port {port}.')
         return False
 
     # run the entire test file
     def run_all_tests(self, test_data, filepath):
         if test_data and filepath:  # take test_data & port number from main
-            logging.info(f'running test with testdata filepath: {filepath}')
+            logger.info(f'running test with testdata filepath: {filepath}')
             test_data_filepath = filepath.rsplit('/', 1)[0]
-            all_tests = [key for key in test_data.keys()]
+            if 'tests' in test_data:
+                all_tests = [key for key in test_data['tests'].keys()]
+                # iterate through each test and run it
+                for test_key in all_tests:
+                    test = test_data['tests'].get(test_key, {})
+                    sketch_path = test.get('sketch', '')  # get .ino file path
 
-            if self.ser and self.ser.is_open:
-                # self.serial_is_busy = True
-                self.pause_serial.emit()  # emit pause signal to serial capture worker thread to avoid conflicts
+                    if sketch_path:  # if the sketch is available
+                        sketch_filename = sketch_path.split('/')[-1]  # get ino file name
+                        sketch_full_path = test_data_filepath + '/' + sketch_filename
+                        self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
 
-            # iterate through each test and run it
-            for test_key in all_tests:
-                test = test_data.get(test_key, {})
-                sketch_path = test.get('sketch', '')  # get .ino file path
-
-                if sketch_path:  # if the sketch is available
-                    sketch_filename = sketch_path.split('/')[-1]  # get ino file name
-                    sketch_full_path = test_data_filepath + '/' + sketch_filename
-                    print(sketch_full_path)
-                    self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
-                    self.resume_serial.emit()  # let serial capture thread resume
-                else:
-                    logging.warning('sketch path not found')
+                    else:
+                        logger.warning('sketch path not found')
         else:
             # handle case when no test data is found
-            print('can\'t do it')
-
+            logger.info('can\'t do it')

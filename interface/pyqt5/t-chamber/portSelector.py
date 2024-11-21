@@ -1,10 +1,15 @@
-import logging
 from PyQt5.QtWidgets import QComboBox, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QSpacerItem
 import arduinoUtils
+from PyQt5.QtCore import pyqtSignal
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 
 # class for the port selection ui
 class PortSelector(QWidget):
+    ports_refreshed = pyqtSignal()  # signal to re-enable start button
+
     def __init__(self, config):
         super().__init__()
 
@@ -14,10 +19,10 @@ class PortSelector(QWidget):
         self.c_b_name_label = QLabel('control board')
         self.t_port_dropdown = QComboBox()
         self.c_port_dropdown = QComboBox()
-        self.setStyleSheet('background-color: white;'
-                           'color: #009FAF;'
-                           'alignment: right;'
-                           'font-weight: bold;')
+        self.setStyleSheet('color: #009FAF;'
+                                         'background-color: white;'
+                                         'alignment: right;'
+                                         'font-weight: bold;')
 
         self.refresh_button = QPushButton('refresh')
         self.refresh_button.setFixedSize(80, 37)
@@ -52,8 +57,8 @@ class PortSelector(QWidget):
         self.t_port_dropdown.currentIndexChanged.connect(self.update_config_t)
         self.c_port_dropdown.currentIndexChanged.connect(self.update_config_c)
 
-        self.update_config_t()
-        self.update_config_c()
+        self.update_config_t()  # update test board & port in config
+        self.update_config_c()  # update control board & port in config
 
     # load ports and boards from config
     def load_all_from_config(self):
@@ -67,6 +72,7 @@ class PortSelector(QWidget):
         saved_c_port = saved_c_board.get('port')
         saved_c_name = saved_c_board.get('board_name')
 
+        # create a dropdown menu
         if saved_t_port and saved_t_name:
             for i in range(self.t_port_dropdown.count()):
                 display_text = self.t_port_dropdown.itemText(i)
@@ -83,7 +89,13 @@ class PortSelector(QWidget):
 
     # refresh ports (independent of config)
     def refresh_ports(self):
+        logger.info('ports refreshed')
+        self.ports_refreshed.emit()  # emit signal to re-enable start button click
         ports_and_boards = arduinoUtils.get_arduino_boards()  # should be [(port, board_name), (port, board_name)]
+        if not ports_and_boards:
+            logger.info('no boards connected')
+            return None
+        logger.info(ports_and_boards)
         self.t_port_dropdown.clear()
         self.c_port_dropdown.clear()
         # add both board name and port to dropdowns
@@ -108,7 +120,7 @@ class PortSelector(QWidget):
             # update  config
             self.config.set_c_board(c_port, c_board_name)
 
-    # get selected port ONLY for test board / cli worker threads
+    # get selected port ONLY (for test board / cli worker thread configuration)
     def get_selected_t_port(self):
         saved_t_board = self.config.get('test_board', {})
         saved_t_port = saved_t_board.get('port')
@@ -118,7 +130,7 @@ class PortSelector(QWidget):
             port, _ = self.t_port_dropdown.itemData(self.t_port_dropdown.currentIndex())
             return str(port)
 
-    # get selected port ONLY for control board worker
+    # get selected port ONLY for control board worker (for control board / serial worker thread configuration)
     def get_selected_c_port(self):
         saved_c_board = self.config.get('control_board', {})
         saved_c_port = saved_c_board.get('port')
