@@ -11,7 +11,6 @@ class ManualTab(QWidget):
     # signals to and from main
     send_temp_data = pyqtSignal(list)
     test_interrupted = pyqtSignal(str)
-    set_flag_to_false = pyqtSignal()
 
     def __init__(self, parent=None):
         self.input_dictionary = []
@@ -76,7 +75,6 @@ class ManualTab(QWidget):
                     if response == QMessageBox.Yes:
                         message = 'test interrupted'
                         self.test_interrupted.emit(message)
-                        self.set_flag_to_false.emit()
                         self.test_is_running = False
                         logger.warning(message)
                     elif response == QMessageBox.No:

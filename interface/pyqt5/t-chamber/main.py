@@ -237,7 +237,6 @@ class MainWindow(QMainWindow):
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
                     self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
-                    self.manual_tab.set_flag_to_false.connect(self.set_flag_to_false)
 
                 except Exception as e:
                     logger.exception(f'failed to start serial worker: {e}')
@@ -659,10 +658,6 @@ class MainWindow(QMainWindow):
         logger.info('start button re-enabled')
 
     # HIDDEN FUNCTIONALITY
-    # method to set test_is_running to False when test_interrupted from manual
-    def set_flag_to_false(self):
-        self.test_is_running = False
-
     # stop both workers
     def closeEvent(self, event):
         self.serial_worker.stop()
