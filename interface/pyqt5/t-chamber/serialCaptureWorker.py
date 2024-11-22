@@ -5,6 +5,7 @@ import json
 from logger_config import setup_logger
 import commands
 from datetime import datetime
+from queue import Queue
 
 logger = setup_logger(__name__)
 
@@ -19,17 +20,13 @@ class SerialCaptureWorker(QThread):
     machine_state_signal = pyqtSignal(str)
     ping_timestamp_signal = pyqtSignal(str)
     # signals to main to update running test info
-    is_test_running_signal = pyqtSignal(bool)
     update_test_label_signal = pyqtSignal(dict)
-    current_test_signal = pyqtSignal(str)
-    current_sequence_signal = pyqtSignal(int)
-    desired_temp_signal = pyqtSignal(int)
-    current_duration_signal = pyqtSignal(int)
-    time_left_signal = pyqtSignal(int)
     no_port_connection = pyqtSignal()
     serial_running_and_happy = pyqtSignal()
     next_sequence_progress = pyqtSignal()
     sequence_complete = pyqtSignal(str)
+    # signal to main to trigger sketch uploads for each new test
+    upload_sketch_again_signal = pyqtSignal(str)
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -49,7 +46,7 @@ class SerialCaptureWorker(QThread):
 
         # connect signals from main
         self.trigger_run_tests.connect(self.run_all_tests)
-        self.trigger_reset.connect(self.reset_test_board)
+        self.trigger_reset.connect(self.reset_control_board)
         self.trigger_emergency_stop.connect(self.emergency_stop)
 
         # flag to prevent test sequence segments to advance too fast
@@ -68,6 +65,9 @@ class SerialCaptureWorker(QThread):
         self.desired_temp = None
         self.time_left = None
         self.current_temperature = None
+        self.test_number = 0
+        # set up que for processing responses from serial
+        self.response_queue = Queue()
 
     # CORE THREAD METHODS
     # set up serial communication
@@ -108,6 +108,11 @@ class SerialCaptureWorker(QThread):
                             response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                             if response:
                                 self.process_response(response)  # update and show curated responses
+
+                            # make sure responses added to que by send_json be processed as well
+                            if not self.response_queue.empty():
+                                response = self.response_queue.get()
+                                self.process_response(response)
 
                             if time.time() - self.last_ping >= 0.5:
                                 self.last_ping = time.time()
@@ -208,7 +213,6 @@ class SerialCaptureWorker(QThread):
             # handle case when no test data is found
             logger.warning('no test data found on file')
 
-
     # set temp & duration from the gui
     def set_temp(self, input_dictionary):
         if input_dictionary is not None:
@@ -220,7 +224,7 @@ class SerialCaptureWorker(QThread):
             logger.warning('nothing to set the t-chamber to')
 
     # reset test board
-    def reset_test_board(self):
+    def reset_control_board(self):
         reset = commands.reset()
         self.send_json_to_arduino(reset)
         logger.info('resetting control board')
@@ -261,11 +265,12 @@ class SerialCaptureWorker(QThread):
                 self.ser.write((json_data + '\n').encode('utf-8'))
                 time.sleep(0.01)
                 logger.info(f'sent to arduino: {json_data}')
-
-                # continuously read arduino output (blocking method, runs inside the thread)
+                # blocking method within thread
                 while self.ser.in_waiting > 0:
                     response = self.ser.readline().decode('utf-8').strip()
                     logger.info(f'arduino says: {response}')
+                    # capture all serial responses for thread to process properly
+                    self.response_queue.put(response)
             else:
                 logger.warning('serial not open')
         except serial.SerialException as e:
@@ -273,11 +278,20 @@ class SerialCaptureWorker(QThread):
 
     # process serial response
     def process_response(self, response):
+        logger.debug(f"raw response: {repr(response)}")
+        clean_response = response.strip()  # remove leading/trailing whitespace
+        logger.debug(f"cleaned response: {repr(clean_response)}")
+
         # list of responses to be picked up
-        trigger_responses = ['Setting', 'Running', 'Test complete', 'Target temperature reached!']
+        trigger_responses = ['Setting', 'Target temperature reached!']
         if any(response.strip().startswith(trigger) for trigger in trigger_responses):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
+        elif 'Test complete' in response.strip():
+            logger.info(f'arduino says {response}, sending signal to upload sketch for new test')
+            self.test_number += 1
+            message = f'test {self.test_number} complete'
+            self.upload_sketch_again_signal.emit(message)
         elif response.strip().startswith('Waiting'):
             self.sequence_has_been_advanced = False
             self.update_listbox.emit(response)  # emit signal to update listbox
@@ -289,4 +303,4 @@ class SerialCaptureWorker(QThread):
                 self.sequence_complete.emit('sequence complete')
                 self.sequence_has_been_advanced = True
         else:
-            logger.info(response)
+            logger.info(f'complete response from arduino: {response}')

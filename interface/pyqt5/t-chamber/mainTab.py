@@ -60,7 +60,7 @@ class MainTab(QWidget):
         self.expected_outcome_label = QLabel('expected output', self)
         self.expected_outcome_label.hide()
         self.expected_outcome_listbox = QListWidget(self)
-        self.expected_outcome_listbox.setFixedSize(475, 50)
+        self.expected_outcome_listbox.setFixedSize(475, 30)
         self.expected_outcome_listbox.hide()
         test_output_layout.addWidget(self.expected_outcome_label)
         test_output_layout.addWidget(self.expected_outcome_listbox)
@@ -78,8 +78,8 @@ class MainTab(QWidget):
     def expected_output_listbox(self):
         exp_outputs = self.expected_output(self.test_data)
         self.expected_outcome_listbox.clear()
-        for output in exp_outputs:
-            self.expected_outcome_listbox.addItem(f'{output}')
+        expected_output = exp_outputs[0]
+        self.expected_outcome_listbox.addItem(f'{expected_output}')
         self.expected_outcome_listbox.scrollToBottom()
 
     # OUTPUT CHECKING PART
@@ -148,6 +148,19 @@ class MainTab(QWidget):
         self.expected_outcome_label.show()
         self.expected_outcome_listbox.show()
         self.expected_output_listbox()
+
+    # simple main tab gui for subsequent sketch uploads between tests
+    def sketch_upload_between_tests_gui(self):
+        if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
+            self.test_output_label.hide()
+            self.test_output_listbox.hide()
+            self.expected_outcome_label.hide()
+            self.expected_outcome_listbox.hide()
+            self.instruction_listbox.show()
+            self.instruction_listbox.clear()
+        else:
+            self.instruction_listbox.clear()
+            QApplication.processEvents()
 
     # change gui when test interrupted
     def test_interrupted_gui(self):

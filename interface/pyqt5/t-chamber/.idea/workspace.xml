@@ -4,20 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7c6001c7-ad6f-4254-a251-31cd602b3900" name="Changes" comment="resolved">
-      <change afterPath="$PROJECT_DIR$/../../../comm-protocol/commands.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../comm-protocol/handshake.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../comm-protocol/ping_response.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../comm-protocol/shutdown_log.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../../comm-protocol/tests.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../firstDesigner.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../firstDesigner.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../learning.py" beforeDir="false" afterPath="$PROJECT_DIR$/../learning.py" afterDir="false" />
+    <list default="true" id="7c6001c7-ad6f-4254-a251-31cd602b3900" name="Changes" comment="cannot ignore so i push">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mainTab.py" beforeDir="false" afterPath="$PROJECT_DIR$/mainTab.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manualTab.py" beforeDir="false" afterPath="$PROJECT_DIR$/manualTab.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serialCaptureWorker.py" beforeDir="false" afterPath="$PROJECT_DIR$/serialCaptureWorker.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +39,7 @@
     "Python.progressBar.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Merging main",
     "last_opened_file_path": "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/interface/pyqt5/t-chamber",
     "settings.editor.selected.configurable": "editor.preferences.fonts.default"
   }
@@ -97,20 +89,10 @@
       <option name="presentableId" value="Default" />
       <updated>1729503402339</updated>
     </task>
-    <task id="LOCAL-00001" summary="resolved">
-      <option name="closed" value="true" />
-      <created>1732181268104</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1732181268104</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update constants for max number of tests in queue &amp; sequences in tests&#10;- Add constant 'MAX_SEQUENCES_IN_TEST' to easily modify in the future.&#10;- Update 'MAX_QUEUED_TESTS' to allow 10 queued tests as maximum.&#10;- Remove redundant commented out debugging code." />
-    <MESSAGE value="resolved" />
-    <option name="LAST_COMMIT_MESSAGE" value="resolved" />
+    <MESSAGE value="cannot ignore so i push" />
+    <option name="LAST_COMMIT_MESSAGE" value="cannot ignore so i push" />
   </component>
 </project>
