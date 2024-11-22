@@ -357,8 +357,9 @@ class MainWindow(QMainWindow):
         self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
 
     # upload sketch for each test separately
-    def upload_sketch_for_new_test(self):
-        if self.test_data and not self.test_board.is_stopped:
+    def upload_sketch_for_new_test(self, message):
+        self.new_test(message)
+        if not self.test_board.is_stopped:
             try:
                 self.main_tab.sketch_upload_between_tests_gui()
                 self.test_board.is_running = False

@@ -25,7 +25,7 @@ class SerialCaptureWorker(QThread):
     next_sequence_progress = pyqtSignal()
     sequence_complete = pyqtSignal(str)
     # signal to main to trigger sketch uploads for each new test
-    upload_sketch_again_signal = pyqtSignal()
+    upload_sketch_again_signal = pyqtSignal(str)
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -270,7 +270,7 @@ class SerialCaptureWorker(QThread):
     # process serial response
     def process_response(self, response):
         # list of responses to be picked up
-        trigger_responses = ['Setting', 'Running', 'Test complete', 'Target temperature reached!']
+        trigger_responses = ['Setting', 'Target temperature reached!']
         if any(response.strip().startswith(trigger) for trigger in trigger_responses):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
@@ -279,10 +279,10 @@ class SerialCaptureWorker(QThread):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
         elif response.strip().startswith('Test complete'):
-            self.upload_sketch_again_signal.emit()
+            logger.info(f'arduino says {response}, sending signal to upload sketch for new test')
             self.test_number += 1
             message = f'test {self.test_number} complete'
-            self.sequence_complete.emit(message)
+            self.upload_sketch_again_signal.emit(message)
         elif response.strip().startswith('Sequence complete'):
             if not self.sequence_has_been_advanced:
                 self.next_sequence_progress.emit()
