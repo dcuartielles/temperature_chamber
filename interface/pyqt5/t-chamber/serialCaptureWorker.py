@@ -278,7 +278,7 @@ class SerialCaptureWorker(QThread):
             self.sequence_has_been_advanced = False
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
-        elif response.strip().startswith('Test complete'):
+        elif response.strip().startswith('Test'):
             logger.info(f'arduino says {response}, sending signal to upload sketch for new test')
             self.test_number += 1
             message = f'test {self.test_number} complete'

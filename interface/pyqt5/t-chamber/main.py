@@ -360,22 +360,19 @@ class MainWindow(QMainWindow):
     def upload_sketch_for_new_test(self, message):
         self.new_test(message)
         if not self.test_board.is_stopped:
-            try:
-                self.main_tab.sketch_upload_between_tests_gui()
-                self.test_board.is_running = False
-                self.test_board.stop()
-                self.test_board.deleteLater()
-                logger.info('test board worker temporarily deleted for subsequent sketch upload')
-                # initiate cli worker thread
-                self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
-                self.cli_worker.set_test_data(self.test_data, self.filepath)
-                self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
-                self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
-                self.cli_worker.start()  # start cli worker thread
-                logger.info('cli worker started for new test upload')
-                time.sleep(0.1)
-            except:
-                logger.exception('method for sketch upload btw tests failed')
+            self.main_tab.sketch_upload_between_tests_gui()
+            self.test_board.is_running = False
+            self.test_board.stop()
+            self.test_board.deleteLater()
+            logger.info('test board worker temporarily deleted for subsequent sketch upload')
+            # initiate cli worker thread
+            self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
+            self.cli_worker.set_test_data(self.test_data, self.filepath)
+            self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
+            self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
+            self.cli_worker.start()  # start cli worker thread
+            logger.info('cli worker started for new test upload')
+            time.sleep(0.1)
 
     # on cli test interrupted by another test
     def on_cli_test_interrupted(self):
