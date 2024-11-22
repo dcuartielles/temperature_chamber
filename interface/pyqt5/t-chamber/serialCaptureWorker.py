@@ -65,6 +65,8 @@ class SerialCaptureWorker(QThread):
         self.time_left = None
         self.current_temperature = None
         self.test_number = 0
+        # set up que for processing responses from serial
+        self.response_queue = Queue()
 
     # CORE THREAD METHODS
     # set up serial communication
@@ -105,6 +107,11 @@ class SerialCaptureWorker(QThread):
                             response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                             if response:
                                 self.process_response(response)  # update and show curated responses
+
+                            # make sure responses added to que by send_json be processed as well
+                            if not self.response_queue.empty():
+                                response = self.response_queue.get()
+                                self.process_response(response)
 
                             if time.time() - self.last_ping >= 0.5:
                                 self.last_ping = time.time()
@@ -257,6 +264,12 @@ class SerialCaptureWorker(QThread):
                 self.ser.write((json_data + '\n').encode('utf-8'))
                 time.sleep(0.01)
                 logger.info(f'sent to arduino: {json_data}')
+                # blocking method within thread
+                while self.ser.in_waiting > 0:
+                    response = self.ser.readline().decode('utf-8').strip()
+                    logger.info(f'arduino says: {response}')
+                    # capture all serial responses for thread to process properly
+                    self.response_queue.put(response)
             else:
                 logger.warning('serial not open')
         except serial.SerialException as e:
