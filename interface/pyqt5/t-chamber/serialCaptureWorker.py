@@ -257,11 +257,6 @@ class SerialCaptureWorker(QThread):
                 self.ser.write((json_data + '\n').encode('utf-8'))
                 time.sleep(0.01)
                 logger.info(f'sent to arduino: {json_data}')
-
-                # continuously read arduino output (blocking method, runs inside the thread)
-                while self.ser.in_waiting > 0:
-                    response = self.ser.readline().decode('utf-8').strip()
-                    logger.info(f'arduino says: {response}')
             else:
                 logger.warning('serial not open')
         except serial.SerialException as e:
@@ -269,20 +264,24 @@ class SerialCaptureWorker(QThread):
 
     # process serial response
     def process_response(self, response):
+        logger.info(f"raw response: {repr(response)}")
+        clean_response = response.strip()  # remove leading/trailing whitespace
+        logger.info(f"cleaned response: {repr(clean_response)}")
+
         # list of responses to be picked up
         trigger_responses = ['Setting', 'Target temperature reached!']
         if any(response.strip().startswith(trigger) for trigger in trigger_responses):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
-        elif response.strip().startswith('Waiting'):
-            self.sequence_has_been_advanced = False
-            self.update_listbox.emit(response)  # emit signal to update listbox
-            logger.info(f'{response}')
-        elif response.strip().startswith('Test'):
+        elif 'Test' in response.strip():
             logger.info(f'arduino says {response}, sending signal to upload sketch for new test')
             self.test_number += 1
             message = f'test {self.test_number} complete'
             self.upload_sketch_again_signal.emit(message)
+        elif response.strip().startswith('Waiting'):
+            self.sequence_has_been_advanced = False
+            self.update_listbox.emit(response)  # emit signal to update listbox
+            logger.info(f'{response}')
         elif response.strip().startswith('Sequence complete'):
             if not self.sequence_has_been_advanced:
                 self.next_sequence_progress.emit()
