@@ -314,6 +314,7 @@ class MainWindow(QMainWindow):
                     self.serial_worker.update_test_label_signal.connect(self.update_test_label)
                     self.serial_worker.next_sequence_progress.connect(self.progress.advance_sequence)
                     self.serial_worker.sequence_complete.connect(self.new_test)
+                    self.serial_worker.upload_sketch_again_signal.connect(self.upload_sketch_for_new_test)
                 if not self.test_board.is_stopped:
                     self.test_board.is_running = False
                     self.test_board.stop()
@@ -332,6 +333,48 @@ class MainWindow(QMainWindow):
                 popups.show_error_message('error', 'no serial connection')
         else:
             popups.show_error_message('error', 'no test data loaded')
+
+    # clean up cli worker after it's done
+    def cleanup_cli_worker(self):
+        self.cli_worker.is_running = False
+        self.cli_worker.stop()
+        self.cli_worker.quit()
+        self.cli_worker.wait()
+        logger.info('cli worker quit')
+        self.cli_worker.deleteLater()
+        logger.info('cli worker deleted')
+
+        time.sleep(1.5)  # time for the port to fully close before restarting
+        # restart test board worker thread
+        self.test_board = TestBoardWorker(self.test_data, port=self.selected_t_port, baudrate=9600)
+        self.test_board.update_upper_listbox.connect(self.main_tab.update_test_output_listbox_gui)
+        self.test_board.update_upper_listbox.connect(self.check_output)
+        self.test_board.start()  # start test board thread
+        self.test_board.is_running = True
+        logger.info('test board worker restarted')
+        # update the gui
+        self.main_tab.change_test_part_gui(self.test_data)
+        self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
+
+    # upload sketch for each test separately
+    def upload_sketch_for_new_test(self):
+        if self.test_data and not self.test_board.is_stopped:
+            try:
+                self.main_tab.sketch_upload_between_tests_gui()
+                self.test_board.is_running = False
+                self.test_board.stop()
+                self.test_board.deleteLater()
+                logger.info('test board worker temporarily deleted for subsequent sketch upload')
+                # initiate cli worker thread
+                self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
+                self.cli_worker.set_test_data(self.test_data, self.filepath)
+                self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
+                self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
+                self.cli_worker.start()  # start cli worker thread
+                logger.info('cli worker started for new test upload')
+                time.sleep(0.1)
+            except:
+                logger.exception('method for sketch upload btw tests failed')
 
     # on cli test interrupted by another test
     def on_cli_test_interrupted(self):
@@ -353,30 +396,6 @@ class MainWindow(QMainWindow):
             self.test_board.is_running = True
             logger.info('test board worker restarted through cli interrupted')
             self.main_tab.on_run_test_gui()
-
-    # clean up cli worker after it's done
-    def cleanup_cli_worker(self):
-        self.cli_worker.is_running = False
-        self.cli_worker.stop()
-        self.cli_worker.quit()
-        self.cli_worker.wait()
-        logger.info('cli worker quit')
-        self.cli_worker.deleteLater()
-        logger.info('cli worker deleted')
-
-        time.sleep(1.5)  # time for the port to fully close before restarting
-
-        # restart test board worker thread
-        self.test_board = TestBoardWorker(self.test_data, port=self.selected_t_port, baudrate=9600)
-        self.test_board.update_upper_listbox.connect(self.main_tab.update_test_output_listbox_gui)
-        self.test_board.update_upper_listbox.connect(self.check_output)
-        self.test_board.start()  # start test board thread
-        self.test_board.is_running = True
-        logger.info('test board worker restarted')
-
-        # update the gui
-        self.main_tab.change_test_part_gui(self.test_data)
-        self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
 
     # load test file and store it in the app
     def load_test_file(self):

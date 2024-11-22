@@ -24,6 +24,8 @@ class SerialCaptureWorker(QThread):
     serial_running_and_happy = pyqtSignal()
     next_sequence_progress = pyqtSignal()
     sequence_complete = pyqtSignal(str)
+    # signal to main to trigger sketch uploads for each new test
+    upload_sketch_again_signal = pyqtSignal()
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -62,6 +64,7 @@ class SerialCaptureWorker(QThread):
         self.desired_temp = None
         self.time_left = None
         self.current_temperature = None
+        self.test_number = 0
 
     # CORE THREAD METHODS
     # set up serial communication
@@ -187,6 +190,7 @@ class SerialCaptureWorker(QThread):
                 self.time_left = test_status.get('time_left', 0) / 60
                 self.emit_test_status()
                 self.display_info()
+                self.check_for_new_test()
         except json.JSONDecodeError:
             logger.exception('failed to decode ping response as json')
 
@@ -226,6 +230,17 @@ class SerialCaptureWorker(QThread):
         logger.info('emergency stop issued')
 
     # SENDING STUFF TO MAIN APP
+    # check for test change
+    def check_for_new_test(self):
+        if self.current_test == self.current_test:
+            return
+        else:
+            self.test_number += 1
+            if self.test_number > 1:
+                self.upload_sketch_again_signal.emit()
+            else:
+                return
+
     # prep running test info updates to be emitted
     def emit_test_status(self):
         test_status_data = {
