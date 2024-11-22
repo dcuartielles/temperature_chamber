@@ -190,7 +190,6 @@ class SerialCaptureWorker(QThread):
                 self.time_left = test_status.get('time_left', 0) / 60
                 self.emit_test_status()
                 self.display_info()
-                self.check_for_new_test()
         except json.JSONDecodeError:
             logger.exception('failed to decode ping response as json')
 
@@ -230,17 +229,6 @@ class SerialCaptureWorker(QThread):
         logger.info('emergency stop issued')
 
     # SENDING STUFF TO MAIN APP
-    # check for test change
-    def check_for_new_test(self):
-        if self.current_test == self.current_test:
-            return
-        else:
-            self.test_number += 1
-            if self.test_number > 1:
-                self.upload_sketch_again_signal.emit()
-            else:
-                return
-
     # prep running test info updates to be emitted
     def emit_test_status(self):
         test_status_data = {
@@ -290,6 +278,11 @@ class SerialCaptureWorker(QThread):
             self.sequence_has_been_advanced = False
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
+        elif response.strip().startswith('Test complete'):
+            self.upload_sketch_again_signal.emit()
+            self.test_number += 1
+            message = f'test {self.test_number} complete'
+            self.sequence_complete.emit(message)
         elif response.strip().startswith('Sequence complete'):
             if not self.sequence_has_been_advanced:
                 self.next_sequence_progress.emit()
