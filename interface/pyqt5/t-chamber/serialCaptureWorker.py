@@ -264,16 +264,16 @@ class SerialCaptureWorker(QThread):
 
     # process serial response
     def process_response(self, response):
-        logger.info(f"raw response: {repr(response)}")
+        logger.debug(f"raw response: {repr(response)}")
         clean_response = response.strip()  # remove leading/trailing whitespace
-        logger.info(f"cleaned response: {repr(clean_response)}")
+        logger.debug(f"cleaned response: {repr(clean_response)}")
 
         # list of responses to be picked up
         trigger_responses = ['Setting', 'Target temperature reached!']
         if any(response.strip().startswith(trigger) for trigger in trigger_responses):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
-        elif 'Test' in response.strip():
+        elif 'Test complete' in response.strip():
             logger.info(f'arduino says {response}, sending signal to upload sketch for new test')
             self.test_number += 1
             message = f'test {self.test_number} complete'
@@ -289,4 +289,4 @@ class SerialCaptureWorker(QThread):
                 self.sequence_complete.emit('sequence complete')
                 self.sequence_has_been_advanced = True
         else:
-            logger.info(response)
+            logger.info(f'complete response from arduino: {response}')

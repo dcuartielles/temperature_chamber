@@ -60,7 +60,7 @@ class MainTab(QWidget):
         self.expected_outcome_label = QLabel('expected output', self)
         self.expected_outcome_label.hide()
         self.expected_outcome_listbox = QListWidget(self)
-        self.expected_outcome_listbox.setFixedSize(475, 50)
+        self.expected_outcome_listbox.setFixedSize(475, 30)
         self.expected_outcome_listbox.hide()
         test_output_layout.addWidget(self.expected_outcome_label)
         test_output_layout.addWidget(self.expected_outcome_listbox)
@@ -78,8 +78,8 @@ class MainTab(QWidget):
     def expected_output_listbox(self):
         exp_outputs = self.expected_output(self.test_data)
         self.expected_outcome_listbox.clear()
-        for output in exp_outputs:
-            self.expected_outcome_listbox.addItem(f'{output}')
+        expected_output = exp_outputs[0]
+        self.expected_outcome_listbox.addItem(f'{expected_output}')
         self.expected_outcome_listbox.scrollToBottom()
 
     # OUTPUT CHECKING PART
