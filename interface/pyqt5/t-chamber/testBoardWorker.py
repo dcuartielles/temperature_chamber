@@ -96,28 +96,23 @@ class TestBoardWorker(QThread):
     # extract expected test outcome from test file
     def expected_output(self, test_data):
         if test_data is not None and 'tests' in test_data:
-            all_expected_outputs = []
             all_tests = [key for key in test_data['tests'].keys()]
-            # iterate through each test and run it
-            for test_key in all_tests:
-                test = test_data['tests'].get(test_key, {})
-                expected_output = test.get('expected_output', '')  # get the expected output string
-                if expected_output:
-                    all_expected_outputs.append(expected_output)
-            return all_expected_outputs
-        return []
+            current_test_index = self.test_number
+            if current_test_index < len(all_tests):
+                current_test_key = all_tests[current_test_index]
+                test = self.test_data['tests'][current_test_key]
+                expected_output = test.get('expected_output', '')  # get pertinent exp output
+                return expected_output
+            else:
+                return
 
     # get expected pattern
     def get_expected_pattern(self):
         if self.test_data:
-            exp_outputs = self.expected_output(self.test_data)
-            regex_patterns = []
-            for expected in exp_outputs:
-                regex_pattern = self.encode_pattern(expected)
-                regex_patterns.append(regex_pattern)
-            logger.debug(f'getting expected pattern dict: {regex_patterns}')
-            expected_pattern = regex_patterns[0]
-            return expected_pattern
+            expected_output = self.expected_output(self.test_data)
+            regex_pattern = self.encode_pattern(expected_output)
+            logger.debug(f'getting expected pattern: {regex_pattern}')
+            return regex_pattern
         else:
             return
 
