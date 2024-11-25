@@ -268,7 +268,7 @@ class CliWorker(QThread):
             if 'tests' in test_data:
                 all_tests = [key for key in test_data['tests'].keys()]
                 current_test_index = self.test_number
-                if current_test_index > len(all_tests):
+                if current_test_index < len(all_tests):
                     current_test_key = all_tests[current_test_index]
                     test = self.test_data['tests'][current_test_key]
                     sketch_path = test.get('sketch', '')  # get .ino file path
