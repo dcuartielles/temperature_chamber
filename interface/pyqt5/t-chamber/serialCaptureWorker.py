@@ -171,7 +171,7 @@ class SerialCaptureWorker(QThread):
 
     # ping
     def ping(self):
-        self.test_number_signal.emit(self.test_number)
+        logger.info(f'test number: {self.test_number}')
         ping = commands.ping()  # create ping command
         self.send_json_to_arduino(ping)  # send ping to arduino
         try:
@@ -206,6 +206,7 @@ class SerialCaptureWorker(QThread):
     # MORE ADVANCED COMMUNICATION WITH TEST BOARD
     # run the entire test file
     def run_all_tests(self, test_data):
+        self.test_number = 0
         if test_data is not None and 'tests' in test_data:
             full_tests_json = {'tests': test_data["tests"]}
             self.send_json_to_arduino(full_tests_json)  # send the data to arduino
@@ -292,6 +293,8 @@ class SerialCaptureWorker(QThread):
         elif 'Test complete' in response.strip():
             logger.info(f'arduino says {response}, sending signal to upload sketch for new test')
             self.test_number += 1
+            logger.info(f'test number: {self.test_number}')
+            self.test_number_signal.emit(self.test_number)
             message = f'test {self.test_number} complete'
             self.upload_sketch_again_signal.emit(message, self.test_number)
         elif response.strip().startswith('Waiting'):

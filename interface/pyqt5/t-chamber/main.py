@@ -361,7 +361,8 @@ class MainWindow(QMainWindow):
 
     # update test number for test coordination
     def update_test_number(self, message):
-        self.test_number = message
+        self.test_number = int(message)
+        logger.info(f'current test number: {self.test_number}')
 
     # upload sketch for each test separately
     def upload_sketch_for_new_test(self, message, test_number):
@@ -386,6 +387,7 @@ class MainWindow(QMainWindow):
 
     # on cli test interrupted by another test
     def on_cli_test_interrupted(self):
+        logger.info(self.test_number)
         if self.cli_worker:
             logger.info('cli being interrupted')
             self.cli_worker.finished.disconnect(self.cleanup_cli_worker)
@@ -513,6 +515,7 @@ class MainWindow(QMainWindow):
                 current_test_key = all_tests[current_test_index]
                 test = self.test_data['tests'][current_test_key]
                 expected_output = test.get('expected_output', '')  # get pertinent exp output
+                logger.info(f'expected output: {expected_output}')
                 return expected_output
             else:
                 return

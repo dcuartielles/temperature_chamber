@@ -90,7 +90,9 @@ class MainTab(QWidget):
             if current_test_index < len(all_tests):
                 current_test_key = all_tests[current_test_index]
                 test = self.test_data['tests'][current_test_key]
+                logger.info(test)
                 expected_output = test.get('expected_output', '')  # get pertinent exp output
+                logger.info(f'expected output: {expected_output}')
                 return expected_output
             else:
                 return
