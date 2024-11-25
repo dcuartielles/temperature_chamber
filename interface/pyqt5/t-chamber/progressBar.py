@@ -132,7 +132,7 @@ class ProgressBar(QWidget):
         self.elapsed_minutes = int(self.actual_runtime / 60000)
         if self.elapsed_minutes >= 60:
             elapsed_hours = self.elapsed_minutes / 60
-            formatted_hours = f"{elapsed_hours:.2f}"
+            formatted_hours = f"{elapsed_hours:.1f}"
             logger.info(f'actual runtime was {formatted_hours} hrs')
             self.time_label.setText(f'done in {formatted_hours} hrs')
         else:
@@ -217,7 +217,7 @@ class ProgressBar(QWidget):
         estimated_time = int(self.total_duration / 60000)
         if estimated_time >= 60:
             hours = estimated_time / 60
-            hours_and_min = f"{hours:.2f}"
+            hours_and_min = f"{hours:.1f}"
             self.time_label.setText(f'estimated runtime: {hours_and_min} hr')
         else:
             self.time_label.setText(f'estimated runtime: {estimated_time} min')

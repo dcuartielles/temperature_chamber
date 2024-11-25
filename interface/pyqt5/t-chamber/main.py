@@ -475,7 +475,7 @@ class MainWindow(QMainWindow):
             time_left = test_info.get('time_left')
             duration = test_info.get('current_duration')
             formatted_duration = f"{duration:.1f}"
-            formatted_time_left = f"{time_left:.2f}"
+            formatted_time_left = f"{time_left:.1f}"
             logger.info('parsing test info to update running sequence label')
             if str(formatted_time_left) == '0.00':
                 self.progress.sequence_label.setText(
