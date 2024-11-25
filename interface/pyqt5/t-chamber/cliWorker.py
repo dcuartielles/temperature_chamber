@@ -267,59 +267,17 @@ class CliWorker(QThread):
             test_data_filepath = filepath.rsplit('/', 1)[0]
             if 'tests' in test_data:
                 all_tests = [key for key in test_data['tests'].keys()]
-                # iterate through each test and run it
-                for test_key in all_tests:
-                    test = test_data['tests'].get(test_key, {})
+                current_test_index = self.test_number
+                if current_test_index > len(all_tests):
+                    current_test_key = all_tests[current_test_index]
+                    test = self.test_data['tests'][current_test_key]
                     sketch_path = test.get('sketch', '')  # get .ino file path
-
                     if sketch_path:  # if the sketch is available
                         sketch_filename = sketch_path.split('/')[-1]  # get ino file name
                         sketch_full_path = test_data_filepath + '/' + sketch_filename
                         self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
-
                     else:
                         logger.warning('sketch path not found')
         else:
             # handle case when no test data is found
             logger.info('can\'t do it')
-
-    '''
-    
-    def run_all_tests(self, test_data, filepath):
-    if test_data and filepath:  # Ensure test data and filepath are valid
-        logger.info(f'Preparing to run tests from: {filepath}')
-        # Split file path to access individual sketches
-        self.test_data = test_data
-        self.test_data_filepath = filepath.rsplit('/', 1)[0]
-        self.all_tests = [key for key in self.test_data['tests'].keys()]  # List of all test keys
-        self.current_test_index = 0  # Start with the first test
-        self.run_next_test()  # Begin with the first test
-    else:
-        logger.warning('No valid test data or filepath provided.')
-        
-        
-    def run_next_test(self):
-    """Trigger the next test in the sequence."""
-    if self.current_test_index < len(self.all_tests):
-        self.current_test_key = self.all_tests[self.current_test_index]
-        test = self.test_data['tests'][self.current_test_key]
-
-        # Get the sketch file path
-        sketch_path = test.get('sketch', '')
-        if sketch_path:
-            sketch_filename = sketch_path.split('/')[-1]  # Extract sketch filename
-            sketch_full_path = f"{self.test_data_filepath}/{sketch_filename}"
-
-            # Upload the sketch for the current test
-            logger.info(f"Uploading sketch for {self.current_test_key}: {sketch_full_path}")
-            self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
-
-            # Trigger the test after sketch upload
-            self.start_test(test)
-        else:
-            logger.warning(f"No sketch found for {self.current_test_key}")
-            self.run_next_test()  # Move to the next test
-
-    else:
-        logger.info('All tests have been processed.')
-    '''
