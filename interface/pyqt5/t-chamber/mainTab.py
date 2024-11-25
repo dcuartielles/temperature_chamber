@@ -10,11 +10,11 @@ logger = setup_logger(__name__)
 
 class MainTab(QWidget):
 
-    def __init__(self, test_data, test_number, parent=None):
+    def __init__(self, test_data, parent=None):
         super().__init__(parent)
         self.test_data = test_data
         # test number (index, actually) for checking exp output correctly
-        self.test_number = test_number
+        self.test_number = 0
         self.initUI()
 
     def initUI(self):
@@ -82,6 +82,10 @@ class MainTab(QWidget):
         self.expected_outcome_listbox.addItem(f'{expected_output}')
 
     # OUTPUT CHECKING PART
+    def update_test_number(self, test_number):
+        self.test_number = test_number
+        logger.info(f'current test number: {self.test_number}')
+
     # extract expected test outcome from test file
     def expected_output(self, test_data):
         if test_data is not None and 'tests' in test_data:

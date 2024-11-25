@@ -81,7 +81,7 @@ class MainWindow(QMainWindow):
         self.progress.hide()
 
         # instantiate tabs
-        self.main_tab = MainTab(self.test_data, self.test_number)
+        self.main_tab = MainTab(self.test_data)
         self.manual_tab = ManualTab()
 
         # flag for alerting user in case test is running
@@ -363,6 +363,7 @@ class MainWindow(QMainWindow):
     def update_test_number(self, message):
         self.test_number = int(message)
         logger.info(f'current test number: {self.test_number}')
+        self.main_tab.update_test_number(message)
 
     # upload sketch for each test separately
     def upload_sketch_for_new_test(self, message, test_number):
