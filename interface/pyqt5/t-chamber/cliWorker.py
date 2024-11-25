@@ -272,10 +272,12 @@ class CliWorker(QThread):
                 if current_test_index < len(all_tests):
                     current_test_key = all_tests[current_test_index]
                     test = self.test_data['tests'][current_test_key]
+                    logger.info(test)
                     sketch_path = test.get('sketch', '')  # get .ino file path
                     if sketch_path:  # if the sketch is available
-                        sketch_filename = sketch_path.split('/')[-1]  # get ino file name
+                        sketch_filename = sketch_path.split('/')[-2]  # get ino file name
                         sketch_full_path = test_data_filepath + '/' + sketch_filename
+                        logger.info(sketch_full_path)
                         self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
                     else:
                         logger.warning('sketch path not found')
