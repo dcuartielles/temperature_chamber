@@ -25,6 +25,7 @@ class SerialCaptureWorker(QThread):
     serial_running_and_happy = pyqtSignal()
     next_sequence_progress = pyqtSignal()
     sequence_complete = pyqtSignal(str)
+    test_number_signal = pyqtSignal(int)
     # signal to main to trigger sketch uploads for each new test
     upload_sketch_again_signal = pyqtSignal(str)
 
@@ -170,6 +171,7 @@ class SerialCaptureWorker(QThread):
 
     # ping
     def ping(self):
+        self.test_number_signal.emit(self.test_number)
         ping = commands.ping()  # create ping command
         self.send_json_to_arduino(ping)  # send ping to arduino
         try:

@@ -55,6 +55,7 @@ class MainWindow(QMainWindow):
         # space for test file accessible from worker threads
         self.test_data = None
         self.filepath = None
+        self.test_number = 0
 
         # class variables to keep updates from ping
         self.current_temperature = None
@@ -228,6 +229,7 @@ class MainWindow(QMainWindow):
                     self.serial_worker.serial_running_and_happy.connect(self.show_reset_button)
                     self.serial_worker.ping_timestamp_signal.connect(self.get_timestamp)
                     self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
+                    self.serial_worker.test_number_signal.connect(self.update_test_number)
                     self.serial_worker.start()  # start the worker thread
                     logger.info('serial worker started successfully')
                     self.no_ping_alert = False
@@ -322,7 +324,7 @@ class MainWindow(QMainWindow):
                     logger.info('test board worker temporarily deleted')
                     # initiate cli worker thread
                     self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
-                    self.cli_worker.set_test_data(self.test_data, self.filepath)
+                    self.cli_worker.set_test_data(self.test_data, self.filepath, self.test_number)
                     self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
                     self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
                     self.cli_worker.start()  # start cli worker thread
@@ -356,6 +358,10 @@ class MainWindow(QMainWindow):
         self.main_tab.change_test_part_gui(self.test_data)
         self.test_board.expected_outcome_listbox.connect(self.main_tab.check_output)
 
+    # update test number for test coordination
+    def update_test_number(self, message):
+        self.test_number = message
+
     # upload sketch for each test separately
     def upload_sketch_for_new_test(self, message):
         self.new_test(message)
@@ -369,7 +375,7 @@ class MainWindow(QMainWindow):
             logger.info('test board worker temporarily deleted for subsequent sketch upload')
             # initiate cli worker thread
             self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
-            self.cli_worker.set_test_data(self.test_data, self.filepath)
+            self.cli_worker.set_test_data(self.test_data, self.filepath, self.test_number)
             self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
             self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
             self.cli_worker.start()  # start cli worker thread
