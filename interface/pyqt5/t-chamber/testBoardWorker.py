@@ -12,7 +12,7 @@ class TestBoardWorker(QThread):
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
     expected_outcome_listbox = pyqtSignal(str)  # signal to show expected test outcome
 
-    def __init__(self, test_data, port, baudrate, timeout=5):
+    def __init__(self, test_data, test_number, port, baudrate, timeout=5):
         super().__init__()
         self.test_data = test_data
         self.port = port
@@ -24,7 +24,7 @@ class TestBoardWorker(QThread):
         self.is_stopped = False  # flag to stop the read loop
         self.last_command_time = time.time()
         # test number (index, actually) for checking exp output correctly
-        self.test_number = 0
+        self.test_number = test_number
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):

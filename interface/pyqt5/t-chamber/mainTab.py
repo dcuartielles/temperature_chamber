@@ -10,7 +10,6 @@ logger = setup_logger(__name__)
 
 class MainTab(QWidget):
 
-
     def __init__(self, test_data, test_number, parent=None):
         super().__init__(parent)
         self.test_data = test_data

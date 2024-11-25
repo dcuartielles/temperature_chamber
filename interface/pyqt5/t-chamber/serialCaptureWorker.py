@@ -27,7 +27,7 @@ class SerialCaptureWorker(QThread):
     sequence_complete = pyqtSignal(str)
     test_number_signal = pyqtSignal(int)
     # signal to main to trigger sketch uploads for each new test
-    upload_sketch_again_signal = pyqtSignal(str)
+    upload_sketch_again_signal = pyqtSignal(str, int)
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -293,7 +293,7 @@ class SerialCaptureWorker(QThread):
             logger.info(f'arduino says {response}, sending signal to upload sketch for new test')
             self.test_number += 1
             message = f'test {self.test_number} complete'
-            self.upload_sketch_again_signal.emit(message)
+            self.upload_sketch_again_signal.emit(message, self.test_number)
         elif response.strip().startswith('Waiting'):
             self.sequence_has_been_advanced = False
             self.update_listbox.emit(response)  # emit signal to update listbox

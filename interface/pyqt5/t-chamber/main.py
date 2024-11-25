@@ -250,7 +250,7 @@ class MainWindow(QMainWindow):
 
             if not hasattr(self, 'test_board') or self.test_board is None or not self.test_board.is_running:
                 try:
-                    self.test_board = TestBoardWorker(self.test_data, port=self.selected_t_port, baudrate=9600)
+                    self.test_board = TestBoardWorker(self.test_data, self.test_number,port=self.selected_t_port, baudrate=9600)
                     self.test_board.start()  # start worker thread
 
                 except Exception as e:
@@ -349,7 +349,7 @@ class MainWindow(QMainWindow):
 
         time.sleep(1.5)  # time for the port to fully close before restarting
         # restart test board worker thread
-        self.test_board = TestBoardWorker(self.test_data, port=self.selected_t_port, baudrate=9600)
+        self.test_board = TestBoardWorker(self.test_data, self.test_number,port=self.selected_t_port, baudrate=9600)
         self.test_board.update_upper_listbox.connect(self.main_tab.update_test_output_listbox_gui)
         self.test_board.update_upper_listbox.connect(self.check_output)
         self.test_board.start()  # start test board thread
@@ -364,7 +364,8 @@ class MainWindow(QMainWindow):
         self.test_number = message
 
     # upload sketch for each test separately
-    def upload_sketch_for_new_test(self, message):
+    def upload_sketch_for_new_test(self, message, test_number):
+        self.test_number = test_number
         self.new_test(message)
         info = 'uploading sketch for next test'
         self.update_listbox_gui(info)
@@ -398,7 +399,7 @@ class MainWindow(QMainWindow):
             time.sleep(1.5)  # time for the port to fully close before restarting
 
             # restart test board worker thread
-            self.test_board = TestBoardWorker(self.test_data, port=self.selected_t_port, baudrate=9600)
+            self.test_board = TestBoardWorker(self.test_data, self.test_number,port=self.selected_t_port, baudrate=9600)
             self.test_board.start()  # start test board thread
             self.test_board.is_running = True
             logger.info('test board worker restarted through cli interrupted')
