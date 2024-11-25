@@ -23,6 +23,8 @@ class TestBoardWorker(QThread):
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
         self.last_command_time = time.time()
+        # test number (index, actually) for checking exp output correctly
+        self.test_number = 0
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):

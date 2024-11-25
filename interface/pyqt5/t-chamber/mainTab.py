@@ -11,9 +11,11 @@ logger = setup_logger(__name__)
 class MainTab(QWidget):
 
 
-    def __init__(self, test_data, parent=None):
+    def __init__(self, test_data, test_number, parent=None):
         super().__init__(parent)
         self.test_data = test_data
+        # test number (index, actually) for checking exp output correctly
+        self.test_number = test_number
         self.initUI()
 
     def initUI(self):
@@ -76,41 +78,36 @@ class MainTab(QWidget):
 
     # update exp output listbox
     def expected_output_listbox(self):
-        exp_outputs = self.expected_output(self.test_data)
+        expected_output = self.expected_output(self.test_data)
         self.expected_outcome_listbox.clear()
-        expected_output = exp_outputs[0]
         self.expected_outcome_listbox.addItem(f'{expected_output}')
-        self.expected_outcome_listbox.scrollToBottom()
 
     # OUTPUT CHECKING PART
     # extract expected test outcome from test file
     def expected_output(self, test_data):
         if test_data is not None and 'tests' in test_data:
-            all_expected_outputs = []
             all_tests = [key for key in test_data['tests'].keys()]
-            # iterate through each test and run it
-            for test_key in all_tests:
-                test = test_data['tests'].get(test_key, {})
-                expected_output = test.get('expected_output', '')  # get the expected output string
-                if expected_output:
-                    all_expected_outputs.append(expected_output)
-            return all_expected_outputs
-        return []
+            current_test_index = self.test_number
+            if current_test_index < len(all_tests):
+                current_test_key = all_tests[current_test_index]
+                test = self.test_data['tests'][current_test_key]
+                expected_output = test.get('expected_output', '')  # get pertinent exp output
+                return expected_output
+            else:
+                return
 
     # check if output is as expected
     def check_output(self, message):
         message = str(message) if message else None
-        exp_outputs = self.expected_output(self.test_data)
-
+        expected_output = self.expected_output(self.test_data)
         # compare t-board output with expected test outcome
-        for expected in exp_outputs:
-            if str(expected) == message:
-                self.update_gui_correct()
-                logger.info("correct test output")
-            else:
-                logger.error(message)
-                # if no matches, handle as incorrect output
-                self.update_gui_incorrect()
+        if str(expected_output) == message:
+            self.update_gui_correct()
+            logger.info("correct test output")
+        else:
+            logger.error(message)
+            # if no matches, handle as incorrect output
+            self.update_gui_incorrect()
 
     # gui for correct output
     def update_gui_correct(self):

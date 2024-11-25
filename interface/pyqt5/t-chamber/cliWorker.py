@@ -34,6 +34,7 @@ class CliWorker(QThread):
         # class variables
         self.test_data = None
         self.filepath = None
+        # test number (index, actually) for correct upload
         self.test_number = 0
 
     # set up serial communication
@@ -281,3 +282,25 @@ class CliWorker(QThread):
         else:
             # handle case when no test data is found
             logger.info('can\'t do it')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

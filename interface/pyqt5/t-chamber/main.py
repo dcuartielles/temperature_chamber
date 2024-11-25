@@ -55,6 +55,7 @@ class MainWindow(QMainWindow):
         # space for test file accessible from worker threads
         self.test_data = None
         self.filepath = None
+        # test number (index, actually) for correct upload and exp output check
         self.test_number = 0
 
         # class variables to keep updates from ping
@@ -80,7 +81,7 @@ class MainWindow(QMainWindow):
         self.progress.hide()
 
         # instantiate tabs
-        self.main_tab = MainTab(self.test_data)
+        self.main_tab = MainTab(self.test_data, self.test_number)
         self.manual_tab = ManualTab()
 
         # flag for alerting user in case test is running
@@ -505,26 +506,24 @@ class MainWindow(QMainWindow):
     # extract expected test outcome from test file
     def expected_output(self, test_data):
         if test_data is not None and 'tests' in test_data:
-            all_expected_outputs = []
             all_tests = [key for key in test_data['tests'].keys()]
-            # iterate through each test and run it
-            for test_key in all_tests:
-                test = test_data['tests'].get(test_key, {})
-                expected_output = test.get('expected_output', '')  # get the expected output string
-                if expected_output:
-                    all_expected_outputs.append(expected_output)
-            output = all_expected_outputs[0]
-            return output
-        return []
+            current_test_index = self.test_number
+            if current_test_index < len(all_tests):
+                current_test_key = all_tests[current_test_index]
+                test = self.test_data['tests'][current_test_key]
+                expected_output = test.get('expected_output', '')  # get pertinent exp output
+                return expected_output
+            else:
+                return
 
     # compare expected test outcome with actual test board output
     def check_output(self, output):
         output = str(output)
-        exp_output = self.expected_output(self.test_data)
+        expected_output = self.expected_output(self.test_data)
         if output == '':
             message = 'waiting for test board output'
             self.update_listbox_gui(message)
-        if output == exp_output:
+        if output == expected_output:
             return
         else:
             date_str = datetime.now().strftime("%H:%M:%S")
