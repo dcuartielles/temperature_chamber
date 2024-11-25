@@ -184,8 +184,7 @@ class MainTab(QWidget):
             self.expected_outcome_listbox.hide()
             self.instruction_listbox.show()
             self.instruction_listbox.clear()
-            self.instruction_listbox.addItems(['test interrupted, but you can always start over:',
-                                               '* run full test sequence',
+            self.instruction_listbox.addItems(['* run full test sequence',
                                                '* sit back and watch the test outcomes'])
             QApplication.processEvents()
 
@@ -193,4 +192,3 @@ class MainTab(QWidget):
     def cli_update_upper_listbox_gui(self, message):
         self.instruction_listbox.addItem(message)
         self.instruction_listbox.scrollToBottom()
-

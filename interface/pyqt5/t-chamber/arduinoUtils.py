@@ -129,4 +129,3 @@ def handle_board_and_upload(port, sketch_path):
     else:
         logging.warning(f"Failed to detect board on port {port}.")
 
-

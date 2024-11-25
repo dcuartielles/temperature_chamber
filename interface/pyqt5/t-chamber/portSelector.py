@@ -155,3 +155,4 @@ class PortSelector(QWidget):
             board_name, port = selected_item.split(': ')
             return port, board_name
         return None, None
+    

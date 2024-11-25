@@ -259,8 +259,9 @@ class CliWorker(QThread):
 
     # run the entire test file
     def run_all_tests(self, test_data, filepath):
-        if test_data and filepath:  # take test_data & port number from main
+        if test_data and filepath:  # take test_data & file path from main
             logger.info(f'running test with testdata filepath: {filepath}')
+            # split file path in preparation for sketch file path recreation
             test_data_filepath = filepath.rsplit('/', 1)[0]
             if 'tests' in test_data:
                 all_tests = [key for key in test_data['tests'].keys()]
