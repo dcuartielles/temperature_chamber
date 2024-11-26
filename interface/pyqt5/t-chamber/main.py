@@ -621,6 +621,8 @@ class MainWindow(QMainWindow):
                 logger.info('the system is off: DO SOMETHING!')
                 # if the issue has not been solved within 15 seconds, show popup again
                 self.emergency_stop_timer.start()
+            else:
+                return
 
     # emergency stop alert popup method to be triggered by qtimer
     def show_emergency_stop_popup(self):
