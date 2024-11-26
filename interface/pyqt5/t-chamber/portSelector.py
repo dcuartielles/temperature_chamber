@@ -16,8 +16,10 @@ class PortSelector(QWidget):
         self.config = config  # config object to load/save ports & boards from and to
 
         self.t_b_name_label = QLabel('test board')
+        self.wifi_t_b_name_label = QLabel('test board wifi port')
         self.c_b_name_label = QLabel('control board')
         self.t_port_dropdown = QComboBox()
+        self.t_wifi_dropdown = QComboBox()
         self.c_port_dropdown = QComboBox()
         self.setStyleSheet('color: #009FAF;'
                                          'background-color: white;'
@@ -28,18 +30,25 @@ class PortSelector(QWidget):
         self.refresh_button.setFixedSize(80, 37)
         self.refresh_button.clicked.connect(self.refresh_ports)
 
+        self.wifi_t_b_name_label.hide()
+        self.t_wifi_dropdown.hide()
+
         layout = QVBoxLayout()
         port_layout = QHBoxLayout()
         layout.addLayout(port_layout)
         left_layout = QVBoxLayout()
         test_layout = QHBoxLayout()
         chamber_layout = QHBoxLayout()
+        wifi_layout = QHBoxLayout()
         test_layout.addWidget(self.t_b_name_label)
         test_layout.addWidget(self.t_port_dropdown)
         chamber_layout.addWidget(self.c_b_name_label)
         chamber_layout.addWidget(self.c_port_dropdown)
+        wifi_layout.addWidget(self.wifi_t_b_name_label)
+        wifi_layout.addWidget(self.t_wifi_dropdown)
         left_layout.addLayout(chamber_layout)
         left_layout.addLayout(test_layout)
+        left_layout.addLayout(wifi_layout)
         port_layout.addLayout(left_layout)
         port_layout.addSpacerItem(QSpacerItem(30, 0))
         port_layout.addWidget(self.refresh_button)
