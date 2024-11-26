@@ -472,21 +472,42 @@ class MainWindow(QMainWindow):
         if self.test_is_running:
             test = test_info.get('test')
             sequence = test_info.get('sequence')
-            time_left = test_info.get('time_left')
-            duration = test_info.get('current_duration')
-            # calculate hours and minutes
-            duration_hours, duration_minutes = divmod(duration, 60)
-            time_left_hours, time_left_minutes = divmod(time_left, 60)
-            # format duration and time left
-            formatted_duration = f"{int(duration_hours)}h {int(duration_minutes)}m" if duration_hours > 0 else f"{int(duration_minutes)}m"
-            # formatted_time_left = f"{int(time_left_hours)}h {int(time_left_minutes)}m" if time_left_hours > 0 else f"{int(time_left_minutes)}m"
+            time_left = test_info.get('time_left') * 60  # convert minutes to seconds
+            duration = test_info.get('current_duration') * 60  # convert minutes to seconds
+
+            # calculate hours, minutes, and seconds
+            duration_hours, duration_rem = divmod(duration, 3600)
+            duration_minutes, duration_seconds = divmod(duration_rem, 60)
+
+            time_left_hours, time_left_rem = divmod(time_left, 3600)
+            time_left_minutes, time_left_seconds = divmod(time_left_rem, 60)
+
+            # format duration
+            if duration_hours > 0:
+                formatted_duration = f"{int(duration_hours)}h {int(duration_minutes)}m"
+            elif duration_minutes > 0:
+                formatted_duration = f"{int(duration_minutes)}m {int(duration_seconds)}s"
+            else:
+                formatted_duration = f"{int(duration_seconds)}s"
+
+            # format time left
+            if time_left_hours > 0:
+                formatted_time_left = f"{int(time_left_hours)}h {int(time_left_minutes)}m"
+            elif time_left_minutes > 0:
+                formatted_time_left = f"{int(time_left_minutes)}m"
+            else:
+                formatted_time_left = f"{int(time_left_seconds)}s"
+
             logger.info('parsing test info to update running sequence label')
-            if time_left <= 0:
+
+            # update label text
+            if time_left <= 0:  # handle waiting state
                 self.progress.sequence_label.setText(
                     f'{test}  |  sequence {sequence}  |  waiting')
                 self.serial_label.hide()
             else:
-                self.progress.sequence_label.setText(f'{test}  |  sequence {sequence}  |  duration: {formatted_duration}')
+                self.progress.sequence_label.setText(
+                    f'{test}  |  sequence {sequence}  |  duration: {formatted_duration} | time left: {formatted_time_left}')
                 self.serial_label.hide()
         else:
             self.serial_label.show()

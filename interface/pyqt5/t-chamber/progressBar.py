@@ -128,12 +128,12 @@ class ProgressBar(QWidget):
         self.time_progress_bar.setValue(100)
         # make it green-ish for success
         self.time_progress_bar.setStyleSheet("QProgressBar::chunk { background-color: #06e59b; }")
-
         self.elapsed_minutes = int(self.actual_runtime / 60000)
         elapsed_hours, elapsed_minutes = divmod(self.elapsed_minutes, 60)
         formatted_elapsed_time = f"{int(elapsed_hours)}h {int(elapsed_minutes)}m" if elapsed_hours > 0 else f"{int(elapsed_minutes)}m"
         logger.info(f'parsing elapsed time for clear display, actual runtime was {formatted_elapsed_time}')
         self.time_label.setText(f'done in {formatted_elapsed_time}')
+        return formatted_elapsed_time
 
     # trigger new sequence progress bar update
     def advance_sequence(self):
@@ -144,8 +144,8 @@ class ProgressBar(QWidget):
             self.number_of_sequences += 1
             logger.debug(self.number_of_sequences)
             if self.number_of_sequences == len(self.sequence_durations):
-                self.stop_stopwatch()
-                alert = f'all tests complete in {self.elapsed_minutes} min'
+                done_in = self.stop_stopwatch()
+                alert = f'all tests complete in {done_in}'
                 self.alert_all_tests_complete_signal.emit(alert)
             elif self.number_of_sequences > len(self.sequence_durations):
                 return
