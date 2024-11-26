@@ -7,5 +7,9 @@
         "port": "COM15",
         "board_name": "Arduino UNO R4 WiFi"
     },
+    "t_board_wifi": {
+        "port": "",
+        "board_name": ""
+    },
     "test_directory": "C:/Users/owenk/OneDrive/Desktop/Arduino/temperature chamber/temperature_chamber/tests"
 }

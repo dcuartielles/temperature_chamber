@@ -173,6 +173,16 @@ class PortSelector(QWidget):
             port, _ = self.c_port_dropdown.itemData(self.c_port_dropdown.currentIndex())
             return str(port)
 
+    # get selected port ONLY for wifi
+    def get_selected_wifi(self):
+        saved_wifi_board = self.config.get('t_board_wifi', {})
+        saved_wifi_port = saved_wifi_board.get('port')
+        if saved_wifi_port:
+            return str(saved_wifi_port)
+        else:
+            port, _ = self.t_wifi_dropdown.itemData(self.t_wifi_dropdown.currentIndex())
+            return str(port)
+
     # get both port and board name for test board (for saving in config)
     def get_selected_t_port_and_board(self):
         selected_item = self.t_port_dropdown.currentText()  # get full string

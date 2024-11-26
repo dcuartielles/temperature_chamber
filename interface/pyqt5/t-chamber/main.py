@@ -43,6 +43,7 @@ class MainWindow(QMainWindow):
         self.port_selector = PortSelector(self.config)
         self.selected_c_port = None
         self.selected_t_port = None
+        self.selected_t_wifi = None
 
         # prepare space for worker threads to appear later
         self.serial_worker = None
@@ -213,6 +214,7 @@ class MainWindow(QMainWindow):
         # get selected ports
         self.selected_c_port = self.port_selector.get_selected_c_port()
         self.selected_t_port = self.port_selector.get_selected_t_port()
+        self.selected_t_wifi = self.port_selector.get_selected_wifi()
 
         # validate selected ports
 
