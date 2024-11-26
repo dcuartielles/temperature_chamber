@@ -52,6 +52,7 @@ class WifiWorker(QThread):
                 if not self.is_stopped:
                     try:
                         if self.ser and self.ser.is_open:
+                            logger.debug('wifi worker says hello')
                             # continuous readout from serial
                             response = self.ser.readline().decode('utf-8').strip()
                             if response:
