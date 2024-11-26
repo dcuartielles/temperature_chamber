@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QComboBox, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QSpacerItem
+from PyQt5.QtWidgets import QComboBox, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QSpacerItem, QSizePolicy
 import arduinoUtils
 from PyQt5.QtCore import pyqtSignal
 from logger_config import setup_logger
@@ -17,9 +17,11 @@ class PortSelector(QWidget):
 
         self.t_b_name_label = QLabel('test board')
         self.wifi_t_b_name_label = QLabel('test board wifi port')
+        self.wifi_t_b_name_label.hide()
         self.c_b_name_label = QLabel('control board')
         self.t_port_dropdown = QComboBox()
         self.t_wifi_dropdown = QComboBox()
+        self.t_wifi_dropdown.hide()
         self.c_port_dropdown = QComboBox()
         self.setStyleSheet('color: #009FAF;'
                                          'background-color: white;'
@@ -40,6 +42,7 @@ class PortSelector(QWidget):
         test_layout = QHBoxLayout()
         chamber_layout = QHBoxLayout()
         wifi_layout = QHBoxLayout()
+        wifi_layout.addStretch(1)  # stretch out the space left when this is hidden, for overall layout stability
         test_layout.addWidget(self.t_b_name_label)
         test_layout.addWidget(self.t_port_dropdown)
         chamber_layout.addWidget(self.c_b_name_label)
@@ -126,18 +129,20 @@ class PortSelector(QWidget):
         self.t_wifi_dropdown.clear()
         # add both board name and port to dropdowns
         if len(ports_and_boards) > 2:
+            self.t_wifi_dropdown.show()
+            self.wifi_t_b_name_label.show()
             for port, name in ports_and_boards:
                 display_text = f"{name}: {port}"
                 self.t_port_dropdown.addItem(display_text)
                 self.c_port_dropdown.addItem(display_text)
                 self.t_wifi_dropdown.addItem(display_text)
         else:
+            self.t_wifi_dropdown.hide()
+            self.wifi_t_b_name_label.hide()
             for port, name in ports_and_boards:
                 display_text = f"{name}: {port}"
                 self.t_port_dropdown.addItem(display_text)
                 self.c_port_dropdown.addItem(display_text)
-            self.t_wifi_dropdown.hide()
-            self.wifi_t_b_name_label.hide()
 
     # update config with t port and board
     def update_config_t(self):
