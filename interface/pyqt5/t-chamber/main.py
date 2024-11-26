@@ -60,6 +60,7 @@ class MainWindow(QMainWindow):
         self.filepath = None
         # test number (index, actually) for correct upload and exp output check
         self.test_number = 0
+        self.sequences_total = 0
 
         # class variables to keep updates from ping
         self.current_temperature = None

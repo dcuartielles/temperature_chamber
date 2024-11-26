@@ -29,6 +29,7 @@ class ProgressBar(QWidget):
         self.total_duration = 0
         self.current_temp = None
         self.temperatures = []
+        self.number_of_tests = 0
 
         # set up the timer for updating progress
         self.timer = QTimer(self)
@@ -154,9 +155,11 @@ class ProgressBar(QWidget):
 
     # get target temperatures from test_data
     def get_temperatures(self):
+        self.number_of_tests = 0
         temperatures = []
         if self.test_data and 'tests' in self.test_data:
             for test_key in self.test_data['tests']:
+                self.number_of_tests += 1
                 test = self.test_data['tests'][test_key]
                 sequences = test.get('chamber_sequences', [])
                 for sequence in sequences:
@@ -210,13 +213,15 @@ class ProgressBar(QWidget):
 
     # update test progress bar label with estimated total time
     def update_test_bar_label(self):
-        estimated_time = int(self.total_duration / 60000)
-        if estimated_time >= 60:
-            hours = estimated_time / 60
-            hours_and_min = f"{hours:.1f}"
-            self.time_label.setText(f'estimated runtime: {hours_and_min} hr')
+        estimated_time = int(self.total_duration / 60000)  # estimated time in minutes
+        est_hours, est_minutes = divmod(estimated_time, 60)
+        formatted_estimated_time = f"{int(est_hours)}h {int(est_minutes)}m" if est_hours > 0 else f"{int(est_minutes)}m"
+        logger.info(f'parsing estimated runtime for clear display, actual runtime was {formatted_estimated_time}')
+        tests = self.number_of_tests
+        if tests > 1:
+            self.time_label.setText(f'{tests} tests | estimated runtime: {formatted_estimated_time}')
         else:
-            self.time_label.setText(f'estimated runtime: {estimated_time} min')
+            self.time_label.setText(f'one test | estimated runtime: {formatted_estimated_time}')
 
     # get a dictionary of sequences for sequence progress bar
     def get_sequence_durations(self):
