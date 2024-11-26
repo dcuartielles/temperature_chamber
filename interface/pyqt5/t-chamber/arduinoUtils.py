@@ -21,11 +21,10 @@ def get_arduino_boards():
     output = run_cli_command(command)
 
     if output:
-        logger.info(f'output: {output}')
+
         try:
             # parse the output as JSON
             boards_info = json.loads(output)
-            logger.info(f'boards_info: {boards_info}')
             arduino_ports = []
 
             for board in boards_info.get("detected_ports", []):

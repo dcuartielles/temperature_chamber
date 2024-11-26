@@ -215,8 +215,9 @@ class MainWindow(QMainWindow):
 
         # get selected ports
         self.selected_c_port = self.port_selector.get_selected_c_port()
+        logger.debug(self.selected_c_port)
         self.selected_t_port = self.port_selector.get_selected_t_port()
-        self.selected_t_wifi = self.port_selector.get_selected_wifi()
+        logger.debug(self.selected_t_port)
 
         # validate selected ports
 
@@ -265,17 +266,23 @@ class MainWindow(QMainWindow):
 
             if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
                 return
-
-        if self.selected_t_wifi:
-            if not hasattr(self, 'wifi_worker') or self.wifi_worker is None or not self.wifi_worker.is_running:
-                try:
-                    self.wifi_worker = WifiWorker(port=self.selected_t_wifi, baudrate=9600)
-                    self.wifi_worker.start()  # start worker thread
-                except Exception as e:
-                    logger.exception(f'failed to start wifi worker: {e}')
-                    popups.show_error_message('error', f'failed to start wifi worker: {e}')
-                    # self.start_button.setEnabled(True)
-                    return
+        try:
+            self.selected_t_wifi = self.port_selector.get_selected_wifi()
+            logger.debug(self.selected_t_wifi)
+            if self.selected_t_wifi:
+                if not hasattr(self, 'wifi_worker') or self.wifi_worker is None or not self.wifi_worker.is_running:
+                    try:
+                        self.wifi_worker = WifiWorker(port=self.selected_t_wifi, baudrate=9600)
+                        self.wifi_worker.start()  # start worker thread
+                    except Exception as e:
+                        logger.exception(f'failed to start wifi worker: {e}')
+                        popups.show_error_message('error', f'failed to start wifi worker: {e}')
+                        # self.start_button.setEnabled(True)
+                        return
+            else:
+                return
+        except:
+            logger.exception('wifi dropdown failed')
 
     # trigger emergency stop
     def on_emergency_stop_button_clicked(self):
@@ -662,11 +669,6 @@ class MainWindow(QMainWindow):
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
 
-    # intercept reset machine state
-    def reset_from_arduino(self, machine_state):
-        self.machine_state = machine_state
-        logger.info(self.machine_state)
-
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
         self.serial_worker.trigger_run_tests.emit(self.test_data)
@@ -722,6 +724,16 @@ class MainWindow(QMainWindow):
         if self.serial_worker and self.serial_worker.is_running:
             self.serial_worker.trigger_reset.emit()
             logger.info('reset signal emitted')
+            message = 'control board is reset'
+            self.on_reset_gui(message)
+
+    def on_reset_gui(self, message):
+        self.test_is_running = False
+        self.manual_tab.set_test_flag_to_false_signal.emit()
+        self.test_label_no_test()
+        self.progress.hide()
+        self.main_tab.test_interrupted_gui()
+        self.new_test(message)
 
     # re-enable start button after refreshing ports
     def re_enable_start(self):

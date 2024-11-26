@@ -68,11 +68,13 @@ class PortSelector(QWidget):
         # connect signals to update config when port & board selection changes
         self.t_port_dropdown.currentIndexChanged.connect(self.update_config_t)
         self.c_port_dropdown.currentIndexChanged.connect(self.update_config_c)
-        self.t_wifi_dropdown.currentIndexChanged.connect(self.update_config_wifi)
+        if self.t_wifi_dropdown.isEnabled:
+            self.t_wifi_dropdown.currentIndexChanged.connect(self.update_config_wifi)
 
         self.update_config_t()  # update test board & port in config
         self.update_config_c()  # update control board & port in config
-        self.update_config_wifi()  # update wifi on t board in config
+        if self.t_wifi_dropdown.isEnabled:
+            self.update_config_wifi()  # update wifi on t board in config
 
     # load ports and boards from config
     def load_all_from_config(self):
@@ -112,6 +114,7 @@ class PortSelector(QWidget):
                 if display_text == f'{saved_wifi_name}: {saved_wifi_port}':
                     self.t_wifi_dropdown.setCurrentIndex(i)
                     break
+        else: return
 
     # refresh ports (independent of config)
     def refresh_ports(self):
@@ -120,8 +123,6 @@ class PortSelector(QWidget):
         ports_and_boards = arduinoUtils.get_arduino_boards()  # should be [(port, board_name), (port, board_name)]
         if not ports_and_boards:
             logger.info('no boards connected')
-            self.t_wifi_dropdown.hide()
-            self.wifi_t_b_name_label.hide()
             return None
         logger.info(ports_and_boards)
         self.t_port_dropdown.clear()
@@ -130,6 +131,7 @@ class PortSelector(QWidget):
         # add both board name and port to dropdowns
         if len(ports_and_boards) > 2:
             self.t_wifi_dropdown.show()
+            self.t_wifi_dropdown.setDisabled(False)  # enable wifi dropdown
             self.wifi_t_b_name_label.show()
             for port, name in ports_and_boards:
                 display_text = f"{name}: {port}"
@@ -138,6 +140,8 @@ class PortSelector(QWidget):
                 self.t_wifi_dropdown.addItem(display_text)
         else:
             self.t_wifi_dropdown.hide()
+            # disable wifi dropdown to prevent it from blocking a serial port in the background
+            self.t_wifi_dropdown.setDisabled(True)
             self.wifi_t_b_name_label.hide()
             for port, name in ports_and_boards:
                 display_text = f"{name}: {port}"
@@ -192,11 +196,16 @@ class PortSelector(QWidget):
     def get_selected_wifi(self):
         saved_wifi_board = self.config.get('t_board_wifi', {})
         saved_wifi_port = saved_wifi_board.get('port')
-        if saved_wifi_port:
-            return str(saved_wifi_port)
+
+        if saved_wifi_port == '':
+            if self.t_wifi_dropdown.isEnabled:
+                port, _ = self.t_wifi_dropdown.itemData(self.t_wifi_dropdown.currentIndex())
+                return str(port)
+            else:
+                return
         else:
-            port, _ = self.t_wifi_dropdown.itemData(self.t_wifi_dropdown.currentIndex())
-            return str(port)
+            return str(saved_wifi_port)
+
 
     # get both port and board name for test board (for saving in config)
     def get_selected_t_port_and_board(self):
