@@ -219,9 +219,9 @@ class ProgressBar(QWidget):
         logger.info(f'parsing estimated runtime for clear display, actual runtime was {formatted_estimated_time}')
         tests = self.number_of_tests
         if tests > 1:
-            self.time_label.setText(f'{tests} tests | estimated runtime: {formatted_estimated_time}')
+            self.time_label.setText(f'{tests} tests | est. runtime: {formatted_estimated_time}')
         else:
-            self.time_label.setText(f'one test | estimated runtime: {formatted_estimated_time}')
+            self.time_label.setText(f'one test | est. runtime: {formatted_estimated_time}')
 
     # get a dictionary of sequences for sequence progress bar
     def get_sequence_durations(self):

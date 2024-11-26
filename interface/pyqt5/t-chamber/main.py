@@ -302,6 +302,7 @@ class MainWindow(QMainWindow):
                 if response == QMessageBox.Yes:
                     self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                     if self.cli_worker.is_running:
+                        self.test_number = 0
                         #vself.reset_control_board()
                         message = 'test interrupted'
                         self.test_interrupted_gui(message)
@@ -310,6 +311,7 @@ class MainWindow(QMainWindow):
                         self.manual_tab.test_is_running = False
                         self.on_cli_test_interrupted()
                     else:
+                        self.test_number = 0
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
                         message = 'test was interrupted'
@@ -528,11 +530,11 @@ class MainWindow(QMainWindow):
             # update label text
             if time_left <= 0:  # handle waiting state
                 self.progress.sequence_label.setText(
-                    f'{test}  |  sequence {sequence}/{number_of_sequences}  |  waiting')
+                    f'{test}  |  sequence {sequence} of {number_of_sequences}  |  waiting')
                 self.serial_label.hide()
             else:
                 self.progress.sequence_label.setText(
-                    f'{test}  |  sequence {sequence}/{number_of_sequences}  |  duration: {formatted_duration}')
+                    f'{test}  |  sequence {sequence} of {number_of_sequences}  |  duration: {formatted_duration}')
                 self.serial_label.hide()
         else:
             self.serial_label.show()
