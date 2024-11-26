@@ -1,6 +1,8 @@
 import subprocess
 import json
-import logging
+from logger_config import setup_logger
+
+logger = setup_logger(__name__)
 
 
 def run_cli_command(command):
@@ -8,7 +10,7 @@ def run_cli_command(command):
         result = subprocess.run(command, capture_output=True, text=True, check=True)
         return result.stdout
     except subprocess.CalledProcessError as e:
-        logging.info(f"Command failed: {e}")
+        logger.info(f"Command failed: {e}")
         return None
 
 
@@ -18,6 +20,7 @@ def get_arduino_boards():
     output = run_cli_command(command)
 
     if output:
+        logger.info(output)
         try:
             # parse the output as JSON
             boards_info = json.loads(output)
@@ -38,7 +41,7 @@ def get_arduino_boards():
 
             return arduino_ports
         except json.JSONDecodeError:
-            logging.info("error parsing arduino-cli board list output")
+            logger.info("error parsing arduino-cli board list output")
             return []
     return []
 
@@ -54,10 +57,10 @@ def detect_board(port):
                 if "matching_boards" in board and board["matching_boards"]:
                     fqbn = board["matching_boards"][0].get("fqbn", None)
                     if fqbn:
-                        logging.info(f"Detected FQBN: {fqbn}")
+                        logger.info(f"Detected FQBN: {fqbn}")
                         return fqbn
                     else:
-                        logging.warning(f"No FQBN found for board on port {port}")
+                        logger.warning(f"No FQBN found for board on port {port}")
                         return None
     return None
 
@@ -71,7 +74,7 @@ def is_core_installed(fqbn):
         installed_cores = output.splitlines()
         for core in installed_cores:
             if core_name in core:
-                logging.info(f"Core {core_name} is already installed.")
+                logger.info(f"Core {core_name} is already installed.")
                 return True
     return False
 
@@ -79,15 +82,15 @@ def is_core_installed(fqbn):
 def install_core_if_needed(fqbn):
     core_name = fqbn.split(":")[0]
     if not is_core_installed(fqbn):
-        logging.info(f"Core {core_name} not installed. Installing...")
+        logger.info(f"Core {core_name} not installed. Installing...")
         command = ["arduino-cli", "core", "install", core_name]
         run_cli_command(command)
     else:
-        logging.info(f"Core {core_name} is already installed.")
+        logger.info(f"Core {core_name} is already installed.")
 
 
 def compile_sketch(fqbn, sketch_path):
-    logging.info(f"Compiling {sketch_path} for the board with FQBN {fqbn}...")
+    logger.info(f"Compiling {sketch_path} for the board with FQBN {fqbn}...")
     command = [
             "arduino-cli", "compile",
             "--fqbn", fqbn,
@@ -95,15 +98,15 @@ def compile_sketch(fqbn, sketch_path):
             ]
     result = run_cli_command(command)
     if result:
-        logging.info(f"Compilation successful!")
+        logger.info(f"Compilation successful!")
         return True
     else:
-        logging.warning(f"Compilation failed")
+        logger.warning(f"Compilation failed")
         return False
 
 
 def upload_sketch(fqbn, port, sketch_path):
-    logging.info(f"Uploading {sketch_path} to board with FQBN {fqbn} on port {port}...")
+    logger.info(f"Uploading {sketch_path} to board with FQBN {fqbn} on port {port}...")
     command = [
             "arduino-cli", "upload",
             "-p", port,
@@ -112,9 +115,9 @@ def upload_sketch(fqbn, port, sketch_path):
             ]
     result = run_cli_command(command)
     if result:
-        logging.info("Upload successful!")
+        logger.info("Upload successful!")
     else:
-        logging.warning(f"Upload failed!")
+        logger.warning(f"Upload failed!")
 
 
 def handle_board_and_upload(port, sketch_path):
@@ -125,7 +128,7 @@ def handle_board_and_upload(port, sketch_path):
         if compile_sketch(fqbn, sketch_path):
             upload_sketch(fqbn, port, sketch_path)
         else:
-            logging.error(f"Aborting upload due to compilation failure.")
+            logger.error(f"Aborting upload due to compilation failure.")
     else:
-        logging.warning(f"Failed to detect board on port {port}.")
+        logger.warning(f"Failed to detect board on port {port}.")
 
