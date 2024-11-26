@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7c6001c7-ad6f-4254-a251-31cd602b3900" name="Changes" comment="hope python version is the one uploaded to main">
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/portSelector.py" beforeDir="false" afterPath="$PROJECT_DIR$/portSelector.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -30,8 +30,8 @@ class PortSelector(QWidget):
         self.refresh_button.setFixedSize(80, 37)
         self.refresh_button.clicked.connect(self.refresh_ports)
 
-        self.wifi_t_b_name_label.hide()
-        self.t_wifi_dropdown.hide()
+        # self.wifi_t_b_name_label.hide()
+        # self.t_wifi_dropdown.hide()
 
         layout = QVBoxLayout()
         port_layout = QHBoxLayout()
@@ -65,14 +65,18 @@ class PortSelector(QWidget):
         # connect signals to update config when port & board selection changes
         self.t_port_dropdown.currentIndexChanged.connect(self.update_config_t)
         self.c_port_dropdown.currentIndexChanged.connect(self.update_config_c)
+        self.t_wifi_dropdown.currentIndexChanged.connect(self.update_config_wifi)
 
         self.update_config_t()  # update test board & port in config
         self.update_config_c()  # update control board & port in config
+        self.update_config_wifi()  # update wifi on t board in config
 
     # load ports and boards from config
     def load_all_from_config(self):
+        # get saved boards from config
         saved_t_board = self.config.get('test_board', {})
         saved_c_board = self.config.get('control_board', {})
+        saved_t_b_wifi = self.config.get('t_board_wifi', {})
 
         # extract ports and board names
         saved_t_port = saved_t_board.get('port')
@@ -80,6 +84,9 @@ class PortSelector(QWidget):
 
         saved_c_port = saved_c_board.get('port')
         saved_c_name = saved_c_board.get('board_name')
+
+        saved_wifi_port = saved_t_b_wifi.get('port')
+        saved_wifi_name = saved_t_b_wifi.get('board_name')
 
         # create a dropdown menu
         if saved_t_port and saved_t_name:
@@ -96,6 +103,13 @@ class PortSelector(QWidget):
                     self.c_port_dropdown.setCurrentIndex(i)
                     break
 
+        if saved_wifi_port and saved_wifi_name:
+            for i in range(self.t_wifi_dropdown.count()):
+                display_text = self.t_wifi_dropdown.itemText(i)
+                if display_text == f'{saved_wifi_name}: {saved_wifi_port}':
+                    self.t_wifi_dropdown.setCurrentIndex(i)
+                    break
+
     # refresh ports (independent of config)
     def refresh_ports(self):
         logger.info('ports refreshed')
@@ -107,11 +121,13 @@ class PortSelector(QWidget):
         logger.info(ports_and_boards)
         self.t_port_dropdown.clear()
         self.c_port_dropdown.clear()
+        self.t_wifi_dropdown.clear()
         # add both board name and port to dropdowns
         for port, name in ports_and_boards:
             display_text = f"{name}: {port}"
             self.t_port_dropdown.addItem(display_text)
             self.c_port_dropdown.addItem(display_text)
+            self.t_wifi_dropdown.addItem(display_text)
 
     # update config with t port and board
     def update_config_t(self):
@@ -128,6 +144,14 @@ class PortSelector(QWidget):
         if c_port and c_board_name:
             # update  config
             self.config.set_c_board(c_port, c_board_name)
+
+    # update config with wifi port and board
+    def update_config_wifi(self):
+        # get selected
+        wifi_port, wifi_board_name = self.get_selected_wifi_port_and_board()
+        if wifi_port and wifi_board_name:
+            # update config
+            self.config.set_wifi_board(wifi_port, wifi_board_name)
 
     # get selected port ONLY (for test board / cli worker thread configuration)
     def get_selected_t_port(self):
@@ -160,6 +184,14 @@ class PortSelector(QWidget):
     # get both port and board name for control board (for saving in config)
     def get_selected_c_port_and_board(self):
         selected_item = self.c_port_dropdown.currentText()
+        if selected_item:
+            board_name, port = selected_item.split(': ')
+            return port, board_name
+        return None, None
+
+    # get both port and board name for wifi (for saving in confic)
+    def get_selected_wifi_port_and_board(self):
+        selected_item = self.t_wifi_dropdown.currentText()
         if selected_item:
             board_name, port = selected_item.split(': ')
             return port, board_name
