@@ -507,7 +507,7 @@ class MainWindow(QMainWindow):
                 self.serial_label.hide()
             else:
                 self.progress.sequence_label.setText(
-                    f'{test}  |  sequence {sequence}  |  duration: {formatted_duration} | time left: {formatted_time_left}')
+                    f'{test}  |  sequence {sequence}  |  duration: {formatted_duration}')
                 self.serial_label.hide()
         else:
             self.serial_label.show()
