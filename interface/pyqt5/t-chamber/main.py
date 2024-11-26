@@ -515,9 +515,6 @@ class MainWindow(QMainWindow):
             duration_hours, duration_rem = divmod(duration, 3600)
             duration_minutes, duration_seconds = divmod(duration_rem, 60)
 
-            time_left_hours, time_left_rem = divmod(time_left, 3600)
-            time_left_minutes, time_left_seconds = divmod(time_left_rem, 60)
-
             # format duration
             if duration_hours > 0:
                 formatted_duration = f"{int(duration_hours)}h {int(duration_minutes)}m"
@@ -525,14 +522,6 @@ class MainWindow(QMainWindow):
                 formatted_duration = f"{int(duration_minutes)}m {int(duration_seconds)}s"
             else:
                 formatted_duration = f"{int(duration_seconds)}s"
-
-            # format time left
-            if time_left_hours > 0:
-                formatted_time_left = f"{int(time_left_hours)}h {int(time_left_minutes)}m"
-            elif time_left_minutes > 0:
-                formatted_time_left = f"{int(time_left_minutes)}m"
-            else:
-                formatted_time_left = f"{int(time_left_seconds)}s"
 
             logger.info('parsing test info to update running sequence label')
 
