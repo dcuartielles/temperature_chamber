@@ -4,8 +4,8 @@
         "board_name": "Arduino Uno"
     },
     "control_board": {
-        "port": "COM15",
-        "board_name": "Arduino UNO R4 WiFi"
+        "port": "COM7",
+        "board_name": "Arduino Uno"
     },
     "t_board_wifi": {
         "port": "",

@@ -117,17 +117,27 @@ class PortSelector(QWidget):
         ports_and_boards = arduinoUtils.get_arduino_boards()  # should be [(port, board_name), (port, board_name)]
         if not ports_and_boards:
             logger.info('no boards connected')
+            self.t_wifi_dropdown.hide()
+            self.wifi_t_b_name_label.hide()
             return None
         logger.info(ports_and_boards)
         self.t_port_dropdown.clear()
         self.c_port_dropdown.clear()
         self.t_wifi_dropdown.clear()
         # add both board name and port to dropdowns
-        for port, name in ports_and_boards:
-            display_text = f"{name}: {port}"
-            self.t_port_dropdown.addItem(display_text)
-            self.c_port_dropdown.addItem(display_text)
-            self.t_wifi_dropdown.addItem(display_text)
+        if len(ports_and_boards) > 2:
+            for port, name in ports_and_boards:
+                display_text = f"{name}: {port}"
+                self.t_port_dropdown.addItem(display_text)
+                self.c_port_dropdown.addItem(display_text)
+                self.t_wifi_dropdown.addItem(display_text)
+        else:
+            for port, name in ports_and_boards:
+                display_text = f"{name}: {port}"
+                self.t_port_dropdown.addItem(display_text)
+                self.c_port_dropdown.addItem(display_text)
+            self.t_wifi_dropdown.hide()
+            self.wifi_t_b_name_label.hide()
 
     # update config with t port and board
     def update_config_t(self):
