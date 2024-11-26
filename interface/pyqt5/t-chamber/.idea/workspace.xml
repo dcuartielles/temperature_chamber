@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7c6001c7-ad6f-4254-a251-31cd602b3900" name="Changes" comment="hope python version is the one uploaded to main" />
+    <list default="true" id="7c6001c7-ad6f-4254-a251-31cd602b3900" name="Changes" comment="hope python version is the one uploaded to main">
+      <change beforePath="$PROJECT_DIR$/arduinoUtils.py" beforeDir="false" afterPath="$PROJECT_DIR$/arduinoUtils.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
