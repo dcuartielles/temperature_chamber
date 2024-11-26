@@ -17,13 +17,15 @@ def run_cli_command(command):
 # function to get available arduino boards using arduino-cli
 def get_arduino_boards():
     command = ["arduino-cli", "board", "list", "--format", "json"]
+
     output = run_cli_command(command)
 
     if output:
-        logger.info(output)
+        logger.info(f'output: {output}')
         try:
             # parse the output as JSON
             boards_info = json.loads(output)
+            logger.info(f'boards_info: {boards_info}')
             arduino_ports = []
 
             for board in boards_info.get("detected_ports", []):
@@ -39,6 +41,7 @@ def get_arduino_boards():
                     board_name = network_board["matching_boards"][0].get("name", "Unknown Board")
                     arduino_ports.append((port, board_name))
 
+            logger.info(f'arduino_ports: {arduino_ports}')
             return arduino_ports
         except json.JSONDecodeError:
             logger.info("error parsing arduino-cli board list output")
