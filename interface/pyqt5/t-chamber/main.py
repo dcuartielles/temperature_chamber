@@ -12,6 +12,7 @@ from serialCaptureWorker import SerialCaptureWorker
 from portSelector import PortSelector
 from testBoardWorker import TestBoardWorker
 from cliWorker import CliWorker
+from wifiWorker import WifiWorker
 from config import Config
 from logger_config import setup_logger
 from mainTab import MainTab
@@ -49,6 +50,7 @@ class MainWindow(QMainWindow):
         self.serial_worker = None
         self.test_board = None
         self.cli_worker = None
+        self.wifi_worker = None
 
         # create a dictionary for setting temp & duration
         self.input_dictionary = []
@@ -258,11 +260,22 @@ class MainWindow(QMainWindow):
                 except Exception as e:
                     logger.exception(f'failed to start test board worker: {e}')
                     popups.show_error_message('error', f'failed to start test board worker: {e}')
-                    self.start_button.setEnabled(True)
+                    # self.start_button.setEnabled(True)
                     return
 
             if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
                 return
+
+        if self.selected_t_wifi:
+            if not hasattr(self, 'wifi_worker') or self.wifi_worker is None or not self.wifi_worker.is_running:
+                try:
+                    self.wifi_worker = WifiWorker(port=self.selected_t_wifi, baudrate=9600)
+                    self.wifi_worker.start()  # start worker thread
+                except Exception as e:
+                    logger.exception(f'failed to start wifi worker: {e}')
+                    popups.show_error_message('error', f'failed to start wifi worker: {e}')
+                    # self.start_button.setEnabled(True)
+                    return
 
     # trigger emergency stop
     def on_emergency_stop_button_clicked(self):

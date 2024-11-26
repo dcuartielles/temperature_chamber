@@ -84,4 +84,3 @@ class WifiWorker(QThread):
         if response:
             printout = f'{response}'
             logger.info(printout)
-    
