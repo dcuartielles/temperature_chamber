@@ -400,6 +400,10 @@ void clearTests() {
     currentTestName = "";
     sequenceStartTime = 0;
     currentDuration = 0;
+    chamberState.temperatureDesired = 0;
+    chamberState.isHeating = false;
+    chamberState.isCooling = false;
+    chamberState.longHeatingFlag = 0;
 
     // clear queued tests
     queuedTestCount = 0;
@@ -700,6 +704,9 @@ void handleReportState() {
     }
     if (stopSwitchState) {
         status = RESET;
+        return;
+    }
+    if (chamberState.temperatureDesired == 0) {
         return;
     }
     if(temperatureThreshold > 0.4) {
