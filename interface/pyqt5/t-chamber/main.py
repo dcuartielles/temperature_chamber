@@ -60,7 +60,7 @@ class MainWindow(QMainWindow):
         self.filepath = None
         # test number (index, actually) for correct upload and exp output check
         self.test_number = 0
-        self.sequences_total = 0
+        self.sequences_in_test = 0
 
         # class variables to keep updates from ping
         self.current_temperature = None
@@ -490,6 +490,16 @@ class MainWindow(QMainWindow):
                 'running test info:  no test currently running')
             self.serial_label.setStyleSheet('font-weight: normal;')
 
+    # calculate number of sequences in current test
+    def calculate_number_of_sequences_in_current_test(self, current_test):
+        self.sequences_in_test = 0
+        if self.test_data and 'tests' in self.test_data:
+            test = self.test_data['tests'].get(current_test)
+            if test:
+                sequences = test.get('chamber_sequences', [])
+                self.sequences_in_test = len(sequences)
+        return self.sequences_in_test
+
     # update running test info label
     def update_test_label(self, test_info):
         if self.test_is_running:
@@ -497,6 +507,9 @@ class MainWindow(QMainWindow):
             sequence = test_info.get('sequence')
             time_left = test_info.get('time_left') * 60  # convert minutes to seconds
             duration = test_info.get('current_duration') * 60  # convert minutes to seconds
+
+            # calculate number of sequences in current test
+            number_of_sequences = self.calculate_number_of_sequences_in_current_test(test)
 
             # calculate hours, minutes, and seconds
             duration_hours, duration_rem = divmod(duration, 3600)
@@ -526,11 +539,11 @@ class MainWindow(QMainWindow):
             # update label text
             if time_left <= 0:  # handle waiting state
                 self.progress.sequence_label.setText(
-                    f'{test}  |  sequence {sequence}  |  waiting')
+                    f'{test}  |  sequence {sequence}/{number_of_sequences}  |  waiting')
                 self.serial_label.hide()
             else:
                 self.progress.sequence_label.setText(
-                    f'{test}  |  sequence {sequence}  |  duration: {formatted_duration}')
+                    f'{test}  |  sequence {sequence}/{number_of_sequences}  |  duration: {formatted_duration}')
                 self.serial_label.hide()
         else:
             self.serial_label.show()

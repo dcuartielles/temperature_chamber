@@ -54,7 +54,6 @@ class SerialCaptureWorker(QThread):
         self.sequence_has_been_advanced = False
 
         # class variables
-        self.test_data = None
         self.sent_handshake = False
         self.alive = False
         self.timestamp = None
