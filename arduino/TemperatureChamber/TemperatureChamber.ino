@@ -680,14 +680,14 @@ void handleCoolingState() {
     }
     heater.off();
 
-    if(temperatureThreshold < 0.4) {
+    if(temperatureThreshold < 0.1) {
         chamberState.isCooling = false;
         status = REPORT;
         return;
-    } else if(temperatureThreshold > 1) {
+    } else if(temperatureThreshold > 0.4) {
         dutyCycleCooler = 100;
         periodCooler=2000;
-    } else if(temperatureThreshold < 1) {
+    } else if(temperatureThreshold < 0.4) {
         dutyCycleCooler = 29;
         periodCooler=7000; // on for 2 seconds and off for 5
     } 
