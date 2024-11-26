@@ -474,15 +474,19 @@ class MainWindow(QMainWindow):
             sequence = test_info.get('sequence')
             time_left = test_info.get('time_left')
             duration = test_info.get('current_duration')
-            formatted_duration = f"{duration:.1f}"
-            formatted_time_left = f"{time_left:.1f}"
+            # calculate hours and minutes
+            duration_hours, duration_minutes = divmod(duration, 60)
+            time_left_hours, time_left_minutes = divmod(time_left, 60)
+            # format duration and time left
+            formatted_duration = f"{int(duration_hours)}h {int(duration_minutes)}m" if duration_hours > 0 else f"{int(duration_minutes)}m"
+            # formatted_time_left = f"{int(time_left_hours)}h {int(time_left_minutes)}m" if time_left_hours > 0 else f"{int(time_left_minutes)}m"
             logger.info('parsing test info to update running sequence label')
-            if str(formatted_time_left) == '0.00':
+            if time_left <= 0:
                 self.progress.sequence_label.setText(
                     f'{test}  |  sequence {sequence}  |  waiting')
                 self.serial_label.hide()
             else:
-                self.progress.sequence_label.setText(f'{test}  |  sequence {sequence}  |  duration: {formatted_duration} min')
+                self.progress.sequence_label.setText(f'{test}  |  sequence {sequence}  |  duration: {formatted_duration}')
                 self.serial_label.hide()
         else:
             self.serial_label.show()
