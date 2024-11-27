@@ -165,6 +165,8 @@ String lastHeatingTime = "";
 unsigned long lastPingTime = 0;
 const unsigned long TIMEOUT_DURATION = 300000;
 
+bool displayingEmergency = false;
+
 // function for checking how much memory remains after parsing JSON of different sizes
 extern "C" {
     char* sbrk(int incr);
@@ -279,6 +281,16 @@ void displayLCD(float tempRoom, int tempDesired) {
         lcd.print(tempDesired);
         lcd.print(" C");
     }
+}
+
+void displayLCDEmergency() {
+    lcd.backlight();  // turn off backlight
+    lcd.display();
+
+    lcd.setCursor(0, 0);
+    lcd.print("CONNECTION LOST");
+    lcd.setCursor(0, 1);
+    lcd.print("SYSTEM RESET");
 }
 
 void displaySerial() {
@@ -414,6 +426,8 @@ void clearTests() {
     currentTestIndex = 0;
 
     Serial.println("All tests cleared. Ready for new tests.");
+
+    lcd.clear();        // TODO: check if this works
 }
 
 void parseAndRunManualSet(JsonObject& commandParams) {
@@ -446,6 +460,7 @@ void parseAndRunCommands(JsonObject& commands) {
                 parseAndRunManualSet(commandParams);
             } else if (command == "RESET") {
                 clearTests();
+                displayingEmergency = false;
                 status = RESET;
                 Serial.println("System reset via command.");
             } else if (command == "EMERGENCY_STOP") {
@@ -516,6 +531,7 @@ void parseTextFromJson(JsonDocument& doc) {
         setInitialTimestamp(handshake);
         sendHandshake();
         printedTestsCleared = false;
+        displayingEmergency = false;
         lastShutdownCause = "";
     } else if (doc.containsKey("tests") && systemSwitchState) {     // if json consists of tests
         JsonObject test = doc["tests"];
@@ -728,7 +744,6 @@ void handleEmergencyStopState() {
     cooler.off();
     chamberState.isHeating = false;
     chamberState.isCooling = false;
-    displayLCDOff();
     chamberState.longHeatingFlag = 0;
 
     if (switchSystem.held()) {
@@ -782,11 +797,11 @@ void loop() {
         }
         status = EMERGENCY_STOP;
         lastShutdownCause = "Lost connection";
-        displayLCDOff();
         if (!printedTestsCleared) {
             clearTests();
             printedTestsCleared = true;
         }
+        displayingEmergency = true; // TODO: check if this works
     }
 
     // Update switch states and temperature readings
@@ -798,7 +813,11 @@ void loop() {
 
 
     if (systemSwitchState) {
-        displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
+        if (displayingEmergency) {
+            displayLCDEmergency();
+        } else {
+            displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
+        }
         if (currentMillis - lastUpdate >= updateInterval) {
             lastUpdate = currentMillis;
         }
