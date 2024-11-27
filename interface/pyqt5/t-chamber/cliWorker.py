@@ -14,6 +14,7 @@ class CliWorker(QThread):
 
     finished = pyqtSignal()  # signal to main when the thread's work is done
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
+    set_test_data_signal = pyqtSignal(dict, str, int)
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -36,6 +37,8 @@ class CliWorker(QThread):
         self.filepath = None
         # test number (index, actually) for correct upload
         self.test_number = 0
+        # connect signal from main to update test data
+        self.set_test_data_signal.connect(self.set_test_data)
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):

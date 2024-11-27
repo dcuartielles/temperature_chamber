@@ -350,10 +350,10 @@ class MainWindow(QMainWindow):
                     logger.info('test board worker temporarily deleted')
                     # initiate cli worker thread
                     self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
-                    self.cli_worker.set_test_data(self.test_data, self.filepath, self.test_number)
                     self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
                     self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
                     self.cli_worker.start()  # start cli worker thread
+                    self.cli_worker.set_test_data_signal.emit(self.test_data, self.filepath, self.test_number)
                     logger.info('cli worker started')
                     time.sleep(0.1)
             except:
@@ -404,10 +404,10 @@ class MainWindow(QMainWindow):
             logger.info('test board worker temporarily deleted for subsequent sketch upload')
             # initiate cli worker thread
             self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
-            self.cli_worker.set_test_data(self.test_data, self.filepath, self.test_number)
             self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
             self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
             self.cli_worker.start()  # start cli worker thread
+            self.cli_worker.set_test_data_signal.emit(self.test_data, self.filepath, self.test_number)
             logger.info('cli worker started for new test upload')
             time.sleep(0.1)
 
