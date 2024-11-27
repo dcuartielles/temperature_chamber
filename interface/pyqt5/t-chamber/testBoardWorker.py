@@ -59,9 +59,6 @@ class TestBoardWorker(QThread):
                             if response:
                                 self.all_good.emit()
                                 self.show_response(response)
-                            if time.time() - self.last_command_time > 5:
-                                self.last_command_time = time.time()
-                                logger.info('test worker thread is running')
                     except serial.SerialException as e:
                         logger.exception(f'serial error: {e}')
                         self.is_running = False
