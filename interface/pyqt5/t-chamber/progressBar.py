@@ -179,18 +179,19 @@ class ProgressBar(QWidget):
         logger.debug('start by adding total test sequence duration')
 
         # calculate degrees to reach target temp for first sequence
-        degrees_to_target = int(self.temperatures[0]) - int(self.current_temp)
+        degrees_to_target = int(self.temperatures[0]) - float(self.current_temp)
         logger.debug('calculate degrees to reach target temp for first sequence')
 
         prep_time = 0
         # if chamber needs to heat up
         if degrees_to_target > 0:
             prep_time = degrees_to_target * 30000  # 0.5 min per degree, in milliseconds
+            logger.info(f'calculated preptime, 30000 * degrees to target: {prep_time}')
             logger.debug('ca 2.2 minutes per degree, in milliseconds')
         # if chamber needs cooling
         elif degrees_to_target < 0:
             prep_time = abs(degrees_to_target) * 120000  # 2 minutes per degree, in milliseconds, absolute value
-            logger.debug('ca 9 minutes per degree, in milliseconds, absolute value')
+            logger.info(f'calculated preptime, 120000 * degrees to target: {prep_time}')
         # add prep time
         self.total_duration += prep_time
         logger.debug('add prep time')
@@ -210,11 +211,12 @@ class ProgressBar(QWidget):
 
         # adjust total duration according to what practice shows to be more realistic
         # self.total_duration = self.total_duration * 0.93
-
+        logger.info(f'total duration is {self.total_duration}')
         return self.total_duration
 
     # update test progress bar label with estimated total time
     def update_test_bar_label(self):
+        logger.info(f'total duration as is: {self.total_duration}')
         estimated_time = int(self.total_duration / 60000)  # estimated time in minutes
         est_hours, est_minutes = divmod(estimated_time, 60)
         formatted_estimated_time = f"{int(est_hours)}h {int(est_minutes)}m" if est_hours > 0 else f"{int(est_minutes)}m"
