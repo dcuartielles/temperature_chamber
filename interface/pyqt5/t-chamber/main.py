@@ -294,7 +294,7 @@ class MainWindow(QMainWindow):
     # TEST PART
     # run all benchmark tests
     def on_run_button_clicked(self):
-        if self.test_data and self.selected_t_port:  # ensure test data is loaded and t-port is there
+        if self.test_data:  # ensure test data is loaded
             # check if test is running
             if self.test_is_running:
                 response = popups.show_dialog(
