@@ -586,8 +586,10 @@ void runCurrentSequence() {
     }
 
     if (holdForPeriod(duration)) {
-        Serial.println("Sequence complete");
-        currentSequenceIndex++;
+        Serial.println("Sequence completed.");
+        if (currentSequenceIndex < currentTest.numSequences - 1) {  // TODO: check if this works
+            currentSequenceIndex++;
+        }
         sequenceStartTime = 0;
         printedWaiting = false;
         printedRunning = false;
