@@ -437,6 +437,7 @@ class MainWindow(QMainWindow):
     def load_test_file(self):
         self.test_data = self.json_handler.open_file()
         self.filepath = self.json_handler.get_filepath()
+        popups.show_info_message('info', 'test file uploaded successfully')
 
     # TEST-RELATED GUI UPDATES
     # the actual listbox updates
@@ -468,7 +469,6 @@ class MainWindow(QMainWindow):
     def test_interrupted_gui(self, message):
         self.test_is_running = False
         self.manual_tab.set_test_flag_to_false_signal.emit()
-        self.reset_control_board()
         self.test_label_no_test()
         self.progress.hide()
         self.main_tab.test_interrupted_gui()

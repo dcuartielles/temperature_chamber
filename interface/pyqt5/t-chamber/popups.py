@@ -13,6 +13,16 @@ def show_error_message(title, message):
     msg_box.exec_()  # this will display the message box
 
 
+# helper method to display info messages using QMessageBox
+def show_info_message(title, message):
+    msg_box = QMessageBox()
+    msg_box.setIcon(QMessageBox.Information)
+    msg_box.setWindowTitle(title)
+    msg_box.setText(message)
+    msg_box.setStandardButtons(QMessageBox.Ok)
+    msg_box.exec_()  # this will display the message box
+
+
 # proceed or not pop-up dialogue window
 def show_dialog(message):
     # create a QMessageBox
