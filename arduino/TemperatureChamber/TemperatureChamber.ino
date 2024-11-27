@@ -105,7 +105,7 @@ int status = EMERGENCY_STOP;
 // global variables to store switch states and flags
 bool systemSwitchState = false;
 bool startSwitchState = false;
-bool stopSwitchState = false;
+// bool stopSwitchState = false;
 
 struct Sequence {
     float targetTemp;
@@ -620,7 +620,7 @@ int getSwitchStatus() {
 void updateSwitchStates() {
     systemSwitchState = switchSystem.read() == LOW;
     startSwitchState = switchStart.read() == LOW;
-    stopSwitchState = switchStart.released();  // stop condition from releasing the start switch
+    // stopSwitchState = switchStart.released();  // stop condition from releasing the start switch
 }
 
 
@@ -647,7 +647,7 @@ void handleResetState() {
 }
 
 void handleHeatingState() {
-    if (!systemSwitchState || stopSwitchState) {
+    if (!systemSwitchState || !startSwitchState) {
         status = RESET;
         return;
     }
@@ -674,7 +674,7 @@ void handleHeatingState() {
 }
 
 void handleCoolingState() {
-    if (!systemSwitchState || stopSwitchState) {
+    if (!systemSwitchState || !startSwitchState) {
         status = RESET;
         return;
     }
@@ -702,7 +702,7 @@ void handleReportState() {
         status = EMERGENCY_STOP;
         return;
     }
-    if (stopSwitchState) {
+    if (!startSwitchState) {
         status = RESET;
         return;
     }
