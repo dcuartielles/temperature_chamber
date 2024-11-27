@@ -206,7 +206,6 @@ class PortSelector(QWidget):
         else:
             return str(saved_wifi_port)
 
-
     # get both port and board name for test board (for saving in config)
     def get_selected_t_port_and_board(self):
         selected_item = self.t_port_dropdown.currentText()  # get full string

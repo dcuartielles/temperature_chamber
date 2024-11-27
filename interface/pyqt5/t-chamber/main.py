@@ -76,7 +76,7 @@ class MainWindow(QMainWindow):
         # create qtimer instance: if serial connection with control board is broken, warn
         self.connection_broken_timer = QTimer(self)
         self.connection_broken_timer.timeout.connect(self.no_serial_cable)
-        self.connection_broken_timer.setInterval(30000)
+        self.connection_broken_timer.setInterval(60000)
         self.connection_broken_alert = False
 
         # create qtimer instance: if serial connection with test board is broken, warn
@@ -242,6 +242,7 @@ class MainWindow(QMainWindow):
                     self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
                     self.emergency_stop_button.clicked.connect(self.on_emergency_stop_button_clicked)
                     self.reset_button.clicked.connect(self.reset_control_board)
+                    self.serial_worker.alert_all_tests_complete_signal.connect(self.progress.get_actual_runtime)
                     self.serial_worker.no_port_connection.connect(self.on_no_port_connection_gui)
                     self.serial_worker.serial_running_and_happy.connect(self.show_reset_button)
                     self.serial_worker.all_good_in_serial.connect(self.reset_c_b_timer)
@@ -703,7 +704,7 @@ class MainWindow(QMainWindow):
     def no_serial_cable(self):
         if not self.connection_broken_alert:
             self.connection_broken_timer.stop()
-            message = 'no serial connection for 30 seconds, check cable'
+            message = 'no serial connection for 60 seconds, check cable'
             logger.warning(message)
             popups.show_error_message('warning', message)
             self.re_enable_start()

@@ -144,14 +144,16 @@ class ProgressBar(QWidget):
             self.sequence_progress_bar.set_sequence_data(self.sequence_durations, self.current_sequence_index)
             self.number_of_sequences += 1
             logger.debug(self.number_of_sequences)
-            if self.number_of_sequences == len(self.sequence_durations):
-                done_in = self.stop_stopwatch()
-                alert = f'all tests complete in {done_in}'
-                self.alert_all_tests_complete_signal.emit(alert)
-            elif self.number_of_sequences > len(self.sequence_durations):
+            if self.number_of_sequences > len(self.sequence_durations):
                 return
         else:
             return
+
+    # get the actual runtime and display it
+    def get_actual_runtime(self):
+        done_in = self.stop_stopwatch()
+        alert = f'all tests complete in {done_in}'
+        self.alert_all_tests_complete_signal.emit(alert)
 
     # get target temperatures from test_data
     def get_temperatures(self):
@@ -234,9 +236,4 @@ class ProgressBar(QWidget):
                     durations.append(sequence.get('duration', 0))
         logger.info(f'all durations: {durations}')
         return durations
-
-    # signal to update main and sequence when all tests are complete
-    def alert_all_tests_complete(self, message):
-        alert = message
-        self.alert_all_tests_complete_signal.emit(alert)
 
