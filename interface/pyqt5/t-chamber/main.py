@@ -76,13 +76,13 @@ class MainWindow(QMainWindow):
         # create qtimer instance: if serial connection with control board is broken, warn
         self.connection_broken_timer = QTimer(self)
         self.connection_broken_timer.timeout.connect(self.no_serial_cable)
-        self.connection_broken_timer.setInterval(10000)
+        self.connection_broken_timer.setInterval(30000)
         self.connection_broken_alert = False
 
         # create qtimer instance: if serial connection with test board is broken, warn
         self.test_broken_timer = QTimer(self)
         self.test_broken_timer.timeout.connect(self.no_test_cable)
-        self.test_broken_timer.setInterval(10000)
+        self.test_broken_timer.setInterval(30000)
         self.test_broken_alert = False
 
         # create a qtimer for emergency stop alert popup
@@ -145,14 +145,6 @@ class MainWindow(QMainWindow):
                                         'font-weight: bold;')
         layout.addWidget(self.start_button)
 
-        # reset control board button
-        self.reset_button = QPushButton('reset control board')
-        self.reset_button.setStyleSheet('background-color: #009FAF;'
-                                        'color: white;'
-                                        'font-size: 20px;')
-        self.reset_button.hide()
-        layout.addWidget(self.reset_button)
-
         # add space btw sections: vertical 8px
         layout.addSpacerItem(QSpacerItem(0, 8))
 
@@ -192,6 +184,16 @@ class MainWindow(QMainWindow):
         # add space btw sections: vertical 12px
         layout.addSpacerItem(QSpacerItem(0, 12))
 
+        # reset control board button
+        self.reset_button = QPushButton('reset control board')
+        self.reset_button.setStyleSheet('background-color: grey;'
+                                        'color: white;'
+                                        'font-size: 20px;')
+        layout.addWidget(self.reset_button)
+
+        # add space btw sections: vertical 8px
+        layout.addSpacerItem(QSpacerItem(0, 8))
+
         # emergency stop button
         self.emergency_stop_button = QPushButton('emergency stop', self)
         self.emergency_stop_button.setStyleSheet('background-color: grey;'
@@ -205,11 +207,9 @@ class MainWindow(QMainWindow):
 
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
-        self.reset_button.clicked.connect(self.reset_control_board)
         self.main_tab.load_button.clicked.connect(self.load_test_file)
         self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
-        self.port_selector.ports_refreshed.connect(self.re_enable_start)
 
         # set layout to the central widget
         self.central_widget.setLayout(layout)
@@ -223,8 +223,6 @@ class MainWindow(QMainWindow):
     # method to start running threads after ports have been selected
     def on_start_button_clicked(self):
         logger.info('start button clicked')
-        self.start_button.setDisabled(True)  # disable to prevent double-clicks
-        self.inactivated_start_button()
 
         # get selected ports
         self.selected_c_port = self.port_selector.get_selected_c_port()
@@ -236,7 +234,6 @@ class MainWindow(QMainWindow):
 
         logger.info('check if ports are selected')
         # visually signal app activation
-        self.light_up()
         if self.selected_c_port and self.selected_t_port:
             if not hasattr(self, 'serial_worker') or self.serial_worker is None or not self.serial_worker.is_running:
                 try:
@@ -244,6 +241,7 @@ class MainWindow(QMainWindow):
                     self.serial_worker.update_listbox.connect(self.update_listbox_gui)
                     self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
                     self.emergency_stop_button.clicked.connect(self.on_emergency_stop_button_clicked)
+                    self.reset_button.clicked.connect(self.reset_control_board)
                     self.serial_worker.no_port_connection.connect(self.on_no_port_connection_gui)
                     self.serial_worker.serial_running_and_happy.connect(self.show_reset_button)
                     self.serial_worker.all_good_in_serial.connect(self.reset_c_b_timer)
@@ -265,8 +263,7 @@ class MainWindow(QMainWindow):
                 except Exception as e:
                     logger.exception(f'failed to start serial worker: {e}')
                     popups.show_error_message('error', f'failed to start serial worker: {e}')
-                    self.start_button.setEnabled(True)
-                    self.reactivated_start_button()
+
                     return
 
             if not hasattr(self, 'test_board') or self.test_board is None or not self.test_board.is_running:
@@ -278,7 +275,7 @@ class MainWindow(QMainWindow):
                 except Exception as e:
                     logger.exception(f'failed to start test board worker: {e}')
                     popups.show_error_message('error', f'failed to start test board worker: {e}')
-                    # self.start_button.setEnabled(True)
+
                     return
 
             if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
@@ -294,7 +291,7 @@ class MainWindow(QMainWindow):
                     except Exception as e:
                         logger.exception(f'failed to start wifi worker: {e}')
                         popups.show_error_message('error', f'failed to start wifi worker: {e}')
-                        # self.start_button.setEnabled(True)
+
                         return
             else:
                 return
@@ -649,11 +646,13 @@ class MainWindow(QMainWindow):
         if self.machine_state == 'EMERGENCY_STOP':
             # if alert popup has not been shown, show it
             if not self.emergency_stop_popup_shown:
+                message = 'the system is off: DO SOMETHING!'
                 popups.show_error_message('warning', 'the system is off: DO SOMETHING!')
                 self.emergency_stop_popup_shown = True
-                logger.info('the system is off: DO SOMETHING!')
+                logger.info(message)
                 # if the issue has not been solved within 15 seconds, show popup again
                 self.emergency_stop_timer.start()
+                self.test_interrupted_gui(message)
             else:
                 return
 
@@ -661,9 +660,11 @@ class MainWindow(QMainWindow):
     def show_emergency_stop_popup(self):
         # check if the machine state is still in EMERGENCY_STOP
         if self.machine_state == 'EMERGENCY_STOP':
-            popups.show_error_message('warning', 'system is still off: DO SOMETHING NOW!')
-            logger.info('system is still off: DO SOMETHING NOW!')
+            message = 'system is still off: DO SOMETHING NOW!'
+            popups.show_error_message('warning', message)
+            logger.info(message)
             self.emergency_stop_popup_shown = True
+            self.test_interrupted_gui(message)
         else:
             self.reset_emergency_stop()
 
@@ -680,28 +681,30 @@ class MainWindow(QMainWindow):
                 message = 'due to lack of communication for at least 5 minutes, control board is reset\n you can reconnect the board(s) and click start again'
                 popups.show_error_message('warning', message)
                 logger.warning(message)
-                self.re_enable_start()
                 self.no_ping_alert = True
 
     # visually signal that there has been no connection to control board for at least 5 minutes
     def no_ping_gui(self):
         logger.info('changing gui to no ping for 5')
         self.setWindowTitle('no connection to control board')
-        self.reactivated_start_button()
         self.chamber_monitor.setStyleSheet('color: grey;'
                                            )
+        self.reset_button.setStyleSheet('background-color: grey;'
+                                                 'color: white;'
+                                                 'font-size: 20px;')
         self.emergency_stop_button.setStyleSheet('background-color: grey;'
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
+        message = 'serial connection to control board was lost over 5 minutes ago, control board is reset now'
+        popups.show_error_message('warning', message)
 
     # if no ping for 10 seconds (cable issues?)
     def no_serial_cable(self):
         if not self.connection_broken_alert:
             self.connection_broken_timer.stop()
-            message = 'no serial connection for 3 seconds, check cable'
+            message = 'no serial connection for 30 seconds, check cable'
             logger.warning(message)
-            self.no_ping_gui()
             popups.show_error_message('warning', message)
             self.re_enable_start()
             self.connection_broken_alert = True
@@ -714,7 +717,7 @@ class MainWindow(QMainWindow):
     def no_test_cable(self):
         if not self.test_broken_alert:
             self.test_broken_timer.stop()
-            message = 'no serial connection with test board for 3 seconds, check cable'
+            message = 'no serial connection with test board for 30 seconds, check cable'
             logger.warning(message)
             self.no_test_connection_gui()
             popups.show_error_message('warning', message)
@@ -727,25 +730,14 @@ class MainWindow(QMainWindow):
 
     # visually signal that there has been no connection to test board for at least 10 seconds
     def no_test_connection_gui(self):
-        logger.info('changing gui to no test connection for 3 sec')
-        self.reactivated_start_button()
+        logger.info('changing gui to no test connection for 10 sec')
+        self.update_listbox_gui('test board has been disconnected for at least 30 seconds')
 
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
         self.serial_worker.trigger_run_tests.emit(self.test_data)
 
     # GUI HELPER METHODS: START AND RESET BUTTONS
-    # visually signal that the app is running
-    def light_up(self):
-        self.setWindowTitle('temperature chamber app is running')
-        self.chamber_monitor.setStyleSheet('color: #009FAF;'
-                                           )
-        self.emergency_stop_button.setStyleSheet('background-color: red;'
-                                                 'font-weight: bold;'
-                                                 'color: white;'
-                                                 'font-size: 20px;'
-                                                 )
-
     # on start button clicked in case no port connection
     def on_no_port_connection_gui(self):
         popups.show_error_message('warning',
@@ -756,29 +748,23 @@ class MainWindow(QMainWindow):
                                                  'font-weight: bold;')
         self.chamber_monitor.setStyleSheet('color: grey;'
                                            )
-        self.start_button.setEnabled(True)  # re-enable button to try again
-        self.reactivated_start_button()
+        self.reset_button.setStyleSheet('background-color: grey;'
+                                                 'color: white;'
+                                                 'font-size: 20px;')
 
-    # inactive start button gui
-    def inactivated_start_button(self):
-        self.start_button.setStyleSheet('background-color: grey;'
-                                        'color: white;'
-                                        'font-size: 20px;'
-                                        'font-weight: bold;')
-
-    # reactivated start button gui
-    def reactivated_start_button(self):
-        self.start_button.show()
-        self.reset_button.hide()
-        self.start_button.setStyleSheet('background-color: #009FAF;'
-                                        'color: white;'
-                                        'font-size: 20px;'
-                                        'font-weight: bold;')
-
-    # show reset button when serial worker starts
+    # light up colors for reset and emergency stop buttons when serial worker starts
     def show_reset_button(self):
-        self.start_button.hide()
-        self.reset_button.show()
+        self.reset_button.setStyleSheet('background-color: #009FAF;'
+                                        'color: white;'
+                                        'font-size: 20px;')
+        self.setWindowTitle('temperature chamber app is running')
+        self.chamber_monitor.setStyleSheet('color: #009FAF;'
+                                           )
+        self.emergency_stop_button.setStyleSheet('background-color: red;'
+                                                 'font-weight: bold;'
+                                                 'color: white;'
+                                                 'font-size: 20px;'
+                                                 )
 
     # reset control board
     def reset_control_board(self):
@@ -797,12 +783,6 @@ class MainWindow(QMainWindow):
             else:
                 message = 'control board is reset'
                 self.new_test(message)
-
-    # re-enable start button after refreshing ports
-    def re_enable_start(self):
-        self.reactivated_start_button()
-        self.start_button.setEnabled(True)
-        logger.info('start button re-enabled')
 
     # HIDDEN FUNCTIONALITY
     # stop both workers

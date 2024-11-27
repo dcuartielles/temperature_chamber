@@ -114,6 +114,7 @@ class SerialCaptureWorker(QThread):
                             if not self.response_queue.empty():
                                 response = self.response_queue.get()
                                 self.process_response(response)
+                                self.all_good_in_serial.emit()
                             if time.time() - self.last_ping >= 0.5:
                                 self.last_ping = time.time()
                                 self.trigger_ping()
@@ -306,5 +307,7 @@ class SerialCaptureWorker(QThread):
                 logger.info('sending signal to start new sequence progress bar')
                 self.sequence_complete.emit('sequence complete')
                 self.sequence_has_been_advanced = True
+        # elif response.strip().startswith('All tests completed!'):
+            # signal for all tests complete
         else:
             logger.info(f'complete response from arduino: {response}')

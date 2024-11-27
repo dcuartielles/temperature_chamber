@@ -57,7 +57,6 @@ class TestBoardWorker(QThread):
                             # continuous readout from serial
                             response = self.ser.readline().decode('utf-8').strip()
                             if response:
-                                self.all_good.emit()
                                 self.show_response(response)
                     except serial.SerialException as e:
                         logger.exception(f'serial error: {e}')
@@ -87,9 +86,11 @@ class TestBoardWorker(QThread):
                 message = self.extract_deterministic_part(printout)  # extract deterministic output part
                 self.update_upper_listbox.emit(message)  # emit signal to update listbox
                 self.expected_outcome_listbox.emit(message)  # emit signal to update expected outcome
+                self.all_good.emit()
             else:
                 self.update_upper_listbox.emit(printout)  # emit signal to update listbox
                 self.expected_outcome_listbox.emit(printout)  # emit signal to update expected outcome
+                self.all_good.emit()
 
     # DETERMINISTIC AND NON-DETERMINISTIC OUTPUT READOUT
     # extract expected test outcome from test file
