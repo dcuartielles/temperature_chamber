@@ -754,6 +754,10 @@ void handleEmergencyStopState() {
 void runTestSequence() {
     if (isTestRunning) {
         runCurrentSequence();
+        if (currentTestIndex >= queuedTestCount) {
+            Serial.print("All tests completed!");
+            clearTests();
+        }
         if (currentSequenceIndex >= currentTest.numSequences) {
             Serial.print("Test complete: ");
             Serial.println(currentTestName);
