@@ -23,6 +23,7 @@ class SerialCaptureWorker(QThread):
     update_test_label_signal = pyqtSignal(dict)
     no_port_connection = pyqtSignal()
     serial_running_and_happy = pyqtSignal()
+    all_good_in_serial = pyqtSignal()  # signal to continuously check connection to control board
     next_sequence_progress = pyqtSignal()
     sequence_complete = pyqtSignal(str)
     test_number_signal = pyqtSignal(int)
@@ -107,13 +108,12 @@ class SerialCaptureWorker(QThread):
                             # read incoming serial data
                             response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
                             if response:
+                                self.all_good_in_serial.emit()
                                 self.process_response(response)  # update and show curated responses
-
                             # make sure responses added to que by send_json be processed as well
                             if not self.response_queue.empty():
                                 response = self.response_queue.get()
                                 self.process_response(response)
-
                             if time.time() - self.last_ping >= 0.5:
                                 self.last_ping = time.time()
                                 self.trigger_ping()

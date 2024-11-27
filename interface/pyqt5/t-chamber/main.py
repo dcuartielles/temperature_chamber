@@ -76,8 +76,14 @@ class MainWindow(QMainWindow):
         # create qtimer instance: if serial connection with control board is broken, warn
         self.connection_broken_timer = QTimer(self)
         self.connection_broken_timer.timeout.connect(self.no_serial_cable)
-        self.connection_broken_timer.setInterval(5000)
+        self.connection_broken_timer.setInterval(10000)
         self.connection_broken_alert = False
+
+        # create qtimer instance: if serial connection with test board is broken, warn
+        self.test_broken_timer = QTimer(self)
+        self.test_broken_timer.timeout.connect(self.no_test_cable)
+        self.test_broken_timer.setInterval(10000)
+        self.test_broken_alert = False
 
         # create a qtimer for emergency stop alert popup
         self.emergency_stop_popup_shown = False
@@ -240,6 +246,7 @@ class MainWindow(QMainWindow):
                     self.emergency_stop_button.clicked.connect(self.on_emergency_stop_button_clicked)
                     self.serial_worker.no_port_connection.connect(self.on_no_port_connection_gui)
                     self.serial_worker.serial_running_and_happy.connect(self.show_reset_button)
+                    self.serial_worker.all_good_in_serial.connect(self.reset_c_b_timer)
                     self.serial_worker.ping_timestamp_signal.connect(self.get_timestamp)
                     self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
                     self.serial_worker.test_number_signal.connect(self.update_test_number)
@@ -265,9 +272,8 @@ class MainWindow(QMainWindow):
             if not hasattr(self, 'test_board') or self.test_board is None or not self.test_board.is_running:
                 try:
                     self.test_board = TestBoardWorker(self.test_data, self.test_number, port=self.selected_t_port, baudrate=9600)
+                    self.test_board.all_good.connect(self.reset_b_t_timer)
                     self.test_board.start()  # start worker thread
-                    self.test_broken_alert = False
-                    self.test_broken_timer.start()
 
                 except Exception as e:
                     logger.exception(f'failed to start test board worker: {e}')
@@ -355,6 +361,7 @@ class MainWindow(QMainWindow):
                     self.serial_worker.upload_sketch_again_signal.connect(self.upload_sketch_for_new_test)
                 if not self.test_board.is_stopped:
                     self.test_board.is_running = False
+                    self.test_broken_timer.stop()
                     self.test_board.stop()
                     self.test_board.deleteLater()
                     logger.info('test board worker temporarily deleted')
@@ -387,10 +394,10 @@ class MainWindow(QMainWindow):
         self.test_board = TestBoardWorker(self.test_data, self.test_number, port=self.selected_t_port, baudrate=9600)
         self.test_board.update_upper_listbox.connect(self.main_tab.update_test_output_listbox_gui)
         self.test_board.update_upper_listbox.connect(self.check_output)
+        self.test_board.all_good.connect(self.reset_b_t_timer)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
-        self.test_broken_alert = False
-        self.test_broken_timer.start()
+
         logger.info('test board worker restarted')
         # update the gui
         self.main_tab.change_test_part_gui(self.test_data)
@@ -411,6 +418,7 @@ class MainWindow(QMainWindow):
         if not self.test_board.is_stopped:
             self.main_tab.sketch_upload_between_tests_gui()
             self.test_board.is_running = False
+            self.test_broken_timer.stop()
             self.test_board.stop()
             self.test_board.deleteLater()
             logger.info('test board worker temporarily deleted for subsequent sketch upload')
@@ -440,10 +448,9 @@ class MainWindow(QMainWindow):
 
             # restart test board worker thread
             self.test_board = TestBoardWorker(self.test_data, self.test_number, port=self.selected_t_port, baudrate=9600)
+            self.test_board.all_good.connect(self.reset_b_t_timer)
             self.test_board.start()  # start test board thread
             self.test_board.is_running = True
-            self.test_broken_alert = False
-            self.test_broken_timer.start()
             logger.info('test board worker restarted through cli interrupted')
             self.main_tab.on_run_test_gui()
 
@@ -688,16 +695,40 @@ class MainWindow(QMainWindow):
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
 
-    # if no ping for 3 seconds (cable issues?)
+    # if no ping for 10 seconds (cable issues?)
     def no_serial_cable(self):
-        if self.timestamp and datetime.now() - self.timestamp >= timedelta(seconds=3):
-            if not self.connection_broken_alert:
-                message = 'no serial connection for 3 seconds, check cable'
-                logger.warning(message)
-                self.no_ping_gui()
-                popups.show_error_message('warning', message)
-                self.re_enable_start()
-                self.connection_broken_alert = True
+        if not self.connection_broken_alert:
+            self.connection_broken_timer.stop()
+            message = 'no serial connection for 3 seconds, check cable'
+            logger.warning(message)
+            self.no_ping_gui()
+            popups.show_error_message('warning', message)
+            self.re_enable_start()
+            self.connection_broken_alert = True
+
+    def reset_c_b_timer(self):
+        self.connection_broken_timer.start()
+        self.connection_broken_alert = False
+
+    # if no readout from test board for 10 seconds (cable issues?)
+    def no_test_cable(self):
+        if not self.test_broken_alert:
+            self.test_broken_timer.stop()
+            message = 'no serial connection with test board for 3 seconds, check cable'
+            logger.warning(message)
+            self.no_test_connection_gui()
+            popups.show_error_message('warning', message)
+            self.test_broken_alert = True
+
+    # reset test board cable connection timer, triggered by signal from test board worker
+    def reset_b_t_timer(self):
+        self.test_broken_timer.start()
+        self.test_broken_alert = False
+
+    # visually signal that there has been no connection to test board for at least 10 seconds
+    def no_test_connection_gui(self):
+        logger.info('changing gui to no test connection for 3 sec')
+        self.reactivated_start_button()
 
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):

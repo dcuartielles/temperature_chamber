@@ -11,6 +11,7 @@ class TestBoardWorker(QThread):
 
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
     expected_outcome_listbox = pyqtSignal(str)  # signal to show expected test outcome
+    all_good = pyqtSignal()
 
     def __init__(self, test_data, test_number, port, baudrate, timeout=5):
         super().__init__()
@@ -56,6 +57,7 @@ class TestBoardWorker(QThread):
                             # continuous readout from serial
                             response = self.ser.readline().decode('utf-8').strip()
                             if response:
+                                self.all_good.emit()
                                 self.show_response(response)
                             if time.time() - self.last_command_time > 5:
                                 self.last_command_time = time.time()
