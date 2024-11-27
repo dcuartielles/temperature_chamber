@@ -7,8 +7,6 @@
     <list default="true" id="7c6001c7-ad6f-4254-a251-31cd602b3900" name="Changes" comment="hope python version is the one uploaded to main">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portSelector.py" beforeDir="false" afterPath="$PROJECT_DIR$/portSelector.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progressBar.py" beforeDir="false" afterPath="$PROJECT_DIR$/progressBar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/serialCaptureWorker.py" beforeDir="false" afterPath="$PROJECT_DIR$/serialCaptureWorker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../tests/alphabets/alphabet_test.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../../tests/alphabets/alphabet_test.json" afterDir="false" />
     </list>

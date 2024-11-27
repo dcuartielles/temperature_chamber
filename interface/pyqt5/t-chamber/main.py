@@ -76,13 +76,13 @@ class MainWindow(QMainWindow):
         # create qtimer instance: if serial connection with control board is broken, warn
         self.connection_broken_timer = QTimer(self)
         self.connection_broken_timer.timeout.connect(self.no_serial_cable)
-        self.connection_broken_timer.setInterval(60000)
+        self.connection_broken_timer.setInterval(5000)
         self.connection_broken_alert = False
 
         # create qtimer instance: if serial connection with test board is broken, warn
         self.test_broken_timer = QTimer(self)
         self.test_broken_timer.timeout.connect(self.no_test_cable)
-        self.test_broken_timer.setInterval(30000)
+        self.test_broken_timer.setInterval(60000)
         self.test_broken_alert = False
 
         # create a qtimer for emergency stop alert popup
@@ -245,7 +245,6 @@ class MainWindow(QMainWindow):
                     self.serial_worker.alert_all_tests_complete_signal.connect(self.progress.get_actual_runtime)
                     self.serial_worker.no_port_connection.connect(self.on_no_port_connection_gui)
                     self.serial_worker.serial_running_and_happy.connect(self.show_reset_button)
-                    self.serial_worker.all_good_in_serial.connect(self.reset_c_b_timer)
                     self.serial_worker.ping_timestamp_signal.connect(self.get_timestamp)
                     self.serial_worker.machine_state_signal.connect(self.emergency_stop_from_arduino)
                     self.serial_worker.test_number_signal.connect(self.update_test_number)
@@ -303,7 +302,7 @@ class MainWindow(QMainWindow):
     def on_emergency_stop_button_clicked(self):
         self.serial_worker.trigger_emergency_stop.emit()
         message = 'EMERGENCY STOP'
-        self.emergency_stop_gui(message)
+        self.test_interrupted_gui(message)
 
     # TEST PART
     # run all benchmark tests
@@ -317,7 +316,6 @@ class MainWindow(QMainWindow):
                     self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                     if self.cli_worker.is_running:
                         self.test_number = 0
-                        # self.reset_control_board()
                         message = 'test interrupted'
                         self.test_interrupted_gui(message)
                         logger.warning(message)
@@ -329,7 +327,6 @@ class MainWindow(QMainWindow):
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
                         message = 'test was interrupted'
-                        # self.reset_control_board()
                         self.test_interrupted_gui(message)
                         logger.info(message)
                 elif response == QMessageBox.No:
@@ -372,7 +369,7 @@ class MainWindow(QMainWindow):
                     logger.info('cli worker started')
                     time.sleep(0.1)
             except:
-                logger.exception('no serial connection')
+                logger.exception('something went wrong')
                 popups.show_error_message('error', 'no serial connection')
         else:
             popups.show_error_message('error', 'no test data loaded')
@@ -474,16 +471,6 @@ class MainWindow(QMainWindow):
         self.listbox.addItem(item)
         self.listbox.scrollToBottom()
 
-    # emergency stop gui
-    def emergency_stop_gui(self, message):
-        self.test_interrupted_gui(message)
-        item = QListWidgetItem(message)
-        font = QFont()
-        font.setBold(True)
-        item.setFont(font)
-        self.listbox.addItem(item)
-        self.listbox.scrollToBottom()
-
     # similar method to be triggered separately when a test is interrupted
     def test_interrupted_gui(self, message):
         self.test_is_running = False
@@ -572,7 +559,7 @@ class MainWindow(QMainWindow):
         first_test_key = test_keys[0]
         first_temp = int(self.test_data["tests"][first_test_key]["chamber_sequences"][0]["temp"])
         # check absolute difference
-        if self.current_temperature - first_temp >= 10:
+        if float(self.current_temperature) - first_temp >= 10:
             temp_situation = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'
             response = popups.show_dialog(temp_situation)
             if response == QMessageBox.No:
@@ -609,8 +596,9 @@ class MainWindow(QMainWindow):
     # WORKER THREAD TRIGGERS AND GETTERS + THEIR GUI PARTS
     # CONTROL BOARD: the actual chamber_monitor QList updates from ping
     def update_chamber_monitor_gui(self, message):
-        # retrieve current temperature from ping and convert it to int
-        self.current_temperature = int(message.get('current_temp'))
+        # retrieve current temperature from ping and convert it
+        temp = message.get('current_temp')
+        self.current_temperature = f"{temp:.2f}"
         # retrieve desired temp
         desired_temp = message.get('desired_temp')
         # retrieve machine state
@@ -702,23 +690,18 @@ class MainWindow(QMainWindow):
 
     # if no ping for 10 seconds (cable issues?)
     def no_serial_cable(self):
-        if not self.connection_broken_alert:
-            self.connection_broken_timer.stop()
-            message = 'no serial connection for 60 seconds, check cable'
-            logger.warning(message)
-            popups.show_error_message('warning', message)
-            self.re_enable_start()
-            self.connection_broken_alert = True
-
-    def reset_c_b_timer(self):
-        self.connection_broken_timer.start()
-        self.connection_broken_alert = False
+        if self.timestamp and datetime.now() - self.timestamp >= timedelta(minutes=1):
+            if not self.connection_broken_alert:
+                message = 'no serial connection for 1 minute, check cable'
+                logger.warning(message)
+                popups.show_error_message('warning', message)
+                self.connection_broken_alert = True
 
     # if no readout from test board for 10 seconds (cable issues?)
     def no_test_cable(self):
         if not self.test_broken_alert:
             self.test_broken_timer.stop()
-            message = 'no serial connection with test board for 30 seconds, check cable'
+            message = 'no serial connection with test board for 1 minute, check cable'
             logger.warning(message)
             self.no_test_connection_gui()
             popups.show_error_message('warning', message)
