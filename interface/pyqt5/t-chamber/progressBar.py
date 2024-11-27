@@ -166,7 +166,7 @@ class ProgressBar(QWidget):
                 sequences = test.get('chamber_sequences', [])
                 for sequence in sequences:
                     temperatures.append(sequence.get('temp', 0))
-        logger.info(temperatures)
+        logger.info(f'temperatures: {temperatures}')
         self.temperatures = temperatures
         return self.temperatures
 
