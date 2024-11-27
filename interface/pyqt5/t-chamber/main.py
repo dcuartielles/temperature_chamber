@@ -205,6 +205,10 @@ class MainWindow(QMainWindow):
         # add space btw sections: vertical 7px
         layout.addSpacerItem(QSpacerItem(0, 7))
 
+        # initially deactivate reset & emergency stop buttons (should only work when connection with control board)
+        self.reset_button.setEnabled(False)
+        self.emergency_stop_button.setEnabled(False)
+
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
         self.main_tab.load_button.clicked.connect(self.load_test_file)
@@ -738,6 +742,8 @@ class MainWindow(QMainWindow):
 
     # light up colors for reset and emergency stop buttons when serial worker starts
     def show_reset_button(self):
+        self.reset_button.setEnabled(True)
+        self.emergency_stop_button.setEnabled(True)
         self.reset_button.setStyleSheet('background-color: #009FAF;'
                                         'color: white;'
                                         'font-size: 20px;')
