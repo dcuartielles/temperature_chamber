@@ -136,6 +136,10 @@ int currentTestIndex = 0;
 // track current test and sequence
 String currentTestName = "";
 
+// avoid printing ad infinitum in condition checks in loop
+bool printedTestsCleared = false;
+bool printedNoPing = false;
+
 // JSON Buffer for parsing
 char incomingString[1024];
 StaticJsonDocument<2048> jsonBuffer;
@@ -433,6 +437,7 @@ void parseAndRunCommands(JsonObject& commands) {
         if (command == "PING") {
             sendPingResponse();
             lastPingTime = millis();
+            printedNoPing = false;
         } 
         if (systemSwitchState) {
             if (command == "SHOW_DATA") {
@@ -510,6 +515,7 @@ void parseTextFromJson(JsonDocument& doc) {
         JsonObject handshake = doc["handshake"];
         setInitialTimestamp(handshake);
         sendHandshake();
+        printedTestsCleared = false;
         lastShutdownCause = "";
     } else if (doc.containsKey("tests") && systemSwitchState) {     // if json consists of tests
         JsonObject test = doc["tests"];
@@ -770,11 +776,17 @@ void loop() {
 
     // Check for timeout (5 min without ping)
     if (currentMillis - lastPingTime > TIMEOUT_DURATION) {
-        Serial.println("No ping received for 5 minutes. Resetting and shutting down.");
+        if (!printedNoPing) {
+            Serial.println("No ping received for 5 minutes. Resetting and shutting down.");
+            printedNoPing = true;
+        }
         status = EMERGENCY_STOP;
         lastShutdownCause = "Lost connection";
-        clearTests();
         displayLCDOff();
+        if (!printedTestsCleared) {
+            clearTests();
+            printedTestsCleared = true;
+        }
     }
 
     // Update switch states and temperature readings
