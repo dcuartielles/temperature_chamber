@@ -79,12 +79,6 @@ class MainWindow(QMainWindow):
         self.connection_broken_timer.setInterval(5000)
         self.connection_broken_alert = False
 
-        # create qtimer instance: if serial connection with test board is broken, warn
-        self.test_broken_timer = QTimer(self)
-        self.test_broken_timer.timeout.connect(self.no_test_cable)
-        self.test_broken_timer.setInterval(5000)
-        self.test_broken_alert = False
-
         # create a qtimer for emergency stop alert popup
         self.emergency_stop_popup_shown = False
         self.emergency_stop_timer = QTimer()
@@ -704,21 +698,6 @@ class MainWindow(QMainWindow):
                 popups.show_error_message('warning', message)
                 self.re_enable_start()
                 self.connection_broken_alert = True
-
-    # if no ping for 3 seconds (cable issues?)
-    def no_test_cable(self):
-        if self.timestamp and datetime.now() - self.timestamp >= timedelta(seconds=3):
-            if not self.test_broken_alert:
-                message = 'no serial connection with test board for 3 seconds, check cable'
-                logger.warning(message)
-                self.no_test_connection_gui()
-                popups.show_error_message('warning', message)
-                self.test_broken_alert = True
-
-    # visually signal that there has been no connection to test board for at least 3 seconds
-    def no_test_connection_gui(self):
-        logger.info('changing gui to no test connection for 3 sec')
-        self.reactivated_start_button()
 
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
