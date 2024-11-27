@@ -73,6 +73,18 @@ class MainWindow(QMainWindow):
         self.no_ping_timer.setInterval(5000)  # set interval in milliseconds
         self.no_ping_alert = False  # flag to only have the 5-min alert show once
 
+        # create qtimer instance: if serial connection with control board is broken, warn
+        self.connection_broken_timer = QTimer(self)
+        self.connection_broken_timer.timeout.connect(self.no_serial_cable)
+        self.connection_broken_timer.setInterval(5000)
+        self.connection_broken_alert = False
+
+        # create qtimer instance: if serial connection with test board is broken, warn
+        self.test_broken_timer = QTimer(self)
+        self.test_broken_timer.timeout.connect(self.no_test_cable)
+        self.test_broken_timer.setInterval(5000)
+        self.test_broken_alert = False
+
         # create a qtimer for emergency stop alert popup
         self.emergency_stop_popup_shown = False
         self.emergency_stop_timer = QTimer()
@@ -241,6 +253,8 @@ class MainWindow(QMainWindow):
                     logger.info('serial worker started successfully')
                     self.no_ping_alert = False
                     self.no_ping_timer.start()
+                    self.connection_broken_alert = False
+                    self.connection_broken_timer.start()
                     logger.info('qtimer started to check for pings every 5 seconds')
 
                     # connect manual tab signals
@@ -258,6 +272,8 @@ class MainWindow(QMainWindow):
                 try:
                     self.test_board = TestBoardWorker(self.test_data, self.test_number, port=self.selected_t_port, baudrate=9600)
                     self.test_board.start()  # start worker thread
+                    self.test_broken_alert = False
+                    self.test_broken_timer.start()
 
                 except Exception as e:
                     logger.exception(f'failed to start test board worker: {e}')
@@ -303,7 +319,7 @@ class MainWindow(QMainWindow):
                     self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                     if self.cli_worker.is_running:
                         self.test_number = 0
-                        #vself.reset_control_board()
+                        # self.reset_control_board()
                         message = 'test interrupted'
                         self.test_interrupted_gui(message)
                         logger.warning(message)
@@ -379,6 +395,8 @@ class MainWindow(QMainWindow):
         self.test_board.update_upper_listbox.connect(self.check_output)
         self.test_board.start()  # start test board thread
         self.test_board.is_running = True
+        self.test_broken_alert = False
+        self.test_broken_timer.start()
         logger.info('test board worker restarted')
         # update the gui
         self.main_tab.change_test_part_gui(self.test_data)
@@ -430,6 +448,8 @@ class MainWindow(QMainWindow):
             self.test_board = TestBoardWorker(self.test_data, self.test_number, port=self.selected_t_port, baudrate=9600)
             self.test_board.start()  # start test board thread
             self.test_board.is_running = True
+            self.test_broken_alert = False
+            self.test_broken_timer.start()
             logger.info('test board worker restarted through cli interrupted')
             self.main_tab.on_run_test_gui()
 
@@ -642,6 +662,7 @@ class MainWindow(QMainWindow):
         if self.machine_state == 'EMERGENCY_STOP':
             popups.show_error_message('warning', 'system is still off: DO SOMETHING NOW!')
             logger.info('system is still off: DO SOMETHING NOW!')
+            self.emergency_stop_popup_shown = True
         else:
             self.reset_emergency_stop()
 
@@ -654,7 +675,6 @@ class MainWindow(QMainWindow):
     def no_ping_for_five(self):
         if self.timestamp and datetime.now() - self.timestamp >= timedelta(minutes=5):
             if not self.no_ping_alert:
-                logger.warning("no ping received for 5 minutes or more")
                 self.no_ping_gui()
                 message = 'due to lack of communication for at least 5 minutes, control board is reset\n you can reconnect the board(s) and click start again'
                 popups.show_error_message('warning', message)
@@ -673,6 +693,32 @@ class MainWindow(QMainWindow):
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
+
+    # if no ping for 3 seconds (cable issues?)
+    def no_serial_cable(self):
+        if self.timestamp and datetime.now() - self.timestamp >= timedelta(seconds=3):
+            if not self.connection_broken_alert:
+                message = 'no serial connection for 3 seconds, check cable'
+                logger.warning(message)
+                self.no_ping_gui()
+                popups.show_error_message('warning', message)
+                self.re_enable_start()
+                self.connection_broken_alert = True
+
+    # if no ping for 3 seconds (cable issues?)
+    def no_test_cable(self):
+        if self.timestamp and datetime.now() - self.timestamp >= timedelta(seconds=3):
+            if not self.test_broken_alert:
+                message = 'no serial connection with test board for 3 seconds, check cable'
+                logger.warning(message)
+                self.no_test_connection_gui()
+                popups.show_error_message('warning', message)
+                self.test_broken_alert = True
+
+    # visually signal that there has been no connection to test board for at least 3 seconds
+    def no_test_connection_gui(self):
+        logger.info('changing gui to no test connection for 3 sec')
+        self.reactivated_start_button()
 
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
@@ -728,17 +774,19 @@ class MainWindow(QMainWindow):
     def reset_control_board(self):
         if self.serial_worker and self.serial_worker.is_running:
             self.serial_worker.trigger_reset.emit()
-            logger.info('reset signal emitted')
-            message = 'control board is reset'
-            self.on_reset_gui(message)
-
-    def on_reset_gui(self, message):
-        self.test_is_running = False
-        self.manual_tab.set_test_flag_to_false_signal.emit()
-        self.test_label_no_test()
-        self.progress.hide()
-        self.main_tab.test_interrupted_gui()
-        self.new_test(message)
+            if self.test_is_running:
+                if self.cli_worker and self.cli_worker.is_running:
+                    self.on_cli_test_interrupted()
+                    logger.info('reset signal emitted')
+                    message = 'control board is reset'
+                    self.test_interrupted_gui(message)
+                else:
+                    logger.info('reset signal emitted')
+                    message = 'control board is reset'
+                    self.test_interrupted_gui(message)
+            else:
+                message = 'control board is reset'
+                self.new_test(message)
 
     # re-enable start button after refreshing ports
     def re_enable_start(self):
