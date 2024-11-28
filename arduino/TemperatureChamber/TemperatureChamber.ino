@@ -316,7 +316,7 @@ void displayLCDOff() {
 }
 
 bool isTemperatureReached(float targetTemp, float currentTemp) {
-    return currentTemp >= targetTemp - 0.1 && currentTemp <= targetTemp + 3;
+    return currentTemp >= targetTemp - 0.5 && currentTemp <= targetTemp + 5;
 }
 
 bool holdForPeriod(unsigned long duration) {
@@ -708,13 +708,10 @@ void handleCoolingState() {
         chamberState.isCooling = false;
         status = REPORT;
         return;
-    } else if(temperatureThreshold > 0.4) {
+    } else if(temperatureThreshold > 0.1) {
         dutyCycleCooler = 100;
         periodCooler=2000;
-    } else if(temperatureThreshold < 0.4) {
-        dutyCycleCooler = 29;
-        periodCooler=7000; // on for 2 seconds and off for 5
-    } 
+    }
 
     controlRelay(cooler, dutyCycleCooler, periodCooler, chamberState.lastCoolerOnTime);
     chamberState.isCooling = true;
