@@ -174,40 +174,46 @@ class ProgressBar(QWidget):
     def estimate_total_time(self):
         # reset total duration
         self.total_duration = 0
+        logger.info(f'durations: {self.sequence_durations}')
         # start by adding total test sequence duration
         self.total_duration += sum(self.sequence_durations)
-        logger.debug('start by adding total test sequence duration')
+        logger.info(f'start by adding total test sequence duration: {self.total_duration}')
 
         # calculate degrees to reach target temp for first sequence
-        degrees_to_target = int(self.temperatures[0]) - float(self.current_temp)
-        logger.debug('calculate degrees to reach target temp for first sequence')
+        degrees_to_target = float(self.temperatures[0]) - float(self.current_temp)
+        logger.info(f'calculate degrees to reach target temp for first sequence: {float(self.temperatures[0])} - {float(self.current_temp)}')
 
         prep_time = 0
         # if chamber needs to heat up
         if degrees_to_target > 0:
             prep_time = degrees_to_target * 30000  # 0.5 min per degree, in milliseconds
-            logger.info(f'calculated preptime, 30000 * degrees to target: {prep_time}')
-            logger.debug('ca 2.2 minutes per degree, in milliseconds')
+            logger.info(f'calculated preptime, 30000 * {degrees_to_target} = {prep_time}')
         # if chamber needs cooling
         elif degrees_to_target < 0:
             prep_time = abs(degrees_to_target) * 120000  # 2 minutes per degree, in milliseconds, absolute value
-            logger.info(f'calculated preptime, 120000 * degrees to target: {prep_time}')
+            logger.info(f'calculated preptime, 120000 * {abs(degrees_to_target)} = {prep_time}')
         # add prep time
+        logger.info(f'total duration + preptime: {self.total_duration} += {prep_time}')
         self.total_duration += prep_time
-        logger.debug('add prep time')
+        logger.info(f' total duration: {self.total_duration}')
 
         # calculate time for temperature changes between subsequent target temperatures
         for i in range(1, len(self.temperatures)):
             degrees_difference = int(self.temperatures[i]) - int(self.temperatures[i - 1])
-            logger.debug('calculate time for temperature changes between subsequent target temperatures')
+            logger.info('calculate time for temperature changes between subsequent target temperatures')
             # if chamber needs to heat up
             if degrees_difference > 0:
+                logger.info(f'total duration += degrees difference * 30000: {self.total_duration} += {degrees_difference} * 30000')
                 self.total_duration += degrees_difference * 30000  # 0.5 min per degree, in milliseconds
+                logger.info(f'total dur: {self.total_duration}')
 
             # if chamber needs cooling
             elif degrees_difference < 0:
+                logger.info(
+                    f'total duration += degrees difference * 120000: {self.total_duration} += {abs(degrees_difference)} * 120000')
                 self.total_duration += abs(
                     degrees_difference) * 120000  # 2 min per degree, in millis, absolute value
+                logger.info(f'tot dur: {self.total_duration}')
 
         # adjust total duration according to what practice shows to be more realistic
         # self.total_duration = self.total_duration * 0.93
@@ -218,9 +224,12 @@ class ProgressBar(QWidget):
     def update_test_bar_label(self):
         logger.info(f'total duration as is: {self.total_duration}')
         estimated_time = int(self.total_duration / 60000)  # estimated time in minutes
+        logger.info(f'tot dur in minutes: {estimated_time}')
         est_hours, est_minutes = divmod(estimated_time, 60)
         formatted_estimated_time = f"{int(est_hours)}h {int(est_minutes)}m" if est_hours > 0 else f"{int(est_minutes)}m"
-        logger.info(f'parsing estimated runtime for clear display, actual runtime was {formatted_estimated_time}')
+        logger.info(f'parsing estimated runtime for clear display: {formatted_estimated_time}')
+
+        # make sure to print correct singular or plural in test(s)
         tests = self.number_of_tests
         if tests > 1:
             self.time_label.setText(f'{tests} tests | est. runtime: {formatted_estimated_time}')
