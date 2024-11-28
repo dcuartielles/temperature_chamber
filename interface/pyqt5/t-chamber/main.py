@@ -670,6 +670,7 @@ class MainWindow(QMainWindow):
     def no_ping_for_five(self):
         if self.timestamp and datetime.now() - self.timestamp >= timedelta(minutes=5):
             if not self.no_ping_alert:
+                self.manual_tab.set_serial_is_running_to_false()
                 self.no_ping_gui()
                 message = 'due to lack of communication for at least 5 minutes, control board is reset\n you can reconnect the board(s) and click start again'
                 popups.show_error_message('warning', message)
@@ -694,9 +695,10 @@ class MainWindow(QMainWindow):
 
     # if no ping for 10 seconds (cable issues?)
     def no_serial_cable(self):
-        if self.timestamp and datetime.now() - self.timestamp >= timedelta(minutes=1):
+        if self.timestamp and datetime.now() - self.timestamp >= timedelta(seconds=15):
             if not self.connection_broken_alert:
-                message = 'no serial connection for 1 minute, check cable'
+                self.manual_tab.set_serial_is_running_to_false()
+                message = 'no serial connection for 15 seconds, check cable'
                 logger.warning(message)
                 popups.show_error_message('warning', message)
                 self.connection_broken_alert = True
@@ -755,6 +757,7 @@ class MainWindow(QMainWindow):
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  )
+        self.manual_tab.set_serial_is_running_flag_to_true()
 
     # reset control board
     def reset_control_board(self):

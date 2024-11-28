@@ -29,6 +29,7 @@ class SerialCaptureWorker(QThread):
     # signal to main to trigger sketch uploads for each new test
     upload_sketch_again_signal = pyqtSignal(str, int)
     alert_all_tests_complete_signal = pyqtSignal()  # signal to update gui when last test sequence is complete
+    serial_is_closed_signal = pyqtSignal()  # prevent 'temp setting' if no serial connection
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
