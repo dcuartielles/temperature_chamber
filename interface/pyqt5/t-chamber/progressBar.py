@@ -11,7 +11,7 @@ logger = setup_logger(__name__)
 
 class ProgressBar(QWidget):
 
-    start_progress_signal = pyqtSignal(dict, int)  # signal from main to start timer for progress bars
+    start_progress_signal = pyqtSignal(dict, float)  # signal from main to start timer for progress bars
     alert_all_tests_complete_signal = pyqtSignal(str)  # signal to update gui when last test sequence is complete
 
     def __init__(self, parent=None):

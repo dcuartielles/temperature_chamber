@@ -405,20 +405,19 @@ class MainWindow(QMainWindow):
 
     # update test number for test coordination
     def update_test_number(self, message):
-        self.test_number = int(message)
+        self.test_number = message
         logger.info(f'current test number: {self.test_number}')
-        self.main_tab.update_test_number(message)
+        self.main_tab.update_test_number(self.test_number)
 
     # upload sketch for each test separately
-    def upload_sketch_for_new_test(self, message, test_number):
-        self.test_number = test_number
+    def upload_sketch_for_new_test(self, message):
         self.new_test(message)
         info = 'uploading sketch for next test'
         self.update_listbox_gui(info)
         if not self.test_board.is_stopped:
             self.main_tab.sketch_upload_between_tests_gui()
-            self.test_board.is_running = False
             self.test_broken_timer.stop()
+            self.test_board.is_running = False
             self.test_board.stop()
             self.test_board.deleteLater()
             logger.info('test board worker temporarily deleted for subsequent sketch upload')

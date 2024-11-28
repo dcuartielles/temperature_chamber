@@ -27,7 +27,7 @@ class SerialCaptureWorker(QThread):
     sequence_complete = pyqtSignal(str)
     test_number_signal = pyqtSignal(int)
     # signal to main to trigger sketch uploads for each new test
-    upload_sketch_again_signal = pyqtSignal(str, int)
+    upload_sketch_again_signal = pyqtSignal(str)
     alert_all_tests_complete_signal = pyqtSignal()  # signal to update gui when last test sequence is complete
     serial_is_closed_signal = pyqtSignal()  # prevent 'temp setting' if no serial connection
 
@@ -170,7 +170,7 @@ class SerialCaptureWorker(QThread):
 
     # ping
     def ping(self):
-        logger.info(f'test number: {self.test_number}')
+        logger.info(f'test number at the beginning of ping: {self.test_number}')
         ping = commands.ping()  # create ping command
         self.send_json_to_arduino(ping)  # send ping to arduino
         try:
@@ -291,13 +291,17 @@ class SerialCaptureWorker(QThread):
         if any(response.strip().startswith(trigger) for trigger in trigger_responses):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
-        elif 'Test complete' in response.strip():
+        elif 'Test completed:' in response.strip():
             logger.info(f'arduino says {response}, sending signal to upload sketch for new test')
             self.test_number += 1
             logger.info(f'test number: {self.test_number}')
             self.test_number_signal.emit(self.test_number)
             message = f'test {self.test_number} complete'
-            self.upload_sketch_again_signal.emit(message, self.test_number)
+            logger.info(message)
+            logger.info('about to emit signal for a upload btw tests')
+            self.upload_sketch_again_signal.emit(message)
+            logger.info('signal for new upload btw tests emitted')
+
         elif response.strip().startswith('Waiting'):
             self.sequence_has_been_advanced = False
             self.update_listbox.emit(response)  # emit signal to update listbox
