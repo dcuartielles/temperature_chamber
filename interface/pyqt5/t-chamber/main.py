@@ -262,7 +262,7 @@ class MainWindow(QMainWindow):
 
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
-                    self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
+                    self.manual_tab.test_interrupted.connect(self.reset_control_board)
 
                 except Exception as e:
                     logger.exception(f'failed to start serial worker: {e}')
@@ -770,12 +770,12 @@ class MainWindow(QMainWindow):
             if self.test_is_running:
                 if self.cli_worker and self.cli_worker.is_running:
                     self.on_cli_test_interrupted()
-                    logger.info('reset signal emitted')
-                    message = 'control board is reset'
+                    logger.info('test interrupted, reset signal emitted')
+                    message = 'test interrupted'
                     self.test_interrupted_gui(message)
                 else:
                     logger.info('reset signal emitted')
-                    message = 'control board is reset'
+                    message = 'test interrupted'
                     self.test_interrupted_gui(message)
             else:
                 message = 'control board is reset'
