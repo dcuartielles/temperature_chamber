@@ -393,7 +393,9 @@ void parseAndQueueTests(JsonObject& tests) {
 
     jsonBuffer.clear();
 
-    runNextTest();
+    if (!isTestRunning && queuedTestCount > 0) {
+        runNextTest();
+    }
 }
 
 void runNextTest() {
@@ -549,7 +551,7 @@ bool printedRunning = false;
 
 void runCurrentSequence() {
     if (currentSequenceIndex >= currentTest.numSequences) {
-        Serial.println("Test complete");
+        // Serial.println("Test completed.");
         isTestRunning = false;
         printedWaiting = false;
         printedRunning = false;
@@ -587,7 +589,7 @@ void runCurrentSequence() {
 
     if (holdForPeriod(duration)) {
         Serial.println("Sequence completed.");
-        if (currentSequenceIndex < currentTest.numSequences - 1) {  // TODO: check if this works
+        if (currentSequenceIndex < currentTest.numSequences) {  // TODO: check if this works
             currentSequenceIndex++;
         }
         sequenceStartTime = 0;
@@ -620,12 +622,12 @@ void setTemperature(float temp) {
     } else if (temp <= TEMPERATURE_MIN) {
         chamberState.temperatureDesired = TEMPERATURE_MIN;
         Serial.println("Specified temperature is lower than the minimum allowed temperature\n");
-        Serial.println("Setting temperature to " + String(TEMPERATURE_MIN) + "°");
+        Serial.println("Setting temperature to " + String(TEMPERATURE_MIN) + "°C");
     } else {
         chamberState.temperatureDesired = temp;
         Serial.print("Setting temperature to ");
         Serial.print(temp);
-        Serial.println("°");
+        Serial.println("°C");
     }
 }
 
@@ -753,18 +755,17 @@ void handleEmergencyStopState() {
 void runTestSequence() {
     if (isTestRunning) {
         runCurrentSequence();
-        if (currentTestIndex >= queuedTestCount) {
-            Serial.print("All tests completed!");
-            clearTests();
-        }
         if (currentSequenceIndex >= currentTest.numSequences) {
-            Serial.print("Test complete: ");
+            Serial.print("Test completed: ");
             Serial.println(currentTestName);
             isTestRunning = false;
-            currentTestIndex++;
-            if (currentTestIndex < queuedTestCount) {
-                runNextTest();
+            if (currentTestIndex >= queuedTestCount) {
+                Serial.print("All tests completed!");
+                clearTests();
+                return;
             }
+            currentTestIndex++;
+            runNextTest();
         }
     }
 }
@@ -828,8 +829,8 @@ void loop() {
         displayLCDOff();
     }
 
-    runTestSequence();
     readAndParseSerial();   // check serial input for new tests or commands
+    runTestSequence();
 
     switch (status) {
         case RESET:
