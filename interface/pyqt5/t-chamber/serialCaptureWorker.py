@@ -189,6 +189,7 @@ class SerialCaptureWorker(QThread):
                 self.machine_state_signal.emit(self.machine_state)
                 # extract test status information and emit signals for gui updates
                 self.current_temperature = ping_data.get('current_temp', 0)
+                logger.info(f'current temp received directly from ping: {self.current_temperature}')
                 test_status = ping_data.get('test_status', {})
                 self.is_test_running = test_status.get('is_test_running', False)
                 self.current_test = test_status.get('current_test', '')
@@ -256,6 +257,7 @@ class SerialCaptureWorker(QThread):
             'desired_temp': self.desired_temp,
             'machine_state': self.machine_state
         }
+        logger.info(f'relevant info for serial monitor updates sent via signal: {relevant_info}')
         self.update_chamber_monitor.emit(relevant_info)
 
     # DECODING AND ENCODING TOOLS

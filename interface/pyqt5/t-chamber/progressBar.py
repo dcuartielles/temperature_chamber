@@ -80,12 +80,13 @@ class ProgressBar(QWidget):
         # set the layout
         self.setLayout(layout)
         self.show()
-        logger.debug('progress gui set up')
+        logger.info('progress gui set up')
 
     # start processing progress bar for general test time
     def start_progress(self, test_data, current_temp):
         # get all the necessary variables filled
         self.current_temp = current_temp
+        logger.info(f'received current temp from signal from main: {self.current_temp}')
         self.test_data = test_data
         self.sequence_durations = self.get_sequence_durations()
         self.temperatures = self.get_temperatures()
@@ -114,7 +115,7 @@ class ProgressBar(QWidget):
             if self.elapsed_time >= self.total_duration:
                 self.timer.stop()  # stop timer when total progress is complete
         else:
-            logger.debug('setting up overall test time progress bar, no test data here yet')
+            logger.info('setting up overall test time progress bar, no test data here yet')
             return
 
     # stopwatch methods
@@ -138,12 +139,12 @@ class ProgressBar(QWidget):
 
     # trigger new sequence progress bar update
     def advance_sequence(self):
-        logger.debug('triggering a new sequence')
+        logger.info('triggering a new sequence')
         self.current_sequence_index += 1
         if self.current_sequence_index <= len(self.sequence_durations):
             self.sequence_progress_bar.set_sequence_data(self.sequence_durations, self.current_sequence_index)
             self.number_of_sequences += 1
-            logger.debug(self.number_of_sequences)
+            logger.info(f'number of sequences: {self.number_of_sequences}')
             if self.number_of_sequences > len(self.sequence_durations):
                 return
         else:
@@ -223,6 +224,7 @@ class ProgressBar(QWidget):
     # update test progress bar label with estimated total time
     def update_test_bar_label(self):
         logger.info(f'total duration as is: {self.total_duration}')
+        estimated_time = int(self.total_duration / 60000)  # estimated time in minutes
         estimated_time = int(self.total_duration / 60000)  # estimated time in minutes
         logger.info(f'tot dur in minutes: {estimated_time}')
         est_hours, est_minutes = divmod(estimated_time, 60)

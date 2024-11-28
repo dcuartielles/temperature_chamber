@@ -348,6 +348,7 @@ class MainWindow(QMainWindow):
 
                 # if running tests for nth time, come back to original gui layout to start with
                 self.main_tab.on_run_test_gui()
+                logger.info(f'about to emit test_data and current_temperature to progress bar, and current temp is {self.current_temperature}')
                 self.progress.start_progress_signal.emit(self.test_data, self.current_temperature)
                 self.progress.alert_all_tests_complete_signal.connect(self.all_tests_complete)
 
@@ -561,9 +562,9 @@ class MainWindow(QMainWindow):
     def check_temp(self):
         test_keys = list(self.test_data["tests"].keys())
         first_test_key = test_keys[0]
-        first_temp = int(self.test_data["tests"][first_test_key]["chamber_sequences"][0]["temp"])
+        first_temp = float(self.test_data["tests"][first_test_key]["chamber_sequences"][0]["temp"])
         # check absolute difference
-        if float(self.current_temperature) - first_temp >= 10:
+        if self.current_temperature - first_temp >= 10:
             temp_situation = 'the difference between current and desired temperature in the upcoming test sequence is greater than 10°C, and you will need to wait a while before the chamber reaches it. do you want to proceed?'
             response = popups.show_dialog(temp_situation)
             if response == QMessageBox.No:
@@ -602,13 +603,17 @@ class MainWindow(QMainWindow):
     def update_chamber_monitor_gui(self, message):
         # retrieve current temperature from ping and convert it
         temp = message.get('current_temp')
-        self.current_temperature = f"{temp:.2f}"
+        logger.info(f'current temp from ping to update serial monitor: {temp}')
+        self.current_temperature = temp
+        logger.info(f'self.current_temperature: {self.current_temperature}')
+        formatted_current_temp = f"{temp:.2f}"
+        logger.info(f'formatted current temp: {formatted_current_temp}')
         # retrieve desired temp
         desired_temp = message.get('desired_temp')
         # retrieve machine state
         self.machine_state = message.get('machine_state')
         # create a displayable info string
-        status = f'current temp: {self.current_temperature}°C | target temp: {desired_temp}°C | machine state: {self.machine_state}'
+        status = f'current temp: {formatted_current_temp}°C | target temp: {desired_temp}°C | machine state: {self.machine_state}'
         self.chamber_monitor.clear()  # clear old data
         item = QListWidgetItem(status)  # add string as a widget
         item.setTextAlignment(Qt.AlignCenter)   # align it to center
