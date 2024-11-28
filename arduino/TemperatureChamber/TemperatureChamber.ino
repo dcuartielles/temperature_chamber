@@ -466,6 +466,7 @@ void parseAndRunCommands(JsonObject& commands) {
                 status = RESET;
                 Serial.println("System reset via command.");
             } else if (command == "EMERGENCY_STOP") {
+                clearTests();
                 status = EMERGENCY_STOP;
                 sendPingResponse();
                 Serial.println("Emergency Stop initiated via command.");
