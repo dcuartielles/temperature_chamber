@@ -1,0 +1,8 @@
+{
+    "handshake": {
+        "timestamp": "2024-10-28T10:38:00Z",
+        "machine_state": "RESET",
+        "last_shutdown_cause": "Lost connection",
+        "last_heat_time": "2024-10-25T10:38:00Z"
+    }
+}

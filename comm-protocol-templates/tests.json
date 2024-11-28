@@ -1,0 +1,21 @@
+{
+    "tests": {
+        "test_1": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 60000 },
+                { "temp": 40, "duration": 60000 }
+            ],
+            "sketch": "./alphabet.ino",
+            "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        },
+        "test_2": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 60000 },
+                { "temp": 40, "duration": 60000 }
+            ],
+            "sketch": "./alphabet.ino",
+            "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        }
+    }
+}
+

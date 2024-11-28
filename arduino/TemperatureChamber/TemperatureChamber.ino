@@ -28,7 +28,7 @@
 
 Authors:
  * Adam Harb, <adam.harb@hotmail.com>
- * Valentino Glave, defliez@protonmail.com
+ * Valentino Glave, valentinoglave@protonmail.com
  * David Cuartielles, d.cuartielles@arduino.cc
 
  (cc-sa-by-nc) 2024 Arduino, Sweden
@@ -40,7 +40,8 @@ Authors:
 #include <OneWire.h>
 #include <LiquidCrystal_I2C.h>
 #include <EduIntro.h>
-#include<ArduinoJson.h>
+#include <ArduinoJson.h>
+#include <RTC.h>
 
 // Defines
 #define ONE_WIRE_BUS_1      A0  // temp sensor 1
@@ -92,17 +93,14 @@ Button switchSystem(SWITCH_SYSTEM_STATE);
 Led cooler(RELAY_COOLER);
 Led heater(RELAY_HEATER);
 
-// Timing variables
+// PWM for heater and cooler
 unsigned long periodHeater = 0;
 unsigned long periodCooler = 0;
-
-// State machine variables
-int stateHeaterOld = 0;
-int stateCoolerOld = 0;
 int dutyCycleHeater = 0;
 int dutyCycleCooler = 0;
+
+// State machine
 int status = EMERGENCY_STOP;
-bool dataEvent = false;
 
 // global variables to store switch states and flags
 bool systemSwitchState = false;
@@ -114,8 +112,10 @@ struct Sequence {
     unsigned long duration;
 };
 
+const unsigned int MAX_SEQUENCES_IN_TEST = 5;
+
 struct Test {
-    Sequence sequences[5];
+    Sequence sequences[MAX_SEQUENCES_IN_TEST];
     int numSequences;
 };
 
@@ -126,12 +126,21 @@ int currentSequenceIndex = 0;
 unsigned long sequenceStartTime = 0;
 unsigned long currentDuration = 0;
 
+// queue for tests
+const unsigned int MAX_QUEUED_TESTS = 10;
+Test testQueue[MAX_QUEUED_TESTS];
+String testNames[MAX_QUEUED_TESTS];
+int queuedTestCount = 0;
+int currentTestIndex = 0;
+
+// track current test and sequence
+String currentTestName = "";
+
 // JSON Buffer for parsing
 char incomingString[1024];
 StaticJsonDocument<2048> jsonBuffer;
 
-// Define Variables
-float TemperatureThreshold = 0;
+float temperatureThreshold = 0;
 
 // struct for state of the heating/cooling system
 struct ChamberState {
@@ -145,6 +154,12 @@ struct ChamberState {
 };
 
 ChamberState chamberState;
+
+String lastShutdownCause = "Unknown";
+String lastHeatingTime = "";
+
+unsigned long lastPingTime = 0;
+const unsigned long TIMEOUT_DURATION = 300000;
 
 // function for checking how much memory remains after parsing JSON of different sizes
 extern "C" {
@@ -160,14 +175,26 @@ void setup() {
     // Initialise Serial
     Serial.begin(9600);
 
+    // Initialize RTC
+    if (!RTC.begin()) {
+        Serial.println("RTC initialization failed!");
+    }
+
+    if (!RTC.isRunning()) {
+        RTCTime defaultTime(2024, Month::NOVEMBER, 1, 10, 26, 0, DayOfWeek::FRIDAY, SaveLight::SAVING_TIME_INACTIVE);
+        RTC.setTimeIfNotRunning(defaultTime);
+    }
+
     // Initialise thermocouples
     sensors1.begin();
     sensors2.begin();
 
     // Initialise LCD
     lcd.init();
+
+    // Initiate chamber state variables
     chamberState.temperatureRoom = getTemperature();
-    chamberState.temperatureDesired = -41;
+    chamberState.temperatureDesired = 0;
     chamberState.longHeatingFlag = 0;
     chamberState.isHeating = false;
     chamberState.isCooling = false;
@@ -177,6 +204,48 @@ void setup() {
     currentTest.numSequences = 0;
 
     readAndParseSerial();
+}
+
+String getCurrentTimestamp() {
+    RTCTime now;
+    if (RTC.getTime(now)) {
+        return now.toString();
+    } else {
+        return "Error: Unable to get time";
+    }
+}
+
+String getLastHeatingTime() {
+    return lastHeatingTime.isEmpty() ? "N/A" : lastHeatingTime;
+}
+
+void setInitialTimestamp(JsonObject& commandParams) {
+    if (commandParams.containsKey("timestamp")) {
+        String timestamp = commandParams["timestamp"].as<String>();
+        int year, month, day, hour, minute, second;
+        sscanf(timestamp.c_str(), "%4d-%2d-%2dT%2d:%2d:%2d", &year, &month, &day, &hour, &minute, &second);
+
+        RTCTime initialTime(day, static_cast<Month>(month - 1), year, hour, minute, second, DayOfWeek::SUNDAY, SaveLight::SAVING_TIME_INACTIVE);
+        if (RTC.setTime(initialTime)) {
+            Serial.println("RTC updated with initial timestamp from python app.");
+        } else {
+            Serial.println("Error setting RTC time.");
+        }
+    } else {
+        Serial.println("Timestamp key not found in commandParams.");
+    }
+}
+
+void sendHandshake() {
+    StaticJsonDocument<512> handshakeDoc;
+
+    handshakeDoc["handshake"]["timestamp"] = getCurrentTimestamp();
+    handshakeDoc["handshake"]["machine_state"] = getMachineState();
+    handshakeDoc["handshake"]["last_shutdown_cause"] = lastShutdownCause;
+    handshakeDoc["handshake"]["last_heat_time"] = getLastHeatingTime();
+
+    serializeJson(handshakeDoc, Serial);
+    Serial.println();
 }
 
 float getTemperature() {
@@ -190,21 +259,6 @@ float getTemperature() {
     return roomTemperature;
 }
 
-// void showData() {
-//     displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
-//     displaySerial();
-//     if(abs(temperatureRoomOld - chamberState.temperatureRoom) > 0.1 || 
-//             (temperatureDesiredOld - chamberState.temperatureDesired)!= 0 || 
-//             stateHeaterOld != chamberState.isHeating || stateCoolerOld != chamberState.isCooling) {
-//         dataEvent = true;; // if the temp gradient is more than 0.1 deg
-//     } else {
-//         dataEvent = false;
-//     }
-//     if (dataEvent) {
-//         displaySerial();
-//     }
-// }
-
 void displayLCD(float tempRoom, int tempDesired) {
     lcd.backlight();  // turn off backlight
     lcd.display();
@@ -213,32 +267,9 @@ void displayLCD(float tempRoom, int tempDesired) {
     lcd.print("Room: ");
     lcd.print(tempRoom);
     lcd.print(" C");
-
-    //// Attempt at showing test updates on LCD, but LCD too smol
-    // if (isTestRunning) {
-    //     unsigned long elapsedTime = (millis() - sequenceStartTime) / 60000;
-    //     unsigned long remainingTime = (currentDuration / 60000) - elapsedTime;
-    //     lcd.setCursor(13, 0);
-    //     lcd.print(remainingTime);
-    //     lcd.print("m");
-    //     lcd.setCursor(0, 1);  // 2nd argument represent the number of the line we're writing on
-    //     lcd.print("Goal:");
-    //     lcd.print(tempDesired);
-    //     lcd.print("C");
-    //     float percentComplete = (float)(millis() - sequenceStartTime) / currentDuration * 100;
-    //     if (percentComplete > 100) percentComplete = 100;
-    //     lcd.setCursor(12, 1);
-    //     lcd.print((int)percentComplete);
-    //     lcd.print("%");
-    // } else if (currentSequenceIndex >= currentTest.numSequences && currentTest.numSequences != 0) {
-    //     lcd.setCursor(0, 1);  // 2nd argument represent the number of the line we're writing on
-    //     lcd.print("Test complete");
-    // } else {
-    // }
-
     lcd.setCursor(0, 1);
     lcd.print("Goal: ");
-    if (tempDesired == -41) {
+    if (tempDesired == 0) {
         lcd.print("-");
     } else {
         lcd.print(tempDesired);
@@ -250,7 +281,7 @@ void displaySerial() {
     Serial.print(F("Room_temp: "));
     Serial.print(chamberState.temperatureRoom);
     Serial.print(F(" | Desired_temp: "));
-    if (chamberState.temperatureDesired == -41) {
+    if (chamberState.temperatureDesired == 0) {
         Serial.print("-");
     } else {
         Serial.print(chamberState.temperatureDesired);
@@ -269,15 +300,20 @@ void displayLCDOff() {
 }
 
 bool isTemperatureReached(float targetTemp, float currentTemp) {
-    return currentTemp >= targetTemp - 0.1;
+    return currentTemp >= targetTemp - 0.1 && currentTemp <= targetTemp + 3;
 }
 
 bool holdForPeriod(unsigned long duration) {
-    Serial.print("Checking timer: ");
-    Serial.print(millis() - sequenceStartTime);
-    Serial.print(" / ");
-    Serial.println(duration);
-    return millis() - sequenceStartTime >= duration;
+   return millis() - sequenceStartTime >= duration;
+}
+
+int getTimeLeft(unsigned long duration, Sequence currentSequence) {
+    if (isTestRunning && isTemperatureReached(currentSequence.targetTemp, chamberState.temperatureRoom)) {
+        int timeLeft = (duration - (millis() - sequenceStartTime)) / 1000;
+        return timeLeft;
+    } else {
+        return 0;
+    }
 }
 
 // dutyCycle has to be 0..100
@@ -293,52 +329,93 @@ void controlRelay(Led& relay, int dutyCycle, unsigned long period, unsigned long
     }
 }
 
-void parseTextFromJson(JsonDocument& doc) {
+void queueTest(const Test& test, const String& testName) {
+    if (queuedTestCount < MAX_QUEUED_TESTS) {
+        testQueue[queuedTestCount] = test;
+        testNames[queuedTestCount] = testName;
+        queuedTestCount++;
+        Serial.print("Queued test: ");
+        Serial.println(testName);
+    } else {
+        Serial.println("Test queue is full. Cannot add more tests.");
+    }
+}
 
-    // check if it's a test with "test_x keys
-    if (doc.containsKey("test_1")) {
-        JsonObject test = doc["test_1"];
-        if (!test.containsKey("chamber_sequences")) {
+// parse tests and add to queue by name
+void parseAndQueueTests(JsonObject& tests) {
+    for (JsonPair testPair : tests) {
+        JsonObject testJson = testPair.value().as<JsonObject>();
+        Test newTest;
+        String testName = testPair.key().c_str();
+
+        // check for required fields
+        if (!testJson.containsKey("chamber_sequences")) {
             Serial.println("Error: Missing 'chamber_sequences' in test data");
-            return;
+            continue;
         }
 
-        JsonArray sequences = test["chamber_sequences"];
-        int numSequences = sequences.size();
-        if (numSequences > 5) numSequences = 5;         // how many?
+        JsonArray sequences = testJson["chamber_sequences"];
+        newTest.numSequences = sequences.size();
+        if (newTest.numSequences > MAX_SEQUENCES_IN_TEST) {
+            newTest.numSequences = MAX_SEQUENCES_IN_TEST;         // how many?
+        }
 
-        currentTest.numSequences = numSequences;
-
-        for (int i = 0; i < numSequences; i++) {
+        // iterate through each sequence in the chamber_sequences array
+        for (int i = 0; i < newTest.numSequences; i++) {
             JsonObject sequence = sequences[i];
 
             if (!sequence.containsKey("temp") || !sequence.containsKey("duration")) {
                 Serial.println("Error: Missing 'temp' or 'duration' in JSON sequence");
-                continue;   // skip this sequence if the keys are missing
+                continue;
             }
-            currentTest.sequences[i].targetTemp = sequence["temp"].as<float>();
-            currentTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
-
-            // Serial.print("Parsed sequence ");
-            // Serial.print(i);
-            // Serial.print(": Temp = ");
-            // Serial.print(currentTest.sequences[i].targetTemp);
-            // Serial.print(", Duration = ");
-            // Serial.println(currentTest.sequences[i].duration);
-
+            newTest.sequences[i].targetTemp = sequence["temp"].as<float>();
+            newTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
         }
-        jsonBuffer.clear();
 
-        // start the test with the first sequence
-        currentSequenceIndex = 0;
+        queueTest(newTest, testName);
+    }
+
+    jsonBuffer.clear();
+
+    runNextTest();
+}
+
+void runNextTest() {
+    if (currentTestIndex < queuedTestCount) {
+        currentTest = testQueue[currentTestIndex];
         isTestRunning = true;
+        currentSequenceIndex = 0;
+        currentTestName = testNames[currentTestIndex];
+        setTemperature(currentTest.sequences[currentSequenceIndex].targetTemp);
+        status = REPORT;
+        Serial.print("Running test: ");
+        Serial.println(currentTestName);
+    }
+}
 
-        // Ensure desired temperature is set and transition to the appropriate state
-        setTemperature(currentTest.sequences[0].targetTemp);
-        status =  REPORT;
-    } else if (doc.containsKey("temp") && doc.containsKey("duration")) {
-        float temp = doc["temp"];
-        unsigned long duration = doc["duration"];
+void clearTests() {
+    isTestRunning = false;
+    currentSequenceIndex = 0;
+    currentTest.numSequences = 0;
+    currentTestName = "";
+    sequenceStartTime = 0;
+    currentDuration = 0;
+    chamberState.temperatureDesired = 0;
+    chamberState.isHeating = false;
+    chamberState.isCooling = false;
+    chamberState.longHeatingFlag = 0;
+
+    // clear queued tests
+    queuedTestCount = 0;
+    currentTestIndex = 0;
+
+    Serial.println("All tests cleared. Ready for new tests.");
+}
+
+void parseAndRunManualSet(JsonObject& commandParams) {
+
+        float temp = commandParams["temp"];
+        unsigned long duration = commandParams["duration"];
         setTemperature(temp);
         Serial.print("Manual temp set to ");
         Serial.println(temp);
@@ -346,6 +423,100 @@ void parseTextFromJson(JsonDocument& doc) {
         Serial.println(duration);
 
         jsonBuffer.clear();
+}
+
+void parseAndRunCommands(JsonObject& commands) {
+    for (JsonPair commandPair : commands) {
+        String command = commandPair.key().c_str();
+        JsonObject commandParams = commandPair.value().as<JsonObject>();
+
+        if (command == "PING") {
+            sendPingResponse();
+            lastPingTime = millis();
+        } 
+        if (systemSwitchState) {
+            if (command == "SHOW_DATA") {
+                displaySerial();
+            } else if (command == "SET_TEMP") {
+                parseAndRunManualSet(commandParams);
+            } else if (command == "RESET") {
+                clearTests();
+                status = RESET;
+                Serial.println("System reset via command.");
+            } else if (command == "EMERGENCY_STOP") {
+                status = EMERGENCY_STOP;
+                sendPingResponse();
+                Serial.println("Emergency Stop initiated via command.");
+            } else if (command == "SHOW_RUNNING_SEQUENCE") {
+                if (isTestRunning) {
+                    Serial.print("Running sequence: Target temp = ");
+                    Serial.print(chamberState.temperatureDesired);
+                    Serial.print("°C Duration = ");
+                    Serial.print(currentDuration / 60000);
+                    Serial.println(" minutes");
+
+                } else {
+                    Serial.println("No sequence is currently running.");
+                }
+            } 
+        } else {
+            Serial.println("System switch is off, please switch it on.");
+        }
+    }
+}
+
+void sendPingResponse() {
+    StaticJsonDocument<512> responseDoc;
+
+    Sequence currentSequence = currentTest.sequences[currentSequenceIndex];
+
+    responseDoc["ping_response"]["alive"] = true;
+    responseDoc["ping_response"]["timestamp"] = getCurrentTimestamp();
+    responseDoc["ping_response"]["machine_state"] = getMachineState();
+    responseDoc["ping_response"]["current_temp"] = chamberState.temperatureRoom;
+
+    JsonObject testStatus = responseDoc["ping_response"].createNestedObject("test_status");
+    testStatus["is_test_running"] = isTestRunning;
+    testStatus["current_test"] = currentTestName;
+    testStatus["current_sequence"] = currentSequenceIndex + 1;
+    testStatus["desired_temp"] = chamberState.temperatureDesired;
+    testStatus["current_duration"] = currentDuration;
+    testStatus["time_left"] = getTimeLeft(currentDuration, currentSequence);
+
+    serializeJson(responseDoc, Serial);
+    Serial.println();
+}
+
+String getMachineState() {
+    switch (status) {
+        case RESET:
+            return "RESET";
+        case HEATING:
+            return "HEATING";
+        case COOLING:
+            return "COOLING";
+        case REPORT:
+            return "REPORT";
+        case EMERGENCY_STOP:
+            return "EMERGENCY_STOP";
+        default:
+            return "UNKNOWN";
+    
+    }
+}
+
+void parseTextFromJson(JsonDocument& doc) {
+    if (doc.containsKey("handshake")) {
+        JsonObject handshake = doc["handshake"];
+        setInitialTimestamp(handshake);
+        sendHandshake();
+        lastShutdownCause = "";
+    } else if (doc.containsKey("tests") && systemSwitchState) {     // if json consists of tests
+        JsonObject test = doc["tests"];
+        parseAndQueueTests(test);
+    } else if (doc.containsKey("commands")) {   // if json consists of commands
+        JsonObject commands = doc["commands"];
+        parseAndRunCommands(commands);
     } else {
         Serial.println("Error: Invalid JSON format");
     }
@@ -396,6 +567,8 @@ void runCurrentSequence() {
         Serial.println("Sequence complete");
         currentSequenceIndex++;
         sequenceStartTime = 0;
+        printedWaiting = false;
+        printedRunning = false;
 
         if (currentSequenceIndex < currentTest.numSequences) {
             setTemperature(currentTest.sequences[currentSequenceIndex].targetTemp);
@@ -411,7 +584,7 @@ void changeTemperature() {
         chamberState.temperatureDesired = TEMPERATURE_MAX;
     }
     // if (chamberState.temperatureDesired == -41) { handleResetState(); }
-    else if (chamberState.temperatureDesired <= TEMPERATURE_MIN && chamberState.temperatureDesired != -41)  {
+    else if (chamberState.temperatureDesired <= TEMPERATURE_MIN && chamberState.temperatureDesired != 0)  {
         chamberState.temperatureDesired = TEMPERATURE_MIN;
     }
 }
@@ -420,7 +593,6 @@ void setTemperature(float temp) {
     if (temp >= TEMPERATURE_MAX) {
         chamberState.temperatureDesired = TEMPERATURE_MAX;
         Serial.println("Specified temperature exceeds maximum allowed temperature\n");
-        Serial.println("Setting temperature to " + String(TEMPERATURE_MAX) + "°");
     } else if (temp <= TEMPERATURE_MIN) {
         chamberState.temperatureDesired = TEMPERATURE_MIN;
         Serial.println("Specified temperature is lower than the minimum allowed temperature\n");
@@ -430,44 +602,6 @@ void setTemperature(float temp) {
         Serial.print("Setting temperature to ");
         Serial.print(temp);
         Serial.println("°");
-        // Serial.print("Temperature desired set to: ");
-        // Serial.println(temp);  // debug to confirm the desired temp is set
-    }
-}
-
-void parseCommand(String command) {
-    if (command.startsWith("SET TEMP ")) {
-        chamberState.temperatureDesired = command.substring(9).toFloat();
-        Serial.println("Temp set to: " + String(chamberState.temperatureDesired));
-        displaySerial();
-    }
-    else if (command == "SYSTEM OFF") {
-        status = EMERGENCY_STOP;
-        Serial.println("SYSTEM OFF/EMERGENCY_STOP");
-    }
-    else if (command == "RESET") {
-        status = RESET;
-        Serial.println("RESET");
-    }
-    else if (command == "REPORT") {
-        status = REPORT;
-        Serial.println("System Report:");
-        displaySerial();
-    }
-    else if (command == "SHOW DATA") {
-        displaySerial();
-    }
-    else if (command == "SHOW RUNNING SEQUENCE") {
-        if (isTestRunning) {
-            Serial.print("Running sequence: Target temp = ");
-            Serial.print(chamberState.temperatureDesired, 2);
-            Serial.print(" Duration = ");
-            Serial.print(currentDuration / 60000);
-            Serial.println(" minutes");
-
-        } else {
-            Serial.println("No sequence is currently running.");
-        }
     }
 }
 
@@ -497,11 +631,9 @@ void handleResetState() {
         status = EMERGENCY_STOP;
         return;
     }
-
     if (startSwitchState) {
         status = REPORT;
     }
-
     // allow manual control of temperature from buttons
     changeTemperature();
 
@@ -521,57 +653,24 @@ void handleHeatingState() {
     }
     cooler.off();
 
-    if(TemperatureThreshold > -0.1) {
-
-        // Serial.println("\ncond: threshold > -0.1");
-        // Serial.println("Actual:");
-        // Serial.println("Threshold: " + String(TemperatureThreshold));
-        // Serial.println("Going to report\n");
-
+    if(temperatureThreshold > -0.1) {
         chamberState.longHeatingFlag = 0;
         chamberState.isHeating = false;
+        lastHeatingTime = getCurrentTimestamp();    // capture current timestamp for handshake
+
         status = REPORT;
         return;
-    } else if(TemperatureThreshold < -4) {
+    } else if(temperatureThreshold < -4) {
         dutyCycleHeater = 100;
-        periodHeater = (TemperatureThreshold < -8) ? 120000 : 60000;
+        periodHeater = (temperatureThreshold < -8) ? 120000 : 60000;
         chamberState.longHeatingFlag = 1;
-
-        // Serial.println("\ncond: threshold < -4");
-        // Serial.println("Actual:");
-        // Serial.println("Threshold: " + String(TemperatureThreshold));
-        // Serial.println("Setting dutycycle to 100");
-        // Serial.println("Dutycycle: " + String(dutyCycleHeater));
-        // Serial.println("Setting periodHeater to 120000 if threshold < -8, otherwise 60000");
-        // Serial.println("PeriodHeater: " + String(periodHeater));
-        // Serial.println("Setting lh flag to 1");
-        // Serial.println("lh flag: " + String(chamberState.longHeatingFlag));
-        // Serial.println();
-
-    } else if(TemperatureThreshold > -4) {
+    } else if(temperatureThreshold > -4) {
         dutyCycleHeater = (chamberState.longHeatingFlag) ? 0 : 80;
         periodHeater = 25000; //on for 20 seconds and off for 5
-
-        // Serial.println("\ncond: threshold > -4");
-        // Serial.println("Actual:");
-        // Serial.println("Threshold: " + String(TemperatureThreshold));
-        // Serial.println("Setting dutycycle to 80");
-        // Serial.println("Dutycycle: " + String(dutyCycleHeater));
-        // Serial.println("Setting periodHeater to 25000");
-        // Serial.println("PeriodHeater: " + String(periodHeater));
-        // Serial.println();
-
     }
 
     controlRelay(heater, dutyCycleHeater, periodHeater, chamberState.lastHeaterOnTime);
-
-    // Serial.println("control relay function values:");
-    // Serial.println("Duty cycle: " + String(dutyCycleHeater));
-    // Serial.println("Period: " + String(periodHeater));
-    // Serial.println("Timer: " + String(chamberState.lastHeaterOnTime));
-
     chamberState.isHeating = true;
-
 }
 
 void handleCoolingState() {
@@ -579,17 +678,16 @@ void handleCoolingState() {
         status = RESET;
         return;
     }
-
     heater.off();
 
-    if(TemperatureThreshold < 0.4) {
+    if(temperatureThreshold < 0.1) {
         chamberState.isCooling = false;
         status = REPORT;
         return;
-    } else if(TemperatureThreshold > 1) {
+    } else if(temperatureThreshold > 0.4) {
         dutyCycleCooler = 100;
         periodCooler=2000;
-    } else if(TemperatureThreshold < 1) {
+    } else if(temperatureThreshold < 0.4) {
         dutyCycleCooler = 29;
         periodCooler=7000; // on for 2 seconds and off for 5
     } 
@@ -604,18 +702,18 @@ void handleReportState() {
         status = EMERGENCY_STOP;
         return;
     }
-
     if (stopSwitchState) {
         status = RESET;
         return;
     }
-
-    if(TemperatureThreshold > 0.4) {
+    if (chamberState.temperatureDesired == 0) {
+        return;
+    }
+    if(temperatureThreshold > 0.4) {
         status = COOLING;
-    } else if(TemperatureThreshold < -0.1) {
+    } else if(temperatureThreshold < -0.1) {
         status = HEATING;
     }
-
     readAndParseSerial();
 }
 
@@ -630,37 +728,36 @@ void handleEmergencyStopState() {
     if (switchSystem.held()) {
         status = RESET;
     }
-
 }
 
 void runTestSequence() {
     if (isTestRunning) {
         runCurrentSequence();
+        if (currentSequenceIndex >= currentTest.numSequences) {
+            Serial.print("Test complete: ");
+            Serial.println(currentTestName);
+            isTestRunning = false;
+            currentTestIndex++;
+            if (currentTestIndex < queuedTestCount) {
+                runNextTest();
+            }
+        }
     }
 }
 
 void readAndParseSerial() {
-    if (systemSwitchState) {
-        if (Serial.available() > 0) {
-            // Read the incoming data in chunks instead of one character at a time
-            int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
-            incomingString[len] = '\0'; // null-terminate the string
+    if (Serial.available() > 0) {
+        // Read the incoming data in chunks instead of one character at a time
+        int len = Serial.readBytesUntil('\n', incomingString, sizeof(incomingString) - 1);
+        incomingString[len] = '\0'; // null-terminate the string
 
-            // Serial.print("Received string: ");
-            // Serial.println(incomingString);
-
-            DeserializationError error = deserializeJson(jsonBuffer, incomingString);
-            // Handle the input string (either a command or JSON)
-            if (!error) {
-                parseTextFromJson(jsonBuffer);  // Parse the JSON
-            } else {
-                parseCommand(incomingString);  // Parse regular commands
-            }
-
-            incomingString[0] = '\0';
+        DeserializationError error = deserializeJson(jsonBuffer, incomingString);
+        // Handle the input string (either a command or JSON)
+        if (!error) {
+            parseTextFromJson(jsonBuffer);  // Parse the JSON
         }
-    } else {
-        //Serial.println("Switches are OFF. Test will not be processed.");
+
+        incomingString[0] = '\0';
     }
 }
 
@@ -668,44 +765,37 @@ unsigned long currentMillis = 0;
 unsigned long lastUpdate = 0;
 unsigned long updateInterval = 500;
 
-bool printedLCDOff = false;
-
 void loop() {  
-    // Serial.println("System switch: " + String(systemSwitchState));
-    // Serial.println("Start switch: " + String(startSwitchState));
-    // Serial.println("Stop switch: " + String(stopSwitchState));
-
     currentMillis = millis();
+
+    // Check for timeout (5 min without ping)
+    if (currentMillis - lastPingTime > TIMEOUT_DURATION) {
+        Serial.println("No ping received for 5 minutes. Resetting and shutting down.");
+        status = EMERGENCY_STOP;
+        lastShutdownCause = "Lost connection";
+        clearTests();
+        displayLCDOff();
+    }
 
     // Update switch states and temperature readings
     updateSwitchStates();
     chamberState.temperatureRoom = getTemperature();
-    if (chamberState.temperatureDesired != -41) {
-        TemperatureThreshold = chamberState.temperatureRoom - chamberState.temperatureDesired;
+    if (chamberState.temperatureDesired != 0) {
+        temperatureThreshold = chamberState.temperatureRoom - chamberState.temperatureDesired;
     }
 
 
     if (systemSwitchState) {
         displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
-        //displaySerial();
         if (currentMillis - lastUpdate >= updateInterval) {
             lastUpdate = currentMillis;
         }
     } else {
         displayLCDOff();
-        //Serial.println("LCD turning off");
     }
 
     runTestSequence();
-    readAndParseSerial();       // check serial input for new tests or commands
-
-    // Used in showData()
-    // temperatureRoomOld = chamberState.temperatureRoom;
-    // stateHeaterOld = chamberState.isHeating;
-    // stateCoolerOld = chamberState.isCooling;
-    // temperatureDesiredOld = chamberState.temperatureDesired;
-
-
+    readAndParseSerial();   // check serial input for new tests or commands
 
     switch (status) {
         case RESET:
@@ -727,4 +817,3 @@ void loop() {
             Serial.println("Invalid state detected!");
     }
 }
-
