@@ -1,0 +1,40 @@
+{
+    "tests": {
+        "test_temp_90_upload_1_extended": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 360000 }
+            ],
+            "sketch": "./upload_test_alphabet.ino",
+            "expected output": "ABCDEFGHIJKLMNOPQRTSUVWXYZ"
+        },
+        "test_temp_90_upload_2_extended": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 360000 }
+            ],
+            "sketch": "./upload_test_alphabet.ino",
+            "expected output": "ABCDEFGHIJKLMNOPQRTSUVWXYZ"
+        },
+        "test_temp_90_upload_3_extended": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 360000 }
+            ],
+            "sketch": "./upload_test_alphabet.ino",
+            "expected output": "ABCDEFGHIJKLMNOPQRTSUVWXYZ"
+        },
+        "test_temp_90_upload_4_extended": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 360000 }
+            ],
+            "sketch": "./upload_test_alphabet.ino",
+            "expected output": "ABCDEFGHIJKLMNOPQRTSUVWXYZ"
+        },
+        "test_temp_90_upload_5_extended": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 360000 }
+            ],
+            "sketch": "./upload_test_alphabet.ino",
+            "expected output": "ABCDEFGHIJKLMNOPQRTSUVWXYZ"
+        }
+    }
+}
+
