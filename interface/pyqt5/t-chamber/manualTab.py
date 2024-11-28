@@ -10,7 +10,7 @@ logger = setup_logger(__name__)
 class ManualTab(QWidget):
     # signals to and from main
     send_temp_data = pyqtSignal(list)
-    test_interrupted = pyqtSignal()
+    test_interrupted = pyqtSignal(str)
     set_test_flag_to_false_signal = pyqtSignal()  # signal from main to set test is running to false
 
     def __init__(self, parent=None):
@@ -77,14 +77,15 @@ class ManualTab(QWidget):
                         response = popups.show_dialog(
                             'a test is running: are you sure you want to interrupt it and proceed?')
                         if response == QMessageBox.Yes:
-                            message = 'test interrupted'
-                            self.test_interrupted.emit()
+                            message = 'test interrupted, temperature set manually'
+                            self.test_interrupted.emit(message)
                             self.test_is_running = False
                             logger.warning(message)
                         elif response == QMessageBox.No:
                             return
                     self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
-                    self.test_interrupted.emit()
+                    message = 'temperature set manually'
+                    self.test_interrupted.emit(message)
                     if duration_string == '1':
                         current_string = f'temperature set to {temp_string}°C for the duration of {duration_string} minute'
                     else:

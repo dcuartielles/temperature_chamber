@@ -262,7 +262,7 @@ class MainWindow(QMainWindow):
 
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
-                    self.manual_tab.test_interrupted.connect(self.reset_control_board)
+                    self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
 
                 except Exception as e:
                     logger.exception(f'failed to start serial worker: {e}')
@@ -433,7 +433,7 @@ class MainWindow(QMainWindow):
     # on cli test interrupted by another test
     def on_cli_test_interrupted(self):
         logger.info(self.test_number)
-        if self.cli_worker:
+        if self.cli_worker and self.cli_worker.is_running:
             logger.info('cli being interrupted')
             self.cli_worker.finished.disconnect(self.cleanup_cli_worker)
             self.cli_worker.is_running = False
