@@ -456,7 +456,9 @@ void parseAndRunCommands(JsonObject& commands) {
             printedNoPing = false;
         } 
         if (systemSwitchState) {
-            if (command == "SHOW_DATA") {
+            if (command == "GET_TEST_QUEUE") {
+                sendQueue();
+            } else if (command == "SHOW_DATA") {
                 displaySerial();
             } else if (command == "SET_TEMP") {
                 clearTests();
@@ -506,6 +508,21 @@ void sendPingResponse() {
     testStatus["desired_temp"] = chamberState.temperatureDesired;
     testStatus["current_duration"] = currentDuration;
     testStatus["time_left"] = getTimeLeft(currentDuration, currentSequence);
+
+    serializeJson(responseDoc, Serial);
+    Serial.println();
+}
+
+void sendQueue() {
+    StaticJsonDocument<512> responseDoc;
+
+    responseDoc["queue"]["queue_length"] = queuedTestCount;
+
+    JsonArray testsArray = responseDoc["queue"].createNestedArray("test_names");
+
+    for (int i = 0; i < queuedTestCount; i++) {
+        testsArray.add(testNames[i]);
+    }
 
     serializeJson(responseDoc, Serial);
     Serial.println();
