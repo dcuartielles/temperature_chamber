@@ -105,7 +105,6 @@ int status = EMERGENCY_STOP;
 // global variables to store switch states and flags
 bool systemSwitchState = false;
 bool startSwitchState = false;
-// bool stopSwitchState = false;
 
 struct Sequence {
     float targetTemp;
@@ -372,6 +371,7 @@ void parseAndQueueTests(JsonObject& tests) {
 
         JsonArray sequences = testJson["chamber_sequences"];
         newTest.numSequences = sequences.size();
+
         if (newTest.numSequences > MAX_SEQUENCES_IN_TEST) {
             newTest.numSequences = MAX_SEQUENCES_IN_TEST;         // how many?
         }
@@ -386,13 +386,11 @@ void parseAndQueueTests(JsonObject& tests) {
             }
             newTest.sequences[i].targetTemp = sequence["temp"].as<float>();
             newTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
-        }
 
+        }
         queueTest(newTest, testName);
     }
-
     jsonBuffer.clear();
-
     if (!isTestRunning && queuedTestCount > 0) {
         runNextTest();
     }
@@ -406,8 +404,6 @@ void runNextTest() {
         currentTestName = testNames[currentTestIndex];
         setTemperature(currentTest.sequences[currentSequenceIndex].targetTemp);
         status = REPORT;
-        Serial.print("Running test: ");
-        Serial.println(currentTestName);
     }
 }
 
@@ -433,7 +429,6 @@ void clearTests() {
 }
 
 void parseAndRunManualSet(JsonObject& commandParams) {
-
         float temp = commandParams["temp"];
         unsigned long duration = commandParams["duration"];
         setTemperature(temp);
@@ -441,7 +436,6 @@ void parseAndRunManualSet(JsonObject& commandParams) {
         Serial.println(temp);
         Serial.print("Duration: ");
         Serial.println(duration);
-
         jsonBuffer.clear();
 }
 
@@ -455,39 +449,39 @@ void parseAndRunCommands(JsonObject& commands) {
             lastPingTime = millis();
             printedNoPing = false;
         } 
-        if (systemSwitchState) {
-            if (command == "GET_TEST_QUEUE") {
-                sendQueue();
-            } else if (command == "SHOW_DATA") {
-                displaySerial();
-            } else if (command == "SET_TEMP") {
-                clearTests();
-                parseAndRunManualSet(commandParams);
-            } else if (command == "RESET") {
-                clearTests();
-                displayingEmergency = false;
-                status = RESET;
-                Serial.println("System reset via command.");
-            } else if (command == "EMERGENCY_STOP") {
-                clearTests();
-                status = EMERGENCY_STOP;
-                sendPingResponse();
-                Serial.println("Emergency Stop initiated via command.");
-            } else if (command == "SHOW_RUNNING_SEQUENCE") {
-                if (isTestRunning) {
-                    Serial.print("Running sequence: Target temp = ");
-                    Serial.print(chamberState.temperatureDesired);
-                    Serial.print("°C Duration = ");
-                    Serial.print(currentDuration / 60000);
-                    Serial.println(" minutes");
-
-                } else {
-                    Serial.println("No sequence is currently running.");
-                }
-            } 
-        } else {
+        if (!systemSwitchState) {
             Serial.println("System switch is off, please switch it on.");
+            return;
         }
+        if (command == "GET_TEST_QUEUE") {
+            sendQueue();
+        } else if (command == "SHOW_DATA") {
+            displaySerial();
+        } else if (command == "SET_TEMP") {
+            clearTests();
+            parseAndRunManualSet(commandParams);
+        } else if (command == "RESET") {
+            clearTests();
+            displayingEmergency = false;
+            status = RESET;
+            Serial.println("System reset via command.");
+        } else if (command == "EMERGENCY_STOP") {
+            clearTests();
+            status = EMERGENCY_STOP;
+            sendPingResponse();
+            Serial.println("Emergency Stop initiated via command.");
+        } else if (command == "SHOW_RUNNING_SEQUENCE") {
+            if (isTestRunning) {
+                Serial.print("Running sequence: Target temp = ");
+                Serial.print(chamberState.temperatureDesired);
+                Serial.print("°C Duration = ");
+                Serial.print(currentDuration / 60000);
+                Serial.println(" minutes");
+
+            } else {
+                Serial.println("No sequence is currently running.");
+            }
+        } 
     }
 }
 
@@ -542,7 +536,6 @@ String getMachineState() {
             return "EMERGENCY_STOP";
         default:
             return "UNKNOWN";
-    
     }
 }
 
@@ -570,7 +563,6 @@ bool printedRunning = false;
 
 void runCurrentSequence() {
     if (currentSequenceIndex >= currentTest.numSequences) {
-        // Serial.println("Test completed.");
         isTestRunning = false;
         printedWaiting = false;
         printedRunning = false;
@@ -628,7 +620,6 @@ void changeTemperature() {
     if (chamberState.temperatureDesired >= TEMPERATURE_MAX) {
         chamberState.temperatureDesired = TEMPERATURE_MAX;
     }
-    // if (chamberState.temperatureDesired == -41) { handleResetState(); }
     else if (chamberState.temperatureDesired <= TEMPERATURE_MIN && chamberState.temperatureDesired != 0)  {
         chamberState.temperatureDesired = TEMPERATURE_MIN;
     }
@@ -650,24 +641,11 @@ void setTemperature(float temp) {
     }
 }
 
-int getSwitchStatus() {
-    int switchStatus;
-    if (switchSystem.read() == LOW) {
-        switchStatus += 10;
-    }
-    if (switchStart.read() == LOW) {
-        switchStatus += 1;
-    }
-    return switchStatus;
-}
-
 // centralized switch handling
 void updateSwitchStates() {
     systemSwitchState = switchSystem.read() == LOW;
     startSwitchState = switchStart.read() == LOW;
-    // stopSwitchState = switchStart.released();  // stop condition from releasing the start switch
 }
-
 
 void handleResetState() {
     displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
@@ -796,9 +774,8 @@ void readAndParseSerial() {
         incomingString[len] = '\0'; // null-terminate the string
 
         DeserializationError error = deserializeJson(jsonBuffer, incomingString);
-        // Handle the input string (either a command or JSON)
         if (!error) {
-            parseTextFromJson(jsonBuffer);  // Parse the JSON
+            parseTextFromJson(jsonBuffer);
         }
 
         incomingString[0] = '\0';
