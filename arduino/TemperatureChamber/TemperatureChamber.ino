@@ -459,6 +459,7 @@ void parseAndRunCommands(JsonObject& commands) {
             if (command == "SHOW_DATA") {
                 displaySerial();
             } else if (command == "SET_TEMP") {
+                clearTests();
                 parseAndRunManualSet(commandParams);
             } else if (command == "RESET") {
                 clearTests();
