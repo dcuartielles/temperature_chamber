@@ -43,7 +43,7 @@ def setup_logger(name=__name__, console_level=logging.INFO, file_level=logging.I
         logs / f'{date_str}.log',
         when='D',
         interval=1,
-        backupCount=7,
+        backupCount=6,
         encoding="utf-8",
         delay=False
     )

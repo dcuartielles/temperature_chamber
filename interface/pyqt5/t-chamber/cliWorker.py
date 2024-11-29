@@ -14,6 +14,7 @@ class CliWorker(QThread):
 
     finished = pyqtSignal()  # signal to main when the thread's work is done
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
+    set_test_data_signal = pyqtSignal(dict, str, int)
 
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
@@ -34,6 +35,10 @@ class CliWorker(QThread):
         # class variables
         self.test_data = None
         self.filepath = None
+        # test number (index, actually) for correct upload
+        self.test_number = 0
+        # connect signal from main to update test data
+        self.set_test_data_signal.connect(self.set_test_data)
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -77,9 +82,10 @@ class CliWorker(QThread):
         self.stop()
 
     # assign test file and file path to class variables
-    def set_test_data(self, test_data, filepath):
+    def set_test_data(self, test_data, filepath, test_number):
         self.test_data = test_data
         self.filepath = filepath
+        self.test_number = test_number
 
     # emit message (via signal) to be displayed in main
     def wave(self, hello):
@@ -259,23 +265,47 @@ class CliWorker(QThread):
 
     # run the entire test file
     def run_all_tests(self, test_data, filepath):
-        if test_data and filepath:  # take test_data & port number from main
+        if test_data and filepath:  # take test_data & file path from main
             logger.info(f'running test with testdata filepath: {filepath}')
+            # split file path in preparation for sketch file path recreation
             test_data_filepath = filepath.rsplit('/', 1)[0]
             if 'tests' in test_data:
                 all_tests = [key for key in test_data['tests'].keys()]
-                # iterate through each test and run it
-                for test_key in all_tests:
-                    test = test_data['tests'].get(test_key, {})
+                current_test_index = self.test_number
+                if current_test_index < len(all_tests):
+                    current_test_key = all_tests[current_test_index]
+                    test = self.test_data['tests'][current_test_key]
+                    logger.info(test)
                     sketch_path = test.get('sketch', '')  # get .ino file path
-
                     if sketch_path:  # if the sketch is available
-                        sketch_filename = sketch_path.split('/')[-1]  # get ino file name
+                        sketch_filename = sketch_path.split('/')[-2]  # get ino file name
                         sketch_full_path = test_data_filepath + '/' + sketch_filename
+                        logger.info(sketch_full_path)
                         self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
-
                     else:
                         logger.warning('sketch path not found')
         else:
             # handle case when no test data is found
             logger.info('can\'t do it')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -21,6 +21,7 @@ class Config:
         self.config = {
             "test_board": {"port": None, "board_name": None},
             "control_board": {"port": None, "board_name": None},
+            "t_board_wifi": {"port": None, "board_name": None},
             "test_directory": str(Path.cwd()),  # default to current directory
         }
         self.set_test_directory(self.config["test_directory"])
@@ -35,6 +36,10 @@ class Config:
         self.save_config()
 
     def set_t_board(self, port, board_name):
+        self.config['test_board'] = {"port": port, "board_name": board_name}
+        self.save_config()
+
+    def set_wifi_board(self, port, board_name):
         self.config['test_board'] = {"port": port, "board_name": board_name}
         self.save_config()
 

@@ -11,8 +11,9 @@ class TestBoardWorker(QThread):
 
     update_upper_listbox = pyqtSignal(str)  # signal to update instruction listbox
     expected_outcome_listbox = pyqtSignal(str)  # signal to show expected test outcome
+    all_good = pyqtSignal()
 
-    def __init__(self, test_data, port, baudrate, timeout=5):
+    def __init__(self, test_data, test_number, port, baudrate, timeout=5):
         super().__init__()
         self.test_data = test_data
         self.port = port
@@ -23,6 +24,8 @@ class TestBoardWorker(QThread):
         self.is_running = True  # flag to keep the thread running
         self.is_stopped = False  # flag to stop the read loop
         self.last_command_time = time.time()
+        # test number (index, actually) for checking exp output correctly
+        self.test_number = test_number
 
     # set up serial communication
     def serial_setup(self, port=None, baudrate=None):
@@ -55,9 +58,6 @@ class TestBoardWorker(QThread):
                             response = self.ser.readline().decode('utf-8').strip()
                             if response:
                                 self.show_response(response)
-                            if time.time() - self.last_command_time > 5:
-                                self.last_command_time = time.time()
-                                logger.info('test worker thread is running')
                     except serial.SerialException as e:
                         logger.exception(f'serial error: {e}')
                         self.is_running = False
@@ -86,36 +86,34 @@ class TestBoardWorker(QThread):
                 message = self.extract_deterministic_part(printout)  # extract deterministic output part
                 self.update_upper_listbox.emit(message)  # emit signal to update listbox
                 self.expected_outcome_listbox.emit(message)  # emit signal to update expected outcome
+                self.all_good.emit()
             else:
                 self.update_upper_listbox.emit(printout)  # emit signal to update listbox
                 self.expected_outcome_listbox.emit(printout)  # emit signal to update expected outcome
+                self.all_good.emit()
 
     # DETERMINISTIC AND NON-DETERMINISTIC OUTPUT READOUT
     # extract expected test outcome from test file
     def expected_output(self, test_data):
         if test_data is not None and 'tests' in test_data:
-            all_expected_outputs = []
             all_tests = [key for key in test_data['tests'].keys()]
-            # iterate through each test and run it
-            for test_key in all_tests:
-                test = test_data['tests'].get(test_key, {})
-                expected_output = test.get('expected_output', '')  # get the expected output string
-                if expected_output:
-                    all_expected_outputs.append(expected_output)
-            return all_expected_outputs
-        return []
+            current_test_index = self.test_number
+            if current_test_index < len(all_tests):
+                current_test_key = all_tests[current_test_index]
+                test = self.test_data['tests'][current_test_key]
+                logger.info(test)
+                expected_output = test.get('expected_output', '')  # get pertinent exp output
+                return expected_output
+            else:
+                return
 
     # get expected pattern
     def get_expected_pattern(self):
         if self.test_data:
-            exp_outputs = self.expected_output(self.test_data)
-            regex_patterns = []
-            for expected in exp_outputs:
-                regex_pattern = self.encode_pattern(expected)
-                regex_patterns.append(regex_pattern)
-            logger.debug(f'getting expected pattern dict: {regex_patterns}')
-            expected_pattern = regex_patterns[0]
-            return expected_pattern
+            expected_output = self.expected_output(self.test_data)
+            regex_pattern = self.encode_pattern(expected_output)
+            logger.debug(f'getting expected pattern: {regex_pattern}')
+            return regex_pattern
         else:
             return
 

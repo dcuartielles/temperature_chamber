@@ -55,3 +55,4 @@ class FileHandler:
     # return the file path
     def get_filepath(self):
         return self.filepath
+    

@@ -11,7 +11,7 @@ logger = setup_logger(__name__)
 
 class ProgressBar(QWidget):
 
-    start_progress_signal = pyqtSignal(dict, int)  # signal from main to start timer for progress bars
+    start_progress_signal = pyqtSignal(dict, float)  # signal from main to start timer for progress bars
     alert_all_tests_complete_signal = pyqtSignal(str)  # signal to update gui when last test sequence is complete
 
     def __init__(self, parent=None):
@@ -29,6 +29,7 @@ class ProgressBar(QWidget):
         self.total_duration = 0
         self.current_temp = None
         self.temperatures = []
+        self.number_of_tests = 0
 
         # set up the timer for updating progress
         self.timer = QTimer(self)
@@ -79,12 +80,13 @@ class ProgressBar(QWidget):
         # set the layout
         self.setLayout(layout)
         self.show()
-        logger.debug('progress gui set up')
+        logger.info('progress gui set up')
 
     # start processing progress bar for general test time
     def start_progress(self, test_data, current_temp):
         # get all the necessary variables filled
         self.current_temp = current_temp
+        logger.info(f'received current temp from signal from main: {self.current_temp}')
         self.test_data = test_data
         self.sequence_durations = self.get_sequence_durations()
         self.temperatures = self.get_temperatures()
@@ -113,7 +115,7 @@ class ProgressBar(QWidget):
             if self.elapsed_time >= self.total_duration:
                 self.timer.stop()  # stop timer when total progress is complete
         else:
-            logger.debug('setting up overall test time progress bar, no test data here yet')
+            logger.info('setting up overall test time progress bar, no test data here yet')
             return
 
     # stopwatch methods
@@ -128,44 +130,44 @@ class ProgressBar(QWidget):
         self.time_progress_bar.setValue(100)
         # make it green-ish for success
         self.time_progress_bar.setStyleSheet("QProgressBar::chunk { background-color: #06e59b; }")
-
         self.elapsed_minutes = int(self.actual_runtime / 60000)
-        if self.elapsed_minutes >= 60:
-            elapsed_hours = self.elapsed_minutes / 60
-            formatted_hours = f"{elapsed_hours:.2f}"
-            logger.info(f'actual runtime was {formatted_hours} hrs')
-            self.time_label.setText(f'done in {formatted_hours} hrs')
-        else:
-            logger.info(f'actual runtime was {self.elapsed_minutes} min')
-            self.time_label.setText(f'done in {self.elapsed_minutes} min')
+        elapsed_hours, elapsed_minutes = divmod(self.elapsed_minutes, 60)
+        formatted_elapsed_time = f"{int(elapsed_hours)}h {int(elapsed_minutes)}m" if elapsed_hours > 0 else f"{int(elapsed_minutes)}m"
+        logger.info(f'parsing elapsed time for clear display, actual runtime was {formatted_elapsed_time}')
+        self.time_label.setText(f'done in {formatted_elapsed_time}')
+        return formatted_elapsed_time
 
     # trigger new sequence progress bar update
     def advance_sequence(self):
-        logger.debug('triggering a new sequence')
+        logger.info('triggering a new sequence')
         self.current_sequence_index += 1
         if self.current_sequence_index <= len(self.sequence_durations):
             self.sequence_progress_bar.set_sequence_data(self.sequence_durations, self.current_sequence_index)
             self.number_of_sequences += 1
-            logger.debug(self.number_of_sequences)
-            if self.number_of_sequences == len(self.sequence_durations):
-                self.stop_stopwatch()
-                alert = f'all tests complete in {self.elapsed_minutes} min'
-                self.alert_all_tests_complete_signal.emit(alert)
-            elif self.number_of_sequences > len(self.sequence_durations):
+            logger.info(f'number of sequences: {self.number_of_sequences}')
+            if self.number_of_sequences > len(self.sequence_durations):
                 return
         else:
             return
 
+    # get the actual runtime and display it
+    def get_actual_runtime(self):
+        done_in = self.stop_stopwatch()
+        alert = f'all tests complete in {done_in}'
+        self.alert_all_tests_complete_signal.emit(alert)
+
     # get target temperatures from test_data
     def get_temperatures(self):
+        self.number_of_tests = 0
         temperatures = []
         if self.test_data and 'tests' in self.test_data:
             for test_key in self.test_data['tests']:
+                self.number_of_tests += 1
                 test = self.test_data['tests'][test_key]
                 sequences = test.get('chamber_sequences', [])
                 for sequence in sequences:
                     temperatures.append(sequence.get('temp', 0))
-        logger.info(temperatures)
+        logger.info(f'temperatures: {temperatures}')
         self.temperatures = temperatures
         return self.temperatures
 
@@ -173,54 +175,68 @@ class ProgressBar(QWidget):
     def estimate_total_time(self):
         # reset total duration
         self.total_duration = 0
+        logger.info(f'durations: {self.sequence_durations}')
         # start by adding total test sequence duration
         self.total_duration += sum(self.sequence_durations)
-        logger.debug('start by adding total test sequence duration')
+        logger.info(f'start by adding total test sequence duration: {self.total_duration}')
 
         # calculate degrees to reach target temp for first sequence
-        degrees_to_target = int(self.temperatures[0]) - int(self.current_temp)
-        logger.debug('calculate degrees to reach target temp for first sequence')
+        degrees_to_target = float(self.temperatures[0]) - float(self.current_temp)
+        logger.info(f'calculate degrees to reach target temp for first sequence: {float(self.temperatures[0])} - {float(self.current_temp)}')
 
         prep_time = 0
         # if chamber needs to heat up
         if degrees_to_target > 0:
             prep_time = degrees_to_target * 30000  # 0.5 min per degree, in milliseconds
-            logger.debug('ca 2.2 minutes per degree, in milliseconds')
+            logger.info(f'calculated preptime, 30000 * {degrees_to_target} = {prep_time}')
         # if chamber needs cooling
         elif degrees_to_target < 0:
             prep_time = abs(degrees_to_target) * 120000  # 2 minutes per degree, in milliseconds, absolute value
-            logger.debug('ca 9 minutes per degree, in milliseconds, absolute value')
+            logger.info(f'calculated preptime, 120000 * {abs(degrees_to_target)} = {prep_time}')
         # add prep time
+        logger.info(f'total duration + preptime: {self.total_duration} += {prep_time}')
         self.total_duration += prep_time
-        logger.debug('add prep time')
+        logger.info(f' total duration: {self.total_duration}')
 
         # calculate time for temperature changes between subsequent target temperatures
         for i in range(1, len(self.temperatures)):
             degrees_difference = int(self.temperatures[i]) - int(self.temperatures[i - 1])
-            logger.debug('calculate time for temperature changes between subsequent target temperatures')
+            logger.info('calculate time for temperature changes between subsequent target temperatures')
             # if chamber needs to heat up
             if degrees_difference > 0:
+                logger.info(f'total duration += degrees difference * 30000: {self.total_duration} += {degrees_difference} * 30000')
                 self.total_duration += degrees_difference * 30000  # 0.5 min per degree, in milliseconds
+                logger.info(f'total dur: {self.total_duration}')
 
             # if chamber needs cooling
             elif degrees_difference < 0:
+                logger.info(
+                    f'total duration += degrees difference * 120000: {self.total_duration} += {abs(degrees_difference)} * 120000')
                 self.total_duration += abs(
                     degrees_difference) * 120000  # 2 min per degree, in millis, absolute value
+                logger.info(f'tot dur: {self.total_duration}')
 
         # adjust total duration according to what practice shows to be more realistic
         # self.total_duration = self.total_duration * 0.93
-
+        logger.info(f'total duration is {self.total_duration}')
         return self.total_duration
 
     # update test progress bar label with estimated total time
     def update_test_bar_label(self):
-        estimated_time = int(self.total_duration / 60000)
-        if estimated_time >= 60:
-            hours = estimated_time / 60
-            hours_and_min = f"{hours:.2f}"
-            self.time_label.setText(f'estimated runtime: {hours_and_min} hr')
+        logger.info(f'total duration as is: {self.total_duration}')
+        estimated_time = int(self.total_duration / 60000)  # estimated time in minutes
+        estimated_time = int(self.total_duration / 60000)  # estimated time in minutes
+        logger.info(f'tot dur in minutes: {estimated_time}')
+        est_hours, est_minutes = divmod(estimated_time, 60)
+        formatted_estimated_time = f"{int(est_hours)}h {int(est_minutes)}m" if est_hours > 0 else f"{int(est_minutes)}m"
+        logger.info(f'parsing estimated runtime for clear display: {formatted_estimated_time}')
+
+        # make sure to print correct singular or plural in test(s)
+        tests = self.number_of_tests
+        if tests > 1:
+            self.time_label.setText(f'{tests} tests | est. runtime: {formatted_estimated_time}')
         else:
-            self.time_label.setText(f'estimated runtime: {estimated_time} min')
+            self.time_label.setText(f'one test | est. runtime: {formatted_estimated_time}')
 
     # get a dictionary of sequences for sequence progress bar
     def get_sequence_durations(self):
@@ -233,9 +249,4 @@ class ProgressBar(QWidget):
                     durations.append(sequence.get('duration', 0))
         logger.info(f'all durations: {durations}')
         return durations
-
-    # signal to update main and sequence when all tests are complete
-    def alert_all_tests_complete(self, message):
-        alert = message
-        self.alert_all_tests_complete_signal.emit(alert)
 
