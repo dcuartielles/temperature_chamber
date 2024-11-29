@@ -191,6 +191,30 @@ class MainTab(QWidget):
                                            '* sit back and watch the test outcomes'])
             QApplication.processEvents()
 
+    # test interrupted by manual temperature setting
+    def test_interrupted_by_manual_temp_setting_gui(self):
+        if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
+            self.expected_outcome_label.hide()
+            self.expected_outcome_listbox.hide()
+            self.instruction_listbox.show()
+            self.instruction_listbox.clear()
+            self.instruction_listbox.addItems(['test interrupted, but you can always start over:',
+                                               '* you may want to upload test file',
+                                               '* run full test sequence',
+                                               '* sit back and watch the test outcomes'])
+            QApplication.processEvents()
+
+        else:
+            self.expected_outcome_label.hide()
+            self.expected_outcome_listbox.hide()
+            self.instruction_listbox.show()
+            self.instruction_listbox.clear()
+            self.instruction_listbox.addItems(['test interrupted, but you can always start over:',
+                                               '* you may want to upload test file',
+                                               '* run full test sequence',
+                                               '* sit back and watch the test outcomes'])
+            QApplication.processEvents()
+
     # the actual (basic) upper listbox updates
     def cli_update_upper_listbox_gui(self, message):
         self.instruction_listbox.addItem(message)
