@@ -262,7 +262,7 @@ class MainWindow(QMainWindow):
 
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
-                    self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
+                    self.manual_tab.test_interrupted.connect(self.test_interrupted__manual_temp_setting_gui)
 
                 except Exception as e:
                     logger.exception(f'failed to start serial worker: {e}')
@@ -481,7 +481,16 @@ class MainWindow(QMainWindow):
         self.manual_tab.set_test_flag_to_false_signal.emit()
         self.test_label_no_test()
         self.progress.hide()
-        self.main_tab.test_interrupted_by_manual_temp_setting_gui()
+        self.main_tab.test_interrupted_gui()
+        self.new_test(message)
+
+    # similar method to be triggered separately when a test is interrupted by manual temp setting
+    def test_interrupted__manual_temp_setting_gui(self, message):
+        self.test_is_running = False
+        self.manual_tab.set_test_flag_to_false_signal.emit()
+        self.test_label_no_test()
+        self.progress.hide()
+        self.main_tab.test_interrupted_gui()
         self.new_test(message)
 
     # similar method for new test
