@@ -78,7 +78,8 @@ class MainTab(QWidget):
         self.run_button.setStyleSheet('background-color: #009FAF;'
                                     'color: white;'
                                     'font-weight: bold;'
-                                    'font-size: 20px;')
+                                    'font-size: 20px;'
+                                    'border-radius: 55px;')
 
     # display test board output
     def update_test_output_listbox_gui(self, message):

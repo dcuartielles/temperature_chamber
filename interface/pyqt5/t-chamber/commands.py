@@ -55,6 +55,7 @@ def get_test_queue():
             }
         }
     }
+    return get_queue
 
 
 # run all tests
@@ -64,4 +65,6 @@ def run_all_tests():
             }
         }
     }
+    return run_tests
+
 
