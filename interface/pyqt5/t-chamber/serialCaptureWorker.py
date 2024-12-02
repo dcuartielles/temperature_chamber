@@ -68,6 +68,7 @@ class SerialCaptureWorker(QThread):
         self.time_left = None
         self.current_temperature = None
         self.test_number = 0
+        self.test_queue = {}  # space for test queue from arduino
         # set up que for processing responses from serial
         self.response_queue = Queue()
 
@@ -259,6 +260,22 @@ class SerialCaptureWorker(QThread):
         }
         logger.info(f'relevant info for serial monitor updates sent via signal: {relevant_info}')
         self.update_chamber_monitor.emit(relevant_info)
+
+    # get test queue from arduino
+    def get_test_queue_from_arduino(self):
+        get_queue = commands.get_test_queue()
+        logger.info('sending command to arduino to get test queue')
+        self.send_json_to_arduino(get_queue)
+        try:
+            queue_response = self.ser.readline().decode('utf-8').strip()
+            # convert response string to dictionary
+            parsed_response = json.loads(queue_response)
+            if 'queue' in parsed_response:
+                queue = parsed_response['queue']['tests']
+                return queue
+
+        except json.JSONDecodeError:
+            logger.exception('failed to decode ping response as json')
 
     # DECODING AND ENCODING TOOLS
     # senf json to arduino

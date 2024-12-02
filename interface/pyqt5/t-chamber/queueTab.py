@@ -61,6 +61,10 @@ class QueueTab(QWidget):
 
         self.setLayout(layout)
 
+    # get test queue from arduino
+    def get_test_queue_from_arduino(self):
+        pass
+
 
 
 
