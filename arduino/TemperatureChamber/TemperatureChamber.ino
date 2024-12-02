@@ -468,6 +468,10 @@ void parseAndRunCommands(JsonObject& commands) {
             sendPingResponse();
             lastPingTime = millis();
             printedNoPing = false;
+            if (displayingEmergency) {
+                lcd.clear();
+                displayingEmergency = false;
+            }
         } 
         if (!systemSwitchState) {
             Serial.println("System switch is off, please switch it on.");
@@ -567,7 +571,6 @@ void parseTextFromJson(JsonDocument& doc) {
         setInitialTimestamp(handshake);
         sendHandshake();
         printedTestsCleared = false;
-        displayingEmergency = false;
         lastShutdownCause = "";
     } else if (doc.containsKey("tests") && systemSwitchState) {     // if json consists of tests
         JsonObject test = doc["tests"];
