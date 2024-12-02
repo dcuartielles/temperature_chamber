@@ -12,14 +12,18 @@ class QueueTab(QWidget):
     clear_queue_signal = pyqtSignal()  # signal to serial to trigger reset() and interrupt running tests
     show_queue_signal = pyqtSignal(dict)  # signal to serial worker to retrieve test queue from arduino
     clear_queue_from_elsewhere_signal = pyqtSignal()  # signal to clear queue on tests interrupted
-    set_test_flag_to_false_signal = pyqtSignal()
+    set_test_flag_to_false_signal = pyqtSignal()  # signal to set test_is_running flags to False everywhere
+    set_test_data_and_filepath = pyqtSignal(dict, str)
 
     def __init__(self, parent=None):
-        self.test_file_list = {}  # space for list of test file names
-        self.test_queue = {}  # space for test queue from arduino
+
         super().__init__(parent)
         self.test_is_running = False  # flag to know if tests are running
         self.serial_is_running = False  # flag to know if serial is running
+        self.test_file_list = {}  # space for list of test file names
+        self.test_queue = {}  # space for test queue from arduino
+        self.test_data = None
+        self.filepath = None
         self.initUI()
 
     def initUI(self):
@@ -32,11 +36,15 @@ class QueueTab(QWidget):
         test_data_layout = QVBoxLayout()  # vertical layout for test data part
         self.test_data_label = QLabel('test upload & names', self)
         self.test_data_list = QListWidget(self)
-        self.upload_button = QPushButton('upload test', self)
+        self.load_button = QPushButton('upload test', self)
+        self.load_button.setStyleSheet('background-color: #009FAF;'
+                                        'color: white;')
         self.clear_queue_button = QPushButton('clear test queue', self)
+        self.clear_queue_button.setStyleSheet(('background-color: red;'
+                                        'color: white;'))
         test_data_layout.addWidget(self.test_data_label)
         test_data_layout.addWidget(self.test_data_list)
-        test_data_layout.addWidget(self.upload_button)
+        test_data_layout.addWidget(self.load_button)
         test_data_layout.addWidget(self.clear_queue_button)
 
         arduino_queue_layout = QVBoxLayout()  # vertical layout for queue display
@@ -52,6 +60,8 @@ class QueueTab(QWidget):
         layout.addSpacerItem(QSpacerItem(0, 10))
 
         self.setLayout(layout)
+
+
 
 
 

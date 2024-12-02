@@ -214,7 +214,8 @@ class MainWindow(QMainWindow):
 
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
-        self.main_tab.load_button.clicked.connect(self.load_test_file)
+        self.queue_tab.load_button.clicked.connect(self.load_test_file)
+        self.queue_tab.clear_queue_button.clicked.connect(self.clear_test_queue)
         self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
 
@@ -791,6 +792,23 @@ class MainWindow(QMainWindow):
                     self.test_interrupted_gui(message)
             else:
                 message = 'control board is reset'
+                self.new_test(message)
+
+    def clear_test_queue(self):
+        if self.serial_worker and self.serial_worker.is_running:
+            self.serial_worker.trigger_reset.emit()
+            if self.test_is_running:
+                if self.cli_worker and self.cli_worker.is_running:
+                    self.on_cli_test_interrupted()
+                    logger.info('test interrupted, test queue is cleared')
+                    message = 'test interrupted, test queue is cleared'
+                    self.test_interrupted_gui(message)
+                else:
+                    logger.info('test interrupted, test queue is cleared')
+                    message = 'test interrupted, test queue is cleared'
+                    self.test_interrupted_gui(message)
+            else:
+                message = 'test queue is cleared'
                 self.new_test(message)
 
     # HIDDEN FUNCTIONALITY
