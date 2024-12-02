@@ -459,7 +459,8 @@ class MainWindow(QMainWindow):
 
     # load test file and store it in the app
     def load_test_file(self):
-        self.test_data = self.json_handler.open_file()
+        test_data = self.json_handler.open_file()
+        self.serial_worker.trigger_add_test_data_to_queue.emit(test_data)
         self.filepath = self.json_handler.get_filepath()
         popups.show_info_message('info', 'test file uploaded successfully')
 
@@ -742,7 +743,7 @@ class MainWindow(QMainWindow):
 
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
-        self.serial_worker.trigger_run_tests.emit(self.test_data)
+        self.serial_worker.trigger_run_tests.emit()
 
     # GUI HELPER METHODS: START AND RESET BUTTONS
     # on start button clicked in case no port connection

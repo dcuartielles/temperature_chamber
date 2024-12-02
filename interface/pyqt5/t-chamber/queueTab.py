@@ -79,4 +79,7 @@ class QueueTab(QWidget):
       “Test3"
     ]
   }
+  
+        self.test_data = self.json_handler.open_file()
+        self.filepath = self.json_handler.get_filepath()
 '''
