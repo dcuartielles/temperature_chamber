@@ -214,8 +214,6 @@ class MainWindow(QMainWindow):
 
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
-        self.queue_tab.load_button.clicked.connect(self.load_test_file)
-        self.queue_tab.clear_queue_button.clicked.connect(self.clear_test_queue)
         self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
 
@@ -249,6 +247,9 @@ class MainWindow(QMainWindow):
                     self.serial_worker.update_listbox.connect(self.update_listbox_gui)
                     self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
                     self.emergency_stop_button.clicked.connect(self.on_emergency_stop_button_clicked)
+                    self.queue_tab.load_button.clicked.connect(self.load_test_file)
+                    self.queue_tab.clear_queue_button.clicked.connect(self.clear_test_queue)
+                    self.serial_worker.update_test_data_from_queue.connect(self.update_test_data)
                     self.reset_button.clicked.connect(self.reset_control_board)
                     self.serial_worker.alert_all_tests_complete_signal.connect(self.progress.get_actual_runtime)
                     self.serial_worker.no_port_connection.connect(self.on_no_port_connection_gui)
@@ -461,8 +462,11 @@ class MainWindow(QMainWindow):
     def load_test_file(self):
         test_data = self.json_handler.open_file()
         self.serial_worker.trigger_add_test_data_to_queue.emit(test_data)
-        self.filepath = self.json_handler.get_filepath()
-        popups.show_info_message('info', 'test file uploaded successfully')
+        popups.show_info_message('info', 'test file added to test queue')
+
+    # update self.test_data from test queue from arduino
+    def update_test_data(self, test_data):
+        self.test_data = test_data
 
     # TEST-RELATED GUI UPDATES
     # the actual listbox updates
