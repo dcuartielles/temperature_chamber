@@ -14,6 +14,7 @@ class QueueTab(QWidget):
     clear_queue_from_elsewhere_signal = pyqtSignal()  # signal to clear queue on tests interrupted
     set_test_flag_to_false_signal = pyqtSignal()  # signal to set test_is_running flags to False everywhere
     get_test_file_name = pyqtSignal(str)
+    display_queue_from_arduino = pyqtSignal(str)
 
     def __init__(self, parent=None):
 
@@ -25,6 +26,7 @@ class QueueTab(QWidget):
         self.test_data = None
         self.filepath = None
         self.get_test_file_name.connect(self.add_test_name)
+        self.display_queue_from_arduino.connect(self.add_arduino_queue)
         self.initUI()
 
     def initUI(self):
@@ -89,20 +91,40 @@ class QueueTab(QWidget):
 
     # add test file name to displayed queue on the left
     def add_test_name(self, name):
+        self.test_data_list.clear()
         self.test_data_list.addItem(name)
         self.test_data_list.scrollToBottom()
 
+    # add test names to queue on the right
+    def add_arduino_queue(self, names):
+        self.queue_display.clear()
+        self.queue_display.addItem(names)
+        self.queue_display.scrollToBottom()
+
 '''
 {
-  “queue”: {
-    “queue_length”: 3,
-    “test_names”: [
-      “Test1",
-      “Test2”,
-      “Test3"
-    ]
-  }
+    “queue”:
+        {“queue_length”:3,
+        “tests”:[
+            {
+                “name”:“test_1”,
+                “sketch”:“./alphabet/alphabet.ino”,
+                “expected_output”:“ABCDEFGHIJKLMNOPQRSTUVWXYZ”
+            },
+            {
+                “name”:“test_2”,
+                “sketch”:“./alphabet_mathematical/alphabet_mathematical.ino”,
+                “expected_output”:“ABCDEFGHIJKLMNOPQRSTUVWXYZ120”
+            },
+            {
+                “name”:“test_3”,
+                “sketch”:“./alphabet.ino”,
+                “expected_output”:“ABCDEFGHIJKLMNOPQRSTUVWXYZ”
+            }
+        ]
+    }
+}
   
-        self.test_data = self.json_handler.open_file()
-        self.filepath = self.json_handler.get_filepath()
+
 '''
+

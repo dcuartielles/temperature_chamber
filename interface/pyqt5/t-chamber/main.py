@@ -468,11 +468,19 @@ class MainWindow(QMainWindow):
         self.test_data = test_data
         self.filepath = self.json_handler.get_filepath()
         self.get_test_file_name()
+        self.get_test_names_from_queue()
 
-    # retrieve test file name from file path and send to queue tab
+    # retrieve test directory names from test data and send to queue tab
     def get_test_file_name(self):
-        name = self.filepath.rstrip("/").split("/")[-2]
-        self.queue_tab.get_test_file_name.emit(name)
+        directories = [test["sketch"].split('/')[-2] for test in self.test_data["tests"] if '/' in test["sketch"]]
+        result_string = "\n".join(directories)
+        self.queue_tab.get_test_file_name.emit(result_string)
+
+    # get test titles from test data and send to queue tab
+    def get_test_names_from_queue(self):
+        names = [test["name"] for test in self.test_data["tests"]]
+        result_string = "\n".join(names)
+        self.queue_tab.display_queue_from_arduino.emit(result_string)
 
     # TEST-RELATED GUI UPDATES
     # the actual listbox updates
