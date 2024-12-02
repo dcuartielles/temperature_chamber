@@ -35,11 +35,12 @@ class MainTab(QWidget):
         self.instruction_listbox.setFixedSize(540, 135)
         test_part_layout.addLayout(test_output_layout)
         self.run_button = QPushButton('run\ntests', self)
-        self.run_button.setFixedSize(110, 105)
+        self.run_button.setFixedSize(110, 110)
         self.run_button.setStyleSheet('background-color: grey;'
                                       'color: white;'
                                       'font-weight: bold;'
                                       'font-size: 20px;'
+                                      'border-radius: 55px;'
                                       )
         self.run_button.setEnabled(False)
         test_output_layout.addWidget(self.instruction_listbox)
