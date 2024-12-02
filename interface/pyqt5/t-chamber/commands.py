@@ -55,3 +55,13 @@ def get_test_queue():
             }
         }
     }
+
+
+# run all tests
+def run_all_tests():
+    run_tests = {"commands": {
+                "RUN_QUEUE": {
+            }
+        }
+    }
+

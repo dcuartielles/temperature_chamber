@@ -152,7 +152,7 @@ class MainWindow(QMainWindow):
         self.tab_widget = QTabWidget()
 
         # add tabs to tab widget
-        self.tab_widget.addTab(self.main_tab, 'test control')
+        self.tab_widget.addTab(self.main_tab, 'running test info')
         self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
         layout.addWidget(self.tab_widget)
 
