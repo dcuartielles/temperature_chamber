@@ -13,8 +13,8 @@ class QueueTab(QWidget):
     show_queue_signal = pyqtSignal(dict)  # signal to serial worker to retrieve test queue from arduino
     clear_queue_from_elsewhere_signal = pyqtSignal()  # signal to clear queue on tests interrupted
     set_test_flag_to_false_signal = pyqtSignal()  # signal to set test_is_running flags to False everywhere
-    get_test_file_name = pyqtSignal(str)
-    display_queue_from_arduino = pyqtSignal(str)
+    get_test_file_name = pyqtSignal(str)  # signal from main (from serial) to get directory names for queue updates
+    display_queue_from_arduino = pyqtSignal(str)  # signal from main (from serial) to get test names for queue updates
 
     def __init__(self, parent=None):
 
@@ -66,9 +66,7 @@ class QueueTab(QWidget):
 
         self.setLayout(layout)
 
-    # get test queue from arduino
-    def get_test_queue_from_arduino(self):
-        pass
+
 
     # set serial is running to true
     def set_serial_is_running_flag_to_true(self):

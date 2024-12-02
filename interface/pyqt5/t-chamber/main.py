@@ -822,15 +822,27 @@ class MainWindow(QMainWindow):
         if self.serial_worker and self.serial_worker.is_running:
             self.serial_worker.trigger_reset.emit()
             if self.test_is_running:
-                if self.cli_worker and self.cli_worker.is_running:
-                    self.on_cli_test_interrupted()
-                    logger.info('test interrupted, test queue is cleared')
-                    message = 'test interrupted, test queue is cleared'
-                    self.test_interrupted_gui(message)
-                else:
-                    logger.info('test interrupted, test queue is cleared')
-                    message = 'test interrupted, test queue is cleared'
-                    self.test_interrupted_gui(message)
+                response = popups.show_dialog(
+                    'a test is running: are you sure you want to interrupt it and proceed?')
+                if response == QMessageBox.Yes:
+                    if self.cli_worker and self.cli_worker.is_running:
+                        self.test_number = 0
+                        self.on_cli_test_interrupted()
+                        logger.info('test interrupted, test queue is cleared')
+                        message = 'test interrupted, test queue is cleared'
+                        self.test_interrupted_gui(message)
+                        self.test_is_running = False
+                        self.manual_tab.test_is_running = False
+                        self.on_cli_test_interrupted()
+                    else:
+                        logger.info('test interrupted, test queue is cleared')
+                        message = 'test interrupted, test queue is cleared'
+                        self.test_interrupted_gui(message)
+                        self.test_number = 0
+                        self.test_is_running = False
+                        self.manual_tab.test_is_running = False
+                elif response == QMessageBox.No:
+                    return
             else:
                 message = 'test queue is cleared'
                 self.new_test(message)
