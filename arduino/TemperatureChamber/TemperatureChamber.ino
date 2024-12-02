@@ -1,35 +1,52 @@
 /*
-   Board heater
-   Ver. 0002
+   Temperature Chamber
+   Ver. 0003
 
-   The board heater is a laboratory instrument consisting of a chamber with
-   a ceraminc heating element, an air blower, and 1-wire thermocouple sensors.
-   The chamber can reach over 100 deg C at constant pressure and volume. It doesn't,
-   however, allow for controlling the humidity.
+    This project builds upon the original work by Adam, who designed the hardware and implemented
+    the first iteration of the software. The chamber consists of a ceramic heating element, an 
+    air-blower for cooling and two 1-wire thermocouple sensors. It can reach and maintain temperatures
+    up to 100 deg C, providing a standardized environment for stress-testing boards. 
+    The chamber does not control humidity.
 
-   The goal of this chamber is to create a standardised mechanism as well as a benchmark
-   to measure boards against. We want to be able of answering questions such as: for how
-   long can a board work at 60 deg C before failing. At the same time, the design should be
-   inexpensive, thus making it accessible and easy to replicate.
+    Key Use Case:
+    The goal of this chamber is to create a standardised mechanism as well as a benchmark
+    to measure boards against. The chamber is a tool for answering questions like "How long can a board
+    operate at 60C before failure?" It prioritizes accessibility and replicability by using cost-effective,
+    off-the-shelf components.
 
-   The first version of the artifact runs on a traditional Arduino Uno, with a specially made
-   shield including some solid-state relays to control both the blower and the heating element. While
-   the heating element can be obtained easily from any electronics catalogue, the blower was
-   recycled from a different artifact (an inflatable mattress) because it has the ability to
-   stop the airflow mechanically when not pumping. If any other blower should be considered, this
-   will be of importance.
+    Original Design (by Adam):
+    - Utilized an Arduino Uno R3 with a custom shield including solid-state relays for heater and blower.
+    - Blower sourced from an inflatable mattress, featuring mechanical airflow shutoff when inactive.
+    - Designed a basic state machine allowing manual control via physical buttons and relays.
 
-   The structure of this code is a state machine that allows for either direct interaction with
-   the physical controls on the device, or to have full remote control via serial communication. This
-   is a standard state machine design by D. Cuartielles, it can be found at many other places.
+    Updates by Valentino:
+    - Integrated remote serial communication, enabling control via a Python-based application.
+    - Modernized and enhanced the state machine to suport queueing and running complex test sequences.
+    - Introduced JSON-based communication protocol for:
+        - Receiving and sending handshake and ping to external application.
+        - Receiving and parsing test parameters (e.g., target temperature, duration).
+        - Receiving and parsing commands from external application (e.g., RESET, SHOW_DATA).
+    - Added RTC support for precise timestamping and tracking of ping consistency.
+    - Implemented robust error handling, including emergency stop for serial disconnections.
+    - Improved feedback via real-time serial updates on temperature, test status, and queued tests.
 
-   Adam designed the machine, created the shield, and wrote the original code this state machine 
-   is based on. For further information, use the emails below.
+    Software Structure:
+    - A state machine manages states like HEATING, COOLING, and REPORT, supporting both manual and
+      remote operation.
+    - The chamber can queue and execute multiple test scenarios, each defined by a temperature and
+      duration.
+    - Provides serial feedback for real-time monitoring, including test progress and machine state.
+
+    Acknowledgments:
+    - Adam for hardware design, the custom shield, and the original state machine implementation.
+    - Valentino for modernizing functionality, integrating remote control, and enhancing workflows.
+
+    For inquiries or further development, please contact via the provided channels.
 
 Authors:
  * Adam Harb, <adam.harb@hotmail.com>
- * Valentino Glave, valentinoglave@protonmail.com
- * David Cuartielles, d.cuartielles@arduino.cc
+ * Valentino Glave, <valentinoglave@protonmail.com>
+ * David Cuartielles, <d.cuartielles@arduino.cc>
 
  (cc-sa-by-nc) 2024 Arduino, Sweden
 
