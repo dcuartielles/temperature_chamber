@@ -37,11 +37,13 @@ class QueueTab(QWidget):
         self.test_data_label = QLabel('test upload & names', self)
         self.test_data_list = QListWidget(self)
         self.load_button = QPushButton('upload test', self)
-        self.load_button.setStyleSheet('background-color: #009FAF;'
+        self.load_button.setStyleSheet('background-color: grey;'
                                         'color: white;')
+        self.load_button.setEnabled(False)
         self.clear_queue_button = QPushButton('clear test queue', self)
-        self.clear_queue_button.setStyleSheet(('background-color: red;'
+        self.clear_queue_button.setStyleSheet(('background-color: grey;'
                                         'color: white;'))
+        self.clear_queue_button.setEnabled(False)
         test_data_layout.addWidget(self.test_data_label)
         test_data_layout.addWidget(self.test_data_list)
         test_data_layout.addWidget(self.load_button)
@@ -65,6 +67,18 @@ class QueueTab(QWidget):
     def get_test_queue_from_arduino(self):
         pass
 
+    # set serial is running to true
+    def set_serial_is_running_flag_to_true(self):
+        self.serial_is_running = True
+
+    # activate buttons and give them colors when serial is running
+    def serial_is_running_gui(self):
+        self.load_button.setEnabled(True)
+        self.clear_queue_button.setEnabled(True)
+        self.load_button.setStyleSheet('background-color: #009FAF;'
+                                       'color: white;')
+        self.clear_queue_button.setStyleSheet(('background-color: red;'
+                                               'color: white;'))
 
 
 

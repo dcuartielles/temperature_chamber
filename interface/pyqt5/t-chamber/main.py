@@ -232,9 +232,7 @@ class MainWindow(QMainWindow):
 
         # get selected ports
         self.selected_c_port = self.port_selector.get_selected_c_port()
-        logger.debug(self.selected_c_port)
         self.selected_t_port = self.port_selector.get_selected_t_port()
-        logger.debug(self.selected_t_port)
 
         # validate selected ports
 
@@ -780,6 +778,8 @@ class MainWindow(QMainWindow):
                                                  'font-size: 20px;'
                                                  )
         self.manual_tab.set_serial_is_running_flag_to_true()
+        self.queue_tab.set_serial_is_running_flag_to_true()
+        self.queue_tab.serial_is_running_gui()
 
     # reset control board
     def reset_control_board(self):
