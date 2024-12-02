@@ -18,6 +18,7 @@ from logger_config import setup_logger
 from mainTab import MainTab
 from manualTab import ManualTab
 from progressBar import ProgressBar
+from queueTab import QueueTab
 import popups
 
 # set up logger that takes the file name
@@ -99,6 +100,7 @@ class MainWindow(QMainWindow):
         # instantiate tabs
         self.main_tab = MainTab(self.test_data)
         self.manual_tab = ManualTab()
+        self.queue_tab = QueueTab()
 
         # flag for alerting user in case test is running
         self.test_is_running = False
@@ -154,6 +156,7 @@ class MainWindow(QMainWindow):
         # add tabs to tab widget
         self.tab_widget.addTab(self.main_tab, 'running test info')
         self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
+        self.tab_widget.addTab(self.queue_tab, 'test upload and queue')
         layout.addWidget(self.tab_widget)
 
         # add space btw sections: vertical 12px
