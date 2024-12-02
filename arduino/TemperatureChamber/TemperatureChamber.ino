@@ -408,6 +408,9 @@ void parseAndQueueTests(JsonObject& tests) {
         queueTest(newTest, testName);
     }
     jsonBuffer.clear();
+}
+
+void runQueuedTests() {
     if (!isTestRunning && queuedTestCount > 0) {
         runNextTest();
     }
@@ -472,6 +475,8 @@ void parseAndRunCommands(JsonObject& commands) {
         }
         if (command == "GET_TEST_QUEUE") {
             sendQueue();
+        } else if (command == "RUN_QUEUE") {
+            runQueuedTests();
         } else if (command == "SHOW_DATA") {
             displaySerial();
         } else if (command == "SET_TEMP") {
