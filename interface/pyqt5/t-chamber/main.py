@@ -461,12 +461,13 @@ class MainWindow(QMainWindow):
     def load_test_file(self):
         test_data = self.json_handler.open_file()
         self.serial_worker.trigger_add_test_data_to_queue.emit(test_data)
+        self.filepath = self.json_handler.get_filepath()
+        logger.info(f'filepath: {self.filepath}')
         popups.show_info_message('info', 'test file added to test queue')
 
     # update self.test_data from test queue from arduino
     def update_test_data(self, test_data):
         self.test_data = test_data
-        self.filepath = self.json_handler.get_filepath()
         self.get_test_file_name()
         self.get_test_names_from_queue()
 
