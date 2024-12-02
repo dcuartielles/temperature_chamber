@@ -32,7 +32,7 @@ class MainTab(QWidget):
                                            '* upload test file',
                                            '* run full test sequence',
                                            '* sit back and watch the test outcomes'])
-        self.instruction_listbox.setFixedSize(475, 135)
+        self.instruction_listbox.setFixedSize(540, 135)
         test_part_layout.addLayout(test_output_layout)
         self.run_button = QPushButton('run\ntests', self)
         self.run_button.setFixedSize(110, 105)
@@ -55,7 +55,7 @@ class MainTab(QWidget):
         self.test_output_label = QLabel('test board output', self)
         self.test_output_label.hide()
         self.test_output_listbox = QListWidget(self)
-        self.test_output_listbox.setFixedSize(475, 30)
+        self.test_output_listbox.setFixedSize(540, 30)
         self.test_output_listbox.hide()
         test_output_layout.addWidget(self.test_output_label)
         test_output_layout.addWidget(self.test_output_listbox)
@@ -63,7 +63,7 @@ class MainTab(QWidget):
         self.expected_outcome_label = QLabel('expected output', self)
         self.expected_outcome_label.hide()
         self.expected_outcome_listbox = QListWidget(self)
-        self.expected_outcome_listbox.setFixedSize(475, 30)
+        self.expected_outcome_listbox.setFixedSize(540, 30)
         self.expected_outcome_listbox.hide()
         test_output_layout.addWidget(self.expected_outcome_label)
         test_output_layout.addWidget(self.expected_outcome_listbox)

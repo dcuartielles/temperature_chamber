@@ -93,38 +93,9 @@ class QueueTab(QWidget):
     def add_test_name(self, name):
         self.test_data_list.clear()
         self.test_data_list.addItem(name)
-        self.test_data_list.scrollToBottom()
 
     # add test names to queue on the right
     def add_arduino_queue(self, names):
         self.queue_display.clear()
         self.queue_display.addItem(names)
-        self.queue_display.scrollToBottom()
-
-'''
-{
-    “queue”:
-        {“queue_length”:3,
-        “tests”:[
-            {
-                “name”:“test_1”,
-                “sketch”:“./alphabet/alphabet.ino”,
-                “expected_output”:“ABCDEFGHIJKLMNOPQRSTUVWXYZ”
-            },
-            {
-                “name”:“test_2”,
-                “sketch”:“./alphabet_mathematical/alphabet_mathematical.ino”,
-                “expected_output”:“ABCDEFGHIJKLMNOPQRSTUVWXYZ120”
-            },
-            {
-                “name”:“test_3”,
-                “sketch”:“./alphabet.ino”,
-                “expected_output”:“ABCDEFGHIJKLMNOPQRSTUVWXYZ”
-            }
-        ]
-    }
-}
-  
-
-'''
 
