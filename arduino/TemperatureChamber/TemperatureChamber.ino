@@ -133,6 +133,8 @@ const unsigned int MAX_SEQUENCES_IN_TEST = 5;
 struct Test {
     Sequence sequences[MAX_SEQUENCES_IN_TEST];
     int numSequences;
+    String sketch;
+    String expectedOutput;
 };
 
 // Test variables
@@ -366,8 +368,12 @@ void queueTest(const Test& test, const String& testName) {
         testQueue[queuedTestCount] = test;
         testNames[queuedTestCount] = testName;
         queuedTestCount++;
+
+        // debug: verify test is queued correctly
         Serial.print("Queued test: ");
         Serial.println(testName);
+        Serial.print("Number of sequences: ");
+        Serial.println(test.numSequences);
     } else {
         Serial.println("Test queue is full. Cannot add more tests.");
     }
@@ -388,6 +394,9 @@ void parseAndQueueTests(JsonObject& tests) {
 
         JsonArray sequences = testJson["chamber_sequences"];
         newTest.numSequences = sequences.size();
+
+        newTest.sketch = testJson["sketch"].as<String>();
+        newTest.expectedOutput = testJson["expected_output"].as<String>();
 
         if (newTest.numSequences > MAX_SEQUENCES_IN_TEST) {
             newTest.numSequences = MAX_SEQUENCES_IN_TEST;         // how many?
@@ -538,10 +547,13 @@ void sendQueue() {
 
     responseDoc["queue"]["queue_length"] = queuedTestCount;
 
-    JsonArray testsArray = responseDoc["queue"].createNestedArray("test_names");
+    JsonArray testsArray = responseDoc["queue"].createNestedArray("tests");
 
     for (int i = 0; i < queuedTestCount; i++) {
-        testsArray.add(testNames[i]);
+        JsonObject testObject = testsArray.createNestedObject();
+        testObject["name"] = testNames[i];
+        testObject["sketch"] = testQueue[i].sketch;
+        testObject["expected_output"] = testQueue[i].expectedOutput;
     }
 
     serializeJson(responseDoc, Serial);
