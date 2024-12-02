@@ -191,6 +191,7 @@ class MainWindow(QMainWindow):
         self.reset_button = QPushButton('reset control board')
         self.reset_button.setStyleSheet('background-color: grey;'
                                         'color: white;'
+                                        'font-weight: bold;'
                                         'font-size: 20px;')
         layout.addWidget(self.reset_button)
 
@@ -768,6 +769,7 @@ class MainWindow(QMainWindow):
         self.emergency_stop_button.setEnabled(True)
         self.reset_button.setStyleSheet('background-color: #009FAF;'
                                         'color: white;'
+                                        'font-weight: bold;'
                                         'font-size: 20px;')
         self.setWindowTitle('temperature chamber app is running')
         self.chamber_monitor.setStyleSheet('color: #009FAF;'
@@ -780,6 +782,7 @@ class MainWindow(QMainWindow):
         self.manual_tab.set_serial_is_running_flag_to_true()
         self.queue_tab.set_serial_is_running_flag_to_true()
         self.queue_tab.serial_is_running_gui()
+        self.main_tab.serial_is_running_gui()
 
     # reset control board
     def reset_control_board(self):

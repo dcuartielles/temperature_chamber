@@ -76,9 +76,15 @@ class QueueTab(QWidget):
         self.load_button.setEnabled(True)
         self.clear_queue_button.setEnabled(True)
         self.load_button.setStyleSheet('background-color: #009FAF;'
-                                       'color: white;')
-        self.clear_queue_button.setStyleSheet(('background-color: red;'
-                                               'color: white;'))
+                                       'color: white;'
+                                       'font-weight: bold;'
+                                       'font-size: 20px;'
+                                       )
+        self.clear_queue_button.setStyleSheet('background-color: red;'
+                                              'color: white;'
+                                              'font-weight: bold;'
+                                              'font-size: 20px;'
+                                              )
 
 
 

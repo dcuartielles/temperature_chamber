@@ -34,16 +34,18 @@ class MainTab(QWidget):
                                            '* sit back and watch the test outcomes'])
         self.instruction_listbox.setFixedSize(475, 135)
         test_part_layout.addLayout(test_output_layout)
-
-        self.load_button = QPushButton('load test file', self)
-        self.load_button.setFixedSize(195, 27)
-        self.run_button = QPushButton('run benchmark tests', self)
-        self.run_button.setFixedSize(195, 27)
+        self.run_button = QPushButton('run\ntests', self)
+        self.run_button.setFixedSize(110, 105)
+        self.run_button.setStyleSheet('background-color: grey;'
+                                      'color: white;'
+                                      'font-weight: bold;'
+                                      'font-size: 20px;'
+                                      )
+        self.run_button.setEnabled(False)
         test_output_layout.addWidget(self.instruction_listbox)
         test_part_layout.addLayout(test_button_layout)
 
-        # test selection buttons
-        test_button_layout.addWidget(self.load_button, alignment=Qt.AlignRight)
+        # add run tests button
         test_button_layout.addWidget(self.run_button, alignment=Qt.AlignRight)
 
         # place them in the main layout
@@ -69,6 +71,14 @@ class MainTab(QWidget):
         self.setLayout(layout)
 
     # TEST RUNNING
+    # activate button and set color when serial is running
+    def serial_is_running_gui(self):
+        self.run_button.setEnabled(True)
+        self.run_button.setStyleSheet('background-color: #009FAF;'
+                                    'color: white;'
+                                    'font-weight: bold;'
+                                    'font-size: 20px;')
+
     # display test board output
     def update_test_output_listbox_gui(self, message):
         self.test_output_listbox.clear()
