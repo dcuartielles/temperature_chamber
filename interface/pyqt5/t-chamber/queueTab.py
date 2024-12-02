@@ -8,11 +8,7 @@ logger = setup_logger(__name__)
 
 
 class QueueTab(QWidget):
-    add_to_queue_signal = pyqtSignal(dict)  # add tests to queue on control board (set the whole queue as test_data)
-    clear_queue_signal = pyqtSignal()  # signal to serial to trigger reset() and interrupt running tests
-    show_queue_signal = pyqtSignal(dict)  # signal to serial worker to retrieve test queue from arduino
-    clear_queue_from_elsewhere_signal = pyqtSignal()  # signal to clear queue on tests interrupted
-    set_test_flag_to_false_signal = pyqtSignal()  # signal to set test_is_running flags to False everywhere
+
     get_test_file_name = pyqtSignal(str)  # signal from main (from serial) to get directory names for queue updates
     display_queue_from_arduino = pyqtSignal(str)  # signal from main (from serial) to get test names for queue updates
 
