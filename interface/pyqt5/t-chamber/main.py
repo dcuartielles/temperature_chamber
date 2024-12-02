@@ -466,6 +466,13 @@ class MainWindow(QMainWindow):
     # update self.test_data from test queue from arduino
     def update_test_data(self, test_data):
         self.test_data = test_data
+        self.filepath = self.json_handler.get_filepath()
+        self.get_test_file_name()
+
+    # retrieve test file name from file path and send to queue tab
+    def get_test_file_name(self):
+        name = self.filepath.rstrip("/").split("/")[-2]
+        self.queue_tab.get_test_file_name.emit(name)
 
     # TEST-RELATED GUI UPDATES
     # the actual listbox updates

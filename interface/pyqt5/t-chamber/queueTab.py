@@ -13,7 +13,7 @@ class QueueTab(QWidget):
     show_queue_signal = pyqtSignal(dict)  # signal to serial worker to retrieve test queue from arduino
     clear_queue_from_elsewhere_signal = pyqtSignal()  # signal to clear queue on tests interrupted
     set_test_flag_to_false_signal = pyqtSignal()  # signal to set test_is_running flags to False everywhere
-    set_test_data_and_filepath = pyqtSignal(dict, str)
+    get_test_file_name = pyqtSignal(str)
 
     def __init__(self, parent=None):
 
@@ -24,6 +24,7 @@ class QueueTab(QWidget):
         self.test_queue = {}  # space for test queue from arduino
         self.test_data = None
         self.filepath = None
+        self.get_test_file_name.connect(self.add_test_name)
         self.initUI()
 
     def initUI(self):
@@ -86,8 +87,10 @@ class QueueTab(QWidget):
                                               'font-size: 20px;'
                                               )
 
-
-
+    # add test file name to displayed queue on the left
+    def add_test_name(self, name):
+        self.test_data_list.addItem(name)
+        self.test_data_list.scrollToBottom()
 
 '''
 {

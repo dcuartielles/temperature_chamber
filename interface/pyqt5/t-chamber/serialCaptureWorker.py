@@ -220,7 +220,8 @@ class SerialCaptureWorker(QThread):
             full_tests_json = {'tests': test_data["tests"]}
             self.send_json_to_arduino(full_tests_json)  # send the data to arduino
             # log and print status
-            logger.info(f'sending full tests data with {len(test_data["tests"])} tests')
+            logger.info(f'adding full tests data with {len(test_data["tests"])} tests to test queue on arduino')
+            self.get_test_queue_from_arduino()
         else:
             # handle case when no test data is found
             logger.warning('no test data found on file')
@@ -238,7 +239,6 @@ class SerialCaptureWorker(QThread):
                 queue = parsed_response['queue']['tests']
                 logger.info(f'this is what test queue looks like now: {queue}')
                 self.update_test_data_from_queue.emit(queue)
-                return queue
         except json.JSONDecodeError:
             logger.exception('failed to decode ping response as json')
 
