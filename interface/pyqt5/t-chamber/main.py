@@ -412,6 +412,7 @@ class MainWindow(QMainWindow):
         self.test_number = message
         logger.info(f'current test number: {self.test_number}')
         self.main_tab.update_test_number(self.test_number)
+        self.queue_tab.update_test_number(self.test_number)
 
     # upload sketch for each test separately
     def upload_sketch_for_new_test(self, message):
@@ -549,6 +550,7 @@ class MainWindow(QMainWindow):
     def update_test_label(self, test_info):
         if self.test_is_running:
             test = test_info.get('test')
+            self.queue_tab.get_current_test_signal.emit(test)
             sequence = test_info.get('sequence')
             time_left = test_info.get('time_left') * 60  # convert minutes to seconds
             duration = test_info.get('current_duration') * 60  # convert minutes to seconds

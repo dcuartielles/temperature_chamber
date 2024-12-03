@@ -19,6 +19,7 @@ class QueueTab(QWidget):
         self.test_is_running = False  # flag to know if tests are running
         self.serial_is_running = False  # flag to know if serial is running
         self.current_test = None
+        self.test_number = 0
         self.get_test_file_name.connect(self.add_test_name)
         self.display_queue_from_arduino.connect(self.add_arduino_queue)
         self.get_current_test_signal.connect(self.get_current_test_from_signal)
@@ -64,6 +65,10 @@ class QueueTab(QWidget):
     # set serial is running to true
     def set_serial_is_running_flag_to_true(self):
         self.serial_is_running = True
+
+    # update current test number
+    def update_test_number(self, test_number):
+        self.test_number = test_number
 
     # activate buttons and give them colors when serial is running
     def serial_is_running_gui(self):
