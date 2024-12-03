@@ -97,6 +97,7 @@ class QueueTab(QWidget):
     # get current test from signal
     def get_current_test_from_signal(self, current_test):
         self.current_test = current_test
+        self.highlight_current_test()
 
     # highlight current test
     def highlight_current_test(self):
