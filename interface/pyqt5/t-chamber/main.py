@@ -130,7 +130,7 @@ class MainWindow(QMainWindow):
         pixmap = QPixmap('arduino_logo.png')
         self.im_label.setPixmap(pixmap)
         self.im_label.setScaledContents(True)
-        self.im_label.setFixedSize(100, 100)  # define logo dimensions
+        self.im_label.setFixedSize(120, 120)  # define logo dimensions
         layout.addWidget(self.im_label, alignment=Qt.AlignLeft)  # add logo to the layout
 
         # port selector

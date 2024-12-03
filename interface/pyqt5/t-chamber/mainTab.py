@@ -35,12 +35,12 @@ class MainTab(QWidget):
         self.instruction_listbox.setFixedSize(540, 135)
         test_part_layout.addLayout(test_output_layout)
         self.run_button = QPushButton('run\ntests', self)
-        self.run_button.setFixedSize(110, 110)
+        self.run_button.setFixedSize(96, 96)
         self.run_button.setStyleSheet('background-color: grey;'
                                       'color: white;'
                                       'font-weight: bold;'
                                       'font-size: 20px;'
-                                      'border-radius: 55px;'
+                                      'border-radius: 48px;'
                                       )
         self.run_button.setEnabled(False)
         test_output_layout.addWidget(self.instruction_listbox)
@@ -79,7 +79,7 @@ class MainTab(QWidget):
                                     'color: white;'
                                     'font-weight: bold;'
                                     'font-size: 20px;'
-                                    'border-radius: 55px;')
+                                    'border-radius: 48px;')
 
     # display test board output
     def update_test_output_listbox_gui(self, message):
