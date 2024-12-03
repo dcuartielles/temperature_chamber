@@ -146,7 +146,7 @@ class SerialCaptureWorker(QThread):
     # BASIC COMMUNICATION WITH CONTROL BOARD
     # handshake
     def handshake(self):
-        logger.info(f"attempting handshake, sent_handshake: {self.sent_handshake}")
+        # logger.info(f"attempting handshake, sent_handshake: {self.sent_handshake}")
         if not self.sent_handshake:
             time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
             # insert timestamp into handshake
@@ -334,7 +334,7 @@ class SerialCaptureWorker(QThread):
             queue_response = response
             parsed_response = json.loads(queue_response)
             if 'queue' in parsed_response:
-                queue = parsed_response['queue']['tests']
+                queue = parsed_response['queue']
                 logger.info(f'this is what test queue looks like now: {queue}')
                 self.update_test_data_from_queue.emit(queue)
         else:

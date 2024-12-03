@@ -321,7 +321,7 @@ class MainWindow(QMainWindow):
                 response = popups.show_dialog(
                     'a test is running: are you sure you want to interrupt it and proceed?')
                 if response == QMessageBox.Yes:
-                    self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
+                    #self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                     if self.cli_worker.is_running:
                         self.test_number = 0
                         message = 'test interrupted'
@@ -340,7 +340,7 @@ class MainWindow(QMainWindow):
                 elif response == QMessageBox.No:
                     return
             try:
-                self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
+                # self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                 self.test_is_running = True
                 self.manual_tab.test_is_running = True
                 message = 'test starting'
@@ -379,7 +379,7 @@ class MainWindow(QMainWindow):
                     time.sleep(0.1)
             except:
                 logger.exception('something went wrong')
-                popups.show_error_message('error', 'no serial connection')
+                popups.show_error_message('error', 'something went wrong')
         else:
             popups.show_error_message('error', 'no test data loaded')
 
@@ -469,9 +469,10 @@ class MainWindow(QMainWindow):
     # update self.test_data from test queue from arduino
     def update_test_data(self, test_data):
         self.test_data = test_data
+        logger.info(f'test data right after update from queue: {self.test_data}')
         self.get_test_file_name()
         self.get_test_names_from_queue()
-
+    # {"tests": {"alphabet_38": {"chamber_sequences": [{"temp": 38, "duration": 60000}], "sketch": "./alphabets_two/alphabet/alphabet.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, "math_48_80": {"chamber_sequences": [{"temp": 48, "duration": 90000}, {"temp": 80, "duration": 300000}], "sketch": "./alphabets_two/alphabet_mathematical/alphabet_mathematical.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ120"}, "alphabet_70_50": {"chamber_sequences": [{"temp": 70, "duration": 60000}, {"temp": 50, "duration": 120000}], "sketch": "./alphabets_two/alphabet/alphabet.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}}
     # retrieve test directory names from test data and send to queue tab
     def get_test_file_name(self):
         directories = [test["sketch"].split('/')[-2] for test in self.test_data["tests"] if '/' in test["sketch"]]
@@ -480,7 +481,7 @@ class MainWindow(QMainWindow):
 
     # get test titles from test data and send to queue tab
     def get_test_names_from_queue(self):
-        names = [test["name"] for test in self.test_data["tests"]]
+        names = [test.key() for test in self.test_data["tests"]]
         result_string = ",".join(names)
         self.queue_tab.display_queue_from_arduino.emit(result_string)
 
@@ -594,7 +595,10 @@ class MainWindow(QMainWindow):
 
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
     def check_temp(self):
-        test_keys = list(self.test_data["tests"].keys())
+        logger.info(f'test data right now: {self.test_data}')
+        test_keys = self.test_data["tests"].keys()
+        logger.info(f'test keys: {test_keys}')
+        test_keys = list(test_keys)
         first_test_key = test_keys[0]
         first_temp = float(self.test_data["tests"][first_test_key]["chamber_sequences"][0]["temp"])
         # check absolute difference
