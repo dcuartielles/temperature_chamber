@@ -80,6 +80,21 @@ class QueueTab(QWidget):
                                               'font-size: 20px;'
                                               )
 
+    # serial is not running gui
+    def serial_is_not_running_gui(self):
+        self.load_button.setEnabled(False)
+        self.clear_queue_button.setEnabled(False)
+        self.load_button.setStyleSheet('background-color: grey;'
+                                       'color: white;'
+                                       'font-weight: bold;'
+                                       'font-size: 20px;'
+                                       )
+        self.clear_queue_button.setStyleSheet('background-color: grey;'
+                                              'color: white;'
+                                              'font-weight: bold;'
+                                              'font-size: 20px;'
+                                              )
+
     # add test file name to displayed queue on the left
     def add_test_name(self, names):
         self.test_data_list.clear()  # clear listbox

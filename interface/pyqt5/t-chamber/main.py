@@ -727,6 +727,7 @@ class MainWindow(QMainWindow):
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
+        self.queue_tab.serial_is_not_running_gui()
         message = 'serial connection to control board was lost over 5 minutes ago, control board is reset now'
         popups.show_error_message('warning', message)
 
@@ -778,6 +779,7 @@ class MainWindow(QMainWindow):
         self.reset_button.setStyleSheet('background-color: grey;'
                                                  'color: white;'
                                                  'font-size: 20px;')
+        self.queue_tab.serial_is_not_running_gui()
 
     # light up colors for reset and emergency stop buttons when serial worker starts
     def show_reset_button(self):
@@ -846,6 +848,8 @@ class MainWindow(QMainWindow):
             else:
                 message = 'test queue is cleared'
                 self.new_test(message)
+        else:
+            popups.show_error_message('warning', 'there is no serial connection to control board')
 
     # HIDDEN FUNCTIONALITY
     # stop both workers
