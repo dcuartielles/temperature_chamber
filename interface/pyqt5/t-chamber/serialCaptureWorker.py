@@ -155,7 +155,7 @@ class SerialCaptureWorker(QThread):
             # send handshake to arduino
             self.send_json_to_arduino(handshake)
             logger.info(f'handshake sent to arduino: {handshake}')
-
+            self.get_test_queue_from_arduino()
             try:
                 # decode arduino response
                 handshake_response = self.ser.readline().decode('utf-8').strip()
