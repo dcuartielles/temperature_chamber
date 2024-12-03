@@ -87,6 +87,8 @@ class QueueTab(QWidget):
 
     # serial is not running gui
     def serial_is_not_running_gui(self):
+        self.test_data_list.clear()  # clear listbox
+        self.queue_display.clear()  # clear the other listbox
         self.load_button.setEnabled(False)
         self.clear_queue_button.setEnabled(False)
         self.load_button.setStyleSheet('background-color: grey;'

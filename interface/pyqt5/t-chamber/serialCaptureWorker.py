@@ -161,7 +161,7 @@ class SerialCaptureWorker(QThread):
                 handshake_response = self.ser.readline().decode('utf-8').strip()
                 # convert response string to dictionary
                 parsed_response = json.loads(handshake_response)
-                logger.info(parsed_response)
+                logger.info(f'response to handshake: {parsed_response}')
             except json.JSONDecodeError:
                 logger.exception('failed to parse arduino response')
 
