@@ -1,12 +1,12 @@
 {"tests": {
-        "test_1": {
+        "first_alphabet_low_temp": {
             "chamber_sequences": [
                 { "temp": 38, "duration": 60000 }
             ],
             "sketch": "./alphabets/alphabet/alphabet.ino",
             "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         },
-        "test_2": {
+        "match_alphabet_low_to_high_temp": {
             "chamber_sequences": [
                 { "temp": 48, "duration": 90000 },
                 { "temp": 80, "duration": 300000 }
@@ -14,7 +14,7 @@
             "sketch": "./alphabets/alphabet_mathematical/alphabet_mathematical.ino",
             "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ120"
         },
-        "test_3": {
+        "alphabet_high_to_low": {
             "chamber_sequences": [
                 { "temp": 70, "duration": 60000 },
                 { "temp": 50, "duration": 120000 }

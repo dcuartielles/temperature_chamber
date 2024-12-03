@@ -61,8 +61,6 @@ class QueueTab(QWidget):
 
         self.setLayout(layout)
 
-
-
     # set serial is running to true
     def set_serial_is_running_flag_to_true(self):
         self.serial_is_running = True
