@@ -248,6 +248,7 @@ class SerialCaptureWorker(QThread):
         reset = commands.reset()
         self.send_json_to_arduino(reset)
         logger.info('resetting control board')
+        self.get_test_queue_from_arduino()
 
     # emergency stop
     def emergency_stop(self):

@@ -131,3 +131,6 @@ class QueueTab(QWidget):
                 font = item.font()
                 font.setBold(False)  # reset all others to normal
                 item.setFont(font)
+
+
+    # {"tests": {"alphabet_38": {"chamber_sequences": [{"temp": 38, "duration": 60000}], "sketch": "./alphabets_two/alphabet/alphabet.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, "math_48_80": {"chamber_sequences": [{"temp": 48, "duration": 90000}, {"temp": 80, "duration": 300000}], "sketch": "./alphabets_two/alphabet_mathematical/alphabet_mathematical.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ120"}, "alphabet_70_50": {"chamber_sequences": [{"temp": 70, "duration": 60000}, {"temp": 50, "duration": 120000}], "sketch": "./alphabets_two/alphabet/alphabet.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}}

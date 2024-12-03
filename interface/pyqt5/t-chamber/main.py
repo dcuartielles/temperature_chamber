@@ -466,13 +466,45 @@ class MainWindow(QMainWindow):
         logger.info(f'filepath from file handler: {self.filepath}')
         popups.show_info_message('info', 'test file added to test queue')
 
+    # clear test queue
+    def clear_test_queue(self):
+        if self.serial_worker and self.serial_worker.is_running:
+            self.serial_worker.trigger_reset.emit()
+            if self.test_is_running:
+                response = popups.show_dialog(
+                    'a test is running: are you sure you want to interrupt it and proceed?')
+                if response == QMessageBox.Yes:
+                    if self.cli_worker and self.cli_worker.is_running:
+                        self.test_number = 0
+                        self.on_cli_test_interrupted()
+                        logger.info('test interrupted, test queue is cleared')
+                        message = 'test interrupted, test queue is cleared'
+                        self.test_interrupted_gui(message)
+                        self.test_is_running = False
+                        self.manual_tab.test_is_running = False
+                        self.on_cli_test_interrupted()
+                    else:
+                        logger.info('test interrupted, test queue is cleared')
+                        message = 'test interrupted, test queue is cleared'
+                        self.test_interrupted_gui(message)
+                        self.test_number = 0
+                        self.test_is_running = False
+                        self.manual_tab.test_is_running = False
+                elif response == QMessageBox.No:
+                    return
+            else:
+                message = 'test queue is cleared'
+                self.new_test(message)
+        else:
+            popups.show_error_message('warning', 'there is no serial connection to control board')
+
     # update self.test_data from test queue from arduino
     def update_test_data(self, test_data):
         self.test_data = test_data
         logger.info(f'test data right after update from queue: {self.test_data}')
         self.get_test_file_name()
         self.get_test_names_from_queue()
-    # {"tests": {"alphabet_38": {"chamber_sequences": [{"temp": 38, "duration": 60000}], "sketch": "./alphabets_two/alphabet/alphabet.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}, "math_48_80": {"chamber_sequences": [{"temp": 48, "duration": 90000}, {"temp": 80, "duration": 300000}], "sketch": "./alphabets_two/alphabet_mathematical/alphabet_mathematical.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ120"}, "alphabet_70_50": {"chamber_sequences": [{"temp": 70, "duration": 60000}, {"temp": 50, "duration": 120000}], "sketch": "./alphabets_two/alphabet/alphabet.ino", "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}}
+
     # retrieve test directory names from test data and send to queue tab
     def get_test_file_name(self):
         directories = [test["sketch"].split('/')[-2] for test in self.test_data["tests"] if '/' in test["sketch"]]
@@ -825,37 +857,6 @@ class MainWindow(QMainWindow):
             else:
                 message = 'control board is reset'
                 self.new_test(message)
-
-    def clear_test_queue(self):
-        if self.serial_worker and self.serial_worker.is_running:
-            self.serial_worker.trigger_reset.emit()
-            if self.test_is_running:
-                response = popups.show_dialog(
-                    'a test is running: are you sure you want to interrupt it and proceed?')
-                if response == QMessageBox.Yes:
-                    if self.cli_worker and self.cli_worker.is_running:
-                        self.test_number = 0
-                        self.on_cli_test_interrupted()
-                        logger.info('test interrupted, test queue is cleared')
-                        message = 'test interrupted, test queue is cleared'
-                        self.test_interrupted_gui(message)
-                        self.test_is_running = False
-                        self.manual_tab.test_is_running = False
-                        self.on_cli_test_interrupted()
-                    else:
-                        logger.info('test interrupted, test queue is cleared')
-                        message = 'test interrupted, test queue is cleared'
-                        self.test_interrupted_gui(message)
-                        self.test_number = 0
-                        self.test_is_running = False
-                        self.manual_tab.test_is_running = False
-                elif response == QMessageBox.No:
-                    return
-            else:
-                message = 'test queue is cleared'
-                self.new_test(message)
-        else:
-            popups.show_error_message('warning', 'there is no serial connection to control board')
 
     # HIDDEN FUNCTIONALITY
     # stop both workers
