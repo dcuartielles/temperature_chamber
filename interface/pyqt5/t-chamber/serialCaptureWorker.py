@@ -231,16 +231,6 @@ class SerialCaptureWorker(QThread):
         get_queue = commands.get_test_queue()
         logger.info('sending command to arduino to get test queue')
         self.send_json_to_arduino(get_queue)
-        try:
-            queue_response = self.ser.readline().decode('utf-8').strip()
-            # convert response string to dictionary
-            parsed_response = json.loads(queue_response)
-            if 'queue' in parsed_response:
-                queue = parsed_response['queue']['tests']
-                logger.info(f'this is what test queue looks like now: {queue}')
-                self.update_test_data_from_queue.emit(queue)
-        except json.JSONDecodeError:
-            logger.exception('failed to decode ping response as json')
 
     # set temp & duration from the gui
     def set_temp(self, input_dictionary):
@@ -327,7 +317,6 @@ class SerialCaptureWorker(QThread):
             logger.info('about to emit signal for a upload btw tests')
             self.upload_sketch_again_signal.emit(message)
             logger.info('signal for new upload btw tests emitted')
-
         elif response.strip().startswith('Waiting'):
             self.sequence_has_been_advanced = False
             self.update_listbox.emit(response)  # emit signal to update listbox
@@ -340,5 +329,14 @@ class SerialCaptureWorker(QThread):
                 self.sequence_has_been_advanced = True
         elif response.strip().startswith('All tests completed!'):
             self.alert_all_tests_complete_signal.emit()
+        elif response.strip().startswith(' {“queue”:{'):
+            queue_response = response
+            # convert response string to dictionary
+            parsed_response = json.loads(queue_response)
+            if 'queue' in parsed_response:
+                queue = parsed_response['queue']['tests']
+                logger.info(f'this is what test queue looks like now: {queue}')
+                self.update_test_data_from_queue.emit(queue)
         else:
             logger.info(f'complete response from arduino: {response}')
+
