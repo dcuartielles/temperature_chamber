@@ -321,7 +321,7 @@ class SerialCaptureWorker(QThread):
         elif response.strip().startswith('Waiting'):
             self.sequence_has_been_advanced = False
             self.update_listbox.emit(response)  # emit signal to update listbox
-            logger.info(f'{response}')
+            logger.info(f'response to WAITING: {response}')
         elif response.strip().startswith('Sequence complete'):
             if not self.sequence_has_been_advanced:
                 self.next_sequence_progress.emit()
@@ -332,8 +332,9 @@ class SerialCaptureWorker(QThread):
             self.alert_all_tests_complete_signal.emit()
         elif 'queue' in response.strip():
             queue_response = response
-            if 'queue' in queue_response:
-                queue = queue_response['queue']['tests']
+            parsed_response = json.loads(queue_response)
+            if 'queue' in parsed_response:
+                queue = parsed_response['queue']['tests']
                 logger.info(f'this is what test queue looks like now: {queue}')
                 self.update_test_data_from_queue.emit(queue)
         else:
