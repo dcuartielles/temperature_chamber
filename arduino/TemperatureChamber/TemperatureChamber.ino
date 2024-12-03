@@ -370,10 +370,10 @@ void queueTest(const Test& test, const String& testName) {
         queuedTestCount++;
 
         // debug: verify test is queued correctly
-        Serial.print("Queued test: ");
-        Serial.println(testName);
-        Serial.print("Number of sequences: ");
-        Serial.println(test.numSequences);
+        // Serial.print("Queued test: ");
+        // Serial.println(testName);
+        // Serial.print("Number of sequences: ");
+        // Serial.println(test.numSequences);
     } else {
         Serial.println("Test queue is full. Cannot add more tests.");
     }
@@ -416,10 +416,11 @@ void parseAndQueueTests(JsonObject& tests) {
         }
         queueTest(newTest, testName);
     }
+    // runQueue();
     jsonBuffer.clear();
 }
 
-void runQueuedTests() {
+void runQueue() {
     if (!isTestRunning && queuedTestCount > 0) {
         runNextTest();
     }
@@ -452,7 +453,7 @@ void clearTests() {
     queuedTestCount = 0;
     currentTestIndex = 0;
 
-    Serial.println("All tests cleared. Ready for new tests.");
+    // Serial.println("All tests cleared. Ready for new tests.");
 
     lcd.clear();        // TODO: check if this works
 }
@@ -483,13 +484,13 @@ void parseAndRunCommands(JsonObject& commands) {
             }
         } 
         if (!systemSwitchState) {
-            Serial.println("System switch is off, please switch it on.");
+            // Serial.println("System switch is off, please switch it on.");
             return;
         }
         if (command == "GET_TEST_QUEUE") {
             sendQueue();
         } else if (command == "RUN_QUEUE") {
-            runQueuedTests();
+            runQueue();
         } else if (command == "SHOW_DATA") {
             displaySerial();
         } else if (command == "SET_TEMP") {
@@ -507,14 +508,13 @@ void parseAndRunCommands(JsonObject& commands) {
             Serial.println("Emergency Stop initiated via command.");
         } else if (command == "SHOW_RUNNING_SEQUENCE") {
             if (isTestRunning) {
-                Serial.print("Running sequence: Target temp = ");
-                Serial.print(chamberState.temperatureDesired);
-                Serial.print("°C Duration = ");
-                Serial.print(currentDuration / 60000);
-                Serial.println(" minutes");
-
+                // Serial.print("Running sequence: Target temp = ");
+                // Serial.print(chamberState.temperatureDesired);
+                // Serial.print("°C Duration = ");
+                // Serial.print(currentDuration / 60000);
+                // Serial.println(" minutes");
             } else {
-                Serial.println("No sequence is currently running.");
+                // Serial.println("No sequence is currently running.");
             }
         } 
     }
