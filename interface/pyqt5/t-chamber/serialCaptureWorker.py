@@ -219,6 +219,7 @@ class SerialCaptureWorker(QThread):
         if test_data is not None and 'tests' in test_data:
             full_tests_json = {'tests': test_data["tests"]}
             self.send_json_to_arduino(full_tests_json)  # send the data to arduino
+            logger.info(f'sending full test json: {full_tests_json}')
             # log and print status
             logger.info(f'adding full tests data with {len(test_data["tests"])} tests to test queue on arduino')
             self.get_test_queue_from_arduino()
@@ -329,12 +330,10 @@ class SerialCaptureWorker(QThread):
                 self.sequence_has_been_advanced = True
         elif response.strip().startswith('All tests completed!'):
             self.alert_all_tests_complete_signal.emit()
-        elif response.strip().startswith(' {“queue”:{'):
+        elif 'queue' in response.strip():
             queue_response = response
-            # convert response string to dictionary
-            parsed_response = json.loads(queue_response)
-            if 'queue' in parsed_response:
-                queue = parsed_response['queue']['tests']
+            if 'queue' in queue_response:
+                queue = queue_response['queue']['tests']
                 logger.info(f'this is what test queue looks like now: {queue}')
                 self.update_test_data_from_queue.emit(queue)
         else:
