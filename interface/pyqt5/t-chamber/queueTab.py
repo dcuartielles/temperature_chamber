@@ -11,18 +11,17 @@ class QueueTab(QWidget):
 
     get_test_file_name = pyqtSignal(str)  # signal from main (from serial) to get directory names for queue updates
     display_queue_from_arduino = pyqtSignal(str)  # signal from main (from serial) to get test names for queue updates
+    get_current_test_signal = pyqtSignal(str)  # signal from main (serial) with current running test
 
     def __init__(self, parent=None):
 
         super().__init__(parent)
         self.test_is_running = False  # flag to know if tests are running
         self.serial_is_running = False  # flag to know if serial is running
-        self.test_file_list = {}  # space for list of test file names
-        self.test_queue = {}  # space for test queue from arduino
-        self.test_data = None
-        self.filepath = None
+        self.current_test = None
         self.get_test_file_name.connect(self.add_test_name)
         self.display_queue_from_arduino.connect(self.add_arduino_queue)
+        self.get_current_test_signal.connect(self.get_current_test_from_signal)
         self.initUI()
 
     def initUI(self):
@@ -84,12 +83,32 @@ class QueueTab(QWidget):
                                               )
 
     # add test file name to displayed queue on the left
-    def add_test_name(self, name):
-        self.test_data_list.clear()
-        self.test_data_list.addItem(name)
+    def add_test_name(self, names):
+        self.test_data_list.clear()  # clear listbox
+        name_list = names.split(',')  # split string into test names
+        for name in name_list:
+            self.test_data_list.addItem(name)
 
     # add test names to queue on the right
     def add_arduino_queue(self, names):
         self.queue_display.clear()
-        self.queue_display.addItem(names)
+        name_list = names.split(',')
+        for name in name_list:
+            self.queue_display.addItem(name)
 
+    # get current test from signal
+    def get_current_test_from_signal(self, current_test):
+        self.current_test = current_test
+
+    # highlight current test
+    def highlight_current_test(self):
+        for i in range(self.test_data_list.count()):  # loop through all items in listbox
+            item = self.test_data_list.item(i)  # get each item
+            if item.text() == self.current_test:
+                font = item.font()  # get item's current font
+                font.setBold(True)  # change it to bold
+                item.setFont(font)  # apply font setting to item
+            else:
+                font = item.font()
+                font.setBold(False)  # reset all others to normal
+                item.setFont(font)

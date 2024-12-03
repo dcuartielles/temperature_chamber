@@ -474,13 +474,13 @@ class MainWindow(QMainWindow):
     # retrieve test directory names from test data and send to queue tab
     def get_test_file_name(self):
         directories = [test["sketch"].split('/')[-2] for test in self.test_data["tests"] if '/' in test["sketch"]]
-        result_string = "\n".join(directories)
+        result_string = ",".join(directories)
         self.queue_tab.get_test_file_name.emit(result_string)
 
     # get test titles from test data and send to queue tab
     def get_test_names_from_queue(self):
         names = [test["name"] for test in self.test_data["tests"]]
-        result_string = "\n".join(names)
+        result_string = ",".join(names)
         self.queue_tab.display_queue_from_arduino.emit(result_string)
 
     # TEST-RELATED GUI UPDATES
