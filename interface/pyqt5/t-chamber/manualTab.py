@@ -77,14 +77,14 @@ class ManualTab(QWidget):
                         response = popups.show_dialog(
                             'a test is running: are you sure you want to interrupt it and proceed?')
                         if response == QMessageBox.Yes:
-                            message = 'test interrupted'
+                            message = 'test interrupted, temperature set manually'
                             self.test_interrupted.emit(message)
                             self.test_is_running = False
                             logger.warning(message)
                         elif response == QMessageBox.No:
                             return
                     self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
-                    message = 'temperature and duration set manually'
+                    message = 'temperature set manually'
                     self.test_interrupted.emit(message)
                     if duration_string == '1':
                         current_string = f'temperature set to {temp_string}°C for the duration of {duration_string} minute'

@@ -278,9 +278,10 @@ class CliWorker(QThread):
                     logger.info(test)
                     sketch_path = test.get('sketch', '')  # get .ino file path
                     if sketch_path:  # if the sketch is available
-                        sketch_filename = sketch_path.split('/')[-2]  # get ino file name
-                        sketch_full_path = test_data_filepath + '/' + sketch_filename
-                        logger.info(sketch_full_path)
+                        sketch_group_directory = sketch_path.split('/')[-3]  # get the overarching test group directory
+                        logger.info(f'sketch directory: {sketch_group_directory}')
+                        sketch_full_path = test_data_filepath + '/' + sketch_group_directory
+                        logger.info(f'full sketch path: {sketch_full_path}')
                         self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
                     else:
                         logger.warning('sketch path not found')

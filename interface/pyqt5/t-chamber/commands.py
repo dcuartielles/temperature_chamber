@@ -47,3 +47,24 @@ def handshake(time):
         }
     }
     return hand
+
+# get test queue
+def get_test_queue():
+    get_queue = {"commands": {
+           "GET_TEST_QUEUE": {
+            }
+        }
+    }
+    return get_queue
+
+
+# run all tests
+def run_all_tests():
+    run_tests = {"commands": {
+                "RUN_QUEUE": {
+            }
+        }
+    }
+    return run_tests
+
+

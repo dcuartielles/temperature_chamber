@@ -225,7 +225,6 @@ class ProgressBar(QWidget):
     def update_test_bar_label(self):
         logger.info(f'total duration as is: {self.total_duration}')
         estimated_time = int(self.total_duration / 60000)  # estimated time in minutes
-        estimated_time = int(self.total_duration / 60000)  # estimated time in minutes
         logger.info(f'tot dur in minutes: {estimated_time}')
         est_hours, est_minutes = divmod(estimated_time, 60)
         formatted_estimated_time = f"{int(est_hours)}h {int(est_minutes)}m" if est_hours > 0 else f"{int(est_minutes)}m"

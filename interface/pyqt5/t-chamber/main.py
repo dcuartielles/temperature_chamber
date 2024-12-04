@@ -18,6 +18,7 @@ from logger_config import setup_logger
 from mainTab import MainTab
 from manualTab import ManualTab
 from progressBar import ProgressBar
+from queueTab import QueueTab
 import popups
 
 # set up logger that takes the file name
@@ -99,6 +100,7 @@ class MainWindow(QMainWindow):
         # instantiate tabs
         self.main_tab = MainTab(self.test_data)
         self.manual_tab = ManualTab()
+        self.queue_tab = QueueTab()
 
         # flag for alerting user in case test is running
         self.test_is_running = False
@@ -110,7 +112,7 @@ class MainWindow(QMainWindow):
     def initUI(self):
         # main window and window logo
         self.setWindowTitle('t-chamber')
-        self.setGeometry(600, 60, 0, 0)  # decide where on the screen the window will appear
+        self.setGeometry(600, 50, 0, 0)  # decide where on the screen the window will appear (from left, from top)
         self.setWindowIcon(QIcon('arduino_logo.png'))
         self.setStyleSheet('background-color: white;'
                            'color: black;')
@@ -128,7 +130,7 @@ class MainWindow(QMainWindow):
         pixmap = QPixmap('arduino_logo.png')
         self.im_label.setPixmap(pixmap)
         self.im_label.setScaledContents(True)
-        self.im_label.setFixedSize(100, 100)  # define logo dimensions
+        self.im_label.setFixedSize(120, 120)  # define logo dimensions
         layout.addWidget(self.im_label, alignment=Qt.AlignLeft)  # add logo to the layout
 
         # port selector
@@ -152,8 +154,9 @@ class MainWindow(QMainWindow):
         self.tab_widget = QTabWidget()
 
         # add tabs to tab widget
-        self.tab_widget.addTab(self.main_tab, 'test control')
+        self.tab_widget.addTab(self.main_tab, 'running test info')
         self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
+        self.tab_widget.addTab(self.queue_tab, 'test upload and queue')
         layout.addWidget(self.tab_widget)
 
         # add space btw sections: vertical 12px
@@ -188,6 +191,7 @@ class MainWindow(QMainWindow):
         self.reset_button = QPushButton('reset control board')
         self.reset_button.setStyleSheet('background-color: grey;'
                                         'color: white;'
+                                        'font-weight: bold;'
                                         'font-size: 20px;')
         layout.addWidget(self.reset_button)
 
@@ -211,7 +215,6 @@ class MainWindow(QMainWindow):
 
         # connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
-        self.main_tab.load_button.clicked.connect(self.load_test_file)
         self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
 
@@ -230,9 +233,7 @@ class MainWindow(QMainWindow):
 
         # get selected ports
         self.selected_c_port = self.port_selector.get_selected_c_port()
-        logger.debug(self.selected_c_port)
         self.selected_t_port = self.port_selector.get_selected_t_port()
-        logger.debug(self.selected_t_port)
 
         # validate selected ports
 
@@ -245,6 +246,9 @@ class MainWindow(QMainWindow):
                     self.serial_worker.update_listbox.connect(self.update_listbox_gui)
                     self.serial_worker.update_chamber_monitor.connect(self.update_chamber_monitor_gui)
                     self.emergency_stop_button.clicked.connect(self.on_emergency_stop_button_clicked)
+                    self.queue_tab.load_button.clicked.connect(self.load_test_file)
+                    self.queue_tab.clear_queue_button.clicked.connect(self.clear_test_queue)
+                    self.serial_worker.update_test_data_from_queue.connect(self.update_test_data)
                     self.reset_button.clicked.connect(self.reset_control_board)
                     self.serial_worker.alert_all_tests_complete_signal.connect(self.progress.get_actual_runtime)
                     self.serial_worker.no_port_connection.connect(self.on_no_port_connection_gui)
@@ -262,7 +266,7 @@ class MainWindow(QMainWindow):
 
                     # connect manual tab signals
                     self.manual_tab.send_temp_data.connect(self.serial_worker.set_temp)
-                    self.manual_tab.test_interrupted.connect(self.test_interrupted_gui)
+                    self.manual_tab.test_interrupted.connect(self.test_interrupted__manual_temp_setting_gui)
 
                 except Exception as e:
                     logger.exception(f'failed to start serial worker: {e}')
@@ -317,11 +321,11 @@ class MainWindow(QMainWindow):
                 response = popups.show_dialog(
                     'a test is running: are you sure you want to interrupt it and proceed?')
                 if response == QMessageBox.Yes:
-                    self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
+                    #self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                     if self.cli_worker.is_running:
                         self.test_number = 0
                         message = 'test interrupted'
-                        self.test_interrupted_gui(message)
+                        self.reset_control_board()
                         logger.warning(message)
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
@@ -331,12 +335,12 @@ class MainWindow(QMainWindow):
                         self.test_is_running = False
                         self.manual_tab.test_is_running = False
                         message = 'test was interrupted'
-                        self.test_interrupted_gui(message)
+                        self.reset_control_board()
                         logger.info(message)
                 elif response == QMessageBox.No:
                     return
             try:
-                self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
+                # self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                 self.test_is_running = True
                 self.manual_tab.test_is_running = True
                 message = 'test starting'
@@ -375,7 +379,7 @@ class MainWindow(QMainWindow):
                     time.sleep(0.1)
             except:
                 logger.exception('something went wrong')
-                popups.show_error_message('error', 'no serial connection')
+                popups.show_error_message('error', 'something went wrong')
         else:
             popups.show_error_message('error', 'no test data loaded')
 
@@ -408,6 +412,7 @@ class MainWindow(QMainWindow):
         self.test_number = message
         logger.info(f'current test number: {self.test_number}')
         self.main_tab.update_test_number(self.test_number)
+        self.queue_tab.update_test_number(self.test_number)
 
     # upload sketch for each test separately
     def upload_sketch_for_new_test(self, message):
@@ -433,7 +438,7 @@ class MainWindow(QMainWindow):
     # on cli test interrupted by another test
     def on_cli_test_interrupted(self):
         logger.info(self.test_number)
-        if self.cli_worker:
+        if self.cli_worker and self.cli_worker.is_running:
             logger.info('cli being interrupted')
             self.cli_worker.finished.disconnect(self.cleanup_cli_worker)
             self.cli_worker.is_running = False
@@ -455,9 +460,70 @@ class MainWindow(QMainWindow):
 
     # load test file and store it in the app
     def load_test_file(self):
-        self.test_data = self.json_handler.open_file()
+        test_data = self.json_handler.open_file()
+        self.serial_worker.trigger_add_test_data_to_queue.emit(test_data)
         self.filepath = self.json_handler.get_filepath()
-        popups.show_info_message('info', 'test file uploaded successfully')
+        logger.info(f'filepath from file handler: {self.filepath}')
+        popups.show_info_message('info', 'test file added to test queue')
+
+    # clear test queue
+    def clear_test_queue(self):
+        if self.serial_worker and self.serial_worker.is_running:
+            self.serial_worker.trigger_reset.emit()
+            if self.test_is_running:
+                response = popups.show_dialog(
+                    'a test is running: are you sure you want to interrupt it and proceed?')
+                if response == QMessageBox.Yes:
+                    if self.cli_worker and self.cli_worker.is_running:
+                        self.test_number = 0
+                        self.on_cli_test_interrupted()
+                        logger.info('test interrupted, test queue is cleared')
+                        message = 'test interrupted, test queue is cleared'
+                        self.test_interrupted_gui(message)
+                        self.test_is_running = False
+                        self.manual_tab.test_is_running = False
+                        self.on_cli_test_interrupted()
+                    else:
+                        logger.info('test interrupted, test queue is cleared')
+                        message = 'test interrupted, test queue is cleared'
+                        self.test_interrupted_gui(message)
+                        self.test_number = 0
+                        self.test_is_running = False
+                        self.manual_tab.test_is_running = False
+                elif response == QMessageBox.No:
+                    return
+            else:
+                message = 'test queue is cleared'
+                self.new_test(message)
+        else:
+            popups.show_error_message('warning', 'there is no serial connection to control board')
+
+    # update self.test_data from test queue from arduino
+    def update_test_data(self, test_data):
+        self.test_data = test_data
+        logger.info(f'test data right after update from queue: {self.test_data}')
+        self.get_test_file_name()
+        self.get_test_names_from_queue()
+
+    # retrieve test directory names from test data and send to queue tab
+    def get_test_file_name(self):
+        try:
+            directories = [
+                test["sketch"].split('/')[-2]
+                for test in self.test_data["tests"].values()
+                if "sketch" in test and '/' in test["sketch"]
+            ]
+            result_string = ",".join(directories)
+            self.queue_tab.get_test_file_name.emit(result_string)
+        except Exception as e:
+            logger.error(f"Error in get_test_file_name: {e}")
+            raise
+
+    # get test titles from test data and send to queue tab
+    def get_test_names_from_queue(self):
+        names = list(self.test_data["tests"].keys())
+        result_string = ",".join(names)
+        self.queue_tab.display_queue_from_arduino.emit(result_string)
 
     # TEST-RELATED GUI UPDATES
     # the actual listbox updates
@@ -477,6 +543,15 @@ class MainWindow(QMainWindow):
 
     # similar method to be triggered separately when a test is interrupted
     def test_interrupted_gui(self, message):
+        self.test_is_running = False
+        self.manual_tab.set_test_flag_to_false_signal.emit()
+        self.test_label_no_test()
+        self.progress.hide()
+        self.main_tab.test_interrupted_gui()
+        self.new_test(message)
+
+    # similar method to be triggered separately when a test is interrupted by manual temp setting
+    def test_interrupted__manual_temp_setting_gui(self, message):
         self.test_is_running = False
         self.manual_tab.set_test_flag_to_false_signal.emit()
         self.test_label_no_test()
@@ -516,6 +591,7 @@ class MainWindow(QMainWindow):
     def update_test_label(self, test_info):
         if self.test_is_running:
             test = test_info.get('test')
+            self.queue_tab.get_current_test_signal.emit(test)
             sequence = test_info.get('sequence')
             time_left = test_info.get('time_left') * 60  # convert minutes to seconds
             duration = test_info.get('current_duration') * 60  # convert minutes to seconds
@@ -559,7 +635,10 @@ class MainWindow(QMainWindow):
 
     # check the difference btw current temp & first desired test temp to potentially warn user about long wait time
     def check_temp(self):
-        test_keys = list(self.test_data["tests"].keys())
+        logger.info(f'test data right now: {self.test_data}')
+        test_keys = self.test_data["tests"].keys()
+        logger.info(f'test keys: {test_keys}')
+        test_keys = list(test_keys)
         first_test_key = test_keys[0]
         first_temp = float(self.test_data["tests"][first_test_key]["chamber_sequences"][0]["temp"])
         # check absolute difference
@@ -694,6 +773,7 @@ class MainWindow(QMainWindow):
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
+        self.queue_tab.serial_is_not_running_gui()
         message = 'serial connection to control board was lost over 5 minutes ago, control board is reset now'
         popups.show_error_message('warning', message)
 
@@ -729,7 +809,7 @@ class MainWindow(QMainWindow):
 
     # connect run_tests signal from main to serial worker thread
     def trigger_run_t(self):
-        self.serial_worker.trigger_run_tests.emit(self.test_data)
+        self.serial_worker.trigger_run_tests.emit()
 
     # GUI HELPER METHODS: START AND RESET BUTTONS
     # on start button clicked in case no port connection
@@ -745,6 +825,7 @@ class MainWindow(QMainWindow):
         self.reset_button.setStyleSheet('background-color: grey;'
                                                  'color: white;'
                                                  'font-size: 20px;')
+        self.queue_tab.serial_is_not_running_gui()
 
     # light up colors for reset and emergency stop buttons when serial worker starts
     def show_reset_button(self):
@@ -752,6 +833,7 @@ class MainWindow(QMainWindow):
         self.emergency_stop_button.setEnabled(True)
         self.reset_button.setStyleSheet('background-color: #009FAF;'
                                         'color: white;'
+                                        'font-weight: bold;'
                                         'font-size: 20px;')
         self.setWindowTitle('temperature chamber app is running')
         self.chamber_monitor.setStyleSheet('color: #009FAF;'
@@ -762,6 +844,9 @@ class MainWindow(QMainWindow):
                                                  'font-size: 20px;'
                                                  )
         self.manual_tab.set_serial_is_running_flag_to_true()
+        self.queue_tab.set_serial_is_running_flag_to_true()
+        self.queue_tab.serial_is_running_gui()
+        self.main_tab.serial_is_running_gui()
 
     # reset control board
     def reset_control_board(self):
@@ -770,12 +855,12 @@ class MainWindow(QMainWindow):
             if self.test_is_running:
                 if self.cli_worker and self.cli_worker.is_running:
                     self.on_cli_test_interrupted()
-                    logger.info('reset signal emitted')
-                    message = 'control board is reset'
+                    logger.info('test interrupted, reset signal emitted')
+                    message = 'test interrupted'
                     self.test_interrupted_gui(message)
                 else:
                     logger.info('reset signal emitted')
-                    message = 'control board is reset'
+                    message = 'test interrupted'
                     self.test_interrupted_gui(message)
             else:
                 message = 'control board is reset'

@@ -32,18 +32,21 @@ class MainTab(QWidget):
                                            '* upload test file',
                                            '* run full test sequence',
                                            '* sit back and watch the test outcomes'])
-        self.instruction_listbox.setFixedSize(475, 135)
+        self.instruction_listbox.setFixedSize(540, 135)
         test_part_layout.addLayout(test_output_layout)
-
-        self.load_button = QPushButton('load test file', self)
-        self.load_button.setFixedSize(195, 27)
-        self.run_button = QPushButton('run benchmark tests', self)
-        self.run_button.setFixedSize(195, 27)
+        self.run_button = QPushButton('run\ntests', self)
+        self.run_button.setFixedSize(96, 96)
+        self.run_button.setStyleSheet('background-color: grey;'
+                                      'color: white;'
+                                      'font-weight: bold;'
+                                      'font-size: 20px;'
+                                      'border-radius: 48px;'
+                                      )
+        self.run_button.setEnabled(False)
         test_output_layout.addWidget(self.instruction_listbox)
         test_part_layout.addLayout(test_button_layout)
 
-        # test selection buttons
-        test_button_layout.addWidget(self.load_button, alignment=Qt.AlignRight)
+        # add run tests button
         test_button_layout.addWidget(self.run_button, alignment=Qt.AlignRight)
 
         # place them in the main layout
@@ -53,7 +56,7 @@ class MainTab(QWidget):
         self.test_output_label = QLabel('test board output', self)
         self.test_output_label.hide()
         self.test_output_listbox = QListWidget(self)
-        self.test_output_listbox.setFixedSize(475, 30)
+        self.test_output_listbox.setFixedSize(540, 30)
         self.test_output_listbox.hide()
         test_output_layout.addWidget(self.test_output_label)
         test_output_layout.addWidget(self.test_output_listbox)
@@ -61,7 +64,7 @@ class MainTab(QWidget):
         self.expected_outcome_label = QLabel('expected output', self)
         self.expected_outcome_label.hide()
         self.expected_outcome_listbox = QListWidget(self)
-        self.expected_outcome_listbox.setFixedSize(475, 30)
+        self.expected_outcome_listbox.setFixedSize(540, 30)
         self.expected_outcome_listbox.hide()
         test_output_layout.addWidget(self.expected_outcome_label)
         test_output_layout.addWidget(self.expected_outcome_listbox)
@@ -69,6 +72,15 @@ class MainTab(QWidget):
         self.setLayout(layout)
 
     # TEST RUNNING
+    # activate button and set color when serial is running
+    def serial_is_running_gui(self):
+        self.run_button.setEnabled(True)
+        self.run_button.setStyleSheet('background-color: #009FAF;'
+                                    'color: white;'
+                                    'font-weight: bold;'
+                                    'font-size: 20px;'
+                                    'border-radius: 48px;')
+
     # display test board output
     def update_test_output_listbox_gui(self, message):
         self.test_output_listbox.clear()
@@ -189,6 +201,30 @@ class MainTab(QWidget):
             self.instruction_listbox.addItems(['* upload test file',
                                            '* run full test sequence',
                                            '* sit back and watch the test outcomes'])
+            QApplication.processEvents()
+
+    # test interrupted by manual temperature setting
+    def test_interrupted_by_manual_temp_setting_gui(self):
+        if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
+            self.expected_outcome_label.hide()
+            self.expected_outcome_listbox.hide()
+            self.instruction_listbox.show()
+            self.instruction_listbox.clear()
+            self.instruction_listbox.addItems(['test interrupted, but you can always start over:',
+                                               '* you may want to upload test file',
+                                               '* run full test sequence',
+                                               '* sit back and watch the test outcomes'])
+            QApplication.processEvents()
+
+        else:
+            self.expected_outcome_label.hide()
+            self.expected_outcome_listbox.hide()
+            self.instruction_listbox.show()
+            self.instruction_listbox.clear()
+            self.instruction_listbox.addItems(['test interrupted, but you can always start over:',
+                                               '* you may want to upload test file',
+                                               '* run full test sequence',
+                                               '* sit back and watch the test outcomes'])
             QApplication.processEvents()
 
     # the actual (basic) upper listbox updates
