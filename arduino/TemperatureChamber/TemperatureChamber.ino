@@ -545,18 +545,27 @@ void sendPingResponse() {
 void sendQueue() {
     StaticJsonDocument<512> responseDoc;
 
-    responseDoc["queue"]["queue_length"] = queuedTestCount;
+    // responseDoc["queue"]["queue_length"] = queuedTestCount;
 
-    JsonArray testsArray = responseDoc["queue"].createNestedArray("tests");
+    JsonObject queueObject = responseDoc.createNestedObject("queue");
+    JsonObject testsObject = queueObject.createNestedObject("tests");
 
     for (int i = 0; i < queuedTestCount; i++) {
-        JsonObject testObject = testsArray.createNestedObject();
-        testObject["name"] = testNames[i];
+
+        JsonObject testObject = testsObject.createNestedObject(testNames[i]);
+
+        JsonArray sequencesArray = testObject.createNestedArray("chamber_sequences");
+        for (int j = 0; j < testQueue[i].numSequences; j++) {
+            JsonObject sequenceObject = sequencesArray.createNestedObject();
+            sequenceObject["temp"] = testQueue[i].sequences[j].targetTemp;
+            sequenceObject["duration"] = testQueue[i].sequences[j].duration;
+        }
         testObject["sketch"] = testQueue[i].sketch;
         testObject["expected_output"] = testQueue[i].expectedOutput;
     }
 
     serializeJson(responseDoc, Serial);
+    serializeJsonPretty(responseDoc, Serial);
     Serial.println();
 }
 
