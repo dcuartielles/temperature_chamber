@@ -1,0 +1,588 @@
+{
+    "tests": {
+        "test_temp_30_upload_1_short": {
+            "chamber_sequences": [
+                { "temp": 30, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_30_upload_1_short/test_temp_30_upload_1_short.ino",
+            "expected_output": "Upload succeeded: 30_upload_1_short"
+        },
+        "test_temp_30_upload_2_short": {
+            "chamber_sequences": [
+                { "temp": 30, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_30_upload_2_short/test_temp_30_upload_2_short.ino",
+            "expected_output": "Upload succeeded: 30_upload_2_short"
+        },
+        "test_temp_30_upload_3_short": {
+            "chamber_sequences": [
+                { "temp": 30, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_30_upload_3_short/test_temp_30_upload_3_short.ino",
+            "expected_output": "Upload succeeded: 30_upload_3_short"
+        },
+        "test_temp_30_upload_4_short": {
+            "chamber_sequences": [
+                { "temp": 30, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_30_upload_4_short/test_temp_30_upload_4_short.ino",
+            "expected_output": "Upload succeeded: 30_upload_4_short"
+        },
+        "test_temp_30_upload_5_short": {
+            "chamber_sequences": [
+                { "temp": 30, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_30_upload_5_short/test_temp_30_upload_5_short.ino",
+            "expected_output": "Upload succeeded: 30_upload_5_short"
+        },
+
+        "test_temp_30_upload_1_extended": {
+            "chamber_sequences": [
+                { "temp": 30, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_30_upload_1_extended/test_temp_30_upload_1_extended.ino",
+            "expected_output": "Upload succeeded: 30_upload_1_extended"
+        },
+        "test_temp_30_upload_2_extended": {
+            "chamber_sequences": [
+                { "temp": 30, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_30_upload_2_extended/test_temp_30_upload_2_extended.ino",
+            "expected_output": "Upload succeeded: 30_upload_2_extended"
+        },
+        "test_temp_30_upload_3_extended": {
+            "chamber_sequences": [
+                { "temp": 30, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_30_upload_3_extended/test_temp_30_upload_3_extended.ino",
+            "expected_output": "Upload succeeded: 30_upload_3_extended"
+        },
+        "test_temp_30_upload_4_extended": {
+            "chamber_sequences": [
+                { "temp": 30, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_30_upload_4_extended/test_temp_30_upload_4_extended.ino",
+            "expected_output": "Upload succeeded: 30_upload_4_extended"
+        },
+        "test_temp_30_upload_5_extended": {
+            "chamber_sequences": [
+                { "temp": 30, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_30_upload_5_extended/test_temp_30_upload_5_extended.ino",
+            "expected_output": "Upload succeeded: 30_upload_5_extended"
+        },
+
+
+        "test_temp_40_upload_1_short": {
+            "chamber_sequences": [
+                { "temp": 40, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_40_upload_1_short/test_temp_40_upload_1_short.ino",
+            "expected_output": "Upload succeeded: 40_upload_1_short"
+        },
+        "test_temp_40_upload_2_short": {
+            "chamber_sequences": [
+                { "temp": 40, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_40_upload_2_short/test_temp_40_upload_2_short.ino",
+            "expected_output": "Upload succeeded: 40_upload_2_short"
+        },
+        "test_temp_40_upload_3_short": {
+            "chamber_sequences": [
+                { "temp": 40, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_40_upload_3_short/test_temp_40_upload_3_short.ino",
+            "expected_output": "Upload succeeded: 40_upload_3_short"
+        },
+        "test_temp_40_upload_4_short": {
+            "chamber_sequences": [
+                { "temp": 40, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_40_upload_4_short/test_temp_40_upload_4_short.ino",
+            "expected_output": "Upload succeeded: 40_upload_4_short"
+        },
+        "test_temp_40_upload_5_short": {
+            "chamber_sequences": [
+                { "temp": 40, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_40_upload_5_short/test_temp_40_upload_5_short.ino",
+            "expected_output": "Upload succeeded: 40_upload_5_short"
+        },
+
+        "test_temp_40_upload_1_extended": {
+            "chamber_sequences": [
+                { "temp": 40, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_40_upload_1_extended/test_temp_40_upload_1_extended.ino",
+            "expected_output": "Upload succeeded: 40_upload_1_extended"
+        },
+        "test_temp_40_upload_2_extended": {
+            "chamber_sequences": [
+                { "temp": 40, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_40_upload_2_extended/test_temp_40_upload_2_extended.ino",
+            "expected_output": "Upload succeeded: 40_upload_2_extended"
+        },
+        "test_temp_40_upload_3_extended": {
+            "chamber_sequences": [
+                { "temp": 40, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_40_upload_3_extended/test_temp_40_upload_3_extended.ino",
+            "expected_output": "Upload succeeded: 40_upload_3_extended"
+        },
+        "test_temp_40_upload_4_extended": {
+            "chamber_sequences": [
+                { "temp": 40, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_40_upload_4_extended/test_temp_40_upload_4_extended.ino",
+            "expected_output": "Upload succeeded: 40_upload_4_extended"
+        },
+        "test_temp_40_upload_5_extended": {
+            "chamber_sequences": [
+                { "temp": 40, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_40_upload_5_extended/test_temp_40_upload_5_extended.ino",
+            "expected_output": "Upload succeeded: 40_upload_5_extended"
+        },
+
+
+        "test_temp_50_upload_1_short": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_50_upload_1_short/test_temp_50_upload_1_short.ino",
+            "expected_output": "Upload succeeded: 50_upload_1_short"
+        },
+        "test_temp_50_upload_2_short": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_50_upload_2_short/test_temp_50_upload_2_short.ino",
+            "expected_output": "Upload succeeded: 50_upload_2_short"
+        },
+        "test_temp_50_upload_3_short": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_50_upload_3_short/test_temp_50_upload_3_short.ino",
+            "expected_output": "Upload succeeded: 50_upload_3_short"
+        },
+        "test_temp_50_upload_4_short": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_50_upload_4_short/test_temp_50_upload_4_short.ino",
+            "expected_output": "Upload succeeded: 50_upload_4_short"
+        },
+        "test_temp_50_upload_5_short": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_50_upload_5_short/test_temp_50_upload_5_short.ino",
+            "expected_output": "Upload succeeded: 50_upload_5_short"
+        },
+
+        "test_temp_50_upload_1_extended": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_50_upload_1_extended/test_temp_50_upload_1_extended.ino",
+            "expected_output": "Upload succeeded: 50_upload_1_extended"
+        },
+        "test_temp_50_upload_2_extended": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_50_upload_2_extended/test_temp_50_upload_2_extended.ino",
+            "expected_output": "Upload succeeded: 50_upload_2_extended"
+        },
+        "test_temp_50_upload_3_extended": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_50_upload_3_extended/test_temp_50_upload_3_extended.ino",
+            "expected_output": "Upload succeeded: 50_upload_3_extended"
+        },
+        "test_temp_50_upload_4_extended": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_50_upload_4_extended/test_temp_50_upload_4_extended.ino",
+            "expected_output": "Upload succeeded: 50_upload_4_extended"
+        },
+        "test_temp_50_upload_5_extended": {
+            "chamber_sequences": [
+                { "temp": 50, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_50_upload_5_extended/test_temp_50_upload_5_extended.ino",
+            "expected_output": "Upload succeeded: 50_upload_5_extended"
+        },
+
+
+        "test_temp_60_upload_1_short": {
+            "chamber_sequences": [
+                { "temp": 60, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_60_upload_1_short/test_temp_60_upload_1_short.ino",
+            "expected_output": "Upload succeeded: 60_upload_1_short"
+        },
+        "test_temp_60_upload_2_short": {
+            "chamber_sequences": [
+                { "temp": 60, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_60_upload_2_short/test_temp_60_upload_2_short.ino",
+            "expected_output": "Upload succeeded: 60_upload_2_short"
+        },
+        "test_temp_60_upload_3_short": {
+            "chamber_sequences": [
+                { "temp": 60, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_60_upload_3_short/test_temp_60_upload_3_short.ino",
+            "expected_output": "Upload succeeded: 60_upload_3_short"
+        },
+        "test_temp_60_upload_4_short": {
+            "chamber_sequences": [
+                { "temp": 60, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_60_upload_4_short/test_temp_60_upload_4_short.ino",
+            "expected_output": "Upload succeeded: 60_upload_4_short"
+        },
+        "test_temp_60_upload_5_short": {
+            "chamber_sequences": [
+                { "temp": 60, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_60_upload_5_short/test_temp_60_upload_5_short.ino",
+            "expected_output": "Upload succeeded: 60_upload_5_short"
+        },
+
+        "test_temp_60_upload_1_extended": {
+            "chamber_sequences": [
+                { "temp": 60, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_60_upload_1_extended/test_temp_60_upload_1_extended.ino",
+            "expected_output": "Upload succeeded: 60_upload_1_extended"
+        },
+        "test_temp_60_upload_2_extended": {
+            "chamber_sequences": [
+                { "temp": 60, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_60_upload_2_extended/test_temp_60_upload_2_extended.ino",
+            "expected_output": "Upload succeeded: 60_upload_2_extended"
+        },
+        "test_temp_60_upload_3_extended": {
+            "chamber_sequences": [
+                { "temp": 60, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_60_upload_3_extended/test_temp_60_upload_3_extended.ino",
+            "expected_output": "Upload succeeded: 60_upload_3_extended"
+        },
+        "test_temp_60_upload_4_extended": {
+            "chamber_sequences": [
+                { "temp": 60, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_60_upload_4_extended/test_temp_60_upload_4_extended.ino",
+            "expected_output": "Upload succeeded: 60_upload_4_extended"
+        },
+        "test_temp_60_upload_5_extended": {
+            "chamber_sequences": [
+                { "temp": 60, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_60_upload_5_extended/test_temp_60_upload_5_extended.ino",
+            "expected_output": "Upload succeeded: 60_upload_5_extended"
+        },
+
+
+        "test_temp_70_upload_1_short": {
+            "chamber_sequences": [
+                { "temp": 70, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_70_upload_1_short/test_temp_70_upload_1_short.ino",
+            "expected_output": "Upload succeeded: 70_upload_1_short"
+        },
+        "test_temp_70_upload_2_short": {
+            "chamber_sequences": [
+                { "temp": 70, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_70_upload_2_short/test_temp_70_upload_2_short.ino",
+            "expected_output": "Upload succeeded: 70_upload_2_short"
+        },
+        "test_temp_70_upload_3_short": {
+            "chamber_sequences": [
+                { "temp": 70, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_70_upload_3_short/test_temp_70_upload_3_short.ino",
+            "expected_output": "Upload succeeded: 70_upload_3_short"
+        },
+        "test_temp_70_upload_4_short": {
+            "chamber_sequences": [
+                { "temp": 70, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_70_upload_4_short/test_temp_70_upload_4_short.ino",
+            "expected_output": "Upload succeeded: 70_upload_4_short"
+        },
+        "test_temp_70_upload_5_short": {
+            "chamber_sequences": [
+                { "temp": 70, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_70_upload_5_short/test_temp_70_upload_5_short.ino",
+            "expected_output": "Upload succeeded: 70_upload_5_short"
+        },
+
+        "test_temp_70_upload_1_extended": {
+            "chamber_sequences": [
+                { "temp": 70, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_70_upload_1_extended/test_temp_70_upload_1_extended.ino",
+            "expected_output": "Upload succeeded: 70_upload_1_extended"
+        },
+        "test_temp_70_upload_2_extended": {
+            "chamber_sequences": [
+                { "temp": 70, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_70_upload_2_extended/test_temp_70_upload_2_extended.ino",
+            "expected_output": "Upload succeeded: 70_upload_2_extended"
+        },
+        "test_temp_70_upload_3_extended": {
+            "chamber_sequences": [
+                { "temp": 70, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_70_upload_3_extended/test_temp_70_upload_3_extended.ino",
+            "expected_output": "Upload succeeded: 70_upload_3_extended"
+        },
+        "test_temp_70_upload_4_extended": {
+            "chamber_sequences": [
+                { "temp": 70, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_70_upload_4_extended/test_temp_70_upload_4_extended.ino",
+            "expected_output": "Upload succeeded: 70_upload_4_extended"
+        },
+        "test_temp_70_upload_5_extended": {
+            "chamber_sequences": [
+                { "temp": 70, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_70_upload_5_extended/test_temp_70_upload_5_extended.ino",
+            "expected_output": "Upload succeeded: 70_upload_5_extended"
+        },
+
+
+        "test_temp_80_upload_1_short": {
+            "chamber_sequences": [
+                { "temp": 80, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_80_upload_1_short/test_temp_80_upload_1_short.ino",
+            "expected_output": "Upload succeeded: 80_upload_1_short"
+        },
+        "test_temp_80_upload_2_short": {
+            "chamber_sequences": [
+                { "temp": 80, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_80_upload_2_short/test_temp_80_upload_2_short.ino",
+            "expected_output": "Upload succeeded: 80_upload_2_short"
+        },
+        "test_temp_80_upload_3_short": {
+            "chamber_sequences": [
+                { "temp": 80, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_80_upload_3_short/test_temp_80_upload_3_short.ino",
+            "expected_output": "Upload succeeded: 80_upload_3_short"
+        },
+        "test_temp_80_upload_4_short": {
+            "chamber_sequences": [
+                { "temp": 80, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_80_upload_4_short/test_temp_80_upload_4_short.ino",
+            "expected_output": "Upload succeeded: 80_upload_4_short"
+        },
+        "test_temp_80_upload_5_short": {
+            "chamber_sequences": [
+                { "temp": 80, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_80_upload_5_short/test_temp_80_upload_5_short.ino",
+            "expected_output": "Upload succeeded: 80_upload_5_short"
+        },
+
+        "test_temp_80_upload_1_extended": {
+            "chamber_sequences": [
+                { "temp": 80, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_80_upload_1_extended/test_temp_80_upload_1_extended.ino",
+            "expected_output": "Upload succeeded: 80_upload_1_extended"
+        },
+        "test_temp_80_upload_2_extended": {
+            "chamber_sequences": [
+                { "temp": 80, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_80_upload_2_extended/test_temp_80_upload_2_extended.ino",
+            "expected_output": "Upload succeeded: 80_upload_2_extended"
+        },
+        "test_temp_80_upload_3_extended": {
+            "chamber_sequences": [
+                { "temp": 80, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_80_upload_3_extended/test_temp_80_upload_3_extended.ino",
+            "expected_output": "Upload succeeded: 80_upload_3_extended"
+        },
+        "test_temp_80_upload_4_extended": {
+            "chamber_sequences": [
+                { "temp": 80, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_80_upload_4_extended/test_temp_80_upload_4_extended.ino",
+            "expected_output": "Upload succeeded: 80_upload_4_extended"
+        },
+        "test_temp_80_upload_5_extended": {
+            "chamber_sequences": [
+                { "temp": 80, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_80_upload_5_extended/test_temp_80_upload_5_extended.ino",
+            "expected_output": "Upload succeeded: 80_upload_5_extended"
+        },
+
+
+        "test_temp_90_upload_1_short": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_90_upload_1_short/test_temp_90_upload_1_short.ino",
+            "expected_output": "Upload succeeded: 90_upload_1_short"
+        },
+        "test_temp_90_upload_2_short": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_90_upload_2_short/test_temp_90_upload_2_short.ino",
+            "expected_output": "Upload succeeded: 90_upload_2_short"
+        },
+        "test_temp_90_upload_3_short": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_90_upload_3_short/test_temp_90_upload_3_short.ino",
+            "expected_output": "Upload succeeded: 90_upload_3_short"
+        },
+        "test_temp_90_upload_4_short": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_90_upload_4_short/test_temp_90_upload_4_short.ino",
+            "expected_output": "Upload succeeded: 90_upload_4_short"
+        },
+        "test_temp_90_upload_5_short": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_90_upload_5_short/test_temp_90_upload_5_short.ino",
+            "expected_output": "Upload succeeded: 90_upload_5_short"
+        },
+
+        "test_temp_90_upload_1_extended": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_90_upload_1_extended/test_temp_90_upload_1_extended.ino",
+            "expected_output": "Upload succeeded: 90_upload_1_extended"
+        },
+        "test_temp_90_upload_2_extended": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_90_upload_2_extended/test_temp_90_upload_2_extended.ino",
+            "expected_output": "Upload succeeded: 90_upload_2_extended"
+        },
+        "test_temp_90_upload_3_extended": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_90_upload_3_extended/test_temp_90_upload_3_extended.ino",
+            "expected_output": "Upload succeeded: 90_upload_3_extended"
+        },
+        "test_temp_90_upload_4_extended": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_90_upload_4_extended/test_temp_90_upload_4_extended.ino",
+            "expected_output": "Upload succeeded: 90_upload_4_extended"
+        },
+        "test_temp_90_upload_5_extended": {
+            "chamber_sequences": [
+                { "temp": 90, "duration": 360000 }
+            ],
+            "sketch": "./test_temp_90_upload_5_extended/test_temp_90_upload_5_extended.ino",
+            "expected_output": "Upload succeeded: 90_upload_5_extended"
+        },
+
+
+        "test_temp_100_upload_1_short": {
+            "chamber_sequences": [
+                { "temp": 100, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_100_upload_1_short/test_temp_100_upload_1_short.ino",
+            "expected_output": "Upload succeeded: 100_upload_1_short"
+        },
+        "test_temp_100_upload_2_short": {
+            "chamber_sequences": [
+                { "temp": 100, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_100_upload_2_short/test_temp_100_upload_2_short.ino",
+            "expected_output": "Upload succeeded: 100_upload_2_short"
+        },
+        "test_temp_100_upload_3_short": {
+            "chamber_sequences": [
+                { "temp": 100, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_100_upload_3_short/test_temp_100_upload_3_short.ino",
+            "expected_output": "Upload succeeded: 100_upload_3_short"
+        },
+        "test_temp_100_upload_4_short": {
+            "chamber_sequences": [
+                { "temp": 100, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_100_upload_4_short/test_temp_100_upload_4_short.ino",
+            "expected_output": "Upload succeeded: 100_upload_4_short"
+        },
+        "test_temp_100_upload_5_short": {
+            "chamber_sequences": [
+                { "temp": 100, "duration": 60000 }
+            ],
+            "sketch": "./test_temp_100_upload_5_short/test_temp_100_upload_5_short.ino",
+            "expected_output": "Upload succeeded: 100_upload_5_short"
+        },
+
+        "test_temp_100_upload_1_extended": {
+            "chamber_sequences": [
+                { "temp": 100, "duration": 300000 }
+            ],
+            "sketch": "./test_temp_100_upload_1_extended/test_temp_100_upload_1_extended.ino",
+            "expected_output": "Upload succeeded: 100_upload_1_extended"
+        },
+        "test_temp_100_upload_2_extended": {
+            "chamber_sequences": [
+                { "temp": 100, "duration": 300000 }
+            ],
+            "sketch": "./test_temp_100_upload_2_extended/test_temp_100_upload_2_extended.ino",
+            "expected_output": "Upload succeeded: 100_upload_2_extended"
+        },
+        "test_temp_100_upload_3_extended": {
+            "chamber_sequences": [
+                { "temp": 100, "duration": 300000 }
+            ],
+            "sketch": "./test_temp_100_upload_3_extended/test_temp_100_upload_3_extended.ino",
+            "expected_output": "Upload succeeded: 100_upload_3_extended"
+        },
+        "test_temp_100_upload_4_extended": {
+            "chamber_sequences": [
+                { "temp": 100, "duration": 300000 }
+            ],
+            "sketch": "./test_temp_100_upload_4_extended/test_temp_100_upload_4_extended.ino",
+            "expected_output": "Upload succeeded: 100_upload_4_extended"
+        },
+        "test_temp_100_upload_5_extended": {
+            "chamber_sequences": [
+                { "temp": 100, "duration": 300000 }
+            ],
+            "sketch": "./test_temp_100_upload_5_extended/test_temp_100_upload_5_extended.ino",
+            "expected_output": "Upload succeeded: 100_upload_5_extended"
+        }
+
+    }
+}
+
