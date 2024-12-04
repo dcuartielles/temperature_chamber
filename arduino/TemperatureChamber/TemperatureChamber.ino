@@ -150,8 +150,6 @@ Test testQueue[MAX_QUEUED_TESTS];
 String testNames[MAX_QUEUED_TESTS];
 int queuedTestCount = 0;
 int currentTestIndex = 0;
-
-// track current test and sequence
 String currentTestName = "";
 
 // avoid printing ad infinitum in condition checks in loop
@@ -184,16 +182,6 @@ unsigned long lastPingTime = 0;
 const unsigned long TIMEOUT_DURATION = 300000;
 
 bool displayingEmergency = false;
-
-// function for checking how much memory remains after parsing JSON of different sizes
-extern "C" {
-    char* sbrk(int incr);
-}
-int freeMemory() {
-    char top;
-    return &top - sbrk(0);
-}
-
 
 void setup() {
     // Initialise Serial
@@ -262,7 +250,6 @@ void setInitialTimestamp(JsonObject& commandParams) {
 
 void sendHandshake() {
     StaticJsonDocument<512> handshakeDoc;
-
     handshakeDoc["handshake"]["timestamp"] = getCurrentTimestamp();
     handshakeDoc["handshake"]["machine_state"] = getMachineState();
     handshakeDoc["handshake"]["last_shutdown_cause"] = lastShutdownCause;
@@ -286,7 +273,6 @@ float getTemperature() {
 void displayLCD(float tempRoom, int tempDesired) {
     lcd.backlight();  // turn off backlight
     lcd.display();
-
     lcd.setCursor(0, 0);
     lcd.print("Room: ");
     lcd.print(tempRoom);
@@ -304,7 +290,6 @@ void displayLCD(float tempRoom, int tempDesired) {
 void displayLCDEmergency() {
     lcd.backlight();  // turn off backlight
     lcd.display();
-
     lcd.setCursor(0, 0);
     lcd.print("CONNECTION LOST");
     lcd.setCursor(0, 1);
@@ -491,8 +476,8 @@ void parseAndRunCommands(JsonObject& commands) {
             sendQueue();
         } else if (command == "RUN_QUEUE") {
             runQueue();
-        } else if (command == "SHOW_DATA") {
-            displaySerial();
+        // } else if (command == "SHOW_DATA") {     // legacy
+        //     displaySerial();
         } else if (command == "SET_TEMP") {
             clearTests();
             parseAndRunManualSet(commandParams);
@@ -506,23 +491,12 @@ void parseAndRunCommands(JsonObject& commands) {
             status = EMERGENCY_STOP;
             sendPingResponse();
             Serial.println("Emergency Stop initiated via command.");
-        } else if (command == "SHOW_RUNNING_SEQUENCE") {
-            if (isTestRunning) {
-                // Serial.print("Running sequence: Target temp = ");
-                // Serial.print(chamberState.temperatureDesired);
-                // Serial.print("°C Duration = ");
-                // Serial.print(currentDuration / 60000);
-                // Serial.println(" minutes");
-            } else {
-                // Serial.println("No sequence is currently running.");
-            }
         } 
     }
 }
 
 void sendPingResponse() {
     StaticJsonDocument<512> responseDoc;
-
     Sequence currentSequence = currentTest.sequences[currentSequenceIndex];
 
     responseDoc["ping_response"]["alive"] = true;
@@ -545,13 +519,10 @@ void sendPingResponse() {
 void sendQueue() {
     StaticJsonDocument<512> responseDoc;
 
-    // responseDoc["queue"]["queue_length"] = queuedTestCount;
-
     JsonObject queueObject = responseDoc.createNestedObject("queue");
     JsonObject testsObject = queueObject.createNestedObject("tests");
 
     for (int i = 0; i < queuedTestCount; i++) {
-
         JsonObject testObject = testsObject.createNestedObject(testNames[i]);
 
         JsonArray sequencesArray = testObject.createNestedArray("chamber_sequences");
@@ -565,7 +536,6 @@ void sendQueue() {
     }
 
     serializeJson(responseDoc, Serial);
-    serializeJsonPretty(responseDoc, Serial);
     Serial.println();
 }
 
@@ -646,7 +616,7 @@ void runCurrentSequence() {
 
     if (holdForPeriod(duration)) {
         Serial.println("Sequence completed.");
-        if (currentSequenceIndex < currentTest.numSequences) {  // TODO: check if this works
+        if (currentSequenceIndex < currentTest.numSequences) {
             currentSequenceIndex++;
         }
         sequenceStartTime = 0;
@@ -659,10 +629,10 @@ void runCurrentSequence() {
     }
 }
 
-void changeTemperature() {
+// legacy: will be obsolete once migration to PLC is complete
+void changeTemperature() {  
     if (buttonIncrease.read()== HIGH && buttonDecrease.read()== LOW) chamberState.temperatureDesired += 5;
     if (buttonDecrease.read()== HIGH && buttonIncrease.read()== LOW) chamberState.temperatureDesired -= 5;
-
     if (chamberState.temperatureDesired >= TEMPERATURE_MAX) {
         chamberState.temperatureDesired = TEMPERATURE_MAX;
     }
@@ -703,7 +673,7 @@ void handleResetState() {
     if (startSwitchState) {
         status = REPORT;
     }
-    // allow manual control of temperature from buttons
+    // allow manual control of temperature from buttons (will be used/refactored once migration to PLC is complete)
     changeTemperature();
 
     // turn off all outputs
@@ -823,7 +793,6 @@ void readAndParseSerial() {
         if (!error) {
             parseTextFromJson(jsonBuffer);
         }
-
         incomingString[0] = '\0';
     }
 }
