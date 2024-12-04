@@ -438,9 +438,7 @@ void clearTests() {
     queuedTestCount = 0;
     currentTestIndex = 0;
 
-    // Serial.println("All tests cleared. Ready for new tests.");
-
-    lcd.clear();        // TODO: check if this works
+    lcd.clear();
 }
 
 void parseAndRunManualSet(JsonObject& commandParams) {
@@ -816,7 +814,7 @@ void loop() {
             clearTests();
             printedTestsCleared = true;
         }
-        displayingEmergency = true; // TODO: check if this works
+        displayingEmergency = true;
     }
 
     // Update switch states and temperature readings
