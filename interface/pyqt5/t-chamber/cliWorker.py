@@ -295,25 +295,3 @@ class CliWorker(QThread):
             # handle case when no test data is found
             logger.info('can\'t do it')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
