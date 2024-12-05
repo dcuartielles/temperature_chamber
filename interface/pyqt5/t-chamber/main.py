@@ -605,7 +605,7 @@ class MainWindow(QMainWindow):
         self.manual_tab.set_test_flag_to_false_signal.emit()
         self.test_label_no_test()
         self.progress.hide()
-        self.main_tab.test_interrupted_gui()
+        self.main_tab.test_interrupted_by_manual_temp_setting_gui()
         self.queue_tab.clear_both_listboxes()
         self.new_test(message)
 
