@@ -112,7 +112,7 @@ class MainWindow(QMainWindow):
     def initUI(self):
         # main window and window logo
         self.setWindowTitle('t-chamber')
-        self.setGeometry(600, 50, 0, 0)  # decide where on the screen the window will appear (from left, from top)
+        self.setGeometry(600, 20, 0, 0)  # decide where on the screen the window will appear (from left, from top)
         self.setWindowIcon(QIcon('arduino_logo.png'))
         self.setStyleSheet('background-color: white;'
                            'color: black;')
