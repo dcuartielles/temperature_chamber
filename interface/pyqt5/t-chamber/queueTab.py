@@ -133,3 +133,8 @@ class QueueTab(QWidget):
                 font = item.font()
                 font.setBold(False)  # reset all others to normal
                 item.setFont(font)
+
+    # clear both listboxes
+    def clear_both_listboxes(self):
+        self.queue_display.clear()
+        self.test_data_list.clear()
