@@ -112,7 +112,7 @@ class MainWindow(QMainWindow):
     def initUI(self):
         # main window and window logo
         self.setWindowTitle('t-chamber')
-        self.setGeometry(600, 0, 0, 0)  # decide where on the screen the window will appear (from left, from top)
+        self.setGeometry(600, 80, 0, 0)  # decide where on the screen the window will appear (from left, from top)
         self.setWindowIcon(QIcon('arduino_logo.png'))
         self.setStyleSheet('background-color: white;'
                            'color: black;')
@@ -130,14 +130,14 @@ class MainWindow(QMainWindow):
         pixmap = QPixmap('arduino_logo.png')
         self.im_label.setPixmap(pixmap)
         self.im_label.setScaledContents(True)
-        self.im_label.setFixedSize(120, 120)  # define logo dimensions
+        self.im_label.setFixedSize(100, 100)  # define logo dimensions
         layout.addWidget(self.im_label, alignment=Qt.AlignLeft)  # add logo to the layout
 
         # port selector
         layout.addWidget(self.port_selector)
 
-        # add space btw sections: vertical 12px
-        layout.addSpacerItem(QSpacerItem(0, 12))
+        # add space btw sections: vertical 10px
+        layout.addSpacerItem(QSpacerItem(0, 10))
 
         # start button
         self.start_button = QPushButton('start')
@@ -159,19 +159,19 @@ class MainWindow(QMainWindow):
         self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
         layout.addWidget(self.tab_widget)
 
-        # add space btw sections: vertical 12px
-        layout.addSpacerItem(QSpacerItem(0, 12))
+        # add space btw sections: vertical 10px
+        layout.addSpacerItem(QSpacerItem(0, 10))
 
         # listbox for test updates
         self.serial_label = QLabel('running test info', self)
         self.listbox = QListWidget(self)
-        self.listbox.setFixedHeight(135)
+        self.listbox.setFixedHeight(100)
         layout.addWidget(self.serial_label)
         layout.addWidget(self.progress)
         layout.addWidget(self.listbox)
 
-        # add space btw sections: vertical 12px
-        layout.addSpacerItem(QSpacerItem(0, 12))
+        # add space btw sections: vertical 10px
+        layout.addSpacerItem(QSpacerItem(0, 10))
 
         # listbox for temperature chamber monitoring
         self.chamber_label = QLabel('temperature chamber situation', self)
@@ -184,8 +184,8 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.chamber_label)
         layout.addWidget(self.chamber_monitor)
 
-        # add space btw sections: vertical 12px
-        layout.addSpacerItem(QSpacerItem(0, 12))
+        # add space btw sections: vertical 10px
+        layout.addSpacerItem(QSpacerItem(0, 10))
 
         # reset control board button
         self.reset_button = QPushButton('reset control board')
