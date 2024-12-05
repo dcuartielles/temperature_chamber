@@ -202,6 +202,9 @@ class SerialCaptureWorker(QThread):
                 # get duration and time left, and convert them for display
                 self.current_duration = test_status.get('current_duration', 0) / 60000
                 self.time_left = test_status.get('time_left', 0) / 60
+                queued_tests = test_status.get('queued_tests', 0)
+                if queued_tests == 0:
+                    self.get_test_queue_from_arduino()
                 self.emit_test_status()
                 self.display_info()
         except json.JSONDecodeError:
@@ -335,6 +338,9 @@ class SerialCaptureWorker(QThread):
         elif 'queue' in response.strip():
             queue_response = response
             parsed_response = json.loads(queue_response)
+            queue = parsed_response['queue']
+            logger.info(f'this is what test queue looks like now: {queue}')
+            self.update_test_data_from_queue.emit(queue)
             if 'queue' in parsed_response:
                 queue = parsed_response['queue']
                 logger.info(f'this is what test queue looks like now: {queue}')
