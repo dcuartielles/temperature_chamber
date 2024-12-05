@@ -483,7 +483,7 @@ void parseAndRunCommands(JsonObject& commands) {
             clearTests();
             displayingEmergency = false;
             status = RESET;
-            Serial.println("System reset via command.");
+            // Serial.println("System reset via command.");
         } else if (command == "EMERGENCY_STOP") {
             clearTests();
             status = EMERGENCY_STOP;
@@ -509,6 +509,7 @@ void sendPingResponse() {
     testStatus["desired_temp"] = chamberState.temperatureDesired;
     testStatus["current_duration"] = currentDuration;
     testStatus["time_left"] = getTimeLeft(currentDuration, currentSequence);
+    testStatus["queued_tests"] = queuedTestCount;
 
     serializeJson(responseDoc, Serial);
     Serial.println();
