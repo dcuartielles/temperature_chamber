@@ -315,74 +315,75 @@ class MainWindow(QMainWindow):
     # TEST PART
     # run all benchmark tests
     def on_run_button_clicked(self):
-        names = list(self.test_data["tests"].keys())
-        if names:
-            # check if test is running
-            if self.test_is_running:
-                response = popups.show_dialog(
-                    'a test is running: are you sure you want to interrupt it and proceed?')
-                if response == QMessageBox.Yes:
-                    #self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
-                    if self.cli_worker.is_running:
-                        self.test_number = 0
-                        message = 'test interrupted'
-                        self.reset_control_board()
-                        logger.warning(message)
-                        self.test_is_running = False
-                        self.manual_tab.test_is_running = False
-                        self.on_cli_test_interrupted()
-                    else:
-                        self.test_number = 0
-                        self.test_is_running = False
-                        self.manual_tab.test_is_running = False
-                        message = 'test was interrupted'
-                        self.reset_control_board()
-                        logger.info(message)
-                elif response == QMessageBox.No:
-                    return
-            try:
-                # self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
-                self.test_is_running = True
-                self.manual_tab.test_is_running = True
-                message = 'test starting'
-                self.new_test(message)
-                logger.info(message)
-                self.progress.show()
+        if self.test_data:
+            names = list(self.test_data["tests"].keys())
+            if names:
+                # check if test is running
+                if self.test_is_running:
+                    response = popups.show_dialog(
+                        'a test is running: are you sure you want to interrupt it and proceed?')
+                    if response == QMessageBox.Yes:
+                        #self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
+                        if self.cli_worker.is_running:
+                            self.test_number = 0
+                            message = 'test interrupted'
+                            self.reset_control_board()
+                            logger.warning(message)
+                            self.test_is_running = False
+                            self.manual_tab.test_is_running = False
+                            self.on_cli_test_interrupted()
+                        else:
+                            self.test_number = 0
+                            self.test_is_running = False
+                            self.manual_tab.test_is_running = False
+                            message = 'test was interrupted'
+                            self.reset_control_board()
+                            logger.info(message)
+                    elif response == QMessageBox.No:
+                        return
+                try:
+                    # self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
+                    self.test_is_running = True
+                    self.manual_tab.test_is_running = True
+                    message = 'test starting'
+                    self.new_test(message)
+                    logger.info(message)
+                    self.progress.show()
 
-                logger.debug('emitting signal to start progress bars')
+                    logger.debug('emitting signal to start progress bars')
 
-                # if running tests for nth time, come back to original gui layout to start with
-                self.main_tab.on_run_test_gui()
-                logger.info(f'about to emit test_data and current_temperature to progress bar, and current temp is {self.current_temperature}')
-                self.progress.start_progress_signal.emit(self.test_data, self.current_temperature)
-                self.progress.alert_all_tests_complete_signal.connect(self.all_tests_complete)
+                    # if running tests for nth time, come back to original gui layout to start with
+                    self.main_tab.on_run_test_gui()
+                    logger.info(f'about to emit test_data and current_temperature to progress bar, and current temp is {self.current_temperature}')
+                    self.progress.start_progress_signal.emit(self.test_data, self.current_temperature)
+                    self.progress.alert_all_tests_complete_signal.connect(self.all_tests_complete)
 
-                if not self.serial_worker.is_stopped:
-                    self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
-                    self.manual_tab.clear_current_setting_label()
-                    self.serial_worker.update_test_label_signal.connect(self.update_test_label)
-                    self.serial_worker.next_sequence_progress.connect(self.progress.advance_sequence)
-                    self.serial_worker.sequence_complete.connect(self.new_test)
-                    self.serial_worker.upload_sketch_again_signal.connect(self.upload_sketch_for_new_test)
-                if not self.test_board.is_stopped:
-                    self.test_board.is_running = False
-                    self.test_broken_timer.stop()
-                    self.test_board.stop()
-                    self.test_board.deleteLater()
-                    logger.info('test board worker temporarily deleted')
-                    # initiate cli worker thread
-                    self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
-                    self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
-                    self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
-                    self.cli_worker.start()  # start cli worker thread
-                    self.cli_worker.set_test_data_signal.emit(self.test_data, self.filepath, self.test_number)
-                    logger.info('cli worker started')
-                    time.sleep(0.1)
-            except:
-                logger.exception('something went wrong')
-                popups.show_error_message('error', 'something went wrong')
-        else:
-            popups.show_error_message('error', 'no test data loaded')
+                    if not self.serial_worker.is_stopped:
+                        self.trigger_run_t()  # send signal to serial capture worker thread to run all tests
+                        self.manual_tab.clear_current_setting_label()
+                        self.serial_worker.update_test_label_signal.connect(self.update_test_label)
+                        self.serial_worker.next_sequence_progress.connect(self.progress.advance_sequence)
+                        self.serial_worker.sequence_complete.connect(self.new_test)
+                        self.serial_worker.upload_sketch_again_signal.connect(self.upload_sketch_for_new_test)
+                    if not self.test_board.is_stopped:
+                        self.test_board.is_running = False
+                        self.test_broken_timer.stop()
+                        self.test_board.stop()
+                        self.test_board.deleteLater()
+                        logger.info('test board worker temporarily deleted')
+                        # initiate cli worker thread
+                        self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
+                        self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
+                        self.cli_worker.update_upper_listbox.connect(self.main_tab.cli_update_upper_listbox_gui)
+                        self.cli_worker.start()  # start cli worker thread
+                        self.cli_worker.set_test_data_signal.emit(self.test_data, self.filepath, self.test_number)
+                        logger.info('cli worker started')
+                        time.sleep(0.1)
+                except:
+                    logger.exception('something went wrong')
+                    popups.show_error_message('error', 'something went wrong')
+            else:
+                popups.show_error_message('error', 'no test data loaded')
 
     # clean up cli worker after it's done
     def cleanup_cli_worker(self):
