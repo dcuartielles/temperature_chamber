@@ -606,6 +606,7 @@ class MainWindow(QMainWindow):
         self.test_label_no_test()
         self.progress.hide()
         self.main_tab.test_interrupted_gui()
+        self.queue_tab.clear_both_listboxes()
         self.new_test(message)
 
     # similar method for new test
@@ -717,7 +718,6 @@ class MainWindow(QMainWindow):
 
     # compare expected test outcome with actual test board output
     def check_output(self, output):
-        if self.test_is_running:
             output = str(output)
             expected_output = self.expected_output(self.test_data)
             if output == '':
@@ -726,9 +726,10 @@ class MainWindow(QMainWindow):
             if output == expected_output:
                 return
             else:
-                date_str = datetime.now().strftime("%H:%M:%S")
-                error_message = f"{date_str}   {output}"
-                self.incorrect_output_gui(error_message)
+                if self.test_is_running:
+                    date_str = datetime.now().strftime("%H:%M:%S")
+                    error_message = f"{date_str}   {output}"
+                    self.incorrect_output_gui(error_message)
 
     # WORKER THREAD TRIGGERS AND GETTERS + THEIR GUI PARTS
     # CONTROL BOARD: the actual chamber_monitor QList updates from ping
