@@ -208,6 +208,8 @@ class MainTab(QWidget):
         if self.instruction_listbox.isHidden() and self.test_output_listbox.isVisible() and self.expected_outcome_listbox.isVisible() and self.test_output_label.isVisible() and self.expected_outcome_label.isVisible():
             self.expected_outcome_label.hide()
             self.expected_outcome_listbox.hide()
+            self.test_output_label.show()
+            self.test_output_listbox.show()
             self.instruction_listbox.show()
             self.instruction_listbox.clear()
             self.instruction_listbox.addItems(['test interrupted, but you can always start over:',
@@ -219,6 +221,8 @@ class MainTab(QWidget):
         else:
             self.expected_outcome_label.hide()
             self.expected_outcome_listbox.hide()
+            self.test_output_label.show()
+            self.test_output_listbox.show()
             self.instruction_listbox.show()
             self.instruction_listbox.clear()
             self.instruction_listbox.addItems(['test interrupted, but you can always start over:',
