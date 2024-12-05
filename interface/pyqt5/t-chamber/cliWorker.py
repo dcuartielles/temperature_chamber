@@ -268,7 +268,8 @@ class CliWorker(QThread):
         if test_data and filepath:  # take test_data & file path from main
             logger.info(f'running test with testdata filepath: {filepath}')
             # split file path in preparation for sketch file path recreation
-            test_data_filepath = filepath.rsplit('/', 1)[0]
+            test_data_filepath = filepath.rsplit('/', 2)[0]
+            logger.info(f'test data filepath that will be processed further: {test_data_filepath}')
             if 'tests' in test_data:
                 all_tests = [key for key in test_data['tests'].keys()]
                 current_test_index = self.test_number
@@ -278,9 +279,14 @@ class CliWorker(QThread):
                     logger.info(test)
                     sketch_path = test.get('sketch', '')  # get .ino file path
                     if sketch_path:  # if the sketch is available
+                        # Remove './' from the beginning of the sketch path if present
+                        if sketch_path.startswith('./'):
+                            sketch_path = sketch_path[2:]
+
                         sketch_group_directory = sketch_path.split('/')[-3]  # get the overarching test group directory
-                        logger.info(f'sketch directory: {sketch_group_directory}')
-                        sketch_full_path = test_data_filepath + '/' + sketch_group_directory
+                        logger.info(f'sketch group directory: {sketch_group_directory}')
+
+                        sketch_full_path = test_data_filepath + '/' + sketch_path
                         logger.info(f'full sketch path: {sketch_full_path}')
                         self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
                     else:
@@ -288,6 +294,7 @@ class CliWorker(QThread):
         else:
             # handle case when no test data is found
             logger.info('can\'t do it')
+
 
 
 
