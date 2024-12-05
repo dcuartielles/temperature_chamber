@@ -384,6 +384,8 @@ class MainWindow(QMainWindow):
                     popups.show_error_message('error', 'something went wrong')
             else:
                 popups.show_error_message('error', 'no test data loaded')
+        else:
+            popups.show_error_message('error', 'no test data loaded')
 
     # clean up cli worker after it's done
     def cleanup_cli_worker(self):
