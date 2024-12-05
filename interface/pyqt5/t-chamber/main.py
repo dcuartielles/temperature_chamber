@@ -315,7 +315,8 @@ class MainWindow(QMainWindow):
     # TEST PART
     # run all benchmark tests
     def on_run_button_clicked(self):
-        if self.test_data:  # ensure test data is loaded
+        names = list(self.test_data["tests"].keys())
+        if names:
             # check if test is running
             if self.test_is_running:
                 response = popups.show_dialog(
@@ -592,6 +593,7 @@ class MainWindow(QMainWindow):
         self.test_label_no_test()
         self.progress.hide()
         self.main_tab.test_interrupted_gui()
+        self.queue_tab.clear_both_listboxes()
         self.new_test(message)
 
     # similar method to be triggered separately when a test is interrupted by manual temp setting
@@ -639,6 +641,10 @@ class MainWindow(QMainWindow):
             sequence = test_info.get('sequence')
             time_left = test_info.get('time_left') * 60  # convert minutes to seconds
             duration = test_info.get('current_duration') * 60  # convert minutes to seconds
+            queued_tests = test_info.get('queued_tests')
+            if queued_tests == 0:
+                self.queue_tab.clear_both_listboxes()
+                self.test_data = None
 
             # calculate number of sequences in current test
             number_of_sequences = self.calculate_number_of_sequences_in_current_test(test)

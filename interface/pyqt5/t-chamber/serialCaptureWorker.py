@@ -71,6 +71,7 @@ class SerialCaptureWorker(QThread):
         self.time_left = None
         self.current_temperature = None
         self.test_number = 0
+        self.queued_tests = 0
         self.test_queue = {}  # space for test queue from arduino
         # set up que for processing responses from serial
         self.response_queue = Queue()
@@ -155,7 +156,6 @@ class SerialCaptureWorker(QThread):
             # send handshake to arduino
             self.send_json_to_arduino(handshake)
             logger.info(f'handshake sent to arduino: {handshake}')
-            self.get_test_queue_from_arduino()
             try:
                 # decode arduino response
                 handshake_response = self.ser.readline().decode('utf-8').strip()
@@ -202,9 +202,7 @@ class SerialCaptureWorker(QThread):
                 # get duration and time left, and convert them for display
                 self.current_duration = test_status.get('current_duration', 0) / 60000
                 self.time_left = test_status.get('time_left', 0) / 60
-                queued_tests = test_status.get('queued_tests', 0)
-                if queued_tests == 0:
-                    self.get_test_queue_from_arduino()
+                self.queued_tests = test_status.get('queued_tests', 0)
                 self.emit_test_status()
                 self.display_info()
         except json.JSONDecodeError:
@@ -268,7 +266,8 @@ class SerialCaptureWorker(QThread):
             'test': self.current_test,
             'sequence': self.current_sequence,
             'time_left': self.time_left,
-            'current_duration': self.current_duration
+            'current_duration': self.current_duration,
+            'queued_tests': self.queued_tests
         }
         self.update_test_label_signal.emit(test_status_data)
 
