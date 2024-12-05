@@ -717,17 +717,18 @@ class MainWindow(QMainWindow):
 
     # compare expected test outcome with actual test board output
     def check_output(self, output):
-        output = str(output)
-        expected_output = self.expected_output(self.test_data)
-        if output == '':
-            message = 'waiting for test board output'
-            self.update_listbox_gui(message)
-        if output == expected_output:
-            return
-        else:
-            date_str = datetime.now().strftime("%H:%M:%S")
-            error_message = f"{date_str}   {output}"
-            self.incorrect_output_gui(error_message)
+        if self.test_is_running:
+            output = str(output)
+            expected_output = self.expected_output(self.test_data)
+            if output == '':
+                message = 'waiting for test board output'
+                self.update_listbox_gui(message)
+            if output == expected_output:
+                return
+            else:
+                date_str = datetime.now().strftime("%H:%M:%S")
+                error_message = f"{date_str}   {output}"
+                self.incorrect_output_gui(error_message)
 
     # WORKER THREAD TRIGGERS AND GETTERS + THEIR GUI PARTS
     # CONTROL BOARD: the actual chamber_monitor QList updates from ping
