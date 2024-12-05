@@ -549,7 +549,6 @@ class MainWindow(QMainWindow):
 
     # retrieve test directory names from test data and send to queue tab
     def get_test_file_name(self):
-
         directories = [
             test["sketch"].split('/')[-2]
             for test in self.test_data["tests"].values()
@@ -560,7 +559,7 @@ class MainWindow(QMainWindow):
             self.queue_tab.get_test_file_name.emit(result_string)
         else:
             self.queue_tab.clear_both_listboxes()
-   
+
     # get test titles from test data and send to queue tab
     def get_test_names_from_queue(self):
         names = list(self.test_data["tests"].keys())
