@@ -460,14 +460,53 @@ class MainWindow(QMainWindow):
 
     # load test file and store it in the app
     def load_test_file(self):
-        test_data = self.json_handler.open_file()
-        if self.test_data:
-            self.serial_worker.trigger_add_test_data_to_queue.emit(test_data)
-            self.filepath = self.json_handler.get_filepath()
-            logger.info(f'filepath from file handler: {self.filepath}')
-            popups.show_info_message('info', 'test file added to test queue')
+        if self.test_is_running:
+            response = popups.show_dialog(
+                'a test is running so you cannot manipulate the test queue: are you sure you want to interrupt it and proceed?')
+            if response == QMessageBox.Yes:
+                if self.cli_worker and self.cli_worker.is_running:
+                    self.test_number = 0
+                    self.on_cli_test_interrupted()
+                    logger.info('test interrupted')
+                    message = 'test interrupted'
+                    self.test_interrupted_gui(message)
+                    self.test_is_running = False
+                    self.manual_tab.test_is_running = False
+                    self.on_cli_test_interrupted()
+                    test_data = self.json_handler.open_file()
+                    if test_data:
+                        self.serial_worker.trigger_add_test_data_to_queue.emit(test_data)
+                        self.filepath = self.json_handler.get_filepath()
+                        logger.info(f'filepath from file handler: {self.filepath}')
+                        popups.show_info_message('info', 'test file added to test queue')
+                    else:
+                        return
+                else:
+                    logger.info('test interrupted')
+                    message = 'test interrupted'
+                    self.test_interrupted_gui(message)
+                    self.test_number = 0
+                    self.test_is_running = False
+                    self.manual_tab.test_is_running = False
+                    test_data = self.json_handler.open_file()
+                    if test_data:
+                        self.serial_worker.trigger_add_test_data_to_queue.emit(test_data)
+                        self.filepath = self.json_handler.get_filepath()
+                        logger.info(f'filepath from file handler: {self.filepath}')
+                        popups.show_info_message('info', 'test file added to test queue')
+                    else:
+                        return
+            elif response == QMessageBox.No:
+                return
         else:
-            return 
+            test_data = self.json_handler.open_file()
+            if test_data:
+                self.serial_worker.trigger_add_test_data_to_queue.emit(test_data)
+                self.filepath = self.json_handler.get_filepath()
+                logger.info(f'filepath from file handler: {self.filepath}')
+                popups.show_info_message('info', 'test file added to test queue')
+            else:
+                return
 
     # clear test queue
     def clear_test_queue(self):

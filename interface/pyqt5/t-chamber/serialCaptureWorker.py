@@ -256,6 +256,7 @@ class SerialCaptureWorker(QThread):
         logger.info('emergency stop should be sending now')
         self.send_json_to_arduino(stop)
         logger.info('emergency stop issued')
+        self.get_test_queue_from_arduino()
 
     # SENDING STUFF TO MAIN APP
     # prep running test info updates to be emitted

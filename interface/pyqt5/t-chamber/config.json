@@ -1,7 +1,7 @@
 {
     "test_board": {
-        "port": "COM7",
-        "board_name": "Arduino Uno"
+        "port": "COM8",
+        "board_name": "Arduino UNO R4 WiFi"
     },
     "control_board": {
         "port": "COM8",
