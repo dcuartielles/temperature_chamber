@@ -137,7 +137,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.port_selector)
 
         # add space btw sections: vertical 10px
-        layout.addSpacerItem(QSpacerItem(0, 10))
+        # layout.addSpacerItem(QSpacerItem(0, 10))
 
         # start button
         self.start_button = QPushButton('start')
@@ -148,7 +148,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.start_button)
 
         # add space btw sections: vertical 8px
-        layout.addSpacerItem(QSpacerItem(0, 8))
+        # layout.addSpacerItem(QSpacerItem(0, 8))
 
         # QTab widget to hold both tabs
         self.tab_widget = QTabWidget()
@@ -160,7 +160,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.tab_widget)
 
         # add space btw sections: vertical 10px
-        layout.addSpacerItem(QSpacerItem(0, 10))
+        # layout.addSpacerItem(QSpacerItem(0, 10))
 
         # listbox for test updates
         self.serial_label = QLabel('running test info', self)
@@ -171,7 +171,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.listbox)
 
         # add space btw sections: vertical 10px
-        layout.addSpacerItem(QSpacerItem(0, 10))
+        # layout.addSpacerItem(QSpacerItem(0, 10))
 
         # listbox for temperature chamber monitoring
         self.chamber_label = QLabel('temperature chamber situation', self)
@@ -185,7 +185,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.chamber_monitor)
 
         # add space btw sections: vertical 10px
-        layout.addSpacerItem(QSpacerItem(0, 10))
+        # layout.addSpacerItem(QSpacerItem(0, 10))
 
         # reset control board button
         self.reset_button = QPushButton('reset control board')
@@ -196,7 +196,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.reset_button)
 
         # add space btw sections: vertical 8px
-        layout.addSpacerItem(QSpacerItem(0, 8))
+        # layout.addSpacerItem(QSpacerItem(0, 8))
 
         # emergency stop button
         self.emergency_stop_button = QPushButton('emergency stop', self)
@@ -207,7 +207,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.emergency_stop_button)
 
         # add space btw sections: vertical 7px
-        layout.addSpacerItem(QSpacerItem(0, 7))
+        # layout.addSpacerItem(QSpacerItem(0, 7))
 
         # initially deactivate reset & emergency stop buttons (should only work when connection with control board)
         self.reset_button.setEnabled(False)

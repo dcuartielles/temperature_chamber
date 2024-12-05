@@ -30,7 +30,7 @@ class QueueTab(QWidget):
         layout.setContentsMargins(5, 5, 5, 5)  # add padding around the entire layout
 
         # add space btw sections: vertical 10px
-        layout.addSpacerItem(QSpacerItem(0, 10))
+        # layout.addSpacerItem(QSpacerItem(0, 10))
 
         test_data_layout = QVBoxLayout()  # vertical layout for test data part
         self.test_data_label = QLabel('test upload & names', self)
@@ -58,7 +58,7 @@ class QueueTab(QWidget):
         layout.addLayout(arduino_queue_layout)
 
         # add space btw sections: vertical 10px
-        layout.addSpacerItem(QSpacerItem(0, 10))
+        # layout.addSpacerItem(QSpacerItem(0, 10))
 
         self.setLayout(layout)
 

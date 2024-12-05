@@ -27,7 +27,7 @@ class ManualTab(QWidget):
         layout.setContentsMargins(5, 5, 5, 5)  # add padding around the entire layout
 
         # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
+        # layout.addSpacerItem(QSpacerItem(0, 20))
 
         # info label
         self.info_label = QLabel('type in desired temperature & duration, then press enter to set', self)
@@ -55,7 +55,7 @@ class ManualTab(QWidget):
         layout.addWidget(self.current_setting)
 
         # add space btw sections: vertical 20px
-        layout.addSpacerItem(QSpacerItem(0, 20))
+        # layout.addSpacerItem(QSpacerItem(0, 20))
 
         self.set_temp_input.returnPressed.connect(self.on_enter_key)
         self.set_duration_input.returnPressed.connect(self.on_enter_key)
