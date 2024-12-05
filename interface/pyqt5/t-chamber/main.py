@@ -155,8 +155,8 @@ class MainWindow(QMainWindow):
 
         # add tabs to tab widget
         self.tab_widget.addTab(self.main_tab, 'running test info')
-        self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
         self.tab_widget.addTab(self.queue_tab, 'test upload and queue')
+        self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
         layout.addWidget(self.tab_widget)
 
         # add space btw sections: vertical 12px
