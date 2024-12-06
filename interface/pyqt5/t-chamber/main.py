@@ -318,11 +318,12 @@ class MainWindow(QMainWindow):
             names = list(self.test_data["tests"].keys())
             if names:
                 # check if test is running
+                self.check_temp()
                 if self.test_is_running:
                     response = popups.show_dialog(
                         'a test is running: are you sure you want to interrupt it and proceed?')
                     if response == QMessageBox.Yes:
-                        #self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
+                        self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                         if self.cli_worker.is_running:
                             self.test_number = 0
                             message = 'test interrupted'
@@ -341,7 +342,7 @@ class MainWindow(QMainWindow):
                     elif response == QMessageBox.No:
                         return
                 try:
-                    # self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
+                    self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                     self.test_is_running = True
                     self.manual_tab.test_is_running = True
                     message = 'test starting'
