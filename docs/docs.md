@@ -1,7 +1,7 @@
 # Arduino Temperature Chamber
 
 ## Description
-The goal of the Temperature Chamber is to create a standardised mechanism as well as a benchmark to measure boards against. The chamber is a tool for answering questions like "How long can a board operate at 60C before failure?" It prioritizes accessibility and replicability by using cost-effective, off-the-shelf components.
+The goal of the Temperature Chamber is to create a standardised mechanism as well as a benchmark to measure boards against. The chamber is a tool for answering questions like "How long can a board operate at 60°C before failure?" It prioritizes accessibility and replicability by using cost-effective, off-the-shelf components.
 
 ## Tests 
 To send tests from the Python application to be queued and run in the Temperature chamber, the user uploads a json file with meta data for the tests. The meta data consists of:
@@ -12,7 +12,7 @@ To send tests from the Python application to be queued and run in the Temperatur
 
 These files are put in designated directories inside of the `tests` directory, alongside directories for sketches that are to be uploaded to the board inside of the chamber for each test configuration.
 
-### Example file structure:
+### File structure for tests
 ```sh
 tests
 |-- alphabets
@@ -23,7 +23,11 @@ tests
 |   `-- alphabet_test.json
 ```
 
-### Example test configuration file:
+
+## Communication protocol examples
+The communication protocol is JSON based. Below are examples of JSON payloads to communicate between the Temperature Chamber control board and the Python app.
+
+### Test configuration file
 ```json
 {
     "tests": {
@@ -54,12 +58,12 @@ tests
 }
 ```
 
-### Example ping from Python app:
+### Ping from Python app
 ```json
 { "commands": "PING": {} }
 ```
 
-### Example ping from Temperature Chamber:
+### Ping from Temperature Chamber
 ```json
 {
     "ping_response": {
@@ -80,7 +84,7 @@ tests
 }
 ```
 
-### Example handshake from Python app.
+### Handshake from Python app
 ```json
 {
     "handshake": {
@@ -89,7 +93,7 @@ tests
 }
 ```
 
-### Example handshake from Temperature Chamber:
+### Handshake from Temperature Chamber
 ```json
 {
     "handshake": {
@@ -101,7 +105,23 @@ tests
 }
 ```
 
-### Example test sketch:
+### Commands from Python app
+```json
+{
+    "commands": {
+        "PING": {},
+        "RESET": {},
+        "EMERGENCY STOP": {},
+        "SET_TEMP": { "temp": 40, "duration": 300000 },
+        "GET_TEST_QUEUE": {},
+        "RUN_QUEUE": {},
+    }
+}
+```
+
+
+
+### Example test sketch
 ```arduino
 void setup() {
     Serial.begin(9600);
