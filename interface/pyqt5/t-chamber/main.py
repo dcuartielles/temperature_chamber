@@ -283,7 +283,6 @@ class MainWindow(QMainWindow):
                 except Exception as e:
                     logger.exception(f'failed to start test board worker: {e}')
                     popups.show_error_message('error', f'failed to start test board worker: {e}')
-
                     return
 
             if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
@@ -926,6 +925,7 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         self.serial_worker.stop()
         self.test_board.stop()
+        # maybe add cli & wifi workers here?
         event.accept()  # ensure the application closes
 
 
