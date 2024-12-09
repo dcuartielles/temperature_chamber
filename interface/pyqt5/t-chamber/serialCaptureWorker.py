@@ -63,7 +63,7 @@ class SerialCaptureWorker(QThread):
         self.alive = False
         self.timestamp = None
         self.machine_state = None
-        self.is_test_running = None
+        self.is_test_running = None  # flag to see if test is running
         self.current_test = None
         self.current_sequence = None
         self.current_duration = None
@@ -323,9 +323,9 @@ class SerialCaptureWorker(QThread):
             self.upload_sketch_again_signal.emit(message)
             logger.info('signal for new upload btw tests emitted')
         elif response.strip().startswith('Waiting'):
-            self.sequence_has_been_advanced = False
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'response to WAITING: {response}')
+            self.sequence_has_been_advanced = False
         elif response.strip().startswith('Sequence complete'):
             if not self.sequence_has_been_advanced:
                 self.next_sequence_progress.emit()

@@ -283,7 +283,6 @@ class MainWindow(QMainWindow):
                 except Exception as e:
                     logger.exception(f'failed to start test board worker: {e}')
                     popups.show_error_message('error', f'failed to start test board worker: {e}')
-
                     return
 
             if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
@@ -319,11 +318,12 @@ class MainWindow(QMainWindow):
             names = list(self.test_data["tests"].keys())
             if names:
                 # check if test is running
+                self.check_temp()
                 if self.test_is_running:
                     response = popups.show_dialog(
                         'a test is running: are you sure you want to interrupt it and proceed?')
                     if response == QMessageBox.Yes:
-                        #self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
+                        self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                         if self.cli_worker.is_running:
                             self.test_number = 0
                             message = 'test interrupted'
@@ -342,7 +342,7 @@ class MainWindow(QMainWindow):
                     elif response == QMessageBox.No:
                         return
                 try:
-                    # self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
+                    self.check_temp()  # check if desired temp is not too far away from current temp, and let user decide
                     self.test_is_running = True
                     self.manual_tab.test_is_running = True
                     message = 'test starting'
@@ -605,7 +605,8 @@ class MainWindow(QMainWindow):
         self.manual_tab.set_test_flag_to_false_signal.emit()
         self.test_label_no_test()
         self.progress.hide()
-        self.main_tab.test_interrupted_gui()
+        self.main_tab.test_interrupted_by_manual_temp_setting_gui()
+        self.queue_tab.clear_both_listboxes()
         self.new_test(message)
 
     # similar method for new test
@@ -717,7 +718,6 @@ class MainWindow(QMainWindow):
 
     # compare expected test outcome with actual test board output
     def check_output(self, output):
-        if self.test_is_running:
             output = str(output)
             expected_output = self.expected_output(self.test_data)
             if output == '':
@@ -726,9 +726,10 @@ class MainWindow(QMainWindow):
             if output == expected_output:
                 return
             else:
-                date_str = datetime.now().strftime("%H:%M:%S")
-                error_message = f"{date_str}   {output}"
-                self.incorrect_output_gui(error_message)
+                if self.test_is_running:
+                    date_str = datetime.now().strftime("%H:%M:%S")
+                    error_message = f"{date_str}   {output}"
+                    self.incorrect_output_gui(error_message)
 
     # WORKER THREAD TRIGGERS AND GETTERS + THEIR GUI PARTS
     # CONTROL BOARD: the actual chamber_monitor QList updates from ping
@@ -925,6 +926,7 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         self.serial_worker.stop()
         self.test_board.stop()
+        # maybe add cli & wifi workers here?
         event.accept()  # ensure the application closes
 
 
