@@ -1,4 +1,5 @@
-{"tests": {
+{
+    "tests": {
         "first_alphabet_low_temp": {
             "chamber_sequences": [
                 { "temp": 38, "duration": 60000 }
