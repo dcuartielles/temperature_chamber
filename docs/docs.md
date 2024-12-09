@@ -1,7 +1,6 @@
-# Arduino Temperature Chamber
+# Temperature Chamber Communicaton Protocol
+The communication protocol is JSON based. It includes standards for sending and receiving pings and handshakes, sending commands, receiving updates for test status & machine state as well as queueing and running defined benchmark tests and custom tests.
 
-## Description
-The goal of the Temperature Chamber is to create a standardised mechanism as well as a benchmark to measure boards against. The chamber is a tool for answering questions like "How long can a board operate at 60°C before failure?" It prioritizes accessibility and replicability by using cost-effective, off-the-shelf components.
 
 ## Tests 
 To send tests from the Python application to be queued and run in the Temperature chamber, the user uploads a json file with meta data for the tests. The meta data consists of:
@@ -25,7 +24,7 @@ tests
 
 
 ## Communication protocol examples
-The communication protocol is JSON based. Below are examples of JSON payloads to communicate between the Temperature Chamber control board and the Python app.
+Below are examples of JSON payloads to communicate between the Temperature Chamber control board and the Python app.
 
 ### Test configuration file
 ```json
@@ -58,6 +57,41 @@ The communication protocol is JSON based. Below are examples of JSON payloads to
 }
 ```
 
+### Commands from Python app
+```json
+{
+    "commands": {
+        "PING": {},
+        "RESET": {},
+        "EMERGENCY STOP": {},
+        "SET_TEMP": { "temp": 40, "duration": 300000 },
+        "GET_TEST_QUEUE": {},
+        "RUN_QUEUE": {},
+    }
+}
+```
+
+### Handshake from Python app
+```json
+{
+    "handshake": {
+        "timestamp": "2024-12-05T15:21:06"
+    }
+}
+```
+
+### Handshake from Temperature Chamber
+```json
+{
+    "handshake": {
+        "timestamp": "2024-12-05T15:21:06",
+        "machine_state": "RESET",
+        "last_shutdown_cause": "Lost connection",
+        "last_heat_time": "2024-12-05T13:00:00"
+    }
+}
+```
+
 ### Ping from Python app
 ```json
 { "commands": "PING": {} }
@@ -84,58 +118,5 @@ The communication protocol is JSON based. Below are examples of JSON payloads to
 }
 ```
 
-### Handshake from Python app
-```json
-{
-    "handshake": {
-        "timestamp": "2024-12-05T15:21:06"
-    }
-}
-```
-
-### Handshake from Temperature Chamber
-```json
-{
-    "handshake": {
-        "timestamp": "2024-12-05T15:21:06",
-        "machine_state": "RESET",
-        "last_shutdown_cause": "Lost connection",
-        "last_heat_time": "2024-12-05T13:00:00"
-    }
-}
-```
-
-### Commands from Python app
-```json
-{
-    "commands": {
-        "PING": {},
-        "RESET": {},
-        "EMERGENCY STOP": {},
-        "SET_TEMP": { "temp": 40, "duration": 300000 },
-        "GET_TEST_QUEUE": {},
-        "RUN_QUEUE": {},
-    }
-}
-```
 
 
-
-### Example test sketch
-```arduino
-void setup() {
-    Serial.begin(9600);
-}
-
-void loop() {
-    // Loop through the alphabet
-    for (char letter = 'A'; letter <= 'Z'; letter++) {
-        Serial.print(letter);
-        delay(500);
-    }
-
-    // Print a newline after the full alphabet
-    Serial.println();
-    delay(1000);
-}
-```
