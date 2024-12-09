@@ -104,28 +104,34 @@ class SerialCaptureWorker(QThread):
         # wrap the whole while-loop in a try-except statement to prevent crashes in case of system failure
         try:
             while self.is_running:
-                if not self.is_stopped:
-                    try:
-                        if self.ser and self.ser.is_open:
-                            self.serial_running_and_happy.emit()
-                            # send handshake
-                            self.handshake()
-                            time.sleep(0.1)
-                            # read incoming serial data
-                            response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
-                            if response:
-                                self.process_response(response)  # update and show curated responses
-                            # make sure responses added to que by send_json be processed as well
-                            if not self.response_queue.empty():
-                                response = self.response_queue.get()
-                                self.process_response(response)
-                            if time.time() - self.last_ping >= 0.5:
-                                self.last_ping = time.time()
-                                self.trigger_ping()
+                if self.is_stopped:
+                    time.sleep(0.1)
+                    continue
 
-                    except serial.SerialException as e:
-                        logger.exception(f'serial error: {e}')
-                        self.is_running = False
+                try:
+                    if not self.ser or not self.ser.is_open:
+                        time.sleep(0.1)
+                        continue
+
+                    self.serial_running_and_happy.emit()
+                    # send handshake
+                    self.handshake()
+                    time.sleep(0.1)
+                    # read incoming serial data
+                    response = self.ser.readline().decode('utf-8').strip()  # continuous readout from serial
+                    if response:
+                        self.process_response(response)  # update and show curated responses
+                    # make sure responses added to que by send_json be processed as well
+                    if not self.response_queue.empty():
+                        response = self.response_queue.get()
+                        self.process_response(response)
+                    if time.time() - self.last_ping >= 0.5:
+                        self.last_ping = time.time()
+                        self.trigger_ping()
+
+                except serial.SerialException as e:
+                    logger.exception(f'serial error: {e}')
+                    self.is_running = False
 
                 time.sleep(0.1)  # avoid excessive cpu usage
         except Exception as e:
@@ -148,25 +154,27 @@ class SerialCaptureWorker(QThread):
     # handshake
     def handshake(self):
         # logger.info(f"attempting handshake, sent_handshake: {self.sent_handshake}")
-        if not self.sent_handshake:
-            time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-            # insert timestamp into handshake
-            handshake = commands.handshake(time)
-            logger.info(f'sending handshake: {handshake}')
-            # send handshake to arduino
-            self.send_json_to_arduino(handshake)
-            logger.info(f'handshake sent to arduino: {handshake}')
-            try:
-                # decode arduino response
-                handshake_response = self.ser.readline().decode('utf-8').strip()
-                # convert response string to dictionary
-                parsed_response = json.loads(handshake_response)
-                logger.info(f'response to handshake: {parsed_response}')
-            except json.JSONDecodeError:
-                logger.exception('failed to parse arduino response')
+        if self.sent_handshake:
+            return
 
-            # prevent handshake from being sent again
-            self.sent_handshake = True
+        time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        # insert timestamp into handshake
+        handshake = commands.handshake(time)
+        logger.info(f'sending handshake: {handshake}')
+        # send handshake to arduino
+        self.send_json_to_arduino(handshake)
+        logger.info(f'handshake sent to arduino: {handshake}')
+        try:
+            # decode arduino response
+            handshake_response = self.ser.readline().decode('utf-8').strip()
+            # convert response string to dictionary
+            parsed_response = json.loads(handshake_response)
+            logger.info(f'response to handshake: {parsed_response}')
+        except json.JSONDecodeError:
+            logger.exception('failed to parse arduino response')
+
+        # prevent handshake from being sent again
+        self.sent_handshake = True
 
     # trigger ping
     def trigger_ping(self):
@@ -286,18 +294,18 @@ class SerialCaptureWorker(QThread):
     def send_json_to_arduino(self, test_data):
         json_data = json.dumps(test_data)  # convert python dictionary to json
         try:
-            if self.ser and self.ser.is_open:
-                self.ser.write((json_data + '\n').encode('utf-8'))
-                time.sleep(0.01)
-                logger.info(f'sent to arduino: {json_data}')
-                # blocking method within thread
-                while self.ser.in_waiting > 0:
-                    response = self.ser.readline().decode('utf-8').strip()
-                    logger.info(f'arduino says: {response}')
-                    # capture all serial responses for thread to process properly
-                    self.response_queue.put(response)
-            else:
+            if not self.ser or not self.ser.is_open:
                 logger.warning('serial not open')
+                return
+            self.ser.write((json_data + '\n').encode('utf-8'))
+            time.sleep(0.01)
+            logger.info(f'sent to arduino: {json_data}')
+            # blocking method within thread
+            while self.ser.in_waiting > 0:
+                response = self.ser.readline().decode('utf-8').strip()
+                logger.info(f'arduino says: {response}')
+                # capture all serial responses for thread to process properly
+                self.response_queue.put(response)
         except serial.SerialException as e:
             logger.error(f'error sending JSON: {e}')
 
