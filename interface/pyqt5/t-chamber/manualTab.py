@@ -68,32 +68,36 @@ class ManualTab(QWidget):
         temp_string = self.set_temp_input.text().strip()
         duration_string = self.set_duration_input.text().strip()
 
-        if temp_string and duration_string:  # make sure both fields are filled
-            is_valid = self.check_inputs(temp_string, duration_string)  # validate inputs
+        if not temp_string or not duration_string:  # make sure both fields are filled
+            return
 
-            if is_valid and self.input_dictionary:  # if valid inputs
-                if self.serial_is_running:
-                    if self.test_is_running:
-                        response = popups.show_dialog(
-                            'a test is running: are you sure you want to interrupt it and proceed?')
-                        if response == QMessageBox.Yes:
-                            message = 'test interrupted, temperature set manually'
-                            self.test_interrupted.emit(message)
-                            self.test_is_running = False
-                            logger.warning(message)
-                        elif response == QMessageBox.No:
-                            return
-                    self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
-                    message = 'temperature set manually'
-                    self.test_interrupted.emit(message)
-                    if duration_string == '1':
-                        current_string = f'temperature set to {temp_string}°C for the duration of {duration_string} minute'
-                    else:
-                        current_string = f'temperature set to {temp_string}°C for the duration of {duration_string} minutes'
-                    self.current_setting.setText(current_string)
-                    logger.info(f'sent to arduino: {self.input_dictionary}')
-                else:
-                    popups.show_error_message('warning', 'no serial connection')
+        is_valid = self.check_inputs(temp_string, duration_string)  # validate inputs
+
+        if not is_valid or not self.input_dictionary:  # if valid inputs
+            return
+
+        if not self.serial_is_running:
+            popups.show_error_message('warning', 'no serial connection')
+
+        if self.test_is_running:
+            response = popups.show_dialog(
+                'a test is running: are you sure you want to interrupt it and proceed?')
+            if response == QMessageBox.Yes:
+                message = 'test interrupted, temperature set manually'
+                self.test_interrupted.emit(message)
+                self.test_is_running = False
+                logger.warning(message)
+            elif response == QMessageBox.No:
+                return
+        self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
+        message = 'temperature set manually'
+        self.test_interrupted.emit(message)
+        if duration_string == '1':
+            current_string = f'temperature set to {temp_string}°C for the duration of {duration_string} minute'
+        else:
+            current_string = f'temperature set to {temp_string}°C for the duration of {duration_string} minutes'
+        self.current_setting.setText(current_string)
+        logger.info(f'sent to arduino: {self.input_dictionary}')
 
     # make sure both temp & duration are submitted by user
     def check_inputs(self, temp_string, duration_string):
