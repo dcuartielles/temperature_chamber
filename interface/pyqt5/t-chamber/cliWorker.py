@@ -122,22 +122,23 @@ class CliWorker(QThread):
         command = ["arduino-cli", "board", "list", "--format", "json"]
         output = self.run_cli_command(command)
 
-        if output:
-            headsup = 'detecting test board'
-            self.wave(headsup)
-            boards_info = json.loads(output)
-            for board in boards_info.get("detected_ports", []):
-                if board["port"]["address"] == port:
-                    if "matching_boards" in board and board["matching_boards"]:
-                        fqbn = board["matching_boards"][0].get("fqbn", None)
-                        if fqbn:
-                            self.is_detecting = True
-                            logger.info(f'detected fqbn: {fqbn}')
-                            return fqbn
-                        else:
-                            logger.warning(f'no fqbn found for board on port {port}')
-                            return None
-        return None
+        if not output:
+            return None
+
+        headsup = 'detecting test board'
+        self.wave(headsup)
+        boards_info = json.loads(output)
+        for board in boards_info.get("detected_ports", []):
+            if board["port"]["address"] != port:
+                return None
+            if "matching_boards" in board and board["matching_boards"]:
+                fqbn = board["matching_boards"][0].get("fqbn", None)
+                if fqbn:
+                    self.is_detecting = True
+                    logger.info(f'detected fqbn: {fqbn}')
+                    return fqbn
+                logger.warning(f'no fqbn found for board on port {port}')
+                return None
 
     # check if core is installed on test board
     def is_core_installed(self, fqbn):
@@ -149,14 +150,15 @@ class CliWorker(QThread):
         command = ["arduino-cli", "core", "list"]
         output = self.run_cli_command(command)
 
-        if output:
-            self.checking_core = True
-            installed_cores = output.splitlines()
-            for core in installed_cores:
-                if core_name in core:
-                    logger.info(f'core {core_name} is already installed.')
-                    return True
-        return False
+        if not output:
+            return False
+
+        self.checking_core = True
+        installed_cores = output.splitlines()
+        for core in installed_cores:
+            if core_name in core:
+                logger.info(f'core {core_name} is already installed.')
+                return True
 
     # install core on test board, if necessary
     def install_core_if_needed(self, fqbn):
@@ -221,27 +223,25 @@ class CliWorker(QThread):
             sketch_path
         ]
         try:
-            if self.ser and not self.is_stopped:
-                self.ser.close()
+            if not self.ser or self.is_stopped:
+                logger.warning(f'Serial connection stopped or missing on port: {port}')
 
-                result = self.run_cli_command(command)
-
-                if result:
-                    self.is_uploading = True
-                    logger.info('upload successful!')
-                    bye = 'upload successful!'
-                    self.wave(bye)
-                    time.sleep(2)
-                    self.finished.emit()    # signal to main the cli worker's job is finished
-                    return True
-                else:
-                    logger.warning('upload failed!')
-                    bye = 'upload failed!'
-                    self.wave(bye)
-                    self.finished.emit()    # signal to main the cli worker's job can't be completed
-                    return False
+            self.ser.close()
+            result = self.run_cli_command(command)
+            if result:
+                self.is_uploading = True
+                logger.info('upload successful!')
+                bye = 'upload successful!'
+                self.wave(bye)
+                time.sleep(2)
+                self.finished.emit()    # signal to main the cli worker's job is finished
+                return True
             else:
-                logger.warning(f'cli worker port connection to {port} seems to fail')
+                logger.warning('upload failed!')
+                bye = 'upload failed!'
+                self.wave(bye)
+                self.finished.emit()    # signal to main the cli worker's job can't be completed
+                return False
 
         except serial.SerialException as e:
             logger.error(f'serial error on cli thread during upload: {e}')
@@ -260,38 +260,46 @@ class CliWorker(QThread):
             else:
                 logger.error('aborting upload due to compilation failure.')
         else:
-            logger.warning(f'failed to detect board on port {port}.')
+            logger.warning(f'failed to detect board on port: {port}')
         return False
 
     # run the entire test file
     def run_all_tests(self, test_data, filepath):
-        if test_data and filepath:  # take test_data & file path from main
-            logger.info(f'running test with testdata filepath: {filepath}')
-            # split file path in preparation for sketch file path recreation
-            test_data_filepath = filepath.rsplit('/', 2)[0]
-            logger.info(f'test data filepath that will be processed further: {test_data_filepath}')
-            if 'tests' in test_data:
-                all_tests = [key for key in test_data['tests'].keys()]
-                current_test_index = self.test_number
-                if current_test_index < len(all_tests):
-                    current_test_key = all_tests[current_test_index]
-                    test = self.test_data['tests'][current_test_key]
-                    logger.info(test)
-                    sketch_path = test.get('sketch', '')  # get .ino file path
-                    if sketch_path:  # if the sketch is available
-                        # Remove './' from the beginning of the sketch path if present
-                        if sketch_path.startswith('./'):
-                            sketch_path = sketch_path[2:]
-
-                        sketch_group_directory = sketch_path.split('/')[-3]  # get the overarching test group directory
-                        logger.info(f'sketch group directory: {sketch_group_directory}')
-
-                        sketch_full_path = test_data_filepath + '/' + sketch_path
-                        logger.info(f'full sketch path: {sketch_full_path}')
-                        self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
-                    else:
-                        logger.warning('sketch path not found')
-        else:
+        if not test_data or not filepath:  # take test_data & file path from main
             # handle case when no test data is found
-            logger.info('can\'t do it')
+            logger.info("Could not run tests, missing test data or file path")
+
+        logger.info(f'Running test with testdata filepath: {filepath}')
+        # split file path in preparation for sketch file path recreation
+        test_data_filepath = filepath.rsplit('/', 2)[0]
+        logger.info(f'test data filepath that will be processed further: {test_data_filepath}')
+        if not 'tests' in test_data:
+            logger.info("Couldn't find key 'tests' in test data")
+            return None
+
+        all_tests = [key for key in test_data['tests'].keys()]
+        current_test_index = self.test_number
+        if not current_test_index < len(all_tests):
+            return None
+
+        current_test_key = all_tests[current_test_index]
+        test = self.test_data['tests'][current_test_key]
+        logger.info(test)
+        sketch_path = test.get('sketch', '')  # get .ino file path
+        if sketch_path:  # if the sketch is available
+            # Remove './' from the beginning of the sketch path if present
+            if sketch_path.startswith('./'):
+                sketch_path = sketch_path[2:]
+
+            sketch_group_directory = sketch_path.split('/')[-3]  # get the overarching test group directory
+            logger.info(f'sketch group directory: {sketch_group_directory}')
+
+            sketch_full_path = test_data_filepath + '/' + sketch_path
+            logger.info(f'full sketch path: {sketch_full_path}')
+            self.handle_board_and_upload(port=self.port, sketch_path=sketch_full_path)
+        else:
+            logger.warning('sketch path not found')
+
+
+
 
