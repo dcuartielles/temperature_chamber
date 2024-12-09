@@ -51,16 +51,18 @@ class TestBoardWorker(QThread):
         # wrap the whole while-loop in a try-except statement to prevent crashes in case of system failure
         try:
             while self.is_running:
-                if not self.is_stopped:
-                    try:
-                        if self.ser and self.ser.is_open:
-                            # continuous readout from serial
-                            response = self.ser.readline().decode('utf-8').strip()
-                            if response:
-                                self.show_response(response)
-                    except serial.SerialException as e:
-                        logger.exception(f'serial error: {e}')
-                        self.is_running = False
+                if self.is_stopped:
+                    time.sleep(0.1)
+                    continue
+                try:
+                    if self.ser and self.ser.is_open:
+                        # continuous readout from serial
+                        response = self.ser.readline().decode('utf-8').strip()
+                        if response:
+                            self.show_response(response)
+                except serial.SerialException as e:
+                    logger.exception(f'serial error: {e}')
+                    self.is_running = False
                 time.sleep(0.1)  # avoid excessive cpu usage
         except Exception as e:
             # catch any other unexpected exceptions
@@ -104,8 +106,7 @@ class TestBoardWorker(QThread):
                 logger.info(test)
                 expected_output = test.get('expected_output', '')  # get pertinent exp output
                 return expected_output
-            else:
-                return
+            return
 
     # get expected pattern
     def get_expected_pattern(self):
@@ -114,8 +115,7 @@ class TestBoardWorker(QThread):
             regex_pattern = self.encode_pattern(expected_output)
             logger.debug(f'getting expected pattern: {regex_pattern}')
             return regex_pattern
-        else:
-            return
+        return
 
     # encode pattern
     def encode_pattern(self, expected_pattern):
