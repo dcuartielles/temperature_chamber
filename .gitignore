@@ -4,3 +4,4 @@ logs/
 kivy/
 tkinter/
 **/.idea/
+**/config.json

@@ -49,20 +49,24 @@ class WifiWorker(QThread):
         # wrap the whole while-loop in a try-except statement to prevent crashes in case of system failure
         try:
             while self.is_running:
-                if not self.is_stopped:
-                    try:
-                        if self.ser and self.ser.is_open:
-                            logger.debug('wifi worker says hello')
-                            # continuous readout from serial
-                            response = self.ser.readline().decode('utf-8').strip()
-                            if response:
-                                self.show_response(response)
-                            if time.time() - self.last_command_time > 5:
-                                self.last_command_time = time.time()
-                                logger.info('wifi thread is running')
-                    except serial.SerialException as e:
-                        logger.exception(f'serial error: {e}')
-                        self.is_running = False
+                if self.is_stopped:
+                    time.sleep(0.1)
+                    continue
+                try:
+                    if not self.ser or not self.ser.is_open:
+                        time.sleep(0.1)
+                        continue
+                    logger.debug('wifi worker says hello')
+                    # continuous readout from serial
+                    response = self.ser.readline().decode('utf-8').strip()
+                    if response:
+                        self.show_response(response)
+                    if time.time() - self.last_command_time > 5:
+                        self.last_command_time = time.time()
+                        logger.info('wifi thread is running')
+                except serial.SerialException as e:
+                    logger.exception(f'serial error: {e}')
+                    self.is_running = False
                 time.sleep(0.1)  # avoid excessive cpu usage
         except Exception as e:
             # catch any other unexpected exceptions
