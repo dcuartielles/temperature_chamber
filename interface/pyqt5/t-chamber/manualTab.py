@@ -71,13 +71,13 @@ class ManualTab(QWidget):
         if not temp_string or not duration_string:  # make sure both fields are filled
             return
 
+        if not self.serial_is_running:
+            popups.show_error_message('warning', 'no serial connection')
+
         is_valid = self.check_inputs(temp_string, duration_string)  # validate inputs
 
         if not is_valid or not self.input_dictionary:  # if valid inputs
             return
-
-        if not self.serial_is_running:
-            popups.show_error_message('warning', 'no serial connection')
 
         if self.test_is_running:
             response = popups.show_dialog(
@@ -108,17 +108,12 @@ class ManualTab(QWidget):
             if temp >= 100:
                 popups.show_error_message('error', 'max temperature = 100°C')
                 is_valid = False
-        except ValueError:
-            popups.show_error_message('error', 'numbers only')
-            is_valid = False
-
-        try:
             duration = int(duration_string)
             if duration < 1:  # check for minimum duration
                 popups.show_error_message('error', 'minimum duration is 1 minute')
                 is_valid = False
         except ValueError:
-            popups.show_error_message('error', 'numbers only')  #
+            popups.show_error_message('error', 'numbers only')
             is_valid = False
 
         if is_valid:
