@@ -73,6 +73,7 @@ class ManualTab(QWidget):
 
         if not self.serial_is_running:
             popups.show_error_message('warning', 'no serial connection')
+            return
 
         is_valid = self.check_inputs(temp_string, duration_string)  # validate inputs
 
@@ -89,6 +90,7 @@ class ManualTab(QWidget):
                 logger.warning(message)
             elif response == QMessageBox.No:
                 return
+
         self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
         message = 'temperature set manually'
         self.test_interrupted.emit(message)

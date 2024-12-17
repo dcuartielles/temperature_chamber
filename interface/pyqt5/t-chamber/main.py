@@ -239,6 +239,12 @@ class MainWindow(QMainWindow):
 
         logger.info('check if ports are selected')
         # visually signal app activation
+
+        if self.selected_c_port == self.selected_t_port:
+            logger.error('Same port selected for control board and test board. Serial connections aborted.')
+            popups.show_error_message('Single port selected', 'You cannot select the same port for control board and test board.')
+            return
+
         if self.selected_c_port and self.selected_t_port:
             if not hasattr(self, 'serial_worker') or self.serial_worker is None or not self.serial_worker.is_running:
                 try:
