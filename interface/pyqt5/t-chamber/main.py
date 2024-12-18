@@ -111,8 +111,8 @@ class MainWindow(QMainWindow):
     # method responsible for all gui elements
     def initUI(self):
         # main window and window logo
-        self.setWindowTitle('t-chamber')
-        self.setGeometry(600, 80, 0, 0)  # decide where on the screen the window will appear (from left, from top)
+        self.setWindowTitle('Temperature Chamber')
+        self.setGeometry(600, 80, 800, 800)  # Set an initial size & position on the screen
         self.setWindowIcon(QIcon('arduino_logo.png'))
         self.setStyleSheet('background-color: white;'
                            'color: black;')
@@ -122,109 +122,96 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.central_widget)
 
         # create a vertical layout
-        layout = QVBoxLayout(self.central_widget)
-        layout.setContentsMargins(10, 0, 10, 10)  # add padding around the entire layout
+        main_layout = QVBoxLayout(self.central_widget)
+        main_layout.setContentsMargins(10, 0, 10, 10)
+        main_layout.setSpacing(15)
 
-        # logo
+        # logo section
+        logo_layout = QHBoxLayout()
         self.im_label = QLabel(self)
         pixmap = QPixmap('arduino_logo.png')
         self.im_label.setPixmap(pixmap)
         self.im_label.setScaledContents(True)
-        self.im_label.setFixedSize(100, 100)  # define logo dimensions
-        layout.addWidget(self.im_label, alignment=Qt.AlignLeft)  # add logo to the layout
+        self.im_label.setFixedSize(100, 100)
+        logo_layout.addWidget(self.im_label, alignment=Qt.AlignLeft)
 
-        # port selector
-        layout.addWidget(self.port_selector)
+        # Add the port selector widget
+        logo_layout.addWidget(self.port_selector)
+        main_layout.addLayout(logo_layout)
 
-        # add space btw sections: vertical 10px
-        # layout.addSpacerItem(QSpacerItem(0, 10))
-
-        # start button
-        self.start_button = QPushButton('start')
+        # Start Button
+        self.start_button = QPushButton('Start')
         self.start_button.setStyleSheet('background-color: #009FAF;'
                                         'color: white;'
                                         'font-size: 20px;'
                                         'font-weight: bold;')
-        layout.addWidget(self.start_button)
+        self.start_button.setFixedHeight(40)
+        main_layout.addWidget(self.start_button)
 
-        # add space btw sections: vertical 8px
-        # layout.addSpacerItem(QSpacerItem(0, 8))
-
-        # QTab widget to hold both tabs
+        # QTabWidget for tabs
         self.tab_widget = QTabWidget()
+        self.tab_widget.setStyleSheet("font-size: 14px;")
+        self.tab_widget.addTab(self.main_tab, 'Running Test Info')
+        self.tab_widget.addTab(self.queue_tab, 'Test Upload and Queue')
+        self.tab_widget.addTab(self.manual_tab, 'Manual Temperature Setting')
+        main_layout.addWidget(self.tab_widget, stretch=1)  # Allow tab widget to stretch
 
-        # add tabs to tab widget
-        self.tab_widget.addTab(self.main_tab, 'running test info')
-        self.tab_widget.addTab(self.queue_tab, 'test upload and queue')
-        self.tab_widget.addTab(self.manual_tab, 'manual temperature setting')
-        layout.addWidget(self.tab_widget)
+        # Horizontal layout for Running Test Info
+        test_layout = QHBoxLayout()
 
-        # add space btw sections: vertical 10px
-        # layout.addSpacerItem(QSpacerItem(0, 10))
+        # Running Test Info section
+        left_layout = QVBoxLayout()
+        self.serial_label = QLabel('Running Test Info', self)
+        left_layout.addWidget(self.serial_label)
 
-        # listbox for test updates
-        self.serial_label = QLabel('running test info', self)
         self.listbox = QListWidget(self)
-        self.listbox.setFixedHeight(100)
-        layout.addWidget(self.serial_label)
-        layout.addWidget(self.progress)
-        layout.addWidget(self.listbox)
+        left_layout.addWidget(self.listbox)  # Expands both vertically and horizontally
+        test_layout.addLayout(left_layout, stretch=1)
 
-        # add space btw sections: vertical 10px
-        # layout.addSpacerItem(QSpacerItem(0, 10))
+        left_layout.addWidget(self.progress)
+        main_layout.addLayout(test_layout, stretch=2)
 
-        # listbox for temperature chamber monitoring
-        self.chamber_label = QLabel('temperature chamber situation', self)
+        # Temperature Chamber Status section
+        chamber_layout = QVBoxLayout()
+        self.chamber_label = QLabel('Temperature Chamber Status', self)
+        chamber_layout.addWidget(self.chamber_label)
+
         self.chamber_monitor = QListWidget(self)
-        self.chamber_monitor.setFixedHeight(40)
-        # create a QListWidgetItem with centered text
-        item = QListWidgetItem('arduino will keep you posted on current temperature and such')
-        item.setTextAlignment(Qt.AlignCenter)  # center text
-        self.chamber_monitor.addItem(item)
-        layout.addWidget(self.chamber_label)
-        layout.addWidget(self.chamber_monitor)
+        chamber_layout.addWidget(self.chamber_monitor)  # This box stretches
+        main_layout.addLayout(chamber_layout, stretch=2)
 
-        # add space btw sections: vertical 10px
-        # layout.addSpacerItem(QSpacerItem(0, 10))
-
-        # reset control board button
-        self.reset_button = QPushButton('reset control board')
+        # Reset Control Board Button
+        self.reset_button = QPushButton('Reset Control Board')
         self.reset_button.setStyleSheet('background-color: grey;'
                                         'color: white;'
                                         'font-weight: bold;'
                                         'font-size: 20px;')
-        layout.addWidget(self.reset_button)
+        self.reset_button.setFixedHeight(40)
+        main_layout.addWidget(self.reset_button)
 
-        # add space btw sections: vertical 8px
-        # layout.addSpacerItem(QSpacerItem(0, 8))
-
-        # emergency stop button
-        self.emergency_stop_button = QPushButton('emergency stop', self)
+        # Emergency Stop Button
+        self.emergency_stop_button = QPushButton('Emergency Stop', self)
         self.emergency_stop_button.setStyleSheet('background-color: grey;'
                                                  'color: white;'
                                                  'font-size: 20px;'
                                                  'font-weight: bold;')
-        layout.addWidget(self.emergency_stop_button)
-
-        # add space btw sections: vertical 7px
-        # layout.addSpacerItem(QSpacerItem(0, 7))
+        self.emergency_stop_button.setFixedHeight(40)
+        main_layout.addWidget(self.emergency_stop_button)
 
         # initially deactivate reset & emergency stop buttons (should only work when connection with control board)
         self.reset_button.setEnabled(False)
         self.emergency_stop_button.setEnabled(False)
 
-        # connect functionality
+        # Connect functionality
         self.start_button.clicked.connect(self.on_start_button_clicked)
-        self.emergency_stop_button.clicked.connect(self.manual_tab.clear_current_setting_label)
+        self.emergency_stop_button.clicked.connect(self.on_emergency_stop_button_clicked)
         self.main_tab.run_button.clicked.connect(self.on_run_button_clicked)
 
-        # set layout to the central widget
-        self.central_widget.setLayout(layout)
+        # Ensure the window resizes properly
+        self.central_widget.setLayout(main_layout)
+        self.setMinimumSize(800, 800)  # Minimum fixed size
+        logger.info('GUI built')
 
-        # automatically adjust window size
-        self.adjustSize()
-
-        logger.info('gui built')
 
     # ESSENTIAL FUNCTIONALITY METHODS
     # method to start running threads after ports have been selected
