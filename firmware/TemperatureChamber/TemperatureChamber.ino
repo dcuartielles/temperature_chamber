@@ -765,20 +765,18 @@ void handleEmergencyStopState() {
 }
 
 void runTestSequence() {
-    if (isTestRunning) {
-        runCurrentSequence();
-        if (currentSequenceIndex >= currentTest.numSequences) {
-            Serial.print("Test completed: ");
-            Serial.println(currentTestName);
-            isTestRunning = false;
-            if (currentTestIndex >= queuedTestCount) {
-                Serial.print("All tests completed!");
-                clearTests();
-                return;
-            }
-            currentTestIndex++;
-            runNextTest();
+    runCurrentSequence();
+    if (currentSequenceIndex >= currentTest.numSequences) {
+        Serial.print("Test completed: ");
+        Serial.println(currentTestName);
+        isTestRunning = false;
+        if (currentTestIndex >= queuedTestCount) {
+            Serial.print("All tests completed!");
+            clearTests();
+            return;
         }
+        currentTestIndex++;
+        runNextTest();
     }
 }
 
@@ -840,7 +838,9 @@ void loop() {
     }
 
     readAndParseSerial();   // check serial input for new tests or commands
-    runTestSequence();
+    if (isTestRunning) {
+        runTestSequence();
+    }
 
     switch (status) {
         case RESET:
