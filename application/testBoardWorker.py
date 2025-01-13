@@ -74,11 +74,15 @@ class TestBoardWorker(QThread):
     # method to stop the serial communication
     def stop(self):
         self.is_running = False  # stop the worker thread loop
-        if self.ser and self.ser.is_open:
-            self.ser.close()  # close the serial connection
-            logger.info(f'connection to {self.port} closed now')
-        self.quit()
-        self.wait()
+        try:
+            if self.ser and self.ser.is_open:
+                self.ser.close()  # close the serial connection
+                logger.info(f'connection to {self.port} closed now')
+        except Exception as e:
+            logger.error(f'Failed to close the connection to {self.port}: {e}')
+        finally:
+            self.quit()
+            self.wait()
 
     # show serial response
     def show_response(self, response):
