@@ -921,11 +921,45 @@ class MainWindow(QMainWindow):
     # HIDDEN FUNCTIONALITY
     # stop both workers
     def closeEvent(self, event):
-        self.serial_worker.stop()
-        self.test_board.stop()
-        # maybe add cli & wifi workers here?
-        event.accept()  # ensure the application closes
 
+        # Gracefully stop the serial worker if it's running
+        if self.serial_worker is not None:
+            if hasattr(self.serial_worker, 'is_running') and self.serial_worker.is_running:
+                logger.info("Stopping serial worker...")
+                self.serial_worker.stop()
+                self.serial_worker.quit()
+                self.serial_worker.wait()
+                logger.info("Serial worker stopped.")
+
+        # Gracefully stop the test board worker if it's running
+        if self.test_board is not None:
+            if hasattr(self.test_board, 'is_running') and self.test_board.is_running:
+                logger.info("Stopping test board worker...")
+                self.test_board.stop()
+                self.test_board.quit()
+                self.test_board.wait()
+                logger.info("Test board worker stopped.")
+
+        # Stop the CLI worker if it's running
+        if self.cli_worker is not None:
+            if hasattr(self.cli_worker, 'is_running') and self.cli_worker.is_running:
+                logger.info("Stopping CLI worker...")
+                self.cli_worker.stop()
+                self.cli_worker.quit()
+                self.cli_worker.wait()
+                logger.info("CLI worker stopped.")
+
+        # Stop the WiFi worker if it's running
+        if self.wifi_worker is not None:
+            if hasattr(self.wifi_worker, 'is_running') and self.wifi_worker.is_running:
+                logger.info("Stopping WiFi worker...")
+                self.wifi_worker.stop()
+                self.wifi_worker.quit()
+                self.wifi_worker.wait()
+                logger.info("WiFi worker stopped.")
+
+        logger.info("Application is closing.")
+        event.accept()  # ensure the application closes
 
 # method responsible for running the app
 def main():
