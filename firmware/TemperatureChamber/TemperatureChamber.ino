@@ -6,11 +6,11 @@
     the first iteration of the software. The chamber consists of a ceramic heating element, an 
     air-blower for cooling and two 1-wire thermocouple sensors. It can reach and maintain temperatures
     up to 100 deg C, providing a standardized environment for stress-testing boards. 
-    The chamber does not control humidity.
+    Note: The chamber does not control humidity.
 
     Key Use Case:
-    The goal of this chamber is to create a standardised mechanism as well as a benchmark
-    to measure boards against. The chamber is a tool for answering questions like "How long can a board
+    The goal of this chamber is to create a standardised mechanism and benchmark for measuring board 
+    performance. For example, it hekps answer questions like "How long can a board
     operate at 60C before failure?" It prioritizes accessibility and replicability by using cost-effective,
     off-the-shelf components.
 
@@ -695,7 +695,6 @@ void handleHeatingState() {
         chamberState.longHeatingFlag = 0;
         chamberState.isHeating = false;
         lastHeatingTime = getCurrentTimestamp();    // capture current timestamp for handshake
-
         status = REPORT;
         return;
     } else if(temperatureThreshold < -4) {
@@ -787,9 +786,12 @@ void readAndParseSerial() {
         incomingString[len] = '\0'; // null-terminate the string
 
         DeserializationError error = deserializeJson(jsonBuffer, incomingString);
-        if (!error) {
-            parseTextFromJson(jsonBuffer);
+        if (error) {
+            Serial.print(F("deserializeJson() failed: "));
+            Serial.println(error.f_str());
+            return;
         }
+        parseTextFromJson(jsonBuffer);
         incomingString[0] = '\0';
     }
 }
