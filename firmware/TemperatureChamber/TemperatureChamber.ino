@@ -353,12 +353,6 @@ void queueTest(const Test& test, const String& testName) {
         testQueue[queuedTestCount] = test;
         testNames[queuedTestCount] = testName;
         queuedTestCount++;
-
-        // debug: verify test is queued correctly
-        // Serial.print("Queued test: ");
-        // Serial.println(testName);
-        // Serial.print("Number of sequences: ");
-        // Serial.println(test.numSequences);
     } else {
         Serial.println("Test queue is full. Cannot add more tests.");
     }
@@ -368,32 +362,24 @@ void queueTest(const Test& test, const String& testName) {
 void parseAndQueueTests(JsonObject& tests) {
     for (JsonPair testPair : tests) {
         JsonObject testJson = testPair.value().as<JsonObject>();
-        Test newTest;
-        String testName = testPair.key().c_str();
-
         // check for required fields
         if (!testJson.containsKey("chamber_sequences")) {
             Serial.println("Error: Missing 'chamber_sequences' in test data");
             continue;
         }
-
+        Test newTest;
+        String testName = testPair.key().c_str();
         JsonArray sequences = testJson["chamber_sequences"];
-        newTest.numSequences = sequences.size();
+        newTest.numSequences = min(sequences.size(), MAX_SEQUENCES_IN_TEST); 
 
         newTest.sketch = testJson["sketch"].as<String>();
         newTest.expectedOutput = testJson["expected_output"].as<String>();
 
-        if (newTest.numSequences > MAX_SEQUENCES_IN_TEST) {
-            newTest.numSequences = MAX_SEQUENCES_IN_TEST;         // how many?
-        }
-
-        // iterate through each sequence in the chamber_sequences array
         for (int i = 0; i < newTest.numSequences; i++) {
             JsonObject sequence = sequences[i];
-
             if (!sequence.containsKey("temp") || !sequence.containsKey("duration")) {
                 Serial.println("Error: Missing 'temp' or 'duration' in JSON sequence");
-                continue;
+                break;  // Other sequences will not be queued if a sequence is missing key values
             }
             newTest.sequences[i].targetTemp = sequence["temp"].as<float>();
             newTest.sequences[i].duration = sequence["duration"].as<unsigned long>();
@@ -681,7 +667,6 @@ void handleResetState() {
     chamberState.isHeating = false;
     chamberState.isCooling = false;
     chamberState.longHeatingFlag = 0;
-
 }
 
 void handleHeatingState() {
