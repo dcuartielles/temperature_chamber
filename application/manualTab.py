@@ -107,15 +107,15 @@ class ManualTab(QWidget):
 
         try:
             temp = float(temp_string)
-            if temp >= 100:
-                popups.show_error_message('error', 'Max temperature = 100°C')
+            if temp > 100 or temp < 0:
+                popups.show_error_message('error', 'Temperature must be between 0°C and 100°C')
                 is_valid = False
             duration = int(duration_string)
             if duration < 1:  # check for minimum duration
                 popups.show_error_message('error', 'Minimum duration is 1 minute')
                 is_valid = False
         except ValueError:
-            popups.show_error_message('error', 'Numbers only')
+            popups.show_error_message('error', 'Please enter valid numbers')
             is_valid = False
 
         if is_valid:
