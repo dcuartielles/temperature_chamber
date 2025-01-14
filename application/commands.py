@@ -1,70 +1,28 @@
 # reset
 def reset():
-    reset_command = {"commands": {
-            "RESET": {}
-            }
-    }
-    return reset_command
-
+    return {"commands": {"RESET": {}}}
 
 # emergency stop
 def emergency_stop():
-    stop = {
-
-        "commands": {
-            "EMERGENCY_STOP": {}
-        }
-    }
-    return stop
-
+    return {"commands": {"EMERGENCY_STOP": {}}}
 
 # ping
 def ping():
-    ping_command = {
-        "commands": {
-            "PING": {
-
-            }
-        }
-    }
-    return ping_command
-
+    return {"commands": {"PING": {}}}
 
 # set temp & duration
 def set_temp(data):
-    set_all = {"commands": {
-            "SET_TEMP": data
-            }
-    }
-    return set_all
-
+    return {"commands": {"SET_TEMP": data}}
 
 # handshake
 def handshake(time):
-    hand = {"handshake":
-        {
-            "timestamp": time
-        }
-    }
-    return hand
+    return {"handshake": {"timestamp": time}}
 
 # get test queue
 def get_test_queue():
-    get_queue = {"commands": {
-           "GET_TEST_QUEUE": {
-            }
-        }
-    }
-    return get_queue
-
+    return {"commands": {"GET_TEST_QUEUE": {}}}
 
 # run all tests
 def run_all_tests():
-    run_tests = {"commands": {
-                "RUN_QUEUE": {
-            }
-        }
-    }
-    return run_tests
-
+    return {"commands": {"RUN_QUEUE": {}}}
 
