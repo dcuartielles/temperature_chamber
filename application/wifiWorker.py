@@ -40,7 +40,6 @@ class WifiWorker(QThread):
             logger.exception(f'Error during serial setup of Wifi worker: {e}')
             return False
 
-// TODO: move api call to frontend, send from frontend to backend
     # main operating method for serial response readout
     def run(self):
         if not self.serial_setup():
