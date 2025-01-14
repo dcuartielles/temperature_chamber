@@ -697,15 +697,9 @@ void handleHeatingState() {
         lastHeatingTime = getCurrentTimestamp();    // capture current timestamp for handshake
         status = REPORT;
         return;
-    } else if(temperatureThreshold < -4) {
-        dutyCycleHeater = 100;
-        periodHeater = (temperatureThreshold < -8) ? 120000 : 60000;
-        chamberState.longHeatingFlag = 1;
-    } else if(temperatureThreshold > -4) {
-        dutyCycleHeater = (chamberState.longHeatingFlag) ? 0 : 80;
-        periodHeater = 25000; //on for 20 seconds and off for 5
+    } else {
+        adjustDutyCycleAndPeriod(temperatureThreshold, dutyCycleHeater, periodHeater, chamberState.longHeatingFlag, true);
     }
-
     controlRelay(heater, dutyCycleHeater, periodHeater, chamberState.lastHeaterOnTime);
     chamberState.isHeating = true;
 }
@@ -721,14 +715,29 @@ void handleCoolingState() {
         chamberState.isCooling = false;
         status = REPORT;
         return;
-    } else if(temperatureThreshold > 0.1) {
-        dutyCycleCooler = 100;
-        periodCooler=2000;
+    } else {
+        adjustDutyCycleAndPeriod(temperatureThreshold, dutyCycleHeater, periodHeater, chamberState.longHeatingFlag, false);
     }
-
     controlRelay(cooler, dutyCycleCooler, periodCooler, chamberState.lastCoolerOnTime);
     chamberState.isCooling = true;
+}
 
+void adjustDutyCycleAndPeriod(float threshold, int& dutyCycle, unsigned long& period, int& longHeatingFlag, bool isHeating) {
+    if (isHeating) {
+        if (threshold < -4) {
+            dutyCycle = 100;
+            period = (threshold < -8) ? 120000 : 60000;
+            longHeatingFlag = 1;
+        } else {
+            dutyCycle = (longHeatingFlag) ? 0 : 80;
+            period = 25000; // on for 20 seconds and off for 5
+        }
+    } else {
+        if (threshold > 0.1) {
+            dutyCycle = 100;
+            period = 2000;
+        }
+    }
 }
 
 void handleReportState() {
