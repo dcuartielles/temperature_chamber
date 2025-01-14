@@ -86,21 +86,21 @@ class SerialCaptureWorker(QThread):
         try:
             time.sleep(0.1)
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
-            logger.info(f'connected to arduino port: {self.port}')
+            logger.info(f'Connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
 
             return True
-        except serial.SerialException:
-            logger.exception('error')
+        except serial.SerialException as e:
+            logger.exception(f'Error during serial setup of Serial Capture worker thread: {e}')
             return False
 
     # main method to run the thread
     def run(self):
         if not self.serial_setup():
-            logger.error(f'failed to connect to {self.port}')
+            logger.error(f'Failed to connect to {self.port}')
             self.no_port_connection.emit()
             return
-        logger.info('thread is running')
+        logger.info('Thread is running')
         # wrap the whole while-loop in a try-except statement to prevent crashes in case of system failure
         try:
             while self.is_running:
@@ -130,13 +130,13 @@ class SerialCaptureWorker(QThread):
                         self.trigger_ping()
 
                 except serial.SerialException as e:
-                    logger.exception(f'serial error: {e}')
+                    logger.exception(f'Serial error in Serial Capture worker thread: {e}')
                     self.is_running = False
 
                 time.sleep(0.1)  # avoid excessive cpu usage
         except Exception as e:
             # catch any other unexpected exceptions
-            logger.exception(f'unexpected error: {e}')
+            logger.exception(f'Unexpected error: {e}')
             self.is_running = False
 
         self.stop()
@@ -147,7 +147,7 @@ class SerialCaptureWorker(QThread):
         try:
             if self.ser and self.ser.is_open:
                 self.ser.close()  # close the serial connection
-                logger.info(f'connection to {self.port} closed now')
+                logger.info(f'Connection to {self.port} closed now')
         except Exception as e:
             logger.error(f'Failed to close the connection to {self.port}: {e}')
         finally:
@@ -165,18 +165,18 @@ class SerialCaptureWorker(QThread):
         time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         # insert timestamp into handshake
         handshake = commands.handshake(time)
-        logger.info(f'sending handshake: {handshake}')
+        logger.info(f'Sending handshake: {handshake}')
         # send handshake to arduino
         self.send_json_to_arduino(handshake)
-        logger.info(f'handshake sent to arduino: {handshake}')
+        logger.info(f'Handshake sent to arduino: {handshake}')
         try:
             # decode arduino response
             handshake_response = self.ser.readline().decode('utf-8').strip()
             # convert response string to dictionary
             parsed_response = json.loads(handshake_response)
-            logger.info(f'response to handshake: {parsed_response}')
-        except json.JSONDecodeError:
-            logger.exception('failed to parse arduino response')
+            logger.info(f'Response to handshake: {parsed_response}')
+        except json.JSONDecodeError as e:
+            logger.exception(f'Failed to parse arduino response: {e}')
 
         # prevent handshake from being sent again
         self.sent_handshake = True
@@ -187,7 +187,7 @@ class SerialCaptureWorker(QThread):
 
     # ping
     def ping(self):
-        logger.info(f'test number at the beginning of ping: {self.test_number}')
+        logger.info(f'Test number at the beginning of ping: {self.test_number}')
         ping = commands.ping()  # create ping command
         self.send_json_to_arduino(ping)  # send ping to arduino
         try:
@@ -206,7 +206,7 @@ class SerialCaptureWorker(QThread):
                 self.machine_state_signal.emit(self.machine_state)
                 # extract test status information and emit signals for gui updates
                 self.current_temperature = ping_data.get('current_temp', 0)
-                logger.info(f'current temp received directly from ping: {self.current_temperature}')
+                logger.info(f'Current temperature received from ping: {self.current_temperature}')
                 test_status = ping_data.get('test_status', {})
                 self.is_test_running = test_status.get('is_test_running', False)
                 self.current_test = test_status.get('current_test', '')
@@ -219,7 +219,7 @@ class SerialCaptureWorker(QThread):
                 self.emit_test_status()
                 self.display_info()
         except json.JSONDecodeError:
-            logger.exception('failed to decode ping response as json')
+            logger.exception('Failed to decode ping response as json')
 
     # MORE ADVANCED COMMUNICATION WITH TEST BOARD
     # run all tests
@@ -233,18 +233,18 @@ class SerialCaptureWorker(QThread):
         if test_data is not None and 'tests' in test_data:
             full_tests_json = {'tests': test_data["tests"]}
             self.send_json_to_arduino(full_tests_json)  # send the data to arduino
-            logger.info(f'sending full test json: {full_tests_json}')
+            logger.info(f'Sending full test json: {full_tests_json}')
             # log and print status
-            logger.info(f'adding full tests data with {len(test_data["tests"])} tests to test queue on arduino')
+            logger.info(f'Adding {len(test_data["tests"])} tests to test queue on Arduino')
             self.get_test_queue_from_arduino()
         else:
             # handle case when no test data is found
-            logger.warning('no test data found on file')
+            logger.warning('No test data found on file')
 
     # get test queue from arduino
     def get_test_queue_from_arduino(self):
         get_queue = commands.get_test_queue()
-        logger.info('sending command to arduino to get test queue')
+        logger.info('Sending command to arduino to get test queue')
         self.send_json_to_arduino(get_queue)
 
     # set temp & duration from the gui
@@ -255,21 +255,20 @@ class SerialCaptureWorker(QThread):
             set_temp_data = commands.set_temp(data)
             self.send_json_to_arduino(set_temp_data)
         else:
-            logger.warning('nothing to set the t-chamber to')
+            logger.warning('Nothing to set the t-chamber to')
 
     # reset test board
     def reset_control_board(self):
         reset = commands.reset()
         self.send_json_to_arduino(reset)
-        logger.info('resetting control board')
+        logger.info('Resetting control board')
         self.get_test_queue_from_arduino()
 
     # emergency stop
     def emergency_stop(self):
         stop = commands.emergency_stop()
-        logger.info('emergency stop should be sending now')
         self.send_json_to_arduino(stop)
-        logger.info('emergency stop issued')
+        logger.info('Emergency stop issued')
         self.get_test_queue_from_arduino()
 
     # SENDING STUFF TO MAIN APP
@@ -291,7 +290,7 @@ class SerialCaptureWorker(QThread):
             'desired_temp': self.desired_temp,
             'machine_state': self.machine_state
         }
-        logger.info(f'relevant info for serial monitor updates sent via signal: {relevant_info}')
+        logger.info(f'Relevant info for serial monitor updates sent via signal: {relevant_info}')
         self.update_chamber_monitor.emit(relevant_info)
 
     # DECODING AND ENCODING TOOLS
@@ -300,25 +299,25 @@ class SerialCaptureWorker(QThread):
         json_data = json.dumps(test_data)  # convert python dictionary to json
         try:
             if not self.ser or not self.ser.is_open:
-                logger.warning('serial not open')
+                logger.warning('Serial connection not established or not open')
                 return
             self.ser.write((json_data + '\n').encode('utf-8'))
             time.sleep(0.01)
-            logger.info(f'sent to arduino: {json_data}')
+            logger.info(f'Sent to arduino: {json_data}')
             # blocking method within thread
             while self.ser.in_waiting > 0:
                 response = self.ser.readline().decode('utf-8').strip()
-                logger.info(f'arduino says: {response}')
+                logger.info(f'Response from Arduino: {response}')
                 # capture all serial responses for thread to process properly
                 self.response_queue.put(response)
         except serial.SerialException as e:
-            logger.error(f'error sending JSON: {e}')
+            logger.error(f'Error sending JSON: {e}')
 
     # process serial response
     def process_response(self, response):
-        logger.debug(f"raw response: {repr(response)}")
+        logger.debug(f'Raw response: {repr(response)}')
         clean_response = response.strip()  # remove leading/trailing whitespace
-        logger.debug(f"cleaned response: {repr(clean_response)}")
+        logger.debug(f'Cleaned response: {repr(clean_response)}')
 
         # list of responses to be picked up
         trigger_responses = ['Setting', 'Target temperature reached!']
@@ -326,23 +325,24 @@ class SerialCaptureWorker(QThread):
             self.update_listbox.emit(response)  # emit signal to update listbox
             logger.info(f'{response}')
         elif 'Test completed:' in response.strip():
-            logger.info(f'arduino says {response}, sending signal to upload sketch for new test')
+            logger.info(f'Response from Arduino: {response}')
+            logger.info(f'Sending signal to upload sketch for new test')
             self.test_number += 1
-            logger.info(f'test number: {self.test_number}')
+            logger.info(f'Test number: {self.test_number}')
             self.test_number_signal.emit(self.test_number)
-            message = f'test {self.test_number} complete'
+            message = f'Test {self.test_number} complete'
             logger.info(message)
-            logger.info('about to emit signal for a upload btw tests')
+            logger.info('About to emit signal for a upload btw tests')
             self.upload_sketch_again_signal.emit(message)
-            logger.info('signal for new upload btw tests emitted')
+            logger.info('Signal for new upload btw tests emitted')
         elif response.strip().startswith('Waiting'):
             self.update_listbox.emit(response)  # emit signal to update listbox
-            logger.info(f'response to WAITING: {response}')
+            logger.info(f'Response to WAITING: {response}')
             self.sequence_has_been_advanced = False
         elif response.strip().startswith('Sequence complete'):
             if not self.sequence_has_been_advanced:
                 self.next_sequence_progress.emit()
-                logger.info('sending signal to start new sequence progress bar')
+                logger.info('Sending signal to start new sequence progress bar')
                 self.sequence_complete.emit('sequence complete')
                 self.sequence_has_been_advanced = True
         elif response.strip().startswith('All tests completed!'):
@@ -351,12 +351,12 @@ class SerialCaptureWorker(QThread):
             queue_response = response
             parsed_response = json.loads(queue_response)
             queue = parsed_response['queue']
-            logger.info(f'this is what test queue looks like now: {queue}')
+            logger.info(f'Current test queue on Arduino: {queue}')
             self.update_test_data_from_queue.emit(queue)
             if 'queue' in parsed_response:
                 queue = parsed_response['queue']
-                logger.info(f'this is what test queue looks like now: {queue}')
+                logger.info(f'Current test queue on Arduino: {queue}')
                 self.update_test_data_from_queue.emit(queue)
         else:
-            logger.info(f'complete response from arduino: {response}')
+            logger.info(f'Complete response from arduino: {response}')
 

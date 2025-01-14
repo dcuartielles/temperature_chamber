@@ -44,7 +44,7 @@ def get_arduino_boards():
             logger.info(f'arduino_ports: {arduino_ports}')
             return arduino_ports
         except json.JSONDecodeError:
-            logger.info("error parsing arduino-cli board list output")
+            logger.info("Error parsing arduino-cli board list output")
             return []
     return []
 

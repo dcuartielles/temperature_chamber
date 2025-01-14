@@ -35,19 +35,19 @@ class TestBoardWorker(QThread):
             self.baudrate = baudrate
         try:
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
-            logger.info(f'test board worker connected to arduino port: {self.port}')
+            logger.info(f'Test board worker connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
             return True
-        except serial.SerialException:
-            logger.exception('error')
+        except serial.SerialException as e:
+            logger.exception(f'Error during serial setup: {e}')
             return False
 
     # main operating method for serial response readout
     def run(self):
         if not self.serial_setup():
-            logger.error(f'test board worker failed to connect to {self.port}')
+            logger.error(f'Test board worker failed to connect to {self.port}')
             return
-        logger.info('test board thread is running')
+        logger.info('Test board thread is running')
         # wrap the whole while-loop in a try-except statement to prevent crashes in case of system failure
         try:
             while self.is_running:
@@ -61,12 +61,12 @@ class TestBoardWorker(QThread):
                         if response:
                             self.show_response(response)
                 except serial.SerialException as e:
-                    logger.exception(f'serial error: {e}')
+                    logger.exception(f'Serial error: {e}')
                     self.is_running = False
                 time.sleep(0.1)  # avoid excessive cpu usage
         except Exception as e:
             # catch any other unexpected exceptions
-            logger.exception(f'unexpected error: {e}')
+            logger.exception(f'Unexpected error: {e}')
             self.is_running = False
 
         self.stop()
@@ -77,7 +77,7 @@ class TestBoardWorker(QThread):
         try:
             if self.ser and self.ser.is_open:
                 self.ser.close()  # close the serial connection
-                logger.info(f'connection to {self.port} closed now')
+                logger.info(f'Connection to {self.port} closed now')
         except Exception as e:
             logger.error(f'Failed to close the connection to {self.port}: {e}')
         finally:
@@ -117,7 +117,7 @@ class TestBoardWorker(QThread):
         if self.test_data:
             expected_output = self.expected_output(self.test_data)
             regex_pattern = self.encode_pattern(expected_output)
-            logger.debug(f'getting expected pattern: {regex_pattern}')
+            logger.debug(f'Getting expected pattern: {regex_pattern}')
             return regex_pattern
         return
 
@@ -129,14 +129,14 @@ class TestBoardWorker(QThread):
         else:
             regex_pattern = expected_pattern
         regex_pattern = f'^{regex_pattern}$'
-        logger.debug(f'encoding pattern: {regex_pattern}')
+        logger.debug(f'Encoding pattern: {regex_pattern}')
         return regex_pattern
 
     # extract deterministic test output part
     def extract_deterministic_part(self, message):
         regex_pattern = self.get_expected_pattern()
         match = re.match(regex_pattern, message)
-        logger.debug('about to search for matches')
+        logger.debug('About to search for matches')
         if match:
             if '(.*)' in regex_pattern:
                 # non-deterministic part is captured as the first group in the match
@@ -145,12 +145,12 @@ class TestBoardWorker(QThread):
                 deterministic_parts = re.split(r'\(\.\*\)', regex_pattern)
                 deterministic_output = "".join(deterministic_parts)
                 if non_deterministic_part:
-                    logger.info(f'non-deterministic output: {non_deterministic_part}')
-                logger.debug(f'deterministic_output: {deterministic_output}')
+                    logger.info(f'Non-deterministic output: {non_deterministic_part}')
+                logger.debug(f'Deterministic_output: {deterministic_output}')
                 return deterministic_output
             else:
                 # if the pattern is fully deterministic, return the message as-is
-                logger.debug(f'fully deterministic match: {message}')
+                logger.debug(f'Fully deterministic match: {message}')
                 return message
-        logger.debug(f'no matches found, the message is: {message}')
+        logger.debug(f'No matches found, the message is: {message}')
         return message

@@ -80,13 +80,13 @@ class ProgressBar(QWidget):
         # set the layout
         self.setLayout(layout)
         self.show()
-        logger.info('progress gui set up')
+        logger.info('Progress GUI set up')
 
     # start processing progress bar for general test time
     def start_progress(self, test_data, current_temp):
         # get all the necessary variables filled
         self.current_temp = current_temp
-        logger.info(f'received current temp from signal from main: {self.current_temp}')
+        logger.info(f'Received current temperature from signal from main: {self.current_temp}')
         self.test_data = test_data
         self.sequence_durations = self.get_sequence_durations()
         self.temperatures = self.get_temperatures()
@@ -115,7 +115,7 @@ class ProgressBar(QWidget):
             if self.elapsed_time >= self.total_duration:
                 self.timer.stop()  # stop timer when total progress is complete
         else:
-            logger.info('setting up overall test time progress bar, no test data here yet')
+            logger.info('Setting up general test time progress bar, no test data here yet')
             return
 
     # stopwatch methods
@@ -133,18 +133,18 @@ class ProgressBar(QWidget):
         self.elapsed_minutes = int(self.actual_runtime / 60000)
         elapsed_hours, elapsed_minutes = divmod(self.elapsed_minutes, 60)
         formatted_elapsed_time = f"{int(elapsed_hours)}h {int(elapsed_minutes)}m" if elapsed_hours > 0 else f"{int(elapsed_minutes)}m"
-        logger.info(f'parsing elapsed time for clear display, actual runtime was {formatted_elapsed_time}')
-        self.time_label.setText(f'done in {formatted_elapsed_time}')
+        logger.info(f'Parsing elapsed time for clear display, actual runtime was {formatted_elapsed_time}')
+        self.time_label.setText(f'Done in {formatted_elapsed_time}')
         return formatted_elapsed_time
 
     # trigger new sequence progress bar update
     def advance_sequence(self):
-        logger.info('triggering a new sequence')
+        logger.info('Triggering a new sequence')
         self.current_sequence_index += 1
         if self.current_sequence_index <= len(self.sequence_durations):
             self.sequence_progress_bar.set_sequence_data(self.sequence_durations, self.current_sequence_index)
             self.number_of_sequences += 1
-            logger.info(f'number of sequences: {self.number_of_sequences}')
+            logger.info(f'Number of sequences: {self.number_of_sequences}')
             if self.number_of_sequences > len(self.sequence_durations):
                 return
         else:
@@ -167,7 +167,7 @@ class ProgressBar(QWidget):
                 sequences = test.get('chamber_sequences', [])
                 for sequence in sequences:
                     temperatures.append(sequence.get('temp', 0))
-        logger.info(f'temperatures: {temperatures}')
+        logger.info(f'Temperatures: {temperatures}')
         self.temperatures = temperatures
         return self.temperatures
 
@@ -175,60 +175,60 @@ class ProgressBar(QWidget):
     def estimate_total_time(self):
         # reset total duration
         self.total_duration = 0
-        logger.info(f'durations: {self.sequence_durations}')
+        logger.info(f'Durations: {self.sequence_durations}')
         # start by adding total test sequence duration
         self.total_duration += sum(self.sequence_durations)
-        logger.info(f'start by adding total test sequence duration: {self.total_duration}')
+        logger.info(f'Start by adding total test sequence duration: {self.total_duration}')
 
         # calculate degrees to reach target temp for first sequence
         degrees_to_target = float(self.temperatures[0]) - float(self.current_temp)
-        logger.info(f'calculate degrees to reach target temp for first sequence: {float(self.temperatures[0])} - {float(self.current_temp)}')
+        logger.info(f'Calculate degrees to reach target temp for first sequence: {float(self.temperatures[0])} - {float(self.current_temp)}')
 
         prep_time = 0
         # if chamber needs to heat up
         if degrees_to_target > 0:
             prep_time = degrees_to_target * 30000  # 0.5 min per degree, in milliseconds
-            logger.info(f'calculated preptime, 30000 * {degrees_to_target} = {prep_time}')
+            logger.info(f'Calculated preptime, 30000 * {degrees_to_target} = {prep_time}')
         # if chamber needs cooling
         elif degrees_to_target < 0:
             prep_time = abs(degrees_to_target) * 120000  # 2 minutes per degree, in milliseconds, absolute value
-            logger.info(f'calculated preptime, 120000 * {abs(degrees_to_target)} = {prep_time}')
+            logger.info(f'Calculated preptime, 120000 * {abs(degrees_to_target)} = {prep_time}')
         # add prep time
-        logger.info(f'total duration + preptime: {self.total_duration} += {prep_time}')
+        logger.info(f'Total duration + preptime: {self.total_duration} += {prep_time}')
         self.total_duration += prep_time
-        logger.info(f' total duration: {self.total_duration}')
+        logger.info(f'Total duration: {self.total_duration}')
 
         # calculate time for temperature changes between subsequent target temperatures
         for i in range(1, len(self.temperatures)):
             degrees_difference = int(self.temperatures[i]) - int(self.temperatures[i - 1])
-            logger.info('calculate time for temperature changes between subsequent target temperatures')
+            logger.info('Calculate time for temperature changes between subsequent target temperatures')
             # if chamber needs to heat up
             if degrees_difference > 0:
-                logger.info(f'total duration += degrees difference * 30000: {self.total_duration} += {degrees_difference} * 30000')
+                logger.info(f'Total duration += degrees difference * 30000: {self.total_duration} += {degrees_difference} * 30000')
                 self.total_duration += degrees_difference * 30000  # 0.5 min per degree, in milliseconds
-                logger.info(f'total dur: {self.total_duration}')
+                logger.info(f'Total duration: {self.total_duration}')
 
             # if chamber needs cooling
             elif degrees_difference < 0:
                 logger.info(
-                    f'total duration += degrees difference * 120000: {self.total_duration} += {abs(degrees_difference)} * 120000')
+                    f'Total duration += degrees difference * 120000: {self.total_duration} += {abs(degrees_difference)} * 120000')
                 self.total_duration += abs(
                     degrees_difference) * 120000  # 2 min per degree, in millis, absolute value
-                logger.info(f'tot dur: {self.total_duration}')
+                logger.info(f'Tot duration: {self.total_duration}')
 
         # adjust total duration according to what practice shows to be more realistic
         # self.total_duration = self.total_duration * 0.93
-        logger.info(f'total duration is {self.total_duration}')
+        logger.info(f'Total duration is {self.total_duration}')
         return self.total_duration
 
     # update test progress bar label with estimated total time
     def update_test_bar_label(self):
-        logger.info(f'total duration as is: {self.total_duration}')
+        logger.info(f'Total duration as is: {self.total_duration}')
         estimated_time = int(self.total_duration / 60000)  # estimated time in minutes
-        logger.info(f'tot dur in minutes: {estimated_time}')
+        logger.info(f'Tot duration in minutes: {estimated_time}')
         est_hours, est_minutes = divmod(estimated_time, 60)
         formatted_estimated_time = f"{int(est_hours)}h {int(est_minutes)}m" if est_hours > 0 else f"{int(est_minutes)}m"
-        logger.info(f'parsing estimated runtime for clear display: {formatted_estimated_time}')
+        logger.info(f'Parsing estimated runtime for clear display: {formatted_estimated_time}')
 
         # make sure to print correct singular or plural in test(s)
         tests = self.number_of_tests
@@ -246,6 +246,6 @@ class ProgressBar(QWidget):
                 sequences = test.get('chamber_sequences', [])
                 for sequence in sequences:
                     durations.append(sequence.get('duration', 0))
-        logger.info(f'all durations: {durations}')
+        logger.info(f'All durations: {durations}')
         return durations
 

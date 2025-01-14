@@ -72,7 +72,7 @@ class ManualTab(QWidget):
             return
 
         if not self.serial_is_running:
-            popups.show_error_message('warning', 'no serial connection')
+            popups.show_error_message('warning', 'No serial connection')
             return
 
         is_valid = self.check_inputs(temp_string, duration_string)  # validate inputs
@@ -82,9 +82,9 @@ class ManualTab(QWidget):
 
         if self.test_is_running:
             response = popups.show_dialog(
-                'a test is running: are you sure you want to interrupt it and proceed?')
+                'A test is running: are you sure you want to interrupt it and proceed?')
             if response == QMessageBox.Yes:
-                message = 'test interrupted, temperature set manually'
+                message = 'Test interrupted, temperature set manually'
                 self.test_interrupted.emit(message)
                 self.test_is_running = False
                 logger.warning(message)
@@ -92,14 +92,14 @@ class ManualTab(QWidget):
                 return
 
         self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
-        message = 'temperature set manually'
+        message = 'Temperature set manually'
         self.test_interrupted.emit(message)
         if duration_string == '1':
-            current_string = f'temperature set to {temp_string}°C for the duration of {duration_string} minute'
+            current_string = f'Temperature set to {temp_string}°C for the duration of {duration_string} minute'
         else:
-            current_string = f'temperature set to {temp_string}°C for the duration of {duration_string} minutes'
+            current_string = f'Temperature set to {temp_string}°C for the duration of {duration_string} minutes'
         self.current_setting.setText(current_string)
-        logger.info(f'sent to arduino: {self.input_dictionary}')
+        logger.info(f'Sent to arduino: {self.input_dictionary}')
 
     # make sure both temp & duration are submitted by user
     def check_inputs(self, temp_string, duration_string):
@@ -108,14 +108,14 @@ class ManualTab(QWidget):
         try:
             temp = float(temp_string)
             if temp >= 100:
-                popups.show_error_message('error', 'max temperature = 100°C')
+                popups.show_error_message('error', 'Max temperature = 100°C')
                 is_valid = False
             duration = int(duration_string)
             if duration < 1:  # check for minimum duration
-                popups.show_error_message('error', 'minimum duration is 1 minute')
+                popups.show_error_message('error', 'Minimum duration is 1 minute')
                 is_valid = False
         except ValueError:
-            popups.show_error_message('error', 'numbers only')
+            popups.show_error_message('error', 'Numbers only')
             is_valid = False
 
         if is_valid:
@@ -128,9 +128,9 @@ class ManualTab(QWidget):
     # auxiliary method for emergency stop
     def clear_entries(self):
         self.set_temp_input.clear()
-        self.set_temp_input.setPlaceholderText('temperature in °C')
+        self.set_temp_input.setPlaceholderText('Temperature in °C')
         self.set_duration_input.clear()
-        self.set_duration_input.setPlaceholderText('duration in minutes')
+        self.set_duration_input.setPlaceholderText('Duration in minutes')
 
     def clear_current_setting_label(self):
         self.current_setting.setText('')

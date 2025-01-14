@@ -22,9 +22,9 @@ class SequenceProgressBar(QWidget):
     def set_sequence_data(self, sequence_durations, current_index):
         self.sequence_durations = sequence_durations
         self.current_sequence_index = current_index
-        logger.debug('got sequence data from progress, about to repaint here')
+        logger.debug('Got sequence data from progress, about to repaint here')
         self.update()  # trigger a repaint
-        logger.debug('repainted')
+        logger.debug('Repainted')
 
     # custom painting logic
     def paintEvent(self, event):
@@ -38,16 +38,16 @@ class SequenceProgressBar(QWidget):
         bar_height = self.height()
 
         if total_width == 0 or bar_height == 0:
-            logger.warning('invalid dimensions for the sequence progress bar widget')
+            logger.warning('Invalid dimensions for the sequence progress bar widget')
             return
-        logger.debug('about to redraw sequence sen')
+        logger.debug('About to redraw sequence sen')
 
         current_x = 0  # starting point for drawing the first segment
         total_duration = sum(self.sequence_durations)
 
         # draw each segment for the sequences
         for index, duration in enumerate(self.sequence_durations):
-            logger.debug('beginning to calculate segments')
+            logger.debug('Beginning to calculate segments')
             segment_width = (duration / total_duration) * total_width  # proportional width of the segment
             # convert segment width to int
             segment_width = int(segment_width)
@@ -58,17 +58,17 @@ class SequenceProgressBar(QWidget):
             # determine color to paint based on progress
             if index < self.current_sequence_index:
                 painter.setBrush(past_color)  # completed segments get a darker shade
-                logger.debug('completed segments get a darker shade')
+                logger.debug('Completed segments get a darker shade')
             elif index == self.current_sequence_index:
                 painter.setBrush(color)  # current segment in regular color
-                logger.debug('current segment in regular color')
+                logger.debug('Current segment in regular color')
             else:
                 painter.setBrush(future_color)  # upcoming segments get a lighter shade
-                logger.debug('upcoming segments get a lighter shade')
+                logger.debug('Upcoming segments get a lighter shade')
 
-            logger.debug('about to make partitions')
+            logger.debug('About to make partitions')
             painter.setPen(QPen(QColor('white'), 1))  # draw white borders between segments
-            logger.debug('pen set to white')
+            logger.debug('Pen set to white')
             painter.drawRect(current_x, 0, segment_width, bar_height)
-            logger.debug('has drawn partitions')
+            logger.debug('Has drawn partitions')
             current_x += segment_width  # move to the next segment

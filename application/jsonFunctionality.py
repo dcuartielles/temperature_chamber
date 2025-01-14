@@ -21,7 +21,7 @@ class FileHandler:
         initial_dir = self.config.get_test_directory()  # initially open directory saved in config
 
         # open file dialog to select a JSON file
-        filepath, _ = QFileDialog.getOpenFileName(self.parent, "open test file", initial_dir,
+        filepath, _ = QFileDialog.getOpenFileName(self.parent, "Open test file", initial_dir,
                                                   "JSON files (*.json);;"
                                                   "All Files (*)")
         if filepath:
@@ -36,20 +36,20 @@ class FileHandler:
                     test_file_directory = Path(filepath).parent
                     new_test_directory = test_file_directory.parent  # two levels up from the test file itself
                     self.config.set_test_directory(new_test_directory)  # update test directory in config
-                    logger.info(f"test directory updated to: {new_test_directory} but with correct forward slashes")
+                    logger.info(f'Test directory updated to: {new_test_directory} but with correct forward slashes')
 
                     return self.test_data  # return test file
 
             except FileNotFoundError:
-                logger.exception(f'file here: {filepath} not found.')
+                logger.exception(f'File here: {filepath} not found.')
                 return None
 
             except json.JSONDecodeError:
-                logger.exception(f'error decoding JSON from file: {filepath}')
+                logger.exception(f'Error decoding JSON from file: {filepath}')
                 return None
 
             except Exception as e:
-                logger.exception(f'an error occurred: {str(e)}')
+                logger.exception(f'An error occurred: {str(e)}')
                 return None
 
     # return the file path

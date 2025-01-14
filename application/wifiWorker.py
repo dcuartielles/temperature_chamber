@@ -33,19 +33,20 @@ class WifiWorker(QThread):
             self.baudrate = baudrate
         try:
             self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
-            logger.info(f'wifi worker connected to arduino port: {self.port}')
+            logger.info(f'Wifi worker connected to arduino port: {self.port}')
             time.sleep(1)  # make sure arduino is ready
             return True
-        except serial.SerialException:
-            logger.exception('error')
+        except serial.SerialException as e:
+            logger.exception(f'Error during serial setup of Wifi worker: {e}')
             return False
 
+// TODO: move api call to frontend, send from frontend to backend
     # main operating method for serial response readout
     def run(self):
         if not self.serial_setup():
-            logger.error(f'wifi worker failed to connect to {self.port}')
+            logger.error(f'Wifi worker failed to connect to {self.port}')
             return
-        logger.info('wifi thread is running')
+        logger.info('Wifi thread is running')
         # wrap the whole while-loop in a try-except statement to prevent crashes in case of system failure
         try:
             while self.is_running:
@@ -56,21 +57,21 @@ class WifiWorker(QThread):
                     if not self.ser or not self.ser.is_open:
                         time.sleep(0.1)
                         continue
-                    logger.debug('wifi worker says hello')
+                    logger.debug('Wifi worker says hello')
                     # continuous readout from serial
                     response = self.ser.readline().decode('utf-8').strip()
                     if response:
                         self.show_response(response)
                     if time.time() - self.last_command_time > 5:
                         self.last_command_time = time.time()
-                        logger.info('wifi thread is running')
+                        logger.info('Wifi thread is running')
                 except serial.SerialException as e:
-                    logger.exception(f'serial error: {e}')
+                    logger.exception(f'Serial error in Wifi worker thread: {e}')
                     self.is_running = False
                 time.sleep(0.1)  # avoid excessive cpu usage
         except Exception as e:
             # catch any other unexpected exceptions
-            logger.exception(f'unexpected error: {e}')
+            logger.exception(f'Unexpected error in Wifi worker thread: {e}')
             self.is_running = False
 
         self.stop()
@@ -82,7 +83,7 @@ class WifiWorker(QThread):
         try:
             if self.ser and self.ser.is_open:
                 self.ser.close()  # close the serial connection
-                logger.info(f'connection to {self.port} closed now')
+                logger.info(f'Connection to {self.port} closed now')
         except Exception as e:
             logger.error(f'Failed to close the connection to {self.port}: {e}')
         finally:

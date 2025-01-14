@@ -96,7 +96,7 @@ class MainTab(QWidget):
     # OUTPUT CHECKING PART
     def update_test_number(self, test_number):
         self.test_number = test_number
-        logger.info(f'current test number: {self.test_number}')
+        logger.info(f'Current test number: {self.test_number}')
 
     # extract expected test outcome from test file
     def expected_output(self, test_data):
@@ -108,7 +108,7 @@ class MainTab(QWidget):
                 test = self.test_data['tests'][current_test_key]
                 logger.info(test)
                 expected_output = test.get('expected_output', '')  # get pertinent exp output
-                logger.info(f'expected output: {expected_output}')
+                logger.info(f'Expected output: {expected_output}')
                 return expected_output
             else:
                 return
@@ -120,7 +120,7 @@ class MainTab(QWidget):
         # compare t-board output with expected test outcome
         if str(expected_output) == message:
             self.update_gui_correct()
-            logger.info("correct test output")
+            logger.info('Correct test output')
         else:
             logger.error(message)
             # if no matches, handle as incorrect output
