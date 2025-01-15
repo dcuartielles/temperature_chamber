@@ -337,14 +337,15 @@ int getTimeLeft(unsigned long duration, Sequence currentSequence) {
 
 // dutyCycle has to be 0..100
 void controlRelay(Led& relay, int dutyCycle, unsigned long period, unsigned long& lastOnTimer) {
-    unsigned long elapsedTime = millis() - lastOnTimer;
+    unsigned long currentTime = millis();
+    unsigned long elapsedTime = currentTime - lastOnTimer;
     if (elapsedTime > (dutyCycle * period) / 100) {
         relay.off();
     } else {
         relay.on();
     }
     if (elapsedTime > period) {
-        lastOnTimer = millis();
+        lastOnTimer = currentTime;
     }
 }
 
