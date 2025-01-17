@@ -42,41 +42,50 @@ class WifiWorker(QThread):
 
     # main operating method for serial response readout
     def run(self):
+        # Ensure the serial setup is successful before entering the loop
         if not self.serial_setup():
-            logger.error(f'Wifi worker failed to connect to {self.port}')
+            logger.error(f"WiFi worker failed to connect to port: {self.port}")
             return
-        logger.info('Wifi thread is running')
-        # wrap the whole while-loop in a try-except statement to prevent crashes in case of system failure
+
+        logger.info("WiFi worker thread started.")
         try:
-            while self.is_running:
+            while self.is_running:  # Main thread loop
                 if self.is_stopped:
-                    time.sleep(0.1)
+                    logger.debug("WiFi worker is stopped. Waiting...")
+                    time.sleep(0.1)  # Small delay to avoid excessive CPU usage
                     continue
+
+                # Check if the serial connection is still valid
+                if not self.ser or not self.ser.is_open:
+                    logger.warning(f"WiFi worker lost connection to port: {self.port}")
+                    self.stop()  # Gracefully stop the worker
+                    break
+
                 try:
-                    if not self.ser or not self.ser.is_open:
-                        time.sleep(0.1)
-                        continue
-                    logger.debug('Wifi worker says hello')
-                    # continuous readout from serial
+                    # Read data from the serial port
                     response = self.ser.readline().decode('utf-8').strip()
                     if response:
-                        self.show_response(response)
+                        self.show_response(response)  # Process and display the response
+
+                    # Send periodic logs or actions to keep track of activity
                     if time.time() - self.last_command_time > 5:
                         self.last_command_time = time.time()
-                        logger.info('Wifi thread is running')
-                except serial.SerialException as e:
-                    logger.exception(f'Serial error in Wifi worker thread: {e}')
-                    self.is_running = False
-                time.sleep(0.1)  # avoid excessive cpu usage
-        except Exception as e:
-            # catch any other unexpected exceptions
-            logger.exception(f'Unexpected error in Wifi worker thread: {e}')
-            self.is_running = False
+                        logger.info("WiFi worker thread is running smoothly.")
 
-        self.stop()
+                except serial.SerialException as e:
+                    logger.exception(f"Serial exception in WiFi worker: {e}")
+                    self.is_running = False  # Exit the main loop
+
+                time.sleep(0.1)  # Avoid excessive CPU usage
+
+        except Exception as e:
+            logger.exception(f"Unexpected exception in WiFi worker: {e}")
+            self.is_running = False  # Stop the worker on unexpected error
+
+        finally:
+            self.stop()  # Ensure resources are released when exiting the thread
 
     # method to stop the serial communication
-
     def stop(self):
         self.is_running = False  # Stop the worker thread loop
         try:
