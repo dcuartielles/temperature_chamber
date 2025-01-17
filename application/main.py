@@ -177,6 +177,7 @@ class MainWindow(QMainWindow):
         chamber_layout.addWidget(self.chamber_label)
 
         self.chamber_monitor = QListWidget(self)
+        self.chamber_monitor.setFixedHeight(40)
         chamber_layout.addWidget(self.chamber_monitor)  # This box stretches
         main_layout.addLayout(chamber_layout, stretch=2)
 
@@ -222,8 +223,32 @@ class MainWindow(QMainWindow):
         self.selected_c_port = self.port_selector.get_selected_c_port()
         self.selected_t_port = self.port_selector.get_selected_t_port()
 
-        # validate selected ports
+        # Validate Wifi checkbox state and port selection
+        if self.port_selector.enable_wifi_checkbox.isChecked():
+            logger.info('Wifi checkbox checked.')
+            self.selected_t_wifi = self.port_selector.get_selected_wifi()
+            logger.info('Selected Wifi port: %s', self.selected_t_wifi)
 
+            if not self.selected_t_wifi:
+                logger.warning('No valid Wifi port selected. Skipping Wifi worker initialization.')
+                return
+
+            logger.info('Initializing Wifi worker...')
+            if not hasattr(self, 'wifi_worker') or self.wifi_worker is None or not self.wifi_worker.is_running:
+                try:
+                    self.wifi_worker = WifiWorker(port=self.selected_t_wifi, baudrate=9600)
+                    self.wifi_worker.start() # start worker thread for wifi board
+                    logger.info('Wifi board worker started successfully.')
+                except Exception as e:
+                    logger.exception(f'Failed to start wifi worker: {e}')
+                    popups.show_error_message('error', f'Failed to start wifi worker: {e}')
+            else:
+                logger.error('Wifi worker already running')
+        else:
+            logger.info('Wifi checkbox not checked, skipping Wifi worker initialization.')
+
+
+        # validate selected ports
         logger.info('Checking if ports are selected...')
         # visually signal app activation
 
@@ -272,6 +297,7 @@ class MainWindow(QMainWindow):
                     self.test_board = TestBoardWorker(self.test_data, self.test_number, port=self.selected_t_port, baudrate=9600)
                     self.test_board.all_good.connect(self.reset_b_t_timer)
                     self.test_board.start()  # start worker thread
+                    logger.info('Test board worker started successfully')
 
                 except Exception as e:
                     logger.exception(f'Failed to start test board worker: {e}')
@@ -280,22 +306,6 @@ class MainWindow(QMainWindow):
 
             if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
                 return
-        try:
-            self.selected_t_wifi = self.port_selector.get_selected_wifi()
-            logger.debug(self.selected_t_wifi)
-            if not self.selected_t_wifi:
-                return
-
-            if not hasattr(self, 'wifi_worker') or self.wifi_worker is None or not self.wifi_worker.is_running:
-                try:
-                    self.wifi_worker = WifiWorker(port=self.selected_t_wifi, baudrate=9600)
-                    self.wifi_worker.start()  # start worker thread
-                except Exception as e:
-                    logger.exception(f'Failed to start wifi worker: {e}')
-                    popups.show_error_message('error', f'Failed to start wifi worker: {e}')
-                    return
-        except:
-            logger.exception('Wifi dropdown failed')
 
     # trigger emergency stop
     def on_emergency_stop_button_clicked(self):
