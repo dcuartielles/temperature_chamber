@@ -212,17 +212,20 @@ class PortSelector(QWidget):
 
     # get selected port ONLY for wifi
     def get_selected_wifi(self):
-        saved_wifi_board = self.config.get('t_board_wifi', {})
-        saved_wifi_port = saved_wifi_board.get('port')
+        if not self.t_wifi_dropdown.isEnabled():
+            logger.info('Wifi dropdown is disabled, returning None')
+            return None
 
-        if saved_wifi_port == '':
-            if self.t_wifi_dropdown.isEnabled:
-                port, _ = self.t_wifi_dropdown.itemData(self.t_wifi_dropdown.currentIndex())
-                return str(port)
-            else:
-                return
+        selected_item = self.t_wifi_dropdown.currentText()
+        logger.info('Selected Wifi dropdown item: %s', selected_item)
+
+        if selected_item:
+            board_name, port = selected_item.split(': ')
+            logger.info('Parsed Wifi port: %s, board: %s', port, board_name)
+            return port
         else:
-            return str(saved_wifi_port)
+            logger.warning('No Wifi port selected.')
+            return None
 
     # get both port and board name for test board (for saving in config)
     def get_selected_t_port_and_board(self):
