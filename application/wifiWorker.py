@@ -78,16 +78,22 @@ class WifiWorker(QThread):
     # method to stop the serial communication
 
     def stop(self):
-        self.is_running = False  # stop the worker thread loop
+        self.is_running = False  # Stop the worker thread loop
         try:
             if self.ser and self.ser.is_open:
-                self.ser.close()  # close the serial connection
-                logger.info(f'Connection to {self.port} closed now')
+                self.ser.close()  # Close the serial connection
+                logger.info(f"Connection to {self.port} closed successfully.")
+        except serial.SerialException as e:
+            logger.error(f"Serial exception while closing connection to {self.port}: {e}")
         except Exception as e:
-            logger.error(f'Failed to close the connection to {self.port}: {e}')
+            logger.error(f"Unexpected error while closing connection to {self.port}: {e}")
         finally:
-            self.quit()
-            self.wait()
+            try:
+                self.quit()  # Gracefully terminate the thread
+                self.wait()  # Ensure thread termination before cleanup
+                logger.info("Wifi Worker thread exited successfully.")
+            except Exception as e:
+                logger.error(f"Error during thread termination: {e}")
 
 
     # show serial response
