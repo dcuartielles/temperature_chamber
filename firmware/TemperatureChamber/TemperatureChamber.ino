@@ -81,6 +81,10 @@ Authors:
 #define TEMPERATURE_MAX     100
 #define TEMPERATURE_MIN     0
 
+// Overriding default temperature limit
+bool tempOverride = false;
+float tempLimit = TEMPERATURE_MAX;
+
 
 // Verbosity levels (for serial) - LOW and HIGH already exist, therefore commented
 //#define LOW 0
@@ -466,6 +470,15 @@ void parseAndRunCommands(JsonObject& commands) {
         } else if (command == "SET_TEMP") {
             clearTests();
             parseAndRunManualSet(commandParams);
+
+            // Handle temporary override
+            if (commandParams.containsKey("override") && commandParams["override"].as<bool>()) {
+                tempOverride = true;
+                tempLimit = commandParams["temp"].as<float>();
+            } else {
+                tempOverride = false;
+                tempLimit = TEMPERATURE_MAX;
+            }
         } else if (command == "RESET") {
             clearTests();
             displayingEmergency = false;
@@ -565,6 +578,9 @@ bool printedRunning = false;
 
 void runCurrentSequence() {
     if (currentSequenceIndex >= currentTest.numSequences) {
+        tempOverride = false;   // Reset override
+        tempLimit = TEMPERATURE_MAX;    // Reset to default limit
+
         isTestRunning = false;
         printedWaiting = false;
         printedRunning = false;
@@ -628,9 +644,9 @@ void changeTemperature() {
 }
 
 void setTemperature(float temp) {
-    if (temp >= TEMPERATURE_MAX) {
-        chamberState.temperatureDesired = TEMPERATURE_MAX;
-        Serial.println("Specified temperature exceeds maximum allowed temperature\n");
+    float currentLimit = tempOverride ? tempLimit : TEMPERATURE_MAX;
+    if (temp >= currentLimit) {
+        chamberState.temperatureDesired = currentLimit;
     } else if (temp <= TEMPERATURE_MIN) {
         chamberState.temperatureDesired = TEMPERATURE_MIN;
         Serial.println("Specified temperature is lower than the minimum allowed temperature\n");
@@ -759,6 +775,8 @@ void handleEmergencyStopState() {
 void runTestSequence() {
     runCurrentSequence();
     if (currentSequenceIndex >= currentTest.numSequences) {
+        tempOverride = false;
+        tempLimit = TEMPERATURE_MAX;
         Serial.print("Test completed: ");
         Serial.println(currentTestName);
         isTestRunning = false;
