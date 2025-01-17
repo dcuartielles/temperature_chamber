@@ -24,6 +24,10 @@ import popups
 # set up logger that takes the file name
 logger = setup_logger(__name__)
 
+# Define default maximum allowed temperature
+MAX_ALLOWED_TEMP = 100
+
+
 
 # create window class
 class MainWindow(QMainWindow):
@@ -34,6 +38,8 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         logger.info('Temperature Chamber application started')
+
+        self.temp_override = False;
 
         # create an instance of config
         self.config = Config('config.json')
@@ -466,8 +472,30 @@ class MainWindow(QMainWindow):
 
     # load test file and store it in the app
     def load_test_file(self):
+
         if not self.test_is_running:
             test_data = self.json_handler.open_file()
+
+            # Check for temperatures exceeding the limit in the uploaded JSON
+            exceeding_tests = []
+            for test_name, test_details in test_data["tests"].items():
+                for sequence in test_details.get("chamber_sequences", []):
+                    if sequence["temp"] > MAX_ALLOWED_TEMP:
+                        exceeding_tests.append(f'{test_name} (Temp: {sequence["temp"]}°C)')
+
+            # Show popup if there are any exceeding temperatures
+            if exceeding_tests:
+                message = (f'The uploaded JSON contains {len(exceeding_tests)} occurrences of temperatures exceeding '
+                           f'the limit of {MAX_ALLOWED_TEMP}°C:\n\n' +
+                           '\n'.join(exceeding_tests) +
+                           f'\n\nDo you want to override the temperature defaults for all {len(exceeding_tests)} occurrences?')
+                response = popups.show_dialog(message)
+                if response == QMessageBox.No:
+                    self.temp_override = False;
+                    return # Abort the upload
+                else:
+                    self.temp_override = True;
+
             if test_data:
                 self.serial_worker.trigger_add_test_data_to_queue.emit(test_data)
                 self.filepath = self.json_handler.get_filepath()

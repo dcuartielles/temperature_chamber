@@ -2,14 +2,17 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QListWidget, QPushButton,
                              QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, QSpacerItem)
 from logger_config import setup_logger
+# from main import MAX_ALLOWED_TEMP
 import popups
+
+MAX_ALLOWED_TEMP = 100
 
 logger = setup_logger(__name__)
 
 
 class ManualTab(QWidget):
     # signals to and from main
-    send_temp_data = pyqtSignal(list)
+    send_temp_data = pyqtSignal(list, str)
     test_interrupted = pyqtSignal(str)
     set_test_flag_to_false_signal = pyqtSignal()  # signal from main to set test is running to false
 
@@ -20,6 +23,7 @@ class ManualTab(QWidget):
         self.test_is_running = False
         self.serial_is_running = False
         self.initUI()
+        self.temp_override = False;
 
     def initUI(self):
         # create a vertical layout
@@ -80,6 +84,15 @@ class ManualTab(QWidget):
         if not is_valid or not self.input_dictionary:  # if valid inputs
             return
 
+        # Check if the temperature exceeds the default limit
+        temp = float(temp_string)
+        if temp > MAX_ALLOWED_TEMP:
+            message = (f'The temperature you are trying to set ({temp}°C) exceeds the limit '
+                       f'of {MAX_ALLOWED_TEMP}°C. Do you want to override this?')
+            response = popups.show_dialog(message)
+            if response == QMessageBox.No:
+                return  # Abort the operation if user does not confirm
+
         if self.test_is_running:
             response = popups.show_dialog(
                 'A test is running: are you sure you want to interrupt it and proceed?')
@@ -89,9 +102,18 @@ class ManualTab(QWidget):
                 self.test_is_running = False
                 logger.warning(message)
             elif response == QMessageBox.No:
+                self.temp_override = False;
                 return
+            else:
+                self.temp_override = True;
 
-        self.send_temp_data.emit(self.input_dictionary)  # set temp in arduino
+        # set temp in arduino
+        if self.temp_override:
+            self.send_temp_data.emit(self.input_dictionary, "true")  
+            self.temp_override = False
+        else:
+            self.send_temp_data.emit(self.input_dictionary, "false")  
+
         message = 'Temperature set manually'
         self.test_interrupted.emit(message)
         if duration_string == '1':
@@ -107,9 +129,9 @@ class ManualTab(QWidget):
 
         try:
             temp = float(temp_string)
-            if temp > 100 or temp < 0:
-                popups.show_error_message('error', 'Temperature must be between 0°C and 100°C')
-                is_valid = False
+            # if temp > 100 or temp < 0:
+            #     popups.show_error_message('error', 'Temperature must be between 0°C and 100°C')
+            #     is_valid = False
             duration = int(duration_string)
             if duration < 1:  # check for minimum duration
                 popups.show_error_message('error', 'Minimum duration is 1 minute')
