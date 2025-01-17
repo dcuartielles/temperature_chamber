@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QComboBox, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QSpacerItem, QSizePolicy
+from PyQt5.QtWidgets import QCheckBox, QComboBox, QLabel, QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QSpacerItem, QSizePolicy
 import arduinoUtils
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, Qt
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
@@ -21,7 +21,7 @@ class PortSelector(QWidget):
         self.c_b_name_label = QLabel('control board')
         self.t_port_dropdown = QComboBox()
         self.t_wifi_dropdown = QComboBox()
-        self.t_wifi_dropdown.hide()
+        # self.t_wifi_dropdown.hide()
         self.c_port_dropdown = QComboBox()
         self.setStyleSheet('color: #009FAF;'
                                          'background-color: white;'
@@ -31,6 +31,10 @@ class PortSelector(QWidget):
         self.refresh_button = QPushButton('refresh')
         self.refresh_button.setFixedSize(80, 37)
         self.refresh_button.clicked.connect(self.refresh_ports)
+
+        self.enable_wifi_checkbox = QCheckBox('Enable Wifi')
+        self.enable_wifi_checkbox.setChecked(False)
+        self.enable_wifi_checkbox.stateChanged.connect(self.toggle_wifi_port)
 
         # self.wifi_t_b_name_label.hide()
         # self.t_wifi_dropdown.hide()
@@ -52,6 +56,7 @@ class PortSelector(QWidget):
         left_layout.addLayout(chamber_layout)
         left_layout.addLayout(test_layout)
         left_layout.addLayout(wifi_layout)
+        left_layout.addWidget(self.enable_wifi_checkbox)
         port_layout.addLayout(left_layout)
         port_layout.addSpacerItem(QSpacerItem(30, 0))
         port_layout.addWidget(self.refresh_button)
@@ -75,6 +80,16 @@ class PortSelector(QWidget):
         self.update_config_c()  # update control board & port in config
         if self.t_wifi_dropdown.isEnabled:
             self.update_config_wifi()  # update wifi on t board in config
+
+    def toggle_wifi_port(self, state):
+        if state == Qt.Checked:
+            self.t_wifi_dropdown.setDisabled(False)
+            self.t_wifi_dropdown.setStyleSheet('background-color: white;') # Active style
+            self.wifi_t_b_name_label.setStyleSheet('color: #009FAF; font-weight: bold;')
+        else:
+            self.t_wifi_dropdown.setDisabled(True)
+            self.t_wifi_dropdown.setStyleSheet('background-color: grey; color: black;') # Active style
+            self.wifi_t_b_name_label.setStyleSheet('color: grey; font-weight: bold;')
 
     # load ports and boards from config
     def load_all_from_config(self):
@@ -118,7 +133,7 @@ class PortSelector(QWidget):
 
     # refresh ports (independent of config)
     def refresh_ports(self):
-        logger.info('Ports refreshed')
+        logger.info('Refreshing available ports...')
         self.ports_refreshed.emit()  # emit signal to re-enable start button click
         try:
             ports_and_boards = arduinoUtils.get_arduino_boards()  # should be [(port, board_name), (port, board_name)]
