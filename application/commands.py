@@ -11,8 +11,8 @@ def ping():
     return {"commands": {"PING": {}}}
 
 # set temp & duration
-def set_temp(data):
-    return {"commands": {"SET_TEMP": data}}
+def set_temp(data, override):
+    return {"commands": {"SET_TEMP": data, "override": override}}
 
 # handshake
 def handshake(time):
