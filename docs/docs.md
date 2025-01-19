@@ -2,16 +2,24 @@
 The communication protocol is JSON based. It includes standards for sending and receiving pings and handshakes, sending commands, receiving updates for test status & machine state as well as queueing and running defined benchmark tests and custom tests.
 
 
-## Tests 
 To send tests from the Python application to be queued and run in the Temperature chamber, the user uploads a json file with meta data for the tests. The meta data consists of:
-- Test names as the key for each test.
-- An array of chamber sequences, each including keys and values for temperature and duration.
-- A path for the sketch that is to be uploaded to the board inside of the chamber.
-- A string value of the expected serial output from the board inside of the chamber.
 
-These files are put in designated directories inside of the `tests` directory, alongside directories for sketches that are to be uploaded to the board inside of the chamber for each test configuration.
+## Tests 
+- Tests are sent from the Python application to be queued and run in the Temperature Chamber.
+- Each test includes:
+    - Test names as the key for each test.
+    - An array of chamber sequences, each specifying a temperature and duration.
+    - The path for the sketch to be uploaded to the board inside the chamber.
+    - A string value of the expected serial output from the board inside the chamber.
 
-### File structure for tests
+Tests are defined in test configuration files, which are put in designated directories inside of the `tests` directory, alongside directories for sketches that are to be uploaded to the board inside of the chamber for each test configuration.
+
+### File Structure for Tests
+Below is an example to showcase how tests should be placed inside the `tests` directory. In this example:
+- `alphabets` is a directory designated to a defined test suite.
+- `alphabet` and `alphabet_mathematical` are directories to store sketches that are to be compiled and uploaded to test boards as part of the current test suite.
+- `alphabet_test.json` is a test configuration file that specifies the tests that are to be run as part of the test suite.
+
 ```sh
 tests
 |-- alphabets
@@ -22,11 +30,7 @@ tests
 |   `-- alphabet_test.json
 ```
 
-
-## Communication protocol examples
-Below are examples of JSON payloads to communicate between the Temperature Chamber control board and the Python app.
-
-### Test configuration file
+### Example Test Configuration File:
 ```json
 {
     "tests": {
@@ -57,7 +61,17 @@ Below are examples of JSON payloads to communicate between the Temperature Chamb
 }
 ```
 
-### Commands from Python app
+## Commands
+- Commands are sent from the Python app to control various functionalities of the Temperature Chamber, as well as to retrieve data about the state of the chamber and the tests.
+- Common commands include:
+    - `PING` - to check if the connection is alive, and to receive information about the state of the machine.
+    - `RESET` - to reset the system, interrupting any running test and clearing the test queue.
+    - `EMERGENCY_STOP` - to reset the system, clear the test queue and initiate a cooldown process that brings the temperature inside the chamber down to room temperature.
+    - `SET_TEMP` - to set the temperature and duration manually, without a test configuration file.
+    - `GET_TEST_QUEUE` - to retrieve the current test queue loaded in the Temperature Chamber.
+    - `RUN_QUEUE` - to run the queued tests.
+
+### Example Commands from Python App
 ```json
 {
     "commands": {
@@ -71,7 +85,11 @@ Below are examples of JSON payloads to communicate between the Temperature Chamb
 }
 ```
 
-### Handshake from Python app
+## Handshake
+- A handshake is used to establish initial communication between the Python app and the Temperature Chamber.
+- It includes a timestamp and other relevant data.
+
+### Example Handshake from Python App:
 ```json
 {
     "handshake": {
@@ -80,7 +98,7 @@ Below are examples of JSON payloads to communicate between the Temperature Chamb
 }
 ```
 
-### Handshake from Temperature Chamber
+### Example Handshake from Temperature Chamber:
 ```json
 {
     "handshake": {
@@ -92,12 +110,16 @@ Below are examples of JSON payloads to communicate between the Temperature Chamb
 }
 ```
 
-### Ping from Python app
+## Ping
+- Ping messages are used to ensure continuous communication and system health checks. 
+- System fail-safes are in place to warn operators of temporary loss of connection, and safe system resetting and shutdown in case of no ping response for more than 5 minutes.
+
+### Example Ping from Python App:
 ```json
 { "commands": "PING": {} }
 ```
 
-### Ping from Temperature Chamber
+### Example Ping from Temperature Chamber:
 ```json
 {
     "ping_response": {
@@ -117,6 +139,3 @@ Below are examples of JSON payloads to communicate between the Temperature Chamb
     }
 }
 ```
-
-
-
