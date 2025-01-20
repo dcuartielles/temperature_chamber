@@ -716,7 +716,7 @@ void handleCoolingState() {
         chamberState.isCooling = false;
         status = REPORT;
     } else {
-        adjustDutyCycleAndPeriod(temperatureThreshold, dutyCycleHeater, periodHeater, chamberState.longHeatingFlag, false);
+        adjustDutyCycleAndPeriod(temperatureThreshold, dutyCycleCooler, periodCooler, chamberState.longHeatingFlag, false);
         controlRelay(cooler, dutyCycleCooler, periodCooler, chamberState.lastCoolerOnTime);
         chamberState.isCooling = true;
     }
