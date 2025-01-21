@@ -12,6 +12,8 @@ logger = setup_logger(__name__)
 
 class WifiWorker(QThread):
 
+    output_received = pyqtSignal(str)
+
     def __init__(self, port, baudrate, timeout=5):
         super().__init__()
         # serial setup variables
@@ -44,20 +46,20 @@ class WifiWorker(QThread):
     def run(self):
         # Ensure the serial setup is successful before entering the loop
         if not self.serial_setup():
-            logger.error(f"WiFi worker failed to connect to port: {self.port}")
+            logger.error(f"Wifi worker failed to connect to port: {self.port}")
             return
 
-        logger.info("WiFi worker thread started.")
+        logger.info("Wifi worker thread started.")
         try:
             while self.is_running:  # Main thread loop
                 if self.is_stopped:
-                    logger.debug("WiFi worker is stopped. Waiting...")
+                    logger.debug("Wifi worker is stopped. Waiting...")
                     time.sleep(0.1)  # Small delay to avoid excessive CPU usage
                     continue
 
                 # Check if the serial connection is still valid
                 if not self.ser or not self.ser.is_open:
-                    logger.warning(f"WiFi worker lost connection to port: {self.port}")
+                    logger.warning(f"Wifi worker lost connection to port: {self.port}")
                     self.stop()  # Gracefully stop the worker
                     break
 
@@ -66,6 +68,8 @@ class WifiWorker(QThread):
                     response = self.ser.readline().decode('utf-8').strip()
                     if response:
                         self.show_response(response)  # Process and display the response
+                    else:
+                        logger.info('[Wifi] No data received from the serial port.')
 
                     # Send periodic logs or actions to keep track of activity
                     if time.time() - self.last_command_time > 5:
@@ -108,5 +112,11 @@ class WifiWorker(QThread):
     # show serial response
     def show_response(self, response):
         if response:
-            printout = f'{response}'
+            printout = f'Wifi response: {response}'
             logger.info(printout)
+            self.output_received.emit(response)
+            logger.debug(f'[Wifi] Emitted output_received signal with response: {response}')
+        else:
+            logger.warning('[Wifi] Received empty response; signal not emitted.')
+
+
