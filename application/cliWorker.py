@@ -129,30 +129,28 @@ class CliWorker(QThread):
 
     # detect test board
     def detect_board(self, port):
-        if self.is_detecting:
-            logger.warning('Boards already detected: skipping new detect request')
-            return
+        # if self.is_detecting:
+        #     logger.warning('Boards already detected: skipping new detect request')
+        #     return
 
         command = ["arduino-cli", "board", "list", "--format", "json"]
         output = self.run_cli_command(command)
-
         if not output:
             return None
 
-        headsup = 'detecting test board'
+        headsup = 'Detecting test board...'
         self.wave(headsup)
         boards_info = json.loads(output)
         for board in boards_info.get("detected_ports", []):
-            if board["port"]["address"] != port:
-                return None
-            if "matching_boards" in board and board["matching_boards"]:
-                fqbn = board["matching_boards"][0].get("fqbn", None)
-                if fqbn:
-                    self.is_detecting = True
-                    logger.info(f'Detected fqbn: {fqbn}')
-                    return fqbn
-                logger.warning(f'No fqbn found for board on port {port}')
-                return None
+            if board["port"]["address"] == port:
+                matching_boards = board.get("matching_boards", [])
+                if matching_boards:
+                    fqbn = matching_boards[0].get("fqbn", None)
+                    if fqbn:
+                        logger.info(f'Detected fqbn: {fqbn} for port {port}')
+                        return fqbn
+        logger.warning(f'No board detected on port {port}')
+        return None
 
     # check if core is installed on test board
     def is_core_installed(self, fqbn):
