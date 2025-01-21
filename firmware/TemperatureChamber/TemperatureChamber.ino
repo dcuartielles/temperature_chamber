@@ -831,7 +831,7 @@ void loop() {
         status = EMERGENCY_STOP;
         lastShutdownCause = "Lost connection";
         if (!printedTestsCleared) {
-            clearTests();
+            runEmergencyStop();
             printedTestsCleared = true;
         }
         displayingEmergency = true;
