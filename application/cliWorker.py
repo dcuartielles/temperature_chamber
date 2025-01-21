@@ -4,10 +4,13 @@ import subprocess
 import json
 import time
 import serial
+from threading import Lock
 import threading
 from logger_config import setup_logger
 
 logger = setup_logger(__name__)
+
+cli_lock = Lock()
 
 
 class CliWorker(QThread):
@@ -114,14 +117,15 @@ class CliWorker(QThread):
     # static method for running cli commands
     @staticmethod
     def run_cli_command(command):
-        try:
-            result = subprocess.run(command, capture_output=True, text=True, check=True)
-            logger.info(f'Command succeeded: {" ".join(command)}')
+        with cli_lock:
+            try:
+                result = subprocess.run(command, capture_output=True, text=True, check=True)
+                logger.info(f'[{threading.current_thread().name}] Command succeeded: {" ".join(command)}')
 
-            return result.stdout
-        except subprocess.CalledProcessError as e:
-            logger.info(f'Command failed: {e.stderr}')
-            return None
+                return result.stdout
+            except subprocess.CalledProcessError as e:
+                logger.info(f'Command failed: {e.stderr}')
+                return None
 
     # detect test board
     def detect_board(self, port):
