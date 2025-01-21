@@ -88,12 +88,6 @@ Authors:
 bool tempOverride = false;
 float tempLimit = TEMPERATURE_MAX;
 
-
-// Verbosity levels (for serial) - LOW and HIGH already exist, therefore commented
-//#define LOW 0
-#define MEDIUM 2
-//#define HIGH 1
-
 // Setup OneWire instances to communicate with any OneWire devices
 OneWire oneWire1(ONE_WIRE_BUS_1);
 OneWire oneWire2(ONE_WIRE_BUS_2);
@@ -461,15 +455,12 @@ void parseAndRunCommands(JsonObject& commands) {
             }
         } 
         if (!systemSwitchState) {
-            // Serial.println("System switch is off, please switch it on.");
             return;
         }
         if (command == "GET_TEST_QUEUE") {
             sendQueue();
         } else if (command == "RUN_QUEUE") {
             runQueue();
-        // } else if (command == "SHOW_DATA") {     // legacy
-        //     displaySerial();
         } else if (command == "SET_TEMP") {
             clearTests();
             parseAndRunManualSet(commandParams);
@@ -486,7 +477,6 @@ void parseAndRunCommands(JsonObject& commands) {
             clearTests();
             displayingEmergency = false;
             status = RESET;
-            // Serial.println("System reset via command.");
         } else if (command == "EMERGENCY_STOP") {
             runEmergencyStop();
             sendPingResponse();
@@ -616,7 +606,7 @@ void runCurrentSequence() {
     // check if target temp is reached
     if (!isTemperatureReached(targetTemp, chamberState.temperatureRoom)) {
         if (!printedWaiting) {
-            Serial.println("Waiting for target temp to be reached");
+            Serial.println("Waiting for target temp to be reached...");
             printedWaiting = true;
         }
         return;
