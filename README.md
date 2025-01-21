@@ -80,10 +80,10 @@ python3 interface/pyqt5/t-chamber/main.py
 - Press `reset control board` to clear all tests in the queue, interrupt the current running test, and put the Temperature Chamber into an idle state.
 
 ## Safety measures
-The Temperature Chamber system has mechanisms to ensures safe usage.
+The Temperature Chamber system has mechanisms to ensure safe usage.
 
 ### Temperature thresholds
-The firmware defines an upper limit of of 100°C for setting the temperature - both in tests as well as manual control. 
+The firmware defines an upper limit of of 100°C for setting the temperature - both in tests and manual control. 
 
 ### Ping signals and timers
 The control board for the chamber regularly sends ping signals to the Python app, and receives a ping response. In the case that the control board doesnt receive a ping signal for more than 5 minutes, the test and machine states will be reset and the Temperature Chamber will go into `EMERGENCY_STOP` state. This is also communicated via the LCD on the Chamber. A timer of 5 minutes is also present in the Python app, which triggers a popup message telling the operator that connection has been lost and the Chamber has gone into `EMERGENCY STOP` state. The python will notify the operator if serial connection has been lost to either boards, control board or test board, after 15 seconds of no ping, so that the Chamber doesn't reset without the operators knowledge that serial connection had been lost.

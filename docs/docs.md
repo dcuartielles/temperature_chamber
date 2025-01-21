@@ -71,7 +71,7 @@ tests
     - `GET_TEST_QUEUE` - to retrieve the current test queue loaded in the Temperature Chamber.
     - `RUN_QUEUE` - to run the queued tests.
 
-### Example Commands from Python App
+### Example Commands from Python App:
 ```json
 {
     "commands": {
