@@ -42,7 +42,8 @@ class MainWindow(QMainWindow):
         # create an instance of json file handler
         self.json_handler = FileHandler(self.config)
         # create an instance of port selector
-        self.port_selector = PortSelector(self.config)
+        self.port_selector = PortSelector(self.config, self)
+
         self.selected_c_port = None
         self.selected_t_port = None
         self.selected_t_wifi = None
@@ -470,6 +471,7 @@ class MainWindow(QMainWindow):
             self.test_board.stop()
             self.test_board.deleteLater()
             logger.info('Test board worker temporarily deleted for subsequent sketch upload')
+
             # initiate cli worker thread
             self.cli_worker = CliWorker(port=self.selected_t_port, baudrate=9600)
             self.cli_worker.finished.connect(self.cleanup_cli_worker)  # connect finished signal
