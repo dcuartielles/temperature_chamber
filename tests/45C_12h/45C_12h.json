@@ -1,0 +1,11 @@
+{
+    "tests": {
+        "45C_for_12_hours": {
+            "chamber_sequences": [
+                { "temp": 45, "duration": 38400000 }
+            ],
+            "sketch": "./45C_12h/alphabet/alphabet.ino",
+            "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        }
+    }
+}

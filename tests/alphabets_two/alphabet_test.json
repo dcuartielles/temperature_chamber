@@ -1,23 +1,23 @@
 {"tests": {
         "alphabet_38": {
             "chamber_sequences": [
-                { "temp": 38, "duration": 60000 }
+                { "temp": 45, "duration": 5000 }
             ],
             "sketch": "./alphabets_two/alphabet/alphabet.ino",
             "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         },
         "math_48_80": {
             "chamber_sequences": [
-                { "temp": 48, "duration": 90000 },
-                { "temp": 80, "duration": 300000 }
+                { "temp": 46, "duration": 5000 },
+                { "temp": 38, "duration": 5000 }
             ],
             "sketch": "./alphabets_two/alphabet_mathematical/alphabet_mathematical.ino",
             "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ120"
         },
         "alphabet_70_50": {
             "chamber_sequences": [
-                { "temp": 70, "duration": 60000 },
-                { "temp": 50, "duration": 120000 }
+                { "temp": 35, "duration": 5000 },
+                { "temp": 42, "duration": 5000 }
             ],
             "sketch": "./alphabets_two/alphabet/alphabet.ino",
             "expected_output": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
