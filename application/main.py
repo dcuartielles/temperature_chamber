@@ -11,7 +11,7 @@ from jsonFunctionality import FileHandler
 from serialCaptureWorker import SerialCaptureWorker
 from portSelector import PortSelector
 from testBoardWorker import TestBoardWorker
-from cliWorker import CliWorker
+from cliWorker import CliWorker, WifiCliWorker
 from wifiWorker import WifiWorker
 from config import Config
 from logger_config import setup_logger
@@ -28,11 +28,8 @@ logger = setup_logger(__name__)
 MAX_ALLOWED_TEMP = 100
 
 
-
 # create window class
 class MainWindow(QMainWindow):
-
-
 
     def __init__(self):
         super().__init__()
@@ -40,13 +37,10 @@ class MainWindow(QMainWindow):
         logger.info('Temperature Chamber application started')
 
         self.temp_override = False;
-
         # create an instance of config
         self.config = Config('config.json')
-
         # create an instance of json file handler
         self.json_handler = FileHandler(self.config)
-
         # create an instance of port selector
         self.port_selector = PortSelector(self.config)
         self.selected_c_port = None
@@ -57,6 +51,7 @@ class MainWindow(QMainWindow):
         self.serial_worker = None
         self.test_board = None
         self.cli_worker = None
+        self.wifi_cli_worker = None
         self.wifi_worker = None
 
         # create a dictionary for setting temp & duration
@@ -219,7 +214,6 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(800, 800)  # Minimum fixed size
         logger.info('GUI built')
 
-
     # ESSENTIAL FUNCTIONALITY METHODS
     # method to start running threads after ports have been selected
     def on_start_button_clicked(self):
@@ -228,31 +222,7 @@ class MainWindow(QMainWindow):
         # get selected ports
         self.selected_c_port = self.port_selector.get_selected_c_port()
         self.selected_t_port = self.port_selector.get_selected_t_port()
-
-        # Validate Wifi checkbox state and port selection
-        if self.port_selector.enable_wifi_checkbox.isChecked():
-            logger.info('Wifi checkbox checked.')
-            self.selected_t_wifi = self.port_selector.get_selected_wifi()
-            logger.info('Selected Wifi port: %s', self.selected_t_wifi)
-
-            if not self.selected_t_wifi:
-                logger.warning('No valid Wifi port selected. Skipping Wifi worker initialization.')
-                return
-
-            logger.info('Initializing Wifi worker...')
-            if not hasattr(self, 'wifi_worker') or self.wifi_worker is None or not self.wifi_worker.is_running:
-                try:
-                    self.wifi_worker = WifiWorker(port=self.selected_t_wifi, baudrate=9600)
-                    self.wifi_worker.start() # start worker thread for wifi board
-                    logger.info('Wifi board worker started successfully.')
-                except Exception as e:
-                    logger.exception(f'Failed to start wifi worker: {e}')
-                    popups.show_error_message('error', f'Failed to start wifi worker: {e}')
-            else:
-                logger.error('Wifi worker already running')
-        else:
-            logger.info('Wifi checkbox not checked, skipping Wifi worker initialization.')
-
+        self.selected_t_wifi = self.port_selector.get_selected_wifi()
 
         # validate selected ports
         logger.info('Checking if ports are selected...')
@@ -261,6 +231,14 @@ class MainWindow(QMainWindow):
         if self.selected_c_port == self.selected_t_port:
             logger.error('Same port selected for control board and test board. Serial connections aborted.')
             popups.show_error_message('Single port selected', 'You cannot select the same port for control board and test board.')
+            return
+
+        if self.selected_t_port == self.selected_t_wifi:
+            logger.error('Test board and Wifi board cannot share the same port. Aborting...')
+            popups.show_error_message(
+                    'Port Selection Error',
+                    'Test board and Wifi board cannot share the same port. Please choose different ports.'
+                    )
             return
 
         if self.selected_c_port and self.selected_t_port:
@@ -313,6 +291,27 @@ class MainWindow(QMainWindow):
             if hasattr(self, 'cli_worker') or self.cli_worker.is_running:
                 return
 
+    def update_wifi_output_gui(self, output):
+        if output:
+            self.main_tab.update_wifi_output_listbox(output)
+
+    def start_wifi_worker(self):
+        try:
+            if not self.selected_t_wifi:
+                logger.error('Wifi worker cannot start: No Wifi port selected.')
+                return
+
+            logger.info(f'Starting Wifi Worker on port: {self.selected_t_wifi}')
+
+            self.wifi_worker = WifiWorker(port=self.selected_t_wifi, baudrate=9600)
+            self.wifi_worker.output_received.connect(self.main_tab.update_wifi_output_listbox)
+            self.wifi_worker.output_received.connect(self.check_wifi_output)
+            self.wifi_worker.start()
+            logger.info('Wifi worker started successfully.')
+        except Exception as e:
+            logger.exception(f'Failed to start Wifi worker: {e}')
+            popups.show_error_message('error', f'Failed to start Wifi worker: {e}')
+
     # trigger emergency stop
     def on_emergency_stop_button_clicked(self):
         self.serial_worker.trigger_emergency_stop.emit()
@@ -329,6 +328,39 @@ class MainWindow(QMainWindow):
         names = list(self.test_data["tests"].keys())
         if not names:
             popups.show_error_message('error', 'No test data loaded')
+            return
+
+        # Dynamically show wifi output box only when button is pressed
+        if self.port_selector.enable_wifi_checkbox.isChecked():
+            self.main_tab.wifi_output_label.show()
+            self.main_tab.wifi_output_listbox.show()
+            self.main_tab.wifi_expected_label.show()
+            self.main_tab.wifi_expected_listbox.show()
+
+            # Initaialize and run Wifi CLI Worker
+            self.selected_t_wifi = self.port_selector.get_selected_wifi()
+            logger.info('Selected Wifi port: %s', self.selected_t_wifi)
+
+            if not self.selected_t_wifi:
+                logger.warning('No valid Wifi port selected. Skipping Wifi worker initialization.')
+                return
+
+            try:
+                logger.info('Initializing CLI worker for Wifi...')
+                self.wifi_cli_worker = WifiCliWorker(port=self.selected_t_wifi, baudrate=9600)
+                self.wifi_cli_worker.finished.connect(self.start_wifi_worker)  # Start WiFiWorker after CLIWorker is done
+                self.wifi_cli_worker.output_received.connect(self.update_wifi_output_gui)
+                self.wifi_cli_worker.start()
+                logger.info('Wifi CLI worker started for WiFi setup.')
+            except Exception as e:
+                logger.exception(f'Failed to start Wifi CLI worker: {e}')
+                popups.show_error_message('error', f'Failed to start Wifi CLI worker: {e}')
+
+        else:
+            self.main_tab.wifi_output_label.hide()
+            self.main_tab.wifi_output_listbox.hide()
+            self.main_tab.wifi_expected_label.hide()
+            self.main_tab.wifi_expected_listbox.hide()
 
         # check if test is running
         self.check_temp()
@@ -763,6 +795,39 @@ class MainWindow(QMainWindow):
                     error_message = f"{date_str}   {output}"
                     self.incorrect_output_gui(error_message)
 
+    def check_wifi_output(self, output):
+        output = str(output)
+        expected_output = self.expected_output(self.test_data)
+        if output == '':
+            message = 'Waiting for Wifi board output'
+            self.main_tab.update_wifi_output_listbox(message)
+        elif output == expected_output:
+            self.main_tab.update_gui_correct(is_wifi=True)
+            logger.info(f'Wifi output matches the expected output: {output}')
+        else:
+            self.main_tab.update_gui_incorrect(is_wifi=True)
+            logger.warning(f'Wifi output does not match. Received: {output}')
+            date_str = datetime.now().strftime("%H:%M:%S")
+            error_message = f"{date_str} [Wifi]   {output}"
+            self.incorrect_output_gui(error_message)
+    
+    def update_wifi_output(self, output):
+        # Get the expected output for the current test
+        expected_output = self.expected_output(self.test_data)
+        
+        if output == '':
+            message = 'Waiting for WiFi output'
+            self.main_tab.update_test_output_listbox_gui(message)
+        elif output == expected_output:
+            self.main_tab.update_gui_correct()
+            logger.info(f'WiFi output matches the expected output: {output}')
+        else:
+            self.main_tab.update_gui_incorrect()
+            logger.warning(f'WiFi output does not match. Received: {output}')
+            date_str = datetime.now().strftime("%H:%M:%S")
+            error_message = f"{date_str}   {output}"
+            self.main_tab.update_test_output_listbox_gui(error_message)
+
     # WORKER THREAD TRIGGERS AND GETTERS + THEIR GUI PARTS
     # CONTROL BOARD: the actual chamber_monitor QList updates from ping
     def update_chamber_monitor_gui(self, message):
@@ -985,6 +1050,15 @@ class MainWindow(QMainWindow):
                 self.cli_worker.stop()
                 self.cli_worker.quit()
                 self.cli_worker.wait()
+                logger.info("CLI worker stopped.")
+
+        # Stop the Wifi CLI worker if it's running
+        if self.wifi_cli_worker is not None:
+            if hasattr(self.wifi_cli_worker, 'is_running') and self.wifi_cli_worker.is_running:
+                logger.info("Stopping Wifi CLI worker...")
+                self.wifi_cli_worker.stop()
+                self.wifi_cli_worker.quit()
+                self.wifi_cli_worker.wait()
                 logger.info("CLI worker stopped.")
 
         # Stop the WiFi worker if it's running
