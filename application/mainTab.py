@@ -1,6 +1,7 @@
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QLabel, QListWidget, QPushButton,
-                             QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, QSpacerItem, QApplication)
+                             QLineEdit, QHBoxLayout, QMessageBox, QListWidgetItem, 
+                             QSpacerItem, QApplication, QSizePolicy)
 from PyQt5.QtGui import QColor, QFont
 from datetime import datetime
 from logger_config import setup_logger
@@ -34,10 +35,15 @@ class MainTab(QWidget):
                                            '* upload test file',
                                            '* run full test sequence',
                                            '* sit back and watch the test outcomes'])
-        self.instruction_listbox.setFixedSize(540, 135)
+        self.instruction_listbox.setMinimumSize(300, 100)
+        self.instruction_listbox.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
         test_part_layout.addLayout(test_output_layout)
-        self.run_button = QPushButton('run\ntests', self)
-        self.run_button.setFixedSize(96, 96)
+        test_part_layout.addLayout(wifi_output_layout)
+
+        self.run_button = QPushButton('Run\nTests', self)
+        self.run_button.setMinimumSize(96, 96)
+        self.run_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.run_button.setStyleSheet('background-color: grey;'
                                       'color: white;'
                                       'font-weight: bold;'
@@ -51,22 +57,21 @@ class MainTab(QWidget):
         # add run tests button
         test_button_layout.addWidget(self.run_button, alignment=Qt.AlignRight)
 
-        # place them in the main layout
-        layout.addLayout(test_part_layout)
-
         # create the alternative test part listboxes for later activation
-        self.test_output_label = QLabel('test board output', self)
+        self.test_output_label = QLabel('Test Board Output', self)
         self.test_output_label.hide()
         self.test_output_listbox = QListWidget(self)
-        self.test_output_listbox.setFixedSize(540, 30)
+        self.test_output_listbox.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.test_output_listbox.setMinimumHeight(30)
         self.test_output_listbox.hide()
         test_output_layout.addWidget(self.test_output_label)
         test_output_layout.addWidget(self.test_output_listbox)
 
-        self.expected_outcome_label = QLabel('expected output', self)
+        self.expected_outcome_label = QLabel('Expected Output', self)
         self.expected_outcome_label.hide()
         self.expected_outcome_listbox = QListWidget(self)
-        self.expected_outcome_listbox.setFixedSize(540, 30)
+        self.expected_outcome_listbox.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.expected_outcome_listbox.setMinimumHeight(30)
         self.expected_outcome_listbox.hide()
         test_output_layout.addWidget(self.expected_outcome_label)
         test_output_layout.addWidget(self.expected_outcome_listbox)
