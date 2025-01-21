@@ -10,8 +10,9 @@ logger = setup_logger(__name__)
 class PortSelector(QWidget):
     ports_refreshed = pyqtSignal()  # signal to re-enable start button
 
-    def __init__(self, config):
-        super().__init__()
+    def __init__(self, config, parent=None):
+        super().__init__(parent)
+        self.parent_window = parent
 
         self.config = config  # config object to load/save ports & boards from and to
 
@@ -81,15 +82,20 @@ class PortSelector(QWidget):
         if self.t_wifi_dropdown.isEnabled:
             self.update_config_wifi()  # update wifi on t board in config
 
+
     def toggle_wifi_port(self, state):
         if state == Qt.Checked:
             self.t_wifi_dropdown.setDisabled(False)
-            self.t_wifi_dropdown.setStyleSheet('background-color: white;') # Active style
+            self.t_wifi_dropdown.setStyleSheet('background-color: white;')
             self.wifi_t_b_name_label.setStyleSheet('color: #009FAF; font-weight: bold;')
+            # self.parent_window.wifi_output_label.show()
+            # self.parent_window.wifi_output_listbox.show()  # Show WiFi output list
         else:
             self.t_wifi_dropdown.setDisabled(True)
-            self.t_wifi_dropdown.setStyleSheet('background-color: grey; color: black;') # Active style
+            self.t_wifi_dropdown.setStyleSheet('background-color: grey; color: black;')
             self.wifi_t_b_name_label.setStyleSheet('color: grey; font-weight: bold;')
+            # self.parent_window.wifi_output_label.hide()
+            # self.parent_window.wifi_output_listbox.hide()  # Hide WiFi output list
 
     # load ports and boards from config
     def load_all_from_config(self):
