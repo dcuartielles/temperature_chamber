@@ -300,7 +300,7 @@ void displayLCDEmergency() {
     lcd.setCursor(0, 0);
     lcd.print("CONNECTION LOST");
     lcd.setCursor(0, 1);
-    lcd.print("SYSTEM RESET");
+    lcd.print("EMERGENCY STOP");
 }
 
 void displaySerial() {
@@ -488,7 +488,6 @@ void parseAndRunCommands(JsonObject& commands) {
             status = RESET;
             // Serial.println("System reset via command.");
         } else if (command == "EMERGENCY_STOP") {
-            clearTests();
             runEmergencyStop();
             sendPingResponse();
             Serial.println("Emergency Stop initiated via command.");
@@ -497,8 +496,11 @@ void parseAndRunCommands(JsonObject& commands) {
 }
 
 void runEmergencyStop() {
-    setTemperature(ROOM_TEMP);
-    status = COOLING;
+    clearTests();
+    if (chamberState.temperatureRoom > ROOM_TEMP) {
+        setTemperature(ROOM_TEMP);
+        status = COOLING;
+    }
 }
 
 void sendPingResponse() {
@@ -831,10 +833,10 @@ void loop() {
         status = EMERGENCY_STOP;
         lastShutdownCause = "Lost connection";
         if (!printedTestsCleared) {
-            runEmergencyStop();
             printedTestsCleared = true;
         }
         displayingEmergency = true;
+        runEmergencyStop();
     }
 
     // Update switch states and temperature readings
