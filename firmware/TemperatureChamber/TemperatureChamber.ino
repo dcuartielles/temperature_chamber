@@ -77,9 +77,12 @@ Authors:
 #define REPORT              3
 #define EMERGENCY_STOP      4
 
-// Define temperature limits
+// Define default temperature limits
 #define TEMPERATURE_MAX     100
 #define TEMPERATURE_MIN     0
+
+// Default room temperature to set in case of emergency stop
+#define ROOM_TEMP           22  
 
 // Overriding default temperature limit
 bool tempOverride = false;
@@ -486,11 +489,16 @@ void parseAndRunCommands(JsonObject& commands) {
             // Serial.println("System reset via command.");
         } else if (command == "EMERGENCY_STOP") {
             clearTests();
-            status = EMERGENCY_STOP;
+            runEmergencyStop();
             sendPingResponse();
             Serial.println("Emergency Stop initiated via command.");
         } 
     }
+}
+
+void runEmergencyStop() {
+    setTemperature(ROOM_TEMP);
+    status = COOLING;
 }
 
 void sendPingResponse() {
@@ -875,3 +883,4 @@ void loop() {
             Serial.println("Invalid state detected!");
     }
 }
+
