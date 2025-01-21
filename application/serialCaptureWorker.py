@@ -224,8 +224,8 @@ class SerialCaptureWorker(QThread):
                 self.queued_tests = test_status.get('queued_tests', 0)
                 self.emit_test_status()
                 self.display_info()
-        except json.JSONDecodeError:
-            logger.exception('Failed to decode ping response as json')
+        except json.JSONDecodeError as e:
+            logger.exception(f'Failed to decode ping response as json: {e}')
 
     # MORE ADVANCED COMMUNICATION WITH TEST BOARD
     # run all tests
