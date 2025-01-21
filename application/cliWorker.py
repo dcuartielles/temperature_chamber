@@ -315,5 +315,79 @@ class CliWorker(QThread):
             logger.warning('Sketch path not found')
 
 
+class WifiCliWorker(CliWorker):
+    output_received = pyqtSignal(str)
+    finished = pyqtSignal()
+
+    def __init__(self, port, baudrate, timeout=5):
+        super().__init__(port, baudrate, timeout)
+        self.port = port
+        self.baudrate = baudrate
+        self.timeout = timeout
+        self.ser = None
+        self.is_running = True
+        self.is_stopped = False
+
+    def serial_setup(self, port=None, baudrate=None):
+        if port:
+            self.port = port
+        if baudrate:
+            self.port = baudrate
+        try:
+            self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
+            logger.info(f'Wifi CLI Worker connected to port: {self.port}')
+            time.sleep(1)
+            return True
+        except serial.SerialException as e:
+            logger.error(f'Error during serial setup for Wifi CLI Worker: {e}')
+            return False
+
+    def run(self):
+        if not self.serial_setup():
+            logger.error(f'Wifi CLI Worker failed to connect to {self.port}')
+            self.stop()
+            return
+
+        logger.info('Wifi CLI Worker thread started')
+        try:
+            while self.is_running:
+                if self.is_stopped:
+                    break
+
+                # Detect board
+                fqbn = self.detect_board(self.port)
+                if not fqbn:
+                    logger.error(f'Failed to detect board on port: {self.port}')
+                    break # Exit if detection fails
+
+                # Check if core is installed
+                if not self.is_core_installed(fqbn):
+                    self.install_core_if_needed(fqbn)
+
+                # Exit after successfully completing the task
+                logger.info('Wifi CLI Worker completed its task. Stopping...')
+                break
+
+            self.finished.emit()
+
+        except Exception as e:
+            logger.exception(f'Unexpected error in Wifi CLI Worker: {e}')
+            self.is_running = False
+        finally:
+            self.stop()
+
+    def stop(self):
+        self.is_running = False
+        try:
+            if self.ser and self.ser.is_open:
+                self.ser.close()
+                logger.info(f'Connection to {self.port} closed successfully.')
+        except Exception as e:
+            logger.error(f'Error while closing connection: {e}')
+        finally:
+            self.quit()
+            self.wait()
+            logger.info('Wifi CLI Worker thread stopped.')
+
 
 
