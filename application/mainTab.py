@@ -27,6 +27,8 @@ class MainTab(QWidget):
         test_part_layout = QHBoxLayout()
         test_button_layout = QVBoxLayout()
         test_output_layout = QVBoxLayout()
+        wifi_output_layout = QVBoxLayout()
+
         self.instruction_listbox = QListWidget(self)
         self.instruction_listbox.addItems(['* start by choosing ports and boards',
                                            '* upload test file',
@@ -69,7 +71,48 @@ class MainTab(QWidget):
         test_output_layout.addWidget(self.expected_outcome_label)
         test_output_layout.addWidget(self.expected_outcome_listbox)
 
+        # Wifi output section
+        self.wifi_output_label = QLabel('Wifi Board Output', self)
+        self.wifi_output_label.hide()
+        self.wifi_output_listbox = QListWidget(self)
+        self.wifi_output_listbox.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.wifi_output_listbox.setMinimumHeight(30)
+        self.wifi_output_listbox.hide()
+        wifi_output_layout.addWidget(self.wifi_output_label)
+        wifi_output_layout.addWidget(self.wifi_output_listbox)
+
+        self.wifi_expected_label = QLabel('Expected Wifi Output', self)
+        self.wifi_expected_label.hide()
+        self.wifi_expected_listbox = QListWidget(self)
+        self.wifi_expected_listbox.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.wifi_expected_listbox.setMinimumHeight(30)
+        self.wifi_expected_listbox.hide()
+        wifi_output_layout.addWidget(self.wifi_expected_label)
+        wifi_output_layout.addWidget(self.wifi_expected_listbox)
+
+        # test_part_layout.addLayout(wifi_output_layout)
+        # test_output_layout.addWidget(self.wifi_expected_listbox)
+
+        # place them in the main layout
+        layout.addLayout(test_part_layout)
+
         self.setLayout(layout)
+
+    def update_wifi_output_listbox(self, message):
+        logger.debug(f'Updating Wifi output listbox with message: {message}')
+        self.wifi_output_listbox.clear()
+        if message:
+            self.wifi_output_listbox.addItem(f'{message}')
+            self.wifi_output_listbox.scrollToBottom()
+        else:
+            logger.warning('Received empty message for Wifi output listbox.')
+
+    def toggle_wifi_output_visibility(self, visible):
+        self.wifi_output_label.setVisible(visible)
+        self.wifi_output_listbox.setVisible(visible)
+        self.wifi_expected_label.setVisible(visible)
+        self.wifi_expected_listbox.setVisible(visible)
+
 
     # TEST RUNNING
     # activate button and set color when serial is running
@@ -92,6 +135,11 @@ class MainTab(QWidget):
         expected_output = self.expected_output(self.test_data)
         self.expected_outcome_listbox.clear()
         self.expected_outcome_listbox.addItem(f'{expected_output}')
+
+        # Update Wifi expected output if Wifi Worker is running
+        wifi_expected_output = self.expected_output(self.test_data)
+        self.wifi_expected_listbox.clear()
+        self.wifi_expected_listbox.addItem(f'{wifi_expected_output}')
 
     # OUTPUT CHECKING PART
     def update_test_number(self, test_number):
@@ -127,14 +175,22 @@ class MainTab(QWidget):
             self.update_gui_incorrect()
 
     # gui for correct output
-    def update_gui_correct(self):
-        self.test_output_listbox.setStyleSheet("color: #009FAF; font-weight: bold;")
-        self.expected_outcome_listbox.setStyleSheet("color: black; font-weight: normal;")
+    def update_gui_correct(self, is_wifi=False):
+        if is_wifi:
+            self.wifi_output_listbox.setStyleSheet("color: #009FAF; font-weight: bold;")
+            self.wifi_expected_listbox.setStyleSheet("color: black; font-weight: normal;")
+        else:
+            self.test_output_listbox.setStyleSheet("color: #009FAF; font-weight: bold;")
+            self.expected_outcome_listbox.setStyleSheet("color: black; font-weight: normal;")
 
     # gui for incorrect test board output
-    def update_gui_incorrect(self):
-        self.expected_outcome_listbox.setStyleSheet("color: red; font-weight: bold;")
-        self.test_output_listbox.setStyleSheet("color: red; font-weight: bold;")
+    def update_gui_incorrect(self, is_wifi=False):
+        if is_wifi:
+            self.wifi_output_listbox.setStyleSheet("color: red; font-weight: bold;")
+            self.wifi_expected_listbox.setStyleSheet("color: red; font-weight: bold;")
+        else:
+            self.test_output_listbox.setStyleSheet("color: red; font-weight: bold;")
+            self.expected_outcome_listbox.setStyleSheet("color: red; font-weight: bold;")
 
     # BEFORE TEST IS RUNNING
     # change test part gui to show sketch upload progress before test runs
