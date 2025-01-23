@@ -31,8 +31,8 @@
     - Improved feedback via real-time serial updates on temperature, test status, and queued tests.
 
     Software Structure:
-    - A state machine manages states like HEATING, COOLING, and REPORT, supporting both manual and
-      remote operation.
+    - A state machine manages states like HEATING, COOLING, EVALUATE, and EMERGENCY STOP, supporting both 
+      manual and remote operation.
     - The chamber can queue and execute multiple test scenarios, each defined by a temperature and
       duration.
     - Provides serial feedback for real-time monitoring, including test progress and machine state.
@@ -71,10 +71,10 @@ Authors:
 #define SWITCH_SYSTEM_STATE 7
 
 // States for the state machine
-#define RESET               0
+#define IDLE                0
 #define HEATING             1
 #define COOLING             2
-#define REPORT              3
+#define EVALUATE            3
 #define EMERGENCY_STOP      4
 
 // Define default temperature limits
@@ -406,7 +406,7 @@ void runNextTest() {
         currentSequenceIndex = 0;
         currentTestName = testNames[currentTestIndex];
         setTemperature(currentTest.sequences[currentSequenceIndex].targetTemp);
-        status = REPORT;
+        status = EVALUATE;
     }
 }
 
@@ -476,7 +476,7 @@ void parseAndRunCommands(JsonObject& commands) {
         } else if (command == "RESET") {
             clearTests();
             displayingEmergency = false;
-            status = RESET;
+            status = IDLE;
         } else if (command == "EMERGENCY_STOP") {
             runEmergencyStop();
             sendPingResponse();
@@ -540,14 +540,14 @@ void sendQueue() {
 
 String getMachineState() {
     switch (status) {
-        case RESET:
-            return "RESET";
+        case IDLE:
+            return "IDLE";
         case HEATING:
             return "HEATING";
         case COOLING:
             return "COOLING";
-        case REPORT:
-            return "REPORT";
+        case EVALUATE:
+            return "EVALUATE";
         case EMERGENCY_STOP:
             return "EMERGENCY_STOP";
         default:
@@ -665,7 +665,7 @@ void updateSwitchStates() {
     startSwitchState = switchStart.read() == LOW;
 }
 
-void handleResetState() {
+void handleIdleState() {
     displayLCD(chamberState.temperatureRoom, chamberState.temperatureDesired);
 
     if (!systemSwitchState) {
@@ -673,7 +673,7 @@ void handleResetState() {
         return;
     }
     if (startSwitchState) {
-        status = REPORT;
+        status = EVALUATE;
     }
     // allow manual control of temperature from buttons (will be used/refactored once migration to PLC is complete)
     changeTemperature();
@@ -688,7 +688,7 @@ void handleResetState() {
 
 void handleHeatingState() {
     if (!systemSwitchState || !startSwitchState) {
-        status = RESET;
+        status = IDLE;
         return;
     }
     cooler.off();
@@ -697,7 +697,7 @@ void handleHeatingState() {
         chamberState.longHeatingFlag = 0;
         chamberState.isHeating = false;
         lastHeatingTime = getCurrentTimestamp();    // capture current timestamp for handshake
-        status = REPORT;
+        status = EVALUATE;
     } else {
         adjustDutyCycleAndPeriod(temperatureThreshold, dutyCycleHeater, periodHeater, chamberState.longHeatingFlag, true);
         controlRelay(heater, dutyCycleHeater, periodHeater, chamberState.lastHeaterOnTime);
@@ -707,14 +707,14 @@ void handleHeatingState() {
 
 void handleCoolingState() {
     if (!systemSwitchState || !startSwitchState) {
-        status = RESET;
+        status = IDLE;
         return;
     }
     heater.off();
 
     if(temperatureThreshold < 0.1) {
         chamberState.isCooling = false;
-        status = REPORT;
+        status = EVALUATE;
     } else {
         adjustDutyCycleAndPeriod(temperatureThreshold, dutyCycleCooler, periodCooler, chamberState.longHeatingFlag, false);
         controlRelay(cooler, dutyCycleCooler, periodCooler, chamberState.lastCoolerOnTime);
@@ -740,13 +740,13 @@ void adjustDutyCycleAndPeriod(float threshold, int& dutyCycle, unsigned long& pe
     }
 }
 
-void handleReportState() {
+void handleEvaluateState() {
     if (!systemSwitchState) {
         status = EMERGENCY_STOP;
         return;
     }
     if (!startSwitchState) {
-        status = RESET;
+        status = IDLE;
         return;
     }
     if (chamberState.temperatureDesired == 0) {
@@ -768,7 +768,7 @@ void handleEmergencyStopState() {
     chamberState.longHeatingFlag = 0;
 
     if (switchSystem.held()) {
-        status = RESET;
+        status = IDLE;
     }
 }
 
@@ -856,8 +856,8 @@ void loop() {
     }
 
     switch (status) {
-        case RESET:
-            handleResetState();
+        case IDLE:
+            handleIdleState();
             break;
         case HEATING:
             handleHeatingState();
@@ -865,8 +865,8 @@ void loop() {
         case COOLING:
             handleCoolingState();
             break;
-        case REPORT:
-            handleReportState();
+        case EVALUATE:
+            handleEvaluateState();
             break;
         case EMERGENCY_STOP:
             handleEmergencyStopState();
