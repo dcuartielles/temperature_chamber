@@ -1,5 +1,5 @@
 # Temperature Chamber
-This project is a PyQt5-based application for controlling and monitoring a temperature chamber. It includes functionalities to select ports, start tests, monitor temperature and test progress, and handle emergency stops.
+The Temperature Chamber is a complete system for benchmark testing and stress-testing electronic boards in a controlled thermal environment. It combines accessible hardware, advanced firmware, and a Python-based desktop application to achieve precise temperature control, test execution, and real-time monitoring. The system is designed to standardize thermal testing while prioritizing accessibility and replicability with cost-effective, off-the-shelf components.
 
 
 ## Key Use Case
@@ -7,6 +7,8 @@ The goal of this chamber is to create a standardised mechanism as well as a benc
 to measure boards against. The chamber is a tool for answering questions like "How long can a board
 operate at 60°C before failure?" It prioritizes accessibility and replicability by using cost-effective,
 off-the-shelf components.
+
+---
 
 ## Hardware
 The physical chamber consists of:
@@ -20,29 +22,49 @@ The physical chamber consists of:
 
 The hardware allows for the temperature to safely reach and maintain up to 100°C.
 
+---
+
 ## Firmware
-The firmware for the temperature chamber includes the following:
-- A state machine to manage states such as ```HEATING```, ```COOLING```, ```RESET```, ```REPORT```, and ```EMERGENCY STOP```. (see [activity diagram](https://github.com/defliez/temperature_chamber/blob/main/docs/state-machine-activity-diagram.pdf)).
-- A test running system that allows the running of established benchmark tests as well as your own custom made tests.
-- Queueing system to be able to queue several tests at a time, as well as clear the queue.
-- Channels for communicating with the temperature chamber from an external application via the defined Communication Protocol (see [docs](https://github.com/defliez/temperature_chamber/blob/main/docs/docs.md)).
-- Robust error handling including emergency stop in case of serial disconnections.
-- Real-time serial updates on temperature, tests status, queued tests and machine state.
-- Infrastructure to communicate with external applications via a defined communication protocol (see [docs](https://github.com/defliez/temperature_chamber/blob/main/docs/docs.md)).
+The firmware manages the chamber's operation, focusing on safety, precision, and flexibility. Key features include:
+
+### State Machine
+The firmware operates via a state machine with the following states:
+- **HEATING**: Activates the heater to raise the temperature.
+- **COOLING**: Activates the blower to lower the temperature.
+- **IDLE**: Chamber stays in idle mode until a condition is met or further input is provided.
+- **EVALUATE**: Evaluates whether to go into **COOLING** or **HEATING** state based on temperature.
+- **EMERGENCY_STOP**: Shuts down operations until the start switch is switched on.
+
+### Test Execution
+The chamber supports:
+- Running predefined and custom tests.
+- Queueing multiple tests with parameters such as temperature and duration
+- Real-time monitoring of test progress.
+
+### Communication protocol
+The firmware communicates with the desktop application via a JSON-based protocol, enabling:
+- Remote control of the chamber.
+- Sending and receiving commands like `PING`, `RESET`, `SET_TEMP`, and `RUN_QUEUE`.
+- Handshake and ping for connection validation and error handling.
+- Real-time feedback on test status, temperature, and machine state.
+See [docs](https://github.com/defliez/temperature_chamber/blob/main/docs/docs.md) for more information.
+
+### Error handling
+- Timeout mechanisms to reset and cool down the chamber after prolonged connection loss.
+- Safety measures for exceeding temperature limits.
+
+---
 
 ## Desktop application
-The Temperature Chamber can be controlled and monitored from a desktop application, made in Python & PyQt5.
-The desktop application for the Temperature Chamber includes:
-- A user-friendly GUI for controlling the temperature chamber.
-- Real-time temperature and test monitoring.
-- Queue tab for managing the test queue with JSON file handling, as well as clearing the test queue.
-- Tab for manual control of the chamber, allowing for temperature and duration to be set.
-- Logging and error handling.
-- Infrastructure to communicate with the Arduino control board for the Temperature Chamber via a defined communication protocol (see [docs](https://github.com/defliez/temperature_chamber/blob/main/docs/docs.md)).
+The Python-based desktop application provides an intuitive interface to interact with the chamber:
 
-
-
-
+### Features
+- **Real-time Monitoring**: View the current temperature, test progress, and machine state.
+- **Queue Management**: Upload JSON test configurations, manage test queues, and clear tests.
+- **Manual Control**: Set temperature and duration manually, overriding queued tests.
+- **Wifi Boards**: Option to connect a microcontroller with Wifi capabilities to test the Wifi performance of microcontrollers being tested.
+- **Error Notifications**: Alerts for connection issues, emergency stops, and test interruptions.
+- **Logging**: Detailed logs for debugging and analysis.
 
 ## Installation
 1. Clone the repository:
@@ -79,39 +101,40 @@ python3 interface/pyqt5/t-chamber/main.py
     - Estimated running time of queued tests, taking into account the set durations for the sequences as well as the time to heat up and cool down the chamber between sequences.
 - Press `reset control board` to clear all tests in the queue, interrupt the current running test, and put the Temperature Chamber into an idle state.
 
+---
+
 ## Safety measures
-The Temperature Chamber system has mechanisms to ensure safe usage.
+- **Temperature Thresholds**: Prevents the chamber from exceeding 100°C. This limit can be temporarily overridden.
+- **Ping Mechanism**: Ensures continuous connection between the chamber and application. 
+- **Emergency Stop**: Resets and cools down the chamber after 5 minutes of no ping response.
 
-### Temperature thresholds
-The firmware defines an upper limit of of 100°C for setting the temperature - both in tests and manual control. 
-
-### Ping signals and timers
-The control board for the chamber regularly sends ping signals to the Python app, and receives a ping response. In the case that the control board doesnt receive a ping signal for more than 5 minutes, the test and machine states will be reset and the Temperature Chamber will go into `EMERGENCY_STOP` state. This is also communicated via the LCD on the Chamber. A timer of 5 minutes is also present in the Python app, which triggers a popup message telling the operator that connection has been lost and the Chamber has gone into `EMERGENCY STOP` state. The python will notify the operator if serial connection has been lost to either boards, control board or test board, after 15 seconds of no ping, so that the Chamber doesn't reset without the operators knowledge that serial connection had been lost.
-
+---
 
 ## Acknowledgments:
-- **Adam Harb**
+- **Adam Harb**:
     - Hardware design, the custom shield, and the original state machine implementation.
-- **Valentino Glave**
-    - Modernized and optimized existing state machine.
-    - Implemented state machine and infrastructure to queue and run tests.
-    - Optimized existing functionality in firmware.
-    - Defined communication protocol.
+- **Valentino Glave**:
+    - Enhanced the firmware with JSON-based communication for remote control and monitoring.
+    - Modernized and optimized the state machine for advanced test handling.
     - Integrated remote control on firmware side.
+    - Implemented functionality and UI components to allow connection to a Wifi board.
+    - Refactored UI to enhance responsiveness.
+    - Integrated robust error handling and logging.
     - Enhanced workflows.
-
-
-- **Owen Kraus**
-    - Creating a functional and user friendly Python application.
-    - Integrated remote control on software side.
+- **Owen Kraus**:
+    - Created an intuitive and functional Python application.
+    - Developed infrastructure to communicate with, and display output from the chamber.
+    - Implemented robust error handling and logging.
 
 For inquiries or further development, please contact via the provided channels.
 
 Authors:
-* Valentino Glave, <valentinoglave@protonmail.com>
-* Owen Kraus, <owenkraus9@gmail.com>
- * Adam Harb, <adam.harb@hotmail.com>
- * David Cuartielles, <d.cuartielles@arduino.cc>
+- Valentino Glave, <valentinoglave@protonmail.com>
+- Owen Kraus, <owenkraus9@gmail.com>
+- Adam Harb, <adam.harb@hotmail.com>
+- David Cuartielles, <d.cuartielles@arduino.cc>
+
+---
 
  (cc-sa-by-nc) 2024 Arduino, Sweden
 
