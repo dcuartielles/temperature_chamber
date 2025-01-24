@@ -562,7 +562,7 @@ void parseTextFromJson(JsonDocument& doc) {
     }
 }
 
-// legacy: will be obsolete once migration to PLC is complete
+// Manual control of temperature via physical buttons
 void changeTemperature() {  
     if (buttonIncrease.read()== HIGH && buttonDecrease.read()== LOW) chamberState.temperatureDesired += 5;
     if (buttonDecrease.read()== HIGH && buttonIncrease.read()== LOW) chamberState.temperatureDesired -= 5;
@@ -606,7 +606,7 @@ void handleIdleState() {
     if (startSwitchState) {
         status = EVALUATE;
     }
-    // allow manual control of temperature from buttons (will be used/refactored once migration to PLC is complete)
+    // allow manual control of temperature from buttons
     changeTemperature();
 
     // turn off all outputs
@@ -744,7 +744,7 @@ void runCurrentSequence() {
         printedRunning = true;
     }
 
-    // check if target temp is reached
+    // check if target temperature is reached
     if (!isTemperatureReached(targetTemp, chamberState.temperatureRoom)) {
         if (!printedWaiting) {
             Serial.println("Waiting for target temperature to be reached...");
@@ -801,7 +801,7 @@ unsigned long updateInterval = 500;
 void loop() {  
     currentMillis = millis();
 
-    // Check for timeout (5 min without ping)
+    // Check for timeout (5 minutes without ping)
     if (currentMillis - lastPingTime > TIMEOUT_DURATION) {
         if (!printedNoPing) {
             Serial.println("No ping received for 5 minutes. Resetting and shutting down.");
