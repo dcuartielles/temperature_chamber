@@ -10,7 +10,7 @@
 
     Key Use Case:
     The goal of this chamber is to create a standardised mechanism and benchmark for measuring board 
-    performance. For example, it hekps answer questions like "How long can a board
+    performance. For example, it helps answer questions like "How long can a board
     operate at 60C before failure?" It prioritizes accessibility and replicability by using cost-effective,
     off-the-shelf components.
 
