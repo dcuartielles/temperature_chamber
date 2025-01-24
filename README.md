@@ -11,16 +11,18 @@ off-the-shelf components.
 ---
 
 ## Hardware
-The physical chamber consists of:
-- a case sourced from a musical instrument
-- a natural cork for isolation, a ceramic heating element
-- an air-blower for cooling 
-- two 1-wire thermocouple sensors
-- an Arduino Uno R4 Wifi to control the relays and sensor inside of the chamber
-- a custom PCB shield including solid-state relays for heater and blower
-- an lcd to display temperature inside the chamber, set goal temperature of running test or manual sequence, and emergency stops caused by potential disconnections
 
-The hardware allows for the temperature to safely reach and maintain up to 100°C.
+### Components
+- **Case**: Case sorced from a music instrument.
+- **Insulation**: Natural cork for temperature insulation.
+- **Heating Element**: Ceramic heating element for precise temperature control.
+- **Cooling System**: Air-blower sourced from an inflatable mattress, featuring airflow shutoff when inactive.
+- **Temperature Sensors**: Two 1-wire thermocouple sensors for accurate temperature measurement.
+- **Control System**:
+    - Arduino Uno R4 WiFi board for managing system operations.
+    - Custom PCB shield with solid-state relays for heater and blower control.
+    - Buttons and switches for manual operation.
+    - LCD display for showing system status, temperature data, and current temperature goal.
 
 ---
 
