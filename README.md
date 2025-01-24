@@ -49,6 +49,7 @@ The firmware communicates with the desktop application via a JSON-based protocol
 - Sending and receiving commands like `PING`, `RESET`, `SET_TEMP`, and `RUN_QUEUE`.
 - Handshake and ping for connection validation and error handling.
 - Real-time feedback on test status, temperature, and machine state.
+
 See [docs](https://github.com/defliez/temperature_chamber/blob/main/docs/docs.md) for more information.
 
 ### Error handling
