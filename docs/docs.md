@@ -108,7 +108,7 @@ The handshake establishes initial communication between the Python ap and the Te
 {
     "handshake": {
         "timestamp": "2024-12-05T15:21:06",
-        "machine_state": "RESET",
+        "machine_state": "IDLE",
         "last_shutdown_cause": "Lost connection",
         "last_heat_time": "2024-12-05T13:00:00"
     }
@@ -133,8 +133,8 @@ Ping ensures continuous communication between the Python app and the chamber. A 
     "ping_response": {
         "alive":true,
         "timestamp":"2024-12-05T15:11:55",
-        "machine_state":"RESET",
-        "current_temp":35.625,
+        "machine_state":"HEATING",
+        "current_temp":30.625,
         "test_status": {
             "is_test_running":true,
             "current_test":"alphabet_38",
