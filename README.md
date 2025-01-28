@@ -1,13 +1,6 @@
 # Temperature Chamber
 The Temperature Chamber is a complete system for benchmark testing and stress-testing electronic boards in a controlled thermal environment. It combines accessible hardware, advanced firmware, and a Python-based desktop application to achieve precise temperature control, test execution, and real-time monitoring. The system is designed to standardize thermal testing while prioritizing accessibility and replicability with cost-effective, off-the-shelf components.
 
-
-## Key Use Case
-The goal of this chamber is to create a standardised mechanism as well as a benchmark
-to measure boards against. The chamber is a tool for answering questions like "How long can a board
-operate at 60°C before failure?" It prioritizes accessibility and replicability by using cost-effective,
-off-the-shelf components.
-
 ---
 
 ## Hardware
